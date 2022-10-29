@@ -32,6 +32,8 @@
     "prettier/prettier": ["error"],
     "no-await-in-loop": "off",
     "import/prefer-default-export": "off",
+    "react/jsx-uses-react": "on",
+    "react/react-in-jsx-scope": "on",
     "no-unused-vars": [
       1,
       {

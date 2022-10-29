@@ -12,7 +12,10 @@ const getSrcPath = (filePath) => {
   return path.posix.join(src.replace(/\\/g, "/"), filePath);
 };
 
-module.exports = (env) => {
+module.exports = (config) => {
+  const env = Object.entries(config).find(
+    ([key, value]) => !key.startsWith("WEBPACK") && value === true
+  )[0];
   if (!["development", "production", "local"].includes(env))
     throw new Error(
       `Enviornment mode "${env}" not supported. Supported values: development, production, local`
@@ -20,11 +23,16 @@ module.exports = (env) => {
   return {
     mode: env === "local" ? "development" : env,
     context: __dirname,
+    devServer: {
+      static: {
+        directory: path.join(__dirname, "public"),
+      },
+      compress: true,
+      port: 9001,
+    },
     entry: {
       server: getSrcPath("/server/server.ts"),
-      client: getSrcPath(
-        env === "local" ? "/client/local.ts" : "/client/client.ts"
-      ),
+      client: getSrcPath("/client/client.tsx"),
     },
     output: {
       filename: `[name].js`,
@@ -34,26 +42,29 @@ module.exports = (env) => {
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".jsx"],
     },
-    optimization: {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          test: /\.js$/i,
-          extractComments: false,
-          terserOptions: {
-            ecma: 2020,
-            compress: true,
-            mangle: {
-              reserved: ["globals"],
-              keep_fnames: true, // Easier debugging in the browser
-            },
-            format: {
-              comments: /@customfunction/i,
-            },
+    optimization:
+      env === "local"
+        ? {}
+        : {
+            minimize: true,
+            minimizer: [
+              new TerserPlugin({
+                test: /\.js$/i,
+                extractComments: false,
+                terserOptions: {
+                  ecma: 2020,
+                  compress: true,
+                  mangle: {
+                    reserved: ["globals"],
+                    keep_fnames: true, // Easier debugging in the browser
+                  },
+                  format: {
+                    comments: /@customfunction/i,
+                  },
+                },
+              }),
+            ],
           },
-        }),
-      ],
-    },
     performance: {
       hints: false,
     },
@@ -70,14 +81,29 @@ module.exports = (env) => {
             options: {
               cacheDirectory: true,
               cacheCompression: false,
-              plugins: [
+              presets: [
                 [
-                  "@babel/plugin-proposal-object-rest-spread",
-                  { loose: true, useBuiltIns: true },
+                  "@babel/preset-env",
+                  {
+                    targets: {
+                      node: 16,
+                    },
+                  },
+                ],
+                "@babel/preset-typescript",
+                [
+                  "@babel/preset-react",
+                  {
+                    runtime: "automatic",
+                  },
                 ],
               ],
             },
           },
+        },
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
         },
       ],
     },
@@ -105,11 +131,17 @@ module.exports = (env) => {
         chunks: ["client"],
         filename: "client.html",
       }),
-      new HtmlInlineScriptPlugin(),
-      new GasPlugin({
-        comments: false,
-        includePatterns: "**/server.ts",
-      }),
-    ],
+    ].concat(
+      env === "local"
+        ? []
+        : [
+            new HtmlInlineScriptPlugin(),
+            new GasPlugin({
+              comments: false,
+              includePatterns: "**/server.ts",
+            }),
+          ]
+    ),
+    devtool: "source-map",
   };
 };
