@@ -133,7 +133,17 @@ module.exports = (config) => {
       }),
     ].concat(
       env === "local"
-        ? []
+        ? [
+            new NormalModuleReplacementPlugin(
+              /network\/index(\.ts)?$/,
+              (resource) => {
+                resource.request = resource.request.replace(
+                  "network/index",
+                  "/network/mock"
+                );
+              }
+            ),
+          ]
         : [
             new HtmlInlineScriptPlugin(),
             new GasPlugin({
