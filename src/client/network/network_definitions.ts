@@ -1,6 +1,6 @@
 import Channel, {
   PrivacyLevel,
-  PublicChannelListing,
+  PublicChannelListing
 } from "../../data/channel";
 
 export interface ChannelJoinInfo {
@@ -46,4 +46,14 @@ export default interface NetworkManager {
    * is a bit pointless as you can just reload.
    */
   clearCache(): Promise<void>;
+
+  /**
+   * Connects to a given channel and returns a `ChannelManager` associated with 
+   * it. Channel id must be in `getChannels()`.
+   */
+  connectChannel(id: number): Promise<ChannelManager>;
+}
+
+export interface ChannelManager {
+
 }

@@ -1,7 +1,14 @@
 import { PrivacyLevel } from "../../data/channel";
-import NetworkManager, { ChannelJoinInfo } from "./network_definitions";
+import NetworkManager, {
+  ChannelJoinInfo,
+  ChannelManager,
+} from "./network_definitions";
 
 export default class MockNetworkManager implements NetworkManager {
+  connectChannel(id: number): Promise<ChannelManager> {
+    throw new Error("Method not implemented.");
+  }
+
   async getPublicChannels() {
     return [
       {
