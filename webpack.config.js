@@ -1,18 +1,37 @@
-const path = require("path");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const GasPlugin = require("./plugins/gasplugin");
-const ESLintPlugin = require("eslint-webpack-plugin");
-const webpack = require("webpack");
-const TerserPlugin = require("terser-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlInlineScriptPlugin = require("html-inline-script-webpack-plugin");
+// @ts-check
 
+import CopyWebpackPlugin from "copy-webpack-plugin";
+import ESLintPlugin from "eslint-webpack-plugin";
+import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import { dirname, join, posix, resolve as _resolve } from "path";
+import TerserPlugin from "terser-webpack-plugin";
+import { fileURLToPath } from "url";
+import webpack from "webpack";
+import GasPlugin from "./plugins/gasplugin.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/**
+ * Resolves a file path relative to `src` to a full file path.
+ *
+ * @param {string} filePath The file path to resolve against `src`.
+ * @returns The resolved path.
+ */
 const getSrcPath = (filePath) => {
-  const src = path.resolve(__dirname, "src");
-  return path.posix.join(src.replace(/\\/g, "/"), filePath);
+  const src = _resolve(__dirname, "src");
+  return posix.join(src.replace(/\\/g, "/"), filePath);
 };
 
-module.exports = (config) => {
+/**
+ * Build.
+ *
+ * @param {any} config The config webpack passes
+ * @returns The webpack config
+ */
+const build = (config) => {
+  // @ts-ignore
   const env = Object.entries(config).find(
     ([key, value]) => !key.startsWith("WEBPACK") && value === true
   )[0];
@@ -25,7 +44,7 @@ module.exports = (config) => {
     context: __dirname,
     devServer: {
       static: {
-        directory: path.join(__dirname, "public"),
+        directory: join(__dirname, "public"),
       },
       compress: true,
       port: 9001,
@@ -36,7 +55,7 @@ module.exports = (config) => {
     },
     output: {
       filename: `[name].js`,
-      path: path.resolve(__dirname, "dist"),
+      path: _resolve(__dirname, "dist"),
       clean: true,
     },
     resolve: {
@@ -134,7 +153,7 @@ module.exports = (config) => {
     ].concat(
       env === "local"
         ? [
-            new NormalModuleReplacementPlugin(
+            new webpack.NormalModuleReplacementPlugin(
               /network\/index(\.ts)?$/,
               (resource) => {
                 resource.request = resource.request.replace(
@@ -155,3 +174,4 @@ module.exports = (config) => {
     devtool: "source-map",
   };
 };
+export default build;

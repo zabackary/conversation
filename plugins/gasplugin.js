@@ -2,12 +2,14 @@
  * From https://npmjs.com/package/gas-webpack-plugin
  */
 
-const { generate } = require("gas-entry-generator");
-const { SourceMapSource, RawSource } = require("webpack-sources");
-const Dependency = require("webpack/lib/Dependency");
-const minimatch = require("minimatch");
-const path = require("path");
-const slash = require("slash");
+import { generate } from "gas-entry-generator";
+import minimatch from "minimatch";
+import { isAbsolute, resolve } from "path";
+import slash from "slash";
+import webpackSources from "webpack-sources";
+import Dependency from "webpack/lib/Dependency.js";
+
+const { RawSource, SourceMapSource } = webpackSources;
 
 const defaultOptions = {
   comment: true,
@@ -108,10 +110,10 @@ GasDependency.Template = class GasDependencyTemplate {
 GasPlugin.prototype.apply = function (compiler) {
   const context = compiler.options.context;
   const autoGlobalExportsFilePatterns = this.options.autoGlobalExportsFiles.map(
-    (file) => (path.isAbsolute(file) ? file : path.resolve(context, file))
+    (file) => (isAbsolute(file) ? file : resolve(context, file))
   );
   const includePatterns = this.options.include.map((file) =>
-    path.isAbsolute(file) ? file : path.resolve(context, file)
+    isAbsolute(file) ? file : resolve(context, file)
   );
 
   const plugin = { name: "GasPlugin" };
@@ -155,4 +157,4 @@ GasPlugin.prototype.apply = function (compiler) {
   compiler.hooks.compilation.tap(plugin, compilationHook);
 };
 
-module.exports = GasPlugin;
+export default GasPlugin;
