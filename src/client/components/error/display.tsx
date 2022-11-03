@@ -56,7 +56,8 @@ export default function ErrorPage(props: ErrorPageProps) {
             Oops!
           </Typography>
           <Typography variant="body2" component="div">
-            An unexpected error has occurred.
+            An unexpected error has occurred. Please inform the developer with
+            the details below.
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <i>{props.errorText}</i>
