@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import Channel from "../data/channel";
 import User from "../data/user";
 import ErrorBoundary from "./components/error";

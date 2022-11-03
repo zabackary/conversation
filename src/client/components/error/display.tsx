@@ -9,6 +9,7 @@ import {
   IconButton,
   IconButtonProps,
   styled,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import * as React from "react";
@@ -48,7 +49,7 @@ export default function ErrorPage(props: ErrorPageProps) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      style={{ minHeight: "100vh", backgroundColor: "" }}
+      style={{ minHeight: "100vh", backgroundColor: "black" }}
     >
       <Card sx={{ maxWidth: 345 }}>
         <CardContent>
@@ -66,14 +67,16 @@ export default function ErrorPage(props: ErrorPageProps) {
         <CardActions disableSpacing>
           <Button size="small">Reload</Button>
           <Button size="small">Copy debugging details</Button>
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show stack trace"
-          >
-            <ExpandMoreIcon />
-          </ExpandMore>
+          <Tooltip title="Show stack trace">
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show stack trace"
+            >
+              <ExpandMoreIcon />
+            </ExpandMore>
+          </Tooltip>
         </CardActions>
         <Collapse in={expanded} timeout="auto">
           <CardContent>

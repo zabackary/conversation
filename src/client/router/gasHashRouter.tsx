@@ -1,11 +1,5 @@
-import {
-  createHashHistory,
-  createRouter,
-  HydrationState,
-  Router as RemixRouter,
-} from "@remix-run/router";
-import type { RouteObject } from "react-router";
-import { UNSAFE_enhanceManualRouteObjects as enhanceManualRouteObjects } from "react-router";
+import type { RouteObject } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 
 /**
  * A router that mimics react-router's hash router except syncing changes with
@@ -17,17 +11,10 @@ export function createGasHashRouter(
   routes: RouteObject[],
   opts?: {
     basename?: string;
-    hydrationData?: HydrationState;
     window?: Window;
   }
-): RemixRouter {
-  const router = createRouter({
-    basename: opts?.basename,
-    history: createHashHistory({ window: opts?.window }),
-    // @ts-ignore
-    hydrationData: opts?.hydrationData || window?.__staticRouterHydrationData,
-    routes: enhanceManualRouteObjects(routes),
-  }).initialize();
+) {
+  const router = createHashRouter(routes, opts);
   router.subscribe(() => {
     console.log(router.state.location.hash);
   });

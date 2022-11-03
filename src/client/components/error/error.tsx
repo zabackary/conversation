@@ -1,5 +1,5 @@
 import normalizeException from "normalize-exception";
-import { useRouteError } from "react-router";
+import { useRouteError } from "react-router-dom";
 import ErrorPage from "./display";
 
 export function RouteErrorPage() {

@@ -8,6 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 import Channel from "../../../data/channel";
 import User from "../../../data/user";
 import ResponsiveDrawer from "../DrawerLayout";
@@ -33,14 +34,16 @@ export default function Main(props: Props) {
         props.channels ? (
           <>
             {props.channels.map((channel) => (
-              <ListItem key={channel.id} disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <ChatIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={channel.name} />
-                </ListItemButton>
-              </ListItem>
+              <Link key={channel.id} to={`channels/${channel.id}`}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <ChatIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={channel.name} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             ))}
           </>
         ) : (
