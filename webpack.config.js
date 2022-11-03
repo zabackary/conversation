@@ -31,10 +31,12 @@ const getSrcPath = (filePath) => {
  * @returns The webpack config
  */
 const build = (config) => {
-  // @ts-ignore
-  const env = Object.entries(config).find(
-    ([key, value]) => !key.startsWith("WEBPACK") && value === true
-  )[0];
+  const env =
+    Object.entries(config).find(
+      ([key, value]) => !key.startsWith("WEBPACK") && value === true
+    )?.[0] ||
+    (console.warn("Enviornment not specified; defaulting to development"),
+    "development");
   if (!["development", "production", "local"].includes(env))
     throw new Error(
       `Enviornment mode "${env}" not supported. Supported values: development, production, local`
