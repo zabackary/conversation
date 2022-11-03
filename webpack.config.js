@@ -151,6 +151,7 @@ const build = (config) => {
         title: "",
         chunks: ["client"],
         filename: "client.html",
+        inject: "body",
       }),
     ].concat(
       env === "local"

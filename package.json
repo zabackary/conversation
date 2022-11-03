@@ -6,9 +6,7 @@
   "type": "module",
   "scripts": {
     "watch": "webpack --watch",
-    "build": "webpack",
-    "format": "prettier --write dist/server.js",
-    "postbuild": "npm run format",
+    "build": "webpack --env=production",
     "upload": "npx clasp push",
     "deploy": "npm run build && npm run upload",
     "local": "webpack serve --env=local"
