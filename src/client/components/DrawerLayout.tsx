@@ -18,7 +18,8 @@ interface Props {
   children?: React.ReactNode;
   toolbarTitle?: React.ReactNode;
   toolbarItems?: React.ReactNode;
-  drawerItems?: React.ReactNode[];
+  drawerHeader?: React.ReactNode;
+  drawerItems?: React.ReactNode;
 }
 
 export default function ResponsiveDrawer(props: Props) {
@@ -30,7 +31,7 @@ export default function ResponsiveDrawer(props: Props) {
 
   const drawer = (
     <div>
-      <Toolbar />
+      {props.drawerHeader}
       <Divider />
       {props.drawerItems}
     </div>

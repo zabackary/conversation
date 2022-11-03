@@ -1,25 +1,23 @@
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { IconButton } from "@mui/material";
-import * as React from "react";
-import ResponsiveDrawer from "./components/DrawerLayout";
+import { useEffect, useState } from "react";
+import Channel from "../data/channel";
+import User from "../data/user";
+import Main from "./components/main";
+import DefaultBackend from "./network/default_backend";
 
-export default class App extends React.Component {
-  handleOpenUserMenu() {}
+interface Props {}
 
-  render() {
-    return (
-      <ResponsiveDrawer
-        toolbarTitle={<>Stuff</>}
-        toolbarItems={
-          <IconButton
-            size="large"
-            onClick={this.handleOpenUserMenu}
-            color="inherit"
-          >
-            <AccountCircleIcon />
-          </IconButton>
-        }
-      ></ResponsiveDrawer>
-    );
-  }
+export default function App(props: Props) {
+  const [network, setNetwork] = useState(new DefaultBackend());
+  const [channels, setChannels] = useState<Channel[] | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    network.getChannels().then((channels) => {
+      setChannels(channels);
+    });
+    network.getUser().then((user) => {
+      setUser(user);
+    });
+  }, []);
+
+  return <Main user={user} channels={channels}></Main>;
 }
