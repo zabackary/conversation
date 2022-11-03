@@ -1,6 +1,6 @@
 import Channel, {
   PrivacyLevel,
-  PublicChannelListing
+  PublicChannelListing,
 } from "../../data/channel";
 
 export interface ChannelJoinInfo {
@@ -22,7 +22,7 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
   id: number;
 }
 
-export default interface NetworkManager {
+export default interface NetworkBackend {
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
    */
@@ -48,12 +48,10 @@ export default interface NetworkManager {
   clearCache(): Promise<void>;
 
   /**
-   * Connects to a given channel and returns a `ChannelManager` associated with 
+   * Connects to a given channel and returns a `ChannelManager` associated with
    * it. Channel id must be in `getChannels()`.
    */
-  connectChannel(id: number): Promise<ChannelManager>;
+  connectChannel(id: number): Promise<ChannelBackend>;
 }
 
-export interface ChannelManager {
-
-}
+export interface ChannelBackend {}

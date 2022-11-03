@@ -1,11 +1,11 @@
 import channel, { PublicChannelListing } from "../../data/channel";
-import NetworkManager, {
+import NetworkBackend, {
+  ChannelBackend,
   ChannelJoinInfo,
-  ChannelManager,
 } from "./network_definitions";
 
-export default class GASNetworkManager implements NetworkManager {
-  connectChannel(id: number): Promise<ChannelManager> {
+export default class GASBackend implements NetworkBackend {
+  connectChannel(id: number): Promise<ChannelBackend> {
     throw new Error("Method not implemented.");
   }
   getPublicChannels(): Promise<PublicChannelListing[]> {
