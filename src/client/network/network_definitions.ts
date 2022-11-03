@@ -2,6 +2,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../data/channel";
+import User from "../../data/user";
 
 export interface ChannelJoinInfo {
   type: PrivacyLevel;
@@ -23,6 +24,11 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
 }
 
 export default interface NetworkBackend {
+  /**
+   * Gets the logged in user
+   */
+  getUser(): Promise<User>;
+
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
    */

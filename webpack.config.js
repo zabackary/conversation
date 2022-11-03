@@ -154,16 +154,25 @@ const build = (config) => {
       env === "local"
         ? [
             new webpack.NormalModuleReplacementPlugin(
-              /network\/index(\.ts)?$/,
+              /network\/default_backend(\.ts)?$/,
               (resource) => {
                 resource.request = resource.request.replace(
-                  "network/index",
-                  "/network/mock"
+                  "network/default_backend",
+                  "network/mock"
                 );
               }
             ),
           ]
         : [
+            new webpack.NormalModuleReplacementPlugin(
+              /network\/default_backend(\.ts)?$/,
+              (resource) => {
+                resource.request = resource.request.replace(
+                  "network/default_backend",
+                  "network/gas"
+                );
+              }
+            ),
             new HtmlInlineScriptPlugin(),
             new GasPlugin({
               comments: false,

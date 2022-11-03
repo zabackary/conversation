@@ -1,10 +1,20 @@
 import { PrivacyLevel } from "../../data/channel";
+import User from "../../data/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
 } from "./network_definitions";
 
 export default class MockBackend implements NetworkBackend {
+  async getUser(): Promise<User> {
+    return {
+      name: "Zachary Cheng",
+      nickname: "Zachary",
+      email: "zacharycheng@stu.his.ac.jp",
+      profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
+      id: 0,
+    };
+  }
   connectChannel(id: number): Promise<ChannelBackend> {
     throw new Error("Method not implemented.");
   }
