@@ -5,8 +5,17 @@ import NetworkBackend, {
   ChannelJoinInfo,
 } from "./network_definitions";
 
+async function wait(ms: number) {
+  await new Promise((r) => setTimeout(r, ms));
+}
+
+async function waitRandom() {
+  await wait(Math.random() * 1000);
+}
+
 export default class MockBackend implements NetworkBackend {
   async getUser(): Promise<User> {
+    await waitRandom();
     return {
       name: "Zachary Cheng",
       nickname: "Zachary",
@@ -20,6 +29,7 @@ export default class MockBackend implements NetworkBackend {
   }
 
   async getPublicChannels() {
+    await waitRandom();
     return [
       {
         name: "Hello World",
@@ -35,10 +45,12 @@ export default class MockBackend implements NetworkBackend {
     ];
   }
   async joinChannel<JoinInfo extends ChannelJoinInfo>(info: JoinInfo) {
+    await waitRandom();
     console.error("joinChannel not implemented.");
     return null;
   }
   async getChannels() {
+    await waitRandom();
     return [
       {
         name: "Hey",
