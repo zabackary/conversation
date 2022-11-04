@@ -40,6 +40,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-webpack-plugin": "^3.2.0",
+    "gas-client": "^1.0.0",
     "gas-entry-generator": "^2.2.0",
     "html-inline-script-webpack-plugin": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",

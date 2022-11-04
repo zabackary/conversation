@@ -95,7 +95,14 @@ const build = (config) => {
     module: {
       rules: [
         {
-          test: /\.(j|t)sx?$/,
+          test: /\.m?[jt]sx?$/,
+          exclude: /src/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+        {
+          test: /\.m?[jt]sx?$/,
           exclude: /node_modules/,
           use: {
             loader: "babel-loader",
