@@ -17,7 +17,7 @@ const router = createGasHashRouter([
     errorElement: <RouteErrorPage />,
     children: [
       {
-        path: "channels/:channelId",
+        path: "channel/:channelId",
         element: <Chat />,
       },
     ],
