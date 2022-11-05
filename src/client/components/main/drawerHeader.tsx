@@ -7,7 +7,7 @@ interface DrawerHeaderProps {
 
 export default function DrawerHeader(props: DrawerHeaderProps) {
   return (
-    <div style={{ padding: "12px", paddingTop: "18px" }}>
+    <Box sx={{ padding: "12px", paddingTop: "18px" }}>
       {props.user ? (
         <Box sx={{ display: "flex" }}>
           <Avatar
@@ -31,15 +31,23 @@ export default function DrawerHeader(props: DrawerHeaderProps) {
           </Box>
         </Box>
       ) : (
-        <>
+        <Box sx={{ display: "flex" }}>
           <Skeleton
             variant="circular"
-            width="40"
-            height="40"
-            sx={{ float: "left", marginRight: "8px" }}
+            width={40}
+            height={40}
+            sx={{ marginRight: "8px" }}
           />
-        </>
+          <Box sx={{ minWidth: 0, flex: 1 }}>
+            <Typography variant="h6">
+              <Skeleton />
+            </Typography>
+            <Typography variant="caption" component="div">
+              <Skeleton />
+            </Typography>
+          </Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

@@ -1,18 +1,11 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ChatIcon from "@mui/icons-material/Chat";
-import {
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { IconButton } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 import Channel from "../../../data/channel";
 import User from "../../../data/user";
 import ResponsiveDrawer from "../DrawerLayout";
 import DrawerHeader from "./drawerHeader";
+import ChannelList from "./drawerItems";
 
 interface Props {
   children?: React.ReactNode;
@@ -30,26 +23,7 @@ export default function Main(props: Props) {
         </IconButton>
       }
       drawerHeader={<DrawerHeader user={props.user} />}
-      drawerItems={
-        props.channels ? (
-          <>
-            {props.channels.map((channel) => (
-              <Link key={channel.id} to={`channels/${channel.id}`}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <ChatIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={channel.name} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            ))}
-          </>
-        ) : (
-          <>Loading...</>
-        )
-      }
+      drawerItems={<ChannelList channels={props.channels} />}
     >
       {props.children}
     </ResponsiveDrawer>
