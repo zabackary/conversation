@@ -1,3 +1,4 @@
+import Message from "./message";
 import User from "./user";
 
 export enum PrivacyLevel {
@@ -13,6 +14,11 @@ export default interface Channel {
   privacyLevel: PrivacyLevel;
   history: number;
   id: number;
+
+  /**
+   * The last message sent in the channel (used for preview). May be `undefined`
+   */
+  lastMessage?: Message;
 
   /**
    * Whether the channel is a dm or not. If so, `members` has length 2.
