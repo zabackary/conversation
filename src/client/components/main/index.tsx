@@ -5,7 +5,7 @@ import Channel from "../../../data/channel";
 import User from "../../../data/user";
 import ResponsiveDrawer from "../DrawerLayout";
 import DrawerHeader from "./drawerHeader";
-import ChannelList from "./drawerItems";
+import DrawerLists from "./drawerLists";
 
 interface Props {
   children?: React.ReactNode;
@@ -23,7 +23,9 @@ export default function Main(props: Props) {
         </IconButton>
       }
       drawerHeader={<DrawerHeader user={props.user} />}
-      drawerItems={<ChannelList channels={props.channels} />}
+      drawerItems={
+        <DrawerLists channels={props.channels} loading={!props.channels} />
+      }
     >
       {props.children}
     </ResponsiveDrawer>
