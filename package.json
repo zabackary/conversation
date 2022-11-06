@@ -21,6 +21,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@google/clasp": "^2.4.1",
+    "@material/material-color-utilities": "^0.2.0",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.11",
     "@types/ejs": "^3.1.1",
