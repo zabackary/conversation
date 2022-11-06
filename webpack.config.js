@@ -109,6 +109,7 @@ const build = (config) => {
             options: {
               cacheDirectory: true,
               cacheCompression: false,
+              plugins: ["@babel/plugin-transform-runtime"],
               presets: [
                 [
                   "@babel/preset-env",
