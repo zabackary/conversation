@@ -107,6 +107,7 @@ export default function ResponsiveDrawer(props: Props) {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
+        <Toolbar />
         {props.children}
       </Box>
     </Box>
