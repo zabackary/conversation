@@ -762,7 +762,7 @@ export const getThemedComponents = (
             "&.Mui-selected": {
               color: theme.palette.onSecondaryContainer.main,
               background: theme.palette.secondaryContainer.main,
-              "& > .MuiListItemText-root > .MuiTypography-root": {
+              "& > .MuiListItemText-root > .MuiListItemText-primary": {
                 fontWeight: "bold",
               },
             },
