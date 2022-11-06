@@ -4,7 +4,7 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import { dirname, join, posix, resolve as _resolve } from "path";
+import { dirname, join, posix, resolve as _resolve } from "node:path";
 import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
