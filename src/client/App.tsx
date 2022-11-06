@@ -9,6 +9,7 @@ import DefaultBackend from "./network/default_backend";
 import { createGasHashRouter } from "./router/gasHashRouter";
 import Channel from "./routes/home/channel/Channel";
 import Home from "./routes/home/Home";
+import Settings from "./routes/home/settings/Settings";
 
 const router = createGasHashRouter([
   {
@@ -22,6 +23,7 @@ const router = createGasHashRouter([
       },
       {
         path: "settings",
+        element: <Settings />,
       },
     ],
   },
