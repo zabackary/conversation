@@ -1,31 +1,27 @@
-import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import Channel from "../data/channel";
-import User from "../data/user";
-import ErrorBoundary from "./components/error";
-import Main from "./components/main";
+import { useState } from "react";
+import { RouterProvider } from "react-router-dom";
+import { RouteErrorPage } from "./components/error/error";
 import DefaultBackend from "./network/default_backend";
+import { createGasHashRouter } from "./router/gasHashRouter";
+import Channel from "./routes/home/channel/Channel";
+import Home from "./routes/home/Home";
 
-interface Props {}
+const router = createGasHashRouter([
+  {
+    path: "/",
+    element: <Home />,
+    errorElement: <RouteErrorPage />,
+    children: [
+      {
+        path: "channel/:channelId",
+        element: <Channel />,
+      },
+    ],
+  },
+]);
 
-export default function App(props: Props) {
-  const [network, setNetwork] = useState(new DefaultBackend());
-  const [channels, setChannels] = useState<Channel[] | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    network.getChannels().then((channels) => {
-      setChannels(channels);
-    });
-    network.getUser().then((user) => {
-      setUser(user);
-    });
-  }, []);
+export default function App() {
+  const [backend, setBackend] = useState(new DefaultBackend());
 
-  return (
-    <ErrorBoundary>
-      <Main user={user} channels={channels}>
-        <Outlet />
-      </Main>
-    </ErrorBoundary>
-  );
+  return <RouterProvider router={router} />;
 }
