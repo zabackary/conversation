@@ -2,6 +2,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../data/channel";
+import Message from "../../data/message";
 import User from "../../data/user";
 
 export interface ChannelJoinInfo {
@@ -25,18 +26,26 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
 
 export default interface NetworkBackend {
   /**
-   * Gets the logged in user
+   * Gets the logged in user.
+   *
+   * @returns A promise that resolves with the `User`.
    */
   getUser(): Promise<User>;
 
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
+   *
+   * @returns A promise resolving with a list of public `Channel`s that are not
+   * currently joined by the user.
    */
   getPublicChannels(): Promise<PublicChannelListing[]>;
 
   /**
    * Joins a channel, given a `ChannelJoinInfo`. Returns the name of the
    * channel or `null` on error.
+   *
+   * @returns A promise resolving with the name of the channel as a `string` or
+   * `null` if the `JoinInfo` isn't valid.
    */
   joinChannel<JoinInfo extends ChannelJoinInfo>(
     info: JoinInfo
@@ -44,20 +53,73 @@ export default interface NetworkBackend {
 
   /**
    * Gets the channels the user is in.
+   *
+   * @returns A promise resolving with a list of `Channel`s.
    */
   getChannels(): Promise<Channel[]>;
 
   /**
    * Clears the cache. The cache only persists on one session locally, so this
    * is a bit pointless as you can just reload.
+   *
+   * @returns A promise that resolves when the cache is cleared.
    */
   clearCache(): Promise<void>;
 
   /**
-   * Connects to a given channel and returns a `ChannelManager` associated with
+   * Connects to a given channel and returns a `ChannelBackend` associated with
    * it. Channel id must be in `getChannels()`.
+   *
+   * @returns A promise that resolves to the `ChannelBackend` with the id given.
    */
   connectChannel(id: number): Promise<ChannelBackend>;
 }
 
-export interface ChannelBackend {}
+export interface ChannelBackend {
+  /**
+   * Whether the backend is hooked up. If `false`, `connect()` can be called to
+   * connect.
+   */
+  connected: boolean;
+
+  /**
+   * Opens a connection to the channel backend. This doesn't do anything with
+   * the `GASBackend` but will be useful if a `WebSocket` backend is
+   * implemented later.
+   *
+   * @returns A promise that resolves when a successful connection is
+   * established. It will reject if an error occurs.
+   */
+  connect(): Promise<void>;
+
+  /**
+   * Closes the connection to the server. Note that `connected` will be `false`
+   * and the listeners attached will be disposed of.
+   *
+   * @returns A promise that resolves once the connection is closed. This
+   * promise should not reject.
+   */
+  disconnect(): Promise<void>;
+
+  /**
+   * Subscribes to new messages sent to the channel.
+   *
+   * The subscription cannot be canceled. Call `disconnect` instead.
+   */
+  subscribe(callback: (event: ChannelBackendEvent) => void): void;
+}
+
+export type ChannelBackendEvent =
+  | ChannelBackendConnectionEvent
+  | ChannelBackendMessageEvent;
+
+export interface ChannelBackendConnectionEvent {
+  type: "connection";
+  status: boolean;
+  message?: string;
+}
+
+export interface ChannelBackendMessageEvent {
+  type: "message";
+  newMessage: Message;
+}
