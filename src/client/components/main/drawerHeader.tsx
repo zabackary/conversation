@@ -11,7 +11,7 @@ export default function DrawerHeader(props: DrawerHeaderProps) {
       {props.user ? (
         <Box sx={{ display: "flex" }}>
           <Avatar
-            alt={props.user.name}
+            alt={`${props.user.name}'s profile picture`}
             src={props.user.profilePicture}
             sx={{ marginRight: "8px" }}
           />
