@@ -18,10 +18,12 @@ interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
+const ExpandMore = styled(
+  React.forwardRef<HTMLButtonElement, ExpandMoreProps>((props, ref) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} ref={ref} />;
+  })
+)(({ theme, expand }) => ({
   transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
   marginLeft: "auto",
   transition: theme.transitions.create("transform", {
