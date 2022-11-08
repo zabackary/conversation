@@ -7,7 +7,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { ReactNode } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useMatch } from "react-router-dom";
 
 interface Props {
   primaryText?: string;
@@ -18,7 +18,7 @@ interface Props {
 }
 export default function LinkListItem(props: Props) {
   const { primaryText, secondaryText, to, icon, loading = false } = props;
-  const { pathname: path } = useLocation();
+  const match = useMatch(to || "guaranteed_no_match_pattern_79350bb67dbc59e7");
 
   return (
     <Box component="li" sx={{ margin: "8px" }}>
@@ -31,10 +31,7 @@ export default function LinkListItem(props: Props) {
           textDecoration: "inherit",
         }}
       >
-        <ListItemButton
-          selected={loading ? false : path === to}
-          disabled={loading}
-        >
+        <ListItemButton selected={loading ? false : !!match} disabled={loading}>
           <ListItemIcon>
             {loading ? (
               <Skeleton variant="circular" width={24} height={24} />
@@ -55,7 +52,7 @@ export default function LinkListItem(props: Props) {
               secondary={secondaryText}
               primaryTypographyProps={{
                 sx: {
-                  color: !loading && path === to ? "primary.dark" : "inherit",
+                  color: !loading && match ? "primary.dark" : "inherit",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
