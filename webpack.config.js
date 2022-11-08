@@ -180,7 +180,7 @@ const build = (config) => {
               (resource) => {
                 resource.request = resource.request.replace(
                   "network/default_backend",
-                  "network/gas"
+                  "network/mock" // TODO: Needs to be changed to "network/gas" once the backend is done.
                 );
               }
             ),
