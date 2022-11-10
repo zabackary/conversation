@@ -11,10 +11,10 @@ import Channel from "./routes/home/channel/Channel";
 import Home from "./routes/home/Home";
 import Settings from "./routes/home/settings/Settings";
 
-const router = createGasHashRouter([
+const [router, setRouterHooks] = createGasHashRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <Home getSetRouterHooks={() => setRouterHooks} />,
     errorElement: <RouteErrorPage />,
     children: [
       {

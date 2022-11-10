@@ -50,6 +50,9 @@ const build = (config) => {
       },
       compress: true,
       port: 9001,
+      historyApiFallback: {
+        rewrites: [{ from: /./, to: "/client.html" }],
+      },
     },
     entry: {
       server: getSrcPath("/server/server.ts"),
@@ -59,6 +62,7 @@ const build = (config) => {
       filename: `[name].js`,
       path: _resolve(__dirname, "dist"),
       clean: true,
+      publicPath: "/",
     },
     resolve: {
       extensions: [".js", ".ts", ".tsx", ".jsx"],

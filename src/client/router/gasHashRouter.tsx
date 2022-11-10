@@ -1,6 +1,15 @@
 import { isGASEnvironment } from "gas-client/build/esm/utils/is-gas-environment";
-import type { RouteObject } from "react-router-dom";
-import { createHashRouter } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Location,
+  Navigation,
+  RouteObject,
+} from "react-router-dom";
+
+export interface RouterHooks {
+  navigation: Navigation;
+  location: Location;
+}
 
 /**
  * A router that mimics react-router's hash router except syncing changes with
@@ -14,22 +23,34 @@ export function createGasHashRouter(
     basename?: string;
     window?: Window;
   }
-) {
-  const router = createHashRouter(routes, opts);
+): [typeof router, (routerHooks: RouterHooks) => void] {
+  const router = createBrowserRouter(routes, opts);
   const isGAS = isGASEnvironment();
-  console.log(`[gas-hash-router] Running in Google Scripts Web App: ${isGAS}`);
+  let routerHooks: RouterHooks | null = null;
+  const setRouterHooks = (newNavigation: RouterHooks) => {
+    routerHooks = newNavigation;
+    console.log(routerHooks);
+  };
+  let respondingToChange = false;
+  console.log(`[gas-hash-router] Running in GAS Web App: ${isGAS}`);
   router.subscribe(() => {
-    console.log(router.state.location);
-    if (isGAS) {
-      console.log(
-        "Is running is google apps script; pushing changes to location to host"
-      );
-      google.script.history.push(
-        router.state.location.state,
-        {},
-        location.hash
-      );
-    }
+    // To ensure that `location.hash` is updated
+    setTimeout(() => {
+      console.log(respondingToChange);
+      console.log(router.state.location);
+      if (respondingToChange) {
+        respondingToChange = false;
+        return; // Don't handle; responding to change on google.script.history
+      }
+      if (isGAS) {
+        console.log("Is running is GAS; pushing changes to location to host");
+        google.script.history.push(
+          router.state.location.state,
+          {},
+          location.hash.substring(1)
+        );
+      }
+    });
   });
-  return router;
+  return [router, setRouterHooks];
 }
