@@ -2,11 +2,13 @@
  * From https://npmjs.com/package/gas-webpack-plugin
  */
 
+// eslint-disable-next-line max-classes-per-file
 import { generate } from "gas-entry-generator";
 import minimatch from "minimatch";
 import { isAbsolute, resolve } from "path";
 import slash from "slash";
 import webpackSources from "webpack-sources";
+// eslint-disable-next-line import/extensions
 import Dependency from "webpack/lib/Dependency.js";
 
 const { RawSource, SourceMapSource } = webpackSources;
@@ -18,14 +20,15 @@ const defaultOptions = {
 };
 
 function GasPlugin(options) {
-  this.options = Object.assign({}, defaultOptions, options || {});
+  this.options = { ...defaultOptions, ...(options || {}) };
 }
 
 function gasify(compilation, chunk, filename, entryFunctions) {
   const asset = compilation.assets[filename];
-  let source, map;
+  let source;
+  let map;
   if (asset.sourceAndMap) {
-    let sourceAndMap = asset.sourceAndMap();
+    const sourceAndMap = asset.sourceAndMap();
     source = sourceAndMap.source;
     map = sourceAndMap.map;
   } else {
@@ -40,10 +43,10 @@ function gasify(compilation, chunk, filename, entryFunctions) {
       (module) =>
         entryFunctions.get(module.rootModule || module).entryPointFunctions
     )
-    .filter((entries) => !!entries)
+    .filter((entry) => !!entry)
     .join("\n");
 
-  const needGloablObject = compilation.chunkGraph
+  const needsGlobalObject = compilation.chunkGraph
     .getChunkModules(chunk)
     .filter((module) => !!entryFunctions.get(module.rootModule || module))
     .some(
@@ -51,11 +54,12 @@ function gasify(compilation, chunk, filename, entryFunctions) {
         !!entryFunctions.get(module.rootModule || module).globalAssignments
     );
 
-  const gasify =
-    (needGloablObject ? "var global = this;\n" : "") + entries + source;
+  const gasified =
+    (needsGlobalObject ? "var global = this;\n" : "") + entries + source;
+  // eslint-disable-next-line no-param-reassign
   compilation.assets[filename] = map
-    ? new SourceMapSource(gasify, filename, map)
-    : new RawSource(gasify);
+    ? new SourceMapSource(gasified, filename, map)
+    : new RawSource(gasified);
 }
 
 class GasDependency extends Dependency {
@@ -73,6 +77,7 @@ GasDependency.Template = class GasDependencyTemplate {
     this.entryFunctions = new Map();
   }
 
+  // eslint-disable-next-line class-methods-use-this
   match(target, pattern) {
     return minimatch(slash(target), slash(pattern));
   }
@@ -107,8 +112,8 @@ GasDependency.Template = class GasDependencyTemplate {
   }
 };
 
-GasPlugin.prototype.apply = function (compiler) {
-  const context = compiler.options.context;
+GasPlugin.prototype.apply = (compiler) => {
+  const { context } = compiler.options;
   const autoGlobalExportsFilePatterns = this.options.autoGlobalExportsFiles.map(
     (file) => (isAbsolute(file) ? file : resolve(context, file))
   );

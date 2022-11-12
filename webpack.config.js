@@ -1,17 +1,25 @@
+/* eslint-disable no-console */
 // @ts-check
 
+// eslint-disable-next-line import/default
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
-import { dirname, join, posix, resolve as _resolve } from "node:path";
+import {
+  dirname as getDirname,
+  join,
+  posix,
+  resolve as _resolve,
+} from "node:path";
 import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
+// eslint-disable-next-line import/extensions
 import GasPlugin from "./plugins/gasplugin.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = getDirname(filename);
 
 /**
  * Resolves a file path relative to `src` to a full file path.
@@ -20,7 +28,7 @@ const __dirname = dirname(__filename);
  * @returns The resolved path.
  */
 const getSrcPath = (filePath) => {
-  const src = _resolve(__dirname, "src");
+  const src = _resolve(dirname, "src");
   return posix.join(src.replace(/\\/g, "/"), filePath);
 };
 
@@ -43,10 +51,10 @@ const build = (config) => {
     );
   return {
     mode: env === "local" ? "development" : env,
-    context: __dirname,
+    context: dirname,
     devServer: {
       static: {
-        directory: join(__dirname, "public"),
+        directory: join(dirname, "public"),
       },
       compress: true,
       port: 9001,
@@ -60,7 +68,7 @@ const build = (config) => {
     },
     output: {
       filename: `[name].js`,
-      path: _resolve(__dirname, "dist"),
+      path: _resolve(dirname, "dist"),
       clean: true,
       publicPath: "/",
     },
@@ -171,6 +179,7 @@ const build = (config) => {
             new webpack.NormalModuleReplacementPlugin(
               /network\/default_backend(\.ts)?$/,
               (resource) => {
+                // eslint-disable-next-line no-param-reassign
                 resource.request = resource.request.replace(
                   "network/default_backend",
                   "network/mock"
@@ -182,6 +191,7 @@ const build = (config) => {
             new webpack.NormalModuleReplacementPlugin(
               /network\/default_backend(\.ts)?$/,
               (resource) => {
+                // eslint-disable-next-line no-param-reassign
                 resource.request = resource.request.replace(
                   "network/default_backend",
                   "network/mock" // TODO: Needs to be changed to "network/gas" once the backend is done.
