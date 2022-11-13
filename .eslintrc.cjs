@@ -20,5 +20,8 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react", "@typescript-eslint", "prettier"],
-  rules: {},
+  rules: {
+    "prettier/prettier": 0,
+    "no-undef": 0, // Already covered by TypeScript
+  },
 };
