@@ -19,10 +19,6 @@ const defaultOptions = {
   include: ["**/*"],
 };
 
-function GasPlugin(options) {
-  this.options = { ...defaultOptions, ...(options || {}) };
-}
-
 function gasify(compilation, chunk, filename, entryFunctions) {
   const asset = compilation.assets[filename];
   let source;
@@ -112,54 +108,61 @@ GasDependency.Template = class GasDependencyTemplate {
   }
 };
 
-GasPlugin.prototype.apply = (compiler) => {
-  const { context } = compiler.options;
-  const autoGlobalExportsFilePatterns = this.options.autoGlobalExportsFiles.map(
-    (file) => (isAbsolute(file) ? file : resolve(context, file))
-  );
-  const includePatterns = this.options.include.map((file) =>
-    isAbsolute(file) ? file : resolve(context, file)
-  );
+class GasPlugin {
+  constructor(options) {
+    this.options = { ...defaultOptions, ...(options || {}) };
+  }
 
-  const plugin = { name: "GasPlugin" };
-  const compilationHook = (compilation, { normalModuleFactory }) => {
-    const gasDependencyTemplate = new GasDependency.Template({
-      comment: this.options.comment,
-      autoGlobalExportsFilePatterns,
-      includePatterns,
-    });
+  apply(compiler) {
+    const { context } = compiler.options;
+    const autoGlobalExportsFilePatterns =
+      this.options.autoGlobalExportsFiles.map((file) =>
+        isAbsolute(file) ? file : resolve(context, file)
+      );
+    const includePatterns = this.options.include.map((file) =>
+      isAbsolute(file) ? file : resolve(context, file)
+    );
 
-    compilation.dependencyTemplates.set(GasDependency, gasDependencyTemplate);
+    const plugin = { name: "GasPlugin" };
+    const compilationHook = (compilation, { normalModuleFactory }) => {
+      const gasDependencyTemplate = new GasDependency.Template({
+        comment: this.options.comment,
+        autoGlobalExportsFilePatterns,
+        includePatterns,
+      });
 
-    const handler = (parser) => {
-      parser.hooks.program.tap(plugin, () => {
-        parser.state.current.addDependency(
-          new GasDependency(parser.state.current)
+      compilation.dependencyTemplates.set(GasDependency, gasDependencyTemplate);
+
+      const handler = (parser) => {
+        parser.hooks.program.tap(plugin, () => {
+          parser.state.current.addDependency(
+            new GasDependency(parser.state.current)
+          );
+        });
+      };
+
+      normalModuleFactory.hooks.parser
+        .for("javascript/auto")
+        .tap("GasPlugin", handler);
+      normalModuleFactory.hooks.parser
+        .for("javascript/dynamic")
+        .tap("GasPlugin", handler);
+      normalModuleFactory.hooks.parser
+        .for("javascript/esm")
+        .tap("GasPlugin", handler);
+
+      compilation.hooks.chunkAsset.tap(plugin, (chunk, filename) => {
+        gasify(
+          compilation,
+          chunk,
+          filename,
+          gasDependencyTemplate.entryFunctions
         );
       });
     };
 
-    normalModuleFactory.hooks.parser
-      .for("javascript/auto")
-      .tap("GasPlugin", handler);
-    normalModuleFactory.hooks.parser
-      .for("javascript/dynamic")
-      .tap("GasPlugin", handler);
-    normalModuleFactory.hooks.parser
-      .for("javascript/esm")
-      .tap("GasPlugin", handler);
-
-    compilation.hooks.chunkAsset.tap(plugin, (chunk, filename) => {
-      gasify(
-        compilation,
-        chunk,
-        filename,
-        gasDependencyTemplate.entryFunctions
-      );
-    });
-  };
-
-  compiler.hooks.compilation.tap(plugin, compilationHook);
-};
+    compiler.hooks.compilation.tap(plugin, compilationHook);
+  }
+}
 
 export default GasPlugin;
