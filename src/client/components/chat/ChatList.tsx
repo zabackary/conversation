@@ -1,5 +1,3 @@
-interface Props {}
-
-export default function ChatList(props: Props) {
+export default function ChatList() {
   return <>Hi there!</>;
 }

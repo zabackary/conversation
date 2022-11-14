@@ -24,7 +24,8 @@ function getPropertyStore(
       foundStore = expBackoff(() => PropertiesService.getScriptProperties());
       break;
     }
-    case "document": {
+    case "document":
+    default: {
       foundStore = expBackoff(() => PropertiesService.getDocumentProperties());
       break;
     }

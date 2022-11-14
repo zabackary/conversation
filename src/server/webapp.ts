@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 export function doGet() {
   const title = "Google Apps Script";
   const fileName = "client.html";

@@ -3,8 +3,13 @@ import {
   hexFromArgb,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
-import { DEFAULT_M3_THEME_SCHEME, M3ThemeScheme } from "../m3/M3Theme";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  DEFAULT_M3_THEME_SCHEME,
+  M3ColorTokens,
+  M3ThemeScheme,
+  M3ThemeTones,
+} from "../m3/M3Theme";
 
 export interface ThemeSchemeContextType {
   themeScheme: M3ThemeScheme;
@@ -14,13 +19,23 @@ export interface ThemeSchemeContextType {
 
 export const ThemeSchemeContext = createContext<ThemeSchemeContextType>({
   themeScheme: DEFAULT_M3_THEME_SCHEME,
-  generateThemeScheme: async (base: string) => {},
-  resetThemeScheme: () => {},
+  generateThemeScheme: async (_base: string) => {
+    // Default
+  },
+  resetThemeScheme: () => {
+    // Default
+  },
 });
 
 const THEME_SCHEME_KEY = "ThemeScheme";
 
-const ThemeSchemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+interface ThemeSchemeProviderProps {
+  children: ReactNode;
+}
+const TONES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100] as const;
+type Tone = typeof TONES[number];
+
+function ThemeSchemeProvider({ children }: ThemeSchemeProviderProps) {
   const [themeScheme, setThemeScheme] = useState<M3ThemeScheme>(
     DEFAULT_M3_THEME_SCHEME
   );
@@ -34,64 +49,65 @@ const ThemeSchemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, []);
 
-  const generateThemeScheme = async (colorBase: string) => {
-    const theme = themeFromSourceColor(argbFromHex(colorBase));
+  const themeSchemeValue = useMemo(
+    () => ({
+      themeScheme,
+      async generateThemeScheme(colorBase: string) {
+        const theme = themeFromSourceColor(argbFromHex(colorBase));
 
-    /*let theme = undefined;
+        /*
+        let theme = undefined;
         if (typeof colorBase == 'string') {
-            theme = themeFromSourceColor(argbFromHex(colorBase));
+          theme = themeFromSourceColor(argbFromHex(colorBase));
+        } else {
+          theme = await themeFromImage(colorBase);
         }
-        else {
-            theme = await themeFromImage(colorBase);
-        }*/
+        */
 
-    const paletteTones: any = {};
-    const light: any = {};
-    const dark: any = {};
+        const paletteTones: Record<string, Record<Tone, string>> = {};
 
-    for (const [key, palette] of Object.entries(theme.palettes)) {
-      const tones: any = {};
-      for (const tone of [
-        0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100,
-      ]) {
-        const color = hexFromArgb(palette.tone(tone));
-        tones[tone] = color;
-      }
-      paletteTones[key] = tones;
-    }
-
-    for (const [key, value] of Object.entries(theme.schemes.light.toJSON())) {
-      const color = hexFromArgb(value);
-      light[key] = color;
-    }
-    for (const [key, value] of Object.entries(theme.schemes.dark.toJSON())) {
-      const color = hexFromArgb(value);
-      dark[key] = color;
-    }
-    const scheme: M3ThemeScheme = {
-      light,
-      dark,
-      tones: paletteTones,
-    };
-    setThemeScheme(scheme);
-    localStorage.setItem(THEME_SCHEME_KEY, JSON.stringify(scheme));
-  };
-
-  const resetThemeScheme = () => {
-    setThemeScheme(DEFAULT_M3_THEME_SCHEME);
-    localStorage.setItem(
-      THEME_SCHEME_KEY,
-      JSON.stringify(DEFAULT_M3_THEME_SCHEME)
-    );
-  };
+        for (const [key, palette] of Object.entries(theme.palettes)) {
+          const tones: Partial<Record<Tone, string>> = {};
+          for (const tone of TONES) {
+            const color = hexFromArgb(palette.tone(tone));
+            tones[tone] = color;
+          }
+          paletteTones[key] = tones as Record<Tone, string>;
+        }
+        const scheme: M3ThemeScheme = {
+          light: Object.fromEntries(
+            Object.entries(theme.schemes.light.toJSON()).map(([k, v]) => [
+              k,
+              hexFromArgb(v),
+            ])
+          ) as unknown as M3ColorTokens,
+          dark: Object.fromEntries(
+            Object.entries(theme.schemes.dark.toJSON()).map(([k, v]) => [
+              k,
+              hexFromArgb(v),
+            ])
+          ) as unknown as M3ColorTokens,
+          tones: paletteTones as unknown as M3ThemeTones,
+        };
+        setThemeScheme(scheme);
+        localStorage.setItem(THEME_SCHEME_KEY, JSON.stringify(scheme));
+      },
+      resetThemeScheme() {
+        setThemeScheme(DEFAULT_M3_THEME_SCHEME);
+        localStorage.setItem(
+          THEME_SCHEME_KEY,
+          JSON.stringify(DEFAULT_M3_THEME_SCHEME)
+        );
+      },
+    }),
+    [themeScheme]
+  );
 
   return (
-    <ThemeSchemeContext.Provider
-      value={{ themeScheme, generateThemeScheme, resetThemeScheme }}
-    >
+    <ThemeSchemeContext.Provider value={themeSchemeValue}>
       {children}
     </ThemeSchemeContext.Provider>
   );
-};
+}
 
 export default ThemeSchemeProvider;

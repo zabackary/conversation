@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable class-methods-use-this */
 import { PrivacyLevel } from "../../data/channel";
 import User from "../../data/user";
 import NetworkBackend, {
@@ -9,9 +11,13 @@ async function wait(): Promise<void>;
 async function wait(ms: number): Promise<void>;
 async function wait(ms?: number) {
   if (ms === undefined) {
-    await new Promise((r) => setTimeout(r, Math.random() * 1000));
+    await new Promise((r) => {
+      setTimeout(r, Math.random() * 1000);
+    });
   } else {
-    await new Promise((r) => setTimeout(r, ms));
+    await new Promise((r) => {
+      setTimeout(r, ms);
+    });
   }
 }
 
@@ -26,7 +32,8 @@ export default class MockBackend implements NetworkBackend {
       id: 0,
     };
   }
-  connectChannel(id: number): Promise<ChannelBackend> {
+
+  connectChannel(_id: number): Promise<ChannelBackend> {
     throw new Error("Method not implemented.");
   }
 
@@ -46,11 +53,13 @@ export default class MockBackend implements NetworkBackend {
       },
     ];
   }
-  async joinChannel<JoinInfo extends ChannelJoinInfo>(info: JoinInfo) {
+
+  async joinChannel<JoinInfo extends ChannelJoinInfo>(_info: JoinInfo) {
     await wait();
     console.error("joinChannel not implemented.");
     return null;
   }
+
   async getChannels() {
     await wait();
     return [
@@ -100,6 +109,7 @@ export default class MockBackend implements NetworkBackend {
       },
     ];
   }
+
   async clearCache() {
     console.log("Cache cleared, but there is no cache! :D");
   }

@@ -12,15 +12,16 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import * as React from "react";
+import { forwardRef, useState } from "react";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
 
 const ExpandMore = styled(
-  React.forwardRef<HTMLButtonElement, ExpandMoreProps>((props, ref) => {
-    const { expand, ...other } = props;
+  forwardRef<HTMLButtonElement, ExpandMoreProps>((props, ref) => {
+    const { expand: _, ...other } = props;
+    // eslint-disable-next-line react/jsx-props-no-spreading
     return <IconButton {...other} ref={ref} />;
   })
 )(({ theme, expand }) => ({
@@ -37,11 +38,26 @@ interface ErrorPageProps {
   traceback: string;
 }
 
-export default function ErrorPage(props: ErrorPageProps) {
-  const [expanded, setExpanded] = React.useState(false);
+export default function ErrorPage({
+  errorText,
+  traceback,
+  debuggingDetails,
+}: ErrorPageProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [debuggingDetailsTooltip, setDebuggingDetailsTooltip] =
+    useState("Copy to clipboard");
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const handleCopyButtonClick = async () => {
+    try {
+      await navigator.clipboard.writeText(debuggingDetails);
+      setDebuggingDetailsTooltip("Copied to clipboard.");
+    } catch (e) {
+      setDebuggingDetailsTooltip("Failed to write to clipboard.");
+    }
   };
 
   return (
@@ -63,12 +79,16 @@ export default function ErrorPage(props: ErrorPageProps) {
             the details below.
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            <i>{props.errorText}</i>
+            <i>{errorText}</i>
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
           <Button size="small">Reload</Button>
-          <Button size="small">Copy debugging details</Button>
+          <Tooltip title={debuggingDetailsTooltip}>
+            <Button size="small" onClick={handleCopyButtonClick}>
+              Copy debugging details
+            </Button>
+          </Tooltip>
           <Tooltip title="Show stack trace">
             <ExpandMore
               expand={expanded}
@@ -87,7 +107,7 @@ export default function ErrorPage(props: ErrorPageProps) {
               component="pre"
               sx={{ fontFamily: "monospace", whiteSpace: "pre-wrap" }}
             >
-              {props.traceback}
+              {traceback}
             </Typography>
           </CardContent>
         </Collapse>

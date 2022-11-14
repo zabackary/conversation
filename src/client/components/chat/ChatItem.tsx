@@ -1,3 +1,3 @@
-interface Props {}
-
-export default function ChatItem(props: Props) {}
+export default function ChatItem() {
+  // TODO: Implement ChatItem
+}

@@ -22,7 +22,13 @@ interface Props {
   drawerItems?: React.ReactNode;
 }
 
-export default function ResponsiveDrawer(props: Props) {
+export default function ResponsiveDrawer({
+  children,
+  toolbarTitle,
+  toolbarItems,
+  drawerHeader,
+  drawerItems,
+}: Props) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -31,9 +37,9 @@ export default function ResponsiveDrawer(props: Props) {
 
   const drawer = (
     <div>
-      {props.drawerHeader}
+      {drawerHeader}
       <Divider />
-      {props.drawerItems}
+      {drawerItems}
     </div>
   );
 
@@ -58,10 +64,10 @@ export default function ResponsiveDrawer(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {props.toolbarTitle}
+            {toolbarTitle}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { md: "flex" } }} />
-          {props.toolbarItems}
+          {toolbarItems}
         </Toolbar>
       </AppBar>
       <Box
@@ -108,7 +114,7 @@ export default function ResponsiveDrawer(props: Props) {
         }}
       >
         <Toolbar />
-        {props.children}
+        {children}
       </Box>
     </Box>
   );

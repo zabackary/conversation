@@ -22,7 +22,8 @@ export default function ChannelList(props: Props) {
               icon={<ChatIcon />}
             />
           ) : (
-            <LinkListItem key={index} loading={true} />
+            // eslint-disable-next-line react/no-array-index-key
+            <LinkListItem loading key={index} />
           )
       )}
     </>

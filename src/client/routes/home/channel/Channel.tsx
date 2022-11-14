@@ -1,3 +1,3 @@
 export default function Channel() {
-  return <></>;
+  return null;
 }

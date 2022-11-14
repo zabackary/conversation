@@ -4,8 +4,8 @@ import React from "react";
 import Channel from "../../../data/channel";
 import User from "../../../data/user";
 import ResponsiveDrawer from "../DrawerLayout";
-import DrawerHeader from "./drawerHeader";
-import DrawerLists from "./drawerLists";
+import DrawerHeader from "./DrawerHeader";
+import DrawerLists from "./DrawerLists";
 
 interface Props {
   children?: React.ReactNode;
@@ -13,21 +13,25 @@ interface Props {
   channels: Channel[] | null;
 }
 
-export default function Main(props: Props) {
+export default function Main({ user, children, channels }: Props) {
   return (
     <ResponsiveDrawer
       toolbarTitle={<>Stuff</>}
       toolbarItems={
-        <IconButton size="large" onClick={() => {}} color="inherit">
+        <IconButton
+          size="large"
+          onClick={() => {
+            /* TODO: Remove this or make it work */
+          }}
+          color="inherit"
+        >
           <AccountCircleIcon />
         </IconButton>
       }
-      drawerHeader={<DrawerHeader user={props.user} />}
-      drawerItems={
-        <DrawerLists channels={props.channels} loading={!props.channels} />
-      }
+      drawerHeader={<DrawerHeader user={user} />}
+      drawerItems={<DrawerLists channels={channels} />}
     >
-      {props.children}
+      {children}
     </ResponsiveDrawer>
   );
 }

@@ -16,6 +16,7 @@ export default function TabPanel(props: TabPanelProps) {
       hidden={current !== index}
       id={`${a11yId}-panel`}
       aria-labelledby={`${a11yId}-tab`}
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...other}
     >
       {current === index && (

@@ -166,13 +166,13 @@ export const DEFAULT_M3_THEME_SCHEME: M3ThemeScheme = {
 
 declare module "@mui/material/styles/createPalette" {
   interface Palette {
-    //primary: string,
+    // primary: string,
     onPrimary: PaletteColor;
 
     primaryContainer: PaletteColor;
     onPrimaryContainer: PaletteColor;
 
-    //secondary: string,
+    // secondary: string,
     onSecondary: PaletteColor;
 
     secondaryContainer: PaletteColor;
@@ -184,7 +184,7 @@ declare module "@mui/material/styles/createPalette" {
     tertiaryContainer: PaletteColor;
     onTertiaryContainer: PaletteColor;
 
-    //error: string,
+    // error: string,
     onError: PaletteColor;
 
     errorContainer: PaletteColor;
@@ -464,7 +464,7 @@ export const getThemedComponents = (
           },
           colorPrimary: {
             background:
-              theme.palette.mode == "light"
+              theme.palette.mode === "light"
                 ? lighten(theme.palette.primary.main, 0.85)
                 : darken(theme.palette.primary.main, 0.8),
             color: theme.palette.surface.contrastText,
@@ -485,7 +485,7 @@ export const getThemedComponents = (
           },
           outlined: {
             borderColor: theme.palette.outline,
-            //background: theme.palette.surface.main,
+            // background: theme.palette.surface.main,
           },
         },
         variants: [
@@ -628,7 +628,7 @@ export const getThemedComponents = (
             props: { variant: "surface" },
             style: {
               boxShadow: theme.shadows[3],
-              //background: theme.palette.surface.main,
+              // background: theme.palette.surface.main,
               background: alpha(theme.palette.primary.main, 0.05),
               color: theme.palette.primary.main,
               "&:hover": {
@@ -641,7 +641,7 @@ export const getThemedComponents = (
             props: { variant: "extended", color: "surface" },
             style: {
               boxShadow: theme.shadows[3],
-              //background: theme.palette.surface.main,
+              // background: theme.palette.surface.main,
               background: alpha(theme.palette.primary.main, 0.05),
               color: theme.palette.primary.main,
               fontWeight: "bold",
@@ -731,13 +731,13 @@ export const getThemedComponents = (
       MuiDrawer: {
         styleOverrides: {
           root: {
-            //background: theme.palette.surface.main,
-            //color: theme.palette.onSurface.main,
+            // background: theme.palette.surface.main,
+            // color: theme.palette.onSurface.main,
           },
           paper: {
             border: "0px",
-            //background: theme.palette.mode == 'light' ? lighten(theme.palette.primary.main, 0.85) : darken(theme.palette.primary.main, 0.8),
-            //color: theme.palette.surface.contrastText,
+            // background: theme.palette.mode == 'light' ? lighten(theme.palette.primary.main, 0.85) : darken(theme.palette.primary.main, 0.8),
+            // color: theme.palette.surface.contrastText,
             background: theme.palette.surface.main,
             color: theme.palette.onSurface.main,
           },
@@ -839,7 +839,7 @@ export const getThemedComponents = (
                   width: 18,
                   height: 18,
                 },
-                /*'& .MuiSwitch-thumb:before': {
+                /* '& .MuiSwitch-thumb:before': {
                                     backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
                                         theme.palette.primary.main,
                                     )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
@@ -848,7 +848,7 @@ export const getThemedComponents = (
                                     backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
                                         alpha(theme.palette.onSurfaceVariant.main, 0.28),
                                     )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                                },*/
+                                }, */
                 "&.Mui-disabled + .MuiSwitch-track": {
                   backgroundColor: alpha(theme.palette.onSurface.main, 0.1),
                 },

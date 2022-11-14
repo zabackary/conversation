@@ -9,23 +9,28 @@ declare namespace google {
    */
   namespace script {
     interface IRun {
+      // eslint-disable-next-line @typescript-eslint/ban-types
       [serverSideFunction: string]: Function;
 
       /**
        * Sets a callback function to run if the server-side function throws an exception. Without a failure handler, failures are logged to the JavaScript console. To override this, call withFailureHandler(null) or supply a failure handler that does nothing.
-       * @param callback a client-side callback function to run if the server-side function throws an exception; the Error object is passed to the function as the first argument, and the user object (if any) is passed as a second argument
+       * @param callback a client-side callback function to run if the server-side function throws an exception; the Error object is passed to the function as the first argument, and the user object (if never) is passed as a second argument
        */
-      withFailureHandler(callback: (error: Error, object?: any) => void): IRun;
+      withFailureHandler(
+        callback: (error: Error, object?: never) => void
+      ): IRun;
       /**
        * Sets a callback function to run if the server-side function returns successfully.
-       * @param callback a client-side callback function to run if the server-side function returns successfully; the server's return value is passed to the function as the first argument, and the user object (if any) is passed as a second argument
+       * @param callback a client-side callback function to run if the server-side function returns successfully; the server's return value is passed to the function as the first argument, and the user object (if never) is passed as a second argument
        */
-      withSuccessHandler(callback: (value: any, object?: any) => void): IRun;
+      withSuccessHandler(
+        callback: (value: never, object?: never) => void
+      ): IRun;
       /**
        * Sets an object to pass as a second parameter to the success and failure handlers.
        * @param {Object} object an object to pass as a second parameter to the success and failure handlers; because user objects are not sent to the server, they are not subject to the restrictions on parameters and return values for server calls. User objects cannot, however, be objects constructed with the new operator
        */
-      withUserObject(object: Object): IRun;
+      withUserObject(object: never): IRun;
     }
 
     interface IUrlLocation {
@@ -36,11 +41,11 @@ declare namespace google {
       /**
        * An object of key/value pairs that correspond to the URL request parameters. Only the first value will be returned for parameters that have multiple values. If no parameters are present, this will be an empty object.
        */
-      parameter: { [key: string]: any };
+      parameter: { [key: string]: never };
       /**
        * An object similar to location.parameter, but with an array of values for each key. If no parameters are present, this will be an empty object.
        */
-      parameters: { [key: string]: any[] };
+      parameters: { [key: string]: never[] };
     }
 
     /**
@@ -59,8 +64,8 @@ declare namespace google {
        * @param hash The string URL fragment appearing after the '#' character. If null or undefined, the current URL fragment is not changed. If empty, the URL fragment is cleared.
        */
       function push(
-        stateObject?: any,
-        params?: { [key: string]: any },
+        stateObject?: never,
+        params?: { [key: string]: never },
         hash?: string
       ): void;
       /**
@@ -70,8 +75,8 @@ declare namespace google {
        * @param hash The string URL fragment appearing after the '#' character. If null or undefined, the current URL fragment is not changed. If empty, the URL fragment is cleared.
        */
       function replace(
-        stateObject?: any,
-        params?: { [key: string]: any },
+        stateObject?: never,
+        params?: { [key: string]: never },
         hash?: string
       ): void;
       /**
@@ -79,7 +84,7 @@ declare namespace google {
        * @param callback a client-side callback function to run upon a history change event, using the event object as the only argument.
        */
       function setChangeHandler(
-        callback: (event: { state: any; location: IUrlLocation }) => void
+        callback: (event: { state: never; location: IUrlLocation }) => void
       ): void;
     }
 

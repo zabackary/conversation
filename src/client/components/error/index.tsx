@@ -6,11 +6,14 @@ interface ErrorBoundaryProps {
   children?: React.ReactNode;
 }
 
-export default class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
-  state: {
-    error: Error | null;
-  };
+interface ErrorBoundaryState {
+  error: Error | null;
+}
 
+export default class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { error: null };
@@ -22,15 +25,19 @@ export default class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
   }
 
   componentDidCatch(error: unknown, errorInfo: unknown) {
+    // eslint-disable-next-line no-console
     console.error("[important] Component crashed:", error, errorInfo);
   }
 
   render() {
-    if (this.state.error) {
+    const { error } = this.state;
+    const { children } = this.props;
+
+    if (error) {
       // You can render any custom fallback UI
-      return <ScriptErrorPage error={this.state.error} />;
+      return <ScriptErrorPage error={error} />;
     }
 
-    return this.props.children;
+    return children;
   }
 }

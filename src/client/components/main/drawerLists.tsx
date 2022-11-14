@@ -3,12 +3,11 @@ import SortIcon from "@mui/icons-material/Sort";
 import { Divider, List, ListSubheader } from "@mui/material";
 import { useId } from "react";
 import Channel from "../../../data/channel";
-import ChannelList from "./drawerItems";
+import ChannelList from "./ChannelList";
 import LinkListItem from "./LinkListItem";
 
 interface Props {
   channels?: Channel[] | null;
-  loading: boolean;
 }
 
 export default function DrawerLists(props: Props) {
