@@ -102,7 +102,18 @@ export interface ChannelBackend {
   disconnect(): Promise<void>;
 
   /**
-   * Subscribes to new messages sent to the channel.
+   * Gets the existing messages at the time of channel open. This method is
+   * *not* intended to be called more than once and is permitted to have
+   * suboptimal performance on the server-side implmentation.
+   *
+   * @returns A promise that resolves with a list of `Message`s.
+   */
+  listMessages(): Promise<Message[]>;
+
+  /**
+   * Subscribes to new messages sent to the channel. The messages should be
+   * forwarded to the client as soon as possible (e.g., don't get messages from
+   * the database but insead so caching or Redis or something server-side.)
    *
    * The subscription cannot be canceled. Call `disconnect` instead.
    */
