@@ -2,39 +2,23 @@
 /* eslint-disable class-methods-use-this */
 import { PrivacyLevel } from "../../data/channel";
 import User from "../../data/user";
+import MockChannelBackend from "./mock_channel";
+import { messages, users } from "./mock_data";
+import { wait } from "./mock_utils";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
 } from "./network_definitions";
 
-async function wait(): Promise<void>;
-async function wait(ms: number): Promise<void>;
-async function wait(ms?: number) {
-  if (ms === undefined) {
-    await new Promise((r) => {
-      setTimeout(r, Math.random() * 1000);
-    });
-  } else {
-    await new Promise((r) => {
-      setTimeout(r, ms);
-    });
-  }
-}
-
 export default class MockBackend implements NetworkBackend {
   async getUser(): Promise<User> {
     await wait();
-    return {
-      name: "Zachary Cheng",
-      nickname: "Zachary",
-      email: "zacharycheng@stu.his.ac.jp",
-      profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
-      id: 0,
-    };
+    return users.zachary;
   }
 
-  connectChannel(_id: number): Promise<ChannelBackend> {
-    throw new Error("Method not implemented.");
+  async connectChannel(id: number): Promise<ChannelBackend> {
+    await wait();
+    return new MockChannelBackend(id);
   }
 
   async getPublicChannels() {
@@ -71,19 +55,7 @@ export default class MockBackend implements NetworkBackend {
         privacyLevel: PrivacyLevel.Unlisted,
         history: 10,
         dm: false,
-        lastMessage: {
-          user: {
-            name: "Zachary Cheng",
-            nickname: "Zachary",
-            email: "zacharycheng@stu.his.ac.jp",
-            profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
-            id: 0,
-          },
-          markdown: "This is *cool*.",
-          sent: new Date("January 1st, 2020 5:06pm"),
-          id: 98,
-          parent: 5,
-        },
+        lastMessage: messages.cool,
       },
       {
         name: "Mock",
@@ -93,19 +65,7 @@ export default class MockBackend implements NetworkBackend {
         privacyLevel: PrivacyLevel.Private,
         history: 10,
         dm: false,
-        lastMessage: {
-          user: {
-            name: "Jeremy Cheng",
-            nickname: "Jeremy",
-            email: "jeremycheng@stu.his.ac.jp",
-            profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
-            id: 1,
-          },
-          markdown: "Imagine _mocking_ your brother :D",
-          sent: new Date("March 25st, 2021 3:06pm"),
-          id: 35,
-          parent: 3,
-        },
+        lastMessage: messages.mock,
       },
     ];
   }
