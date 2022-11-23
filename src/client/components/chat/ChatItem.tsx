@@ -1,4 +1,5 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import ReactMarkdown from "react-markdown";
 import Message from "../../../data/message";
 
 interface Props {
@@ -13,7 +14,7 @@ export default function ChatItem({ message }: Props) {
       </ListItemAvatar>
       <ListItemText
         primary={message.user.nickname}
-        secondary={message.markdown}
+        secondary={<ReactMarkdown>{message.markdown}</ReactMarkdown>}
       />
     </ListItem>
   );
