@@ -1,6 +1,7 @@
 import Message from "../../data/message";
+import User from "../../data/user";
 
-export const users = {
+export const users: Record<string, User> = {
   zachary: {
     name: "Zachary Cheng",
     nickname: "Zachary",
@@ -36,6 +37,20 @@ export const messages: Record<string, Message> = {
     markdown: "@all What do you think of this app?",
     sent: new Date("January 1st, 2020 4:48pm"),
     id: 22,
+    parent: 5,
+  },
+  hello: {
+    user: users.zachary,
+    markdown: "# Hello, world!\nJust checking this works :)",
+    sent: new Date("January 1st, 2020 5:05pm"),
+    id: 97,
+    parent: 5,
+  },
+  thanks: {
+    user: users.jeremy,
+    markdown: `Ok, thanks @${users.jeremy.nickname}`,
+    sent: new Date("January 1st, 2020 5:10pm"),
+    id: 104,
     parent: 5,
   },
 };
