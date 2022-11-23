@@ -10,11 +10,11 @@ export default function ChatItem({ message }: Props) {
     <ListItem>
       <ListItemAvatar>
         <Avatar src={message.user.profilePicture} alt={message.user.name} />
-        <ListItemText
-          primary={message.user.nickname}
-          secondary={message.markdown}
-        />
       </ListItemAvatar>
+      <ListItemText
+        primary={message.user.nickname}
+        secondary={message.markdown}
+      />
     </ListItem>
   );
 }
