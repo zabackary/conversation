@@ -13,7 +13,7 @@ import NetworkBackend, {
 export default class MockBackend implements NetworkBackend {
   async getUser(): Promise<User> {
     await wait();
-    return users.zachary;
+    return users.bob;
   }
 
   async connectChannel(id: number): Promise<ChannelBackend> {
