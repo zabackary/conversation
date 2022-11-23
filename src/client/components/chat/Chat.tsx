@@ -10,7 +10,7 @@ interface Props {
 
 export default function Chat({ channelId }: Props) {
   const backend = useContext(BackendContext);
-  const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
+  const [_channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
