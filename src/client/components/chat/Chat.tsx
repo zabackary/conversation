@@ -10,25 +10,36 @@ interface Props {
 
 export default function Chat({ channelId }: Props) {
   const backend = useContext(BackendContext);
-  const [_channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
+  const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
   useEffect(() => {
+    let valid = true;
     setChannelBackend(null);
     setMessages(null);
     if (backend) {
       (async () => {
         const newChannelBackend = await backend.connectChannel(channelId);
+        if (!valid) return;
         setChannelBackend(newChannelBackend);
         await newChannelBackend.connect();
         const newMessages = await newChannelBackend.listMessages();
+        if (!valid) return;
         setMessages(newMessages);
       })();
-    } else {
-      // eslint-disable-next-line no-console
-      console.error("Unable to render Chat due to unavalible backend.");
+      return () => {
+        valid = false;
+        channelBackend?.disconnect();
+      };
     }
+    // eslint-disable-next-line no-console
+    console.error("Unable to render Chat due to unavalible backend.");
+    return () => {
+      // Noop
+    };
+    // Don't care whether channelBackend changes, we just need to disconnect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backend, channelId]);
   return <ChatList messages={messages} />;
 }
