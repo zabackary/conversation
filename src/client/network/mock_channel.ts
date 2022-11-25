@@ -26,7 +26,21 @@ export default class MockChannelBackend implements ChannelBackend {
     if (this.connected) {
       await wait();
       return this.id === 5
-        ? [messages.rate, messages.hello, messages.cool, messages.thanks]
+        ? [
+            messages.rate,
+            messages.hello,
+            messages.cool,
+            messages.thanks,
+            messages.how_day,
+            messages.good_day,
+            messages.oh_see,
+            messages.banana,
+            messages.no_breakfast,
+            messages.面白い,
+            messages.spam1,
+            messages.spam2,
+            messages.spam3,
+          ]
         : [];
     }
     throw new Error("Must be connected to list messages.");
