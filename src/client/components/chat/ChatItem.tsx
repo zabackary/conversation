@@ -1,12 +1,24 @@
 import { Avatar, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { Fragment } from "react";
 import ReactMarkdown from "react-markdown";
-import { ReactMarkdownOptions } from "react-markdown/lib/react-markdown";
+import {
+  PluggableList,
+  ReactMarkdownOptions,
+} from "react-markdown/lib/react-markdown";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
 import Message from "../../../data/message";
 
 function NoPaddingReactMarkdown(props: ReactMarkdownOptions) {
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <ReactMarkdown {...props} components={{ p: Fragment }} />;
+  const plugins: PluggableList = [remarkGfm, remarkBreaks];
+  return (
+    <ReactMarkdown
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...props}
+      components={{ p: Fragment }}
+      rehypePlugins={plugins}
+    />
+  );
 }
 
 interface Props {
