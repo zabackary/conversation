@@ -826,6 +826,12 @@ export const getThemedComponents = (
               padding: 0,
               margin: 7,
               transitionDuration: "100ms",
+              "& .MuiSwitch-input": {
+                height: 42,
+                width: 60,
+                marginLeft: -8,
+                marginTop: -12,
+              },
               "&.Mui-checked": {
                 transform: "translateX(16px)",
                 margin: 4,
@@ -839,16 +845,16 @@ export const getThemedComponents = (
                   width: 18,
                   height: 18,
                 },
-                /* '& .MuiSwitch-thumb:before': {
-                                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                                        theme.palette.primary.main,
-                                    )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                                },
-                                '&.Mui-disabled .MuiSwitch-thumb:before': {
-                                    backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                                        alpha(theme.palette.onSurfaceVariant.main, 0.28),
-                                    )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                                }, */
+                "& .MuiSwitch-thumb:before": {
+                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                    theme.palette.primary.main
+                  )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+                },
+                "&.Mui-disabled .MuiSwitch-thumb:before": {
+                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                    alpha(theme.palette.onSurfaceVariant.main, 0.28)
+                  )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+                },
                 "&.Mui-disabled + .MuiSwitch-track": {
                   backgroundColor: alpha(theme.palette.onSurface.main, 0.1),
                 },
