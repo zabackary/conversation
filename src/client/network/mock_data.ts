@@ -113,7 +113,7 @@ export const messages: Record<string, Message> = {
   },
   spam3: {
     user: users.bob,
-    markdown: "## spam",
+    markdown: "spam",
     sent: new Date("January 3rd, 2020 2:11pm"),
     id: 272,
     parent: 5,
