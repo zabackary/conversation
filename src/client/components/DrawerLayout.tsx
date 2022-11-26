@@ -9,7 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
-const drawerWidth = 240;
+export const drawerWidth = 240;
 
 interface Props {
   /**
