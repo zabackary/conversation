@@ -4,6 +4,7 @@ import App from "./App";
 import ErrorBoundary from "./components/error";
 
 document.body.style.margin = "0";
+document.body.style.setProperty("-webkit-tap-highlight-color", "transparent");
 const container = document.createElement("div");
 document.body.appendChild(container);
 
