@@ -67,7 +67,7 @@ export default function Settings() {
             initialValue={themeMode === "dark"}
             onChange={handleThemeChange}
             label="Dark Mode"
-            description="Turn out the light to save your eyesight at 3am."
+            description="Turn out the light to save your eyesight at night."
           />
           <ColorItem
             initialValue={themeScheme.light.primary}
