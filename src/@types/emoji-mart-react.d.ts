@@ -1,7 +1,7 @@
 declare module "@emoji-mart/react" {
-  import type { FunctionComponent } from "react";
+  import type { FunctionComponent, PointerEvent } from "react";
 
-  type Category =
+  export type Category =
     | "frequent"
     | "people"
     | "nature"
@@ -12,8 +12,19 @@ declare module "@emoji-mart/react" {
     | "symbols"
     | "flags";
 
-  type EmojiVersion = 1 | 2 | 3 | 4 | 5 | 11 | 12 | 12.1 | 13 | 13.1 | 14;
-  type PickerLocale =
+  export type EmojiVersion =
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 11
+    | 12
+    | 12.1
+    | 13
+    | 13.1
+    | 14;
+  export type PickerLocale =
     | "en"
     | "ar"
     | "be"
@@ -37,7 +48,7 @@ declare module "@emoji-mart/react" {
     | "vi"
     | "zh";
   type ElementPosition = "top" | "bottom" | "none";
-  interface Emoji {
+  export interface Emoji {
     id: string;
     keywords: string[];
     name: string;
@@ -49,7 +60,7 @@ declare module "@emoji-mart/react" {
     }[];
     version: number;
   }
-  interface EmojiPickerData {
+  export interface EmojiPickerData {
     sheet: {
       cols: number;
       rows: number;
@@ -61,7 +72,7 @@ declare module "@emoji-mart/react" {
     }[];
     aliases: Record<string, string>;
   }
-  interface PickerI18n {
+  export interface PickerI18n {
     search: string;
     search_no_results_1: string;
     search_no_results_2: string;
@@ -91,7 +102,7 @@ declare module "@emoji-mart/react" {
     };
   }
 
-  interface Props {
+  export interface EmojiPickerProps {
     /**
      * Data to use for the picker
      */
@@ -111,7 +122,9 @@ declare module "@emoji-mart/react" {
     /**
      * Callback when an emoji is selected
      */
-    onEmojiSelect?: (selectedEmoji: Emoji) => void | null;
+    onEmojiSelect?:
+      | ((selectedEmoji: Emoji, event: PointerEvent) => void)
+      | null;
     /**
      * Callback when a click outside the picker happens
      */
@@ -226,6 +239,6 @@ declare module "@emoji-mart/react" {
   /**
    * The Emoji component
    */
-  const EmojiPicker: FunctionComponent<Props>;
+  const EmojiPicker: FunctionComponent<EmojiPickerProps>;
   export = EmojiPicker;
 }
