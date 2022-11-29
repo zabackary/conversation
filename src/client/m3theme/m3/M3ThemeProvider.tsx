@@ -34,7 +34,7 @@ function M3ThemeProvider({ children }: M3ThemeProps) {
   return (
     <ThemeProvider theme={m3Theme}>
       <CssBaseline enableColorScheme />
-      {children}.
+      {children}
     </ThemeProvider>
   );
 }
