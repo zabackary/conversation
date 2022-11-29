@@ -48,7 +48,21 @@ declare module "@emoji-mart/react" {
     | "vi"
     | "zh";
   type ElementPosition = "top" | "bottom" | "none";
+  type CustomEmojiCategory = {
+    id: string;
+    name: string;
+    emojis: EmojiData[];
+  }[];
   export interface Emoji {
+    id: string;
+    keywords: string[];
+    name: string;
+    native: string;
+    shortcodes: string;
+    unified: string;
+    emoticons?: string[];
+  }
+  export interface EmojiData {
     id: string;
     keywords: string[];
     name: string;
@@ -65,7 +79,7 @@ declare module "@emoji-mart/react" {
       cols: number;
       rows: number;
     };
-    emojis: Record<string, Emoji>;
+    emojis: Record<string, EmojiData>;
     categories: {
       id: string;
       emojis: string[];
@@ -118,7 +132,7 @@ declare module "@emoji-mart/react" {
     /**
      * [Custom emojis](https://github.com/missive/emoji-mart#custom-emojis)
      */
-    custom?: Emoji[];
+    custom?: CustomEmojiCategory[];
     /**
      * Callback when an emoji is selected
      */
