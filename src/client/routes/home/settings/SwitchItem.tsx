@@ -1,11 +1,12 @@
 import { Grid, Switch, Typography } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 
 interface Props {
   initialValue: boolean;
   onChange: (newValue: boolean) => Promise<void>;
   label: string;
   description: string;
+  children?: ReactNode;
 }
 
 export default function SwitchItem({
@@ -13,6 +14,7 @@ export default function SwitchItem({
   onChange,
   label,
   description,
+  children,
 }: Props) {
   const [checked, setChecked] = useState(initialValue);
   const [disabled, setDisabled] = useState(false);
@@ -32,6 +34,11 @@ export default function SwitchItem({
       <Grid item xs={4} sx={{ textAlign: "right" }}>
         <Switch checked={checked} onChange={handleChange} disabled={disabled} />
       </Grid>
+      {children ? (
+        <Grid item xs={12}>
+          {children}
+        </Grid>
+      ) : null}
     </>
   );
 }

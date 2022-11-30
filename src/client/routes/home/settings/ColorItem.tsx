@@ -1,6 +1,6 @@
 import PaletteIcon from "@mui/icons-material/Palette";
 import { Grid, IconButton, Popover, Tooltip, Typography } from "@mui/material";
-import { MouseEvent, useId, useState } from "react";
+import { MouseEvent, ReactNode, useId, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   onChange: (newValue: string) => void;
   label: string;
   description: string;
+  children?: ReactNode;
 }
 
 export default function ColorItem({
@@ -15,6 +16,7 @@ export default function ColorItem({
   onChange,
   label,
   description,
+  children,
 }: Props) {
   const [value, setValue] = useState(initialValue);
   const handleChange = (newValue: string) => {
@@ -64,6 +66,11 @@ export default function ColorItem({
       >
         <HexColorPicker color={value} onChange={handleChange} />
       </Popover>
+      {children ? (
+        <Grid item xs={12}>
+          {children}
+        </Grid>
+      ) : null}
     </>
   );
 }
