@@ -8,11 +8,11 @@ export interface ThemeModeContextType {
   resetThemeMode: () => void;
 }
 
-const DEFAULT_MODE: M3ThemeMode = "dark";
+export const DEFAULT_THEME_MODE: M3ThemeMode = "dark";
 const THEME_MODE_KEY = "ThemeMode";
 
 export const ThemeModeContext = createContext<ThemeModeContextType>({
-  themeMode: DEFAULT_MODE,
+  themeMode: DEFAULT_THEME_MODE,
   toggleThemeMode: () => {
     // Noop for default
   },
@@ -28,7 +28,7 @@ interface ThemeModeProviderProps {
   children: ReactNode;
 }
 function ThemeModeProvider({ children }: ThemeModeProviderProps) {
-  const [themeMode, setThemeMode] = useState<M3ThemeMode>(DEFAULT_MODE);
+  const [themeMode, setThemeMode] = useState<M3ThemeMode>(DEFAULT_THEME_MODE);
 
   useEffect(() => {
     if (localStorage.getItem(THEME_MODE_KEY)) {
@@ -38,7 +38,7 @@ function ThemeModeProvider({ children }: ThemeModeProviderProps) {
       if (["dark", "light"].includes(localMode)) {
         setThemeMode(localMode);
       } else {
-        setThemeMode(DEFAULT_MODE);
+        setThemeMode(DEFAULT_THEME_MODE);
       }
     }
   }, []);
@@ -57,7 +57,10 @@ function ThemeModeProvider({ children }: ThemeModeProviderProps) {
       },
       resetThemeMode() {
         setThemeMode("light");
-        localStorage.setItem(THEME_MODE_KEY, JSON.stringify(DEFAULT_MODE));
+        localStorage.setItem(
+          THEME_MODE_KEY,
+          JSON.stringify(DEFAULT_THEME_MODE)
+        );
       },
     }),
     [themeMode]
