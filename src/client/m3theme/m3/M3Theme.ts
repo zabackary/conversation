@@ -814,6 +814,26 @@ export const getThemedComponents = (
           },
         },
       },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            borderRadius: "8px",
+          },
+          icon: {
+            marginLeft: "8px",
+            height: "18px",
+            width: "18px",
+            color: theme.palette.primary.main,
+          },
+          label: {
+            paddingLeft: "16px",
+            paddingRight: "16px",
+          },
+          filled: {
+            backgroundColor: alpha(theme.palette.primary.main, 0.08),
+          },
+        },
+      },
       MuiSwitch: {
         styleOverrides: {
           root: {
