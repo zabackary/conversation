@@ -1,14 +1,15 @@
-import { List } from "@mui/material";
+import { List, SxProps } from "@mui/material";
 import Message from "../../../data/message";
 import ChatItem from "./ChatItem";
 
 interface Props {
   messages?: Message[] | null;
+  sx?: SxProps;
 }
 
-export default function ChatList({ messages }: Props) {
+export default function ChatList({ messages, sx }: Props) {
   return (
-    <List>
+    <List sx={sx}>
       {messages
         ? messages.map((message, index) => (
             <ChatItem
