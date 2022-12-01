@@ -4,7 +4,7 @@ import { MouseEvent, ReactNode, useId, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 
 interface Props {
-  initialValue: string;
+  value: string;
   onChange: (newValue: string) => void;
   label: string;
   description: string;
@@ -12,15 +12,13 @@ interface Props {
 }
 
 export default function ColorItem({
-  initialValue,
+  value,
   onChange,
   label,
   description,
   children,
 }: Props) {
-  const [value, setValue] = useState(initialValue);
   const handleChange = (newValue: string) => {
-    setValue(newValue);
     onChange(newValue);
   };
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -44,7 +42,15 @@ export default function ColorItem({
       </Grid>
       <Grid item xs={4} sx={{ textAlign: "right" }}>
         <Tooltip title="Open color palette">
-          <IconButton onClick={handleClick} color="primary">
+          <IconButton
+            onClick={handleClick}
+            color="primary"
+            sx={{
+              bgcolor: "primary.main",
+              color: "primary.contrastText",
+              "&:hover": { bgcolor: "primary.main" },
+            }}
+          >
             <PaletteIcon />
           </IconButton>
         </Tooltip>
