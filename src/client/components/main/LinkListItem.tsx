@@ -5,6 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
   Skeleton,
+  Stack,
 } from "@mui/material";
 import { ReactNode } from "react";
 import { Link, useMatch } from "react-router-dom";
@@ -31,22 +32,25 @@ export default function LinkListItem(props: Props) {
           textDecoration: "inherit",
         }}
       >
-        <ListItemButton selected={loading ? false : !!match} disabled={loading}>
-          <ListItemIcon>
-            {loading ? (
+        {loading ? (
+          <>
+            <ListItemIcon>
               <Skeleton variant="circular" width={24} height={24} />
-            ) : (
-              icon
-            )}
-          </ListItemIcon>
-          {loading ? (
-            <Skeleton
-              variant="rectangular"
-              width={200}
-              height="1.5rem"
-              sx={{ margin: "4px 0" }}
-            />
-          ) : (
+            </ListItemIcon>
+            <Stack spacing={4}>
+              <Skeleton
+                variant="rectangular"
+                width={200}
+                height="1.5rem"
+                sx={{ margin: "4px 0" }}
+              />
+              <Skeleton variant="rectangular" width={200} height="0.75rem" />
+            </Stack>
+          </>
+        ) : (
+          <ListItemButton selected={!!match}>
+            <ListItemIcon>{icon}</ListItemIcon>
+
             <ListItemText
               primary={primaryText}
               secondary={secondaryText}
@@ -67,8 +71,8 @@ export default function LinkListItem(props: Props) {
                 },
               }}
             />
-          )}
-        </ListItemButton>
+          </ListItemButton>
+        )}
       </ListItem>
     </Box>
   );
