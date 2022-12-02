@@ -6,6 +6,7 @@ import { ChannelBackend } from "../../network/network_definitions";
 import { drawerWidth } from "../DrawerLayout";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
+import ChatListSkeleton from "./ChatListSkeleton";
 
 interface Props {
   channelId: number;
@@ -46,7 +47,11 @@ export default function Chat({ channelId }: Props) {
   }, [backend, channelId]);
   return (
     <Box>
-      <ChatList messages={messages} sx={{ mb: "56px" }} />
+      {messages && messages.length > 0 ? (
+        <ChatList messages={messages} sx={{ mb: "56px" }} />
+      ) : (
+        <ChatListSkeleton />
+      )}
       <ChatInput
         onMessageSend={() => {
           /* TODO: implement this */
