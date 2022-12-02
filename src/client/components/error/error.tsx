@@ -15,27 +15,28 @@ export function RouteErrorPage() {
     return (
       <ErrorPage
         errorText={error.message}
-        debuggingDetails={`Uncaught ${error.name}: ${
-          error.message
-        }\nTraceback:\n${error.stack || JSON.stringify(error)}`}
+        debuggingDetails={`Timestamp: ${new Date().toISOString()}
+User: unavailable
+Uncaught ${error.name}: ${error.message}
+Traceback:\n${error.stack || JSON.stringify(error)}`}
         traceback={error.stack || JSON.stringify(error)}
       />
     );
   }
-  {
-    // Route error
-    const text =
-      typeof routeError === "object" && routeError !== null
-        ? Reflect.get(routeError, "statusText")
-        : error.message;
-    return (
-      <ErrorPage
-        errorText={text}
-        debuggingDetails={`Route error:\n${JSON.stringify(routeError)}`}
-        traceback={JSON.stringify(routeError)}
-      />
-    );
-  }
+  // Route error
+  const text =
+    typeof routeError === "object" && routeError !== null
+      ? Reflect.get(routeError, "statusText")
+      : error.message;
+  return (
+    <ErrorPage
+      errorText={text}
+      debuggingDetails={`This error may be caused by user fault.\nRoute error:\n${JSON.stringify(
+        routeError
+      )}`}
+      traceback={JSON.stringify(routeError)}
+    />
+  );
 }
 
 interface ScriptErrorPageProps {
