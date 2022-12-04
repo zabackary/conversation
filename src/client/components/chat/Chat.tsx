@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import Message from "../../../data/message";
 import BackendContext from "../../BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
-import { drawerWidth } from "../DrawerLayout";
+import { ConversationAppBar, drawerWidth } from "../DrawerLayout";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";
@@ -46,28 +46,31 @@ export default function Chat({ channelId }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backend, channelId]);
   return (
-    <Box>
-      {messages && messages.length > 0 ? (
-        <ChatList messages={messages} sx={{ mb: "56px" }} />
-      ) : (
-        <ChatListSkeleton />
-      )}
-      <ChatInput
-        onMessageSend={() => {
-          /* TODO: implement this */
-        }}
-        sx={{
-          position: "fixed",
-          left: 0,
-          width: {
-            sm: `calc(100% - ${drawerWidth + 48}px)`,
-            xs: "calc(100% - 48px)",
-          },
-          ml: { sm: `${drawerWidth + 24}px`, xs: "24px" },
-          bottom: "24px",
-        }}
-        placeholder="Message {chat name} as {nickname}"
-      />
-    </Box>
+    <>
+      <ConversationAppBar title="Channel" />
+      <Box>
+        {messages && messages.length > 0 ? (
+          <ChatList messages={messages} sx={{ mb: "56px" }} />
+        ) : (
+          <ChatListSkeleton />
+        )}
+        <ChatInput
+          onMessageSend={() => {
+            /* TODO: implement this */
+          }}
+          sx={{
+            position: "fixed",
+            left: 0,
+            width: {
+              sm: `calc(100% - ${drawerWidth + 48}px)`,
+              xs: "calc(100% - 48px)",
+            },
+            ml: { sm: `${drawerWidth + 24}px`, xs: "24px" },
+            bottom: "24px",
+          }}
+          placeholder="Message {chat name} as {nickname}"
+        />
+      </Box>
+    </>
   );
 }
