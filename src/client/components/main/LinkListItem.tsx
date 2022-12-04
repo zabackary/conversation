@@ -56,7 +56,6 @@ export default function LinkListItem(props: Props) {
               secondary={secondaryText}
               primaryTypographyProps={{
                 sx: {
-                  color: !loading && match ? "primary.dark" : "inherit",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
