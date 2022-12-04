@@ -24,21 +24,37 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
   id: number;
 }
 
+export interface Subscribable<T> {
+  /**
+   * Subscribe to any changes in the data source using the callback.
+   *
+   * @param {call} callback The function to call upon an event.
+   *
+   * @returns A function you can use to cancel the subscription.
+   */
+  subscribe(callback: (value: T) => void): () => void;
+
+  /**
+   * Gets the current state of the subscribable.
+   */
+  getSnapshot(): T | null;
+}
+
 export default interface NetworkBackend {
   /**
    * Gets the logged in user.
    *
-   * @returns A promise that resolves with the `User`.
+   * @returns A subscribable echoing `User`s.
    */
-  getUser(): Promise<User>;
+  getUser(): Subscribable<User>;
 
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
    *
-   * @returns A promise resolving with a list of public `Channel`s that are not
-   * currently joined by the user.
+   * @returns A subscribable representing a list of public `Channel`s that are
+   * not currently joined by the user.
    */
-  getPublicChannels(): Promise<PublicChannelListing[]>;
+  getPublicChannels(): Subscribable<PublicChannelListing[]>;
 
   /**
    * Joins a channel, given a `ChannelJoinInfo`. Returns the name of the
@@ -54,13 +70,14 @@ export default interface NetworkBackend {
   /**
    * Gets the channels the user is in.
    *
-   * @returns A promise resolving with a list of `Channel`s.
+   * @returns A subscribable with a list of `Channel`s.
    */
-  getChannels(): Promise<Channel[]>;
+  getChannels(): Subscribable<Channel[]>;
 
   /**
    * Clears the cache. The cache only persists on one session locally, so this
-   * is a bit pointless as you can just reload.
+   * is a bit pointless as you can just reload, unless this ends up having a
+   * better server-side implementation.
    *
    * @returns A promise that resolves when the cache is cleared.
    */
@@ -73,9 +90,18 @@ export default interface NetworkBackend {
    * @returns A promise that resolves to the `ChannelBackend` with the id given.
    */
   connectChannel(id: number): Promise<ChannelBackend>;
+
+  /**
+   * Returns the channel corresponding to the `id`.
+   *
+   * @returns A subscribable returning a `Channel` or `null` if access is not
+   * sufficient or the channel doesn't exist.
+   */
+  getChannel(id: number): Subscribable<Channel | null>;
 }
 
-export interface ChannelBackend {
+export interface ChannelBackend
+  extends Pick<Subscribable<ChannelBackendEvent>, "subscribe"> {
   /**
    * Whether the backend is hooked up. If `false`, `connect()` can be called to
    * connect.
@@ -113,11 +139,11 @@ export interface ChannelBackend {
   /**
    * Subscribes to new messages sent to the channel. The messages should be
    * forwarded to the client as soon as possible (e.g., don't get messages from
-   * the database but insead so caching or Redis or something server-side.)
+   * the database but instead so caching or Redis or something server-side.)
    *
-   * The subscription cannot be canceled. Call `disconnect` instead.
+   * @returns A function that can be used to cancel the subscription.
    */
-  subscribe(callback: (event: ChannelBackendEvent) => void): void;
+  subscribe(callback: (event: ChannelBackendEvent) => void): () => void;
 }
 
 export type ChannelBackendEvent =

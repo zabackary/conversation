@@ -1,23 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
+
 import { Outlet } from "react-router-dom";
-import Channel from "../../../data/channel";
-import User from "../../../data/user";
 import Main from "../../components/main";
 import DefaultBackend from "../../network/default_backend";
 
 export default function Home() {
   const backend = useMemo(() => new DefaultBackend(), []);
-  const [channels, setChannels] = useState<Channel[] | null>(null);
-  const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    backend.getChannels().then((networkChannels) => {
-      setChannels(networkChannels);
-    });
-    backend.getUser().then((networkUser) => {
-      setUser(networkUser);
-    });
-  }, [backend]);
+  const channelsSubscribable = useMemo(() => backend.getChannels(), [backend]);
+  const channels = useSyncExternalStore(
+    channelsSubscribable.subscribe,
+    channelsSubscribable.getSnapshot
+  );
+  const userSubscribable = useMemo(() => backend.getUser(), [backend]);
+  const user = useSyncExternalStore(
+    userSubscribable.subscribe,
+    userSubscribable.getSnapshot
+  );
 
   return (
     <Main user={user} channels={channels}>

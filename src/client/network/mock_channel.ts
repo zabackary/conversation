@@ -1,7 +1,7 @@
 import Message from "../../data/message";
 import { messages } from "./mock_data";
-import { wait } from "./mock_utils";
 import { ChannelBackend, ChannelBackendEvent } from "./network_definitions";
+import { wait } from "./utils";
 
 export default class MockChannelBackend implements ChannelBackend {
   connected = false;
@@ -18,35 +18,21 @@ export default class MockChannelBackend implements ChannelBackend {
 
   async disconnect(): Promise<void> {
     await wait();
-    this.listeners = [];
     this.connected = false;
   }
 
   async listMessages(): Promise<Message[]> {
     if (this.connected) {
       await wait();
-      return this.id === 5
-        ? [
-            messages.rate,
-            messages.hello,
-            messages.cool,
-            messages.thanks,
-            messages.how_day,
-            messages.good_day,
-            messages.oh_see,
-            messages.banana,
-            messages.no_breakfast,
-            messages.面白い,
-            messages.spam1,
-            messages.spam2,
-            messages.spam3,
-          ]
-        : [];
+      return messages[this.id] ?? [];
     }
     throw new Error("Must be connected to list messages.");
   }
 
-  subscribe(callback: (event: ChannelBackendEvent) => void): void {
+  subscribe(callback: (event: ChannelBackendEvent) => void) {
     this.listeners.push(callback);
+    return () => {
+      this.listeners.splice(this.listeners.indexOf(callback), 1);
+    };
   }
 }
