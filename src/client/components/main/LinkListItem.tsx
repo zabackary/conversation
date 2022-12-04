@@ -5,7 +5,6 @@ import {
   ListItemIcon,
   ListItemText,
   Skeleton,
-  Stack,
 } from "@mui/material";
 import { ReactNode } from "react";
 import { Link, useMatch } from "react-router-dom";
@@ -33,20 +32,28 @@ export default function LinkListItem(props: Props) {
         }}
       >
         {loading ? (
-          <>
+          <ListItemButton disabled sx={{ opacity: "1 !important" }}>
             <ListItemIcon>
               <Skeleton variant="circular" width={24} height={24} />
             </ListItemIcon>
-            <Stack spacing={4}>
-              <Skeleton
-                variant="rectangular"
-                width={200}
-                height="1.5rem"
-                sx={{ margin: "4px 0" }}
-              />
-              <Skeleton variant="rectangular" width={200} height="0.75rem" />
-            </Stack>
-          </>
+
+            <ListItemText
+              primary={<Skeleton />}
+              secondary={<Skeleton />}
+              primaryTypographyProps={{
+                sx: {
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                },
+                noWrap: true,
+              }}
+              secondaryTypographyProps={{
+                variant: "caption",
+                noWrap: true,
+              }}
+            />
+          </ListItemButton>
         ) : (
           <ListItemButton selected={!!match}>
             <ListItemIcon>{icon}</ListItemIcon>
@@ -55,19 +62,11 @@ export default function LinkListItem(props: Props) {
               primary={primaryText}
               secondary={secondaryText}
               primaryTypographyProps={{
-                sx: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
+                noWrap: true,
               }}
               secondaryTypographyProps={{
                 variant: "caption",
-                sx: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
+                noWrap: true,
               }}
             />
           </ListItemButton>

@@ -1,3 +1,4 @@
+import AddIcon from "@mui/icons-material/Add";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SortIcon from "@mui/icons-material/Sort";
 import { Divider, List, ListSubheader } from "@mui/material";
@@ -26,6 +27,11 @@ export default function DrawerLists(props: Props) {
         }
       >
         <ChannelList channels={channels} />
+        <LinkListItem
+          primaryText="Join channel"
+          to="/join"
+          icon={<AddIcon />}
+        />
       </List>
       <Divider />
       <List
@@ -37,7 +43,7 @@ export default function DrawerLists(props: Props) {
         }
       >
         <LinkListItem
-          primaryText="Organize channels"
+          primaryText="Manage channels"
           to="/settings/channels"
           icon={<SortIcon />}
         />
