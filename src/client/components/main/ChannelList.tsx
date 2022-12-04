@@ -1,4 +1,6 @@
 import ChatIcon from "@mui/icons-material/Chat";
+import { Collapse } from "@mui/material";
+import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../data/channel";
 import LinkListItem from "./LinkListItem";
 
@@ -10,22 +12,23 @@ export default function ChannelList(props: Props) {
   const { channels } = props;
 
   return (
-    <>
+    <TransitionGroup>
       {(!channels ? Array<undefined>(3).fill(undefined) : channels).map(
-        (channel, index) =>
-          channel ? (
-            <LinkListItem
-              key={channel.id}
-              primaryText={channel.name}
-              secondaryText={channel.lastMessage?.markdown}
-              to={`/channel/${channel.id}`}
-              icon={<ChatIcon />}
-            />
-          ) : (
-            // eslint-disable-next-line react/no-array-index-key
-            <LinkListItem loading key={index} />
-          )
+        (channel, index) => (
+          <Collapse key={channel ? channel.id : index}>
+            {channel ? (
+              <LinkListItem
+                primaryText={channel.name}
+                secondaryText={channel.lastMessage?.markdown}
+                to={`/channel/${channel.id}`}
+                icon={<ChatIcon />}
+              />
+            ) : (
+              <LinkListItem loading />
+            )}
+          </Collapse>
+        )
       )}
-    </>
+    </TransitionGroup>
   );
 }
