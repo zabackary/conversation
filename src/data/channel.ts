@@ -38,8 +38,4 @@ export interface UnlistedChannel extends Channel {
   key: string;
 }
 
-export interface PublicChannelListing {
-  name: string;
-  description: string;
-  id: number;
-}
+export type PublicChannelListing = Pick<Channel, "name" | "description" | "id">;
