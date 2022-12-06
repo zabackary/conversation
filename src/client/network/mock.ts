@@ -87,8 +87,8 @@ export default class MockBackend implements NetworkBackend {
     return createSubscribable(async (next) => {
       await wait();
       next(
-        Object.values(channels).filter((channel) =>
-          channel.members.includes(LOGGED_IN_USER)
+        Object.values(channels).filter(
+          (channel) => !channel.dm && channel.members.includes(LOGGED_IN_USER)
         )
       );
     });
