@@ -1,5 +1,11 @@
 import { Box } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import Message from "../../../data/message";
 import BackendContext from "../../BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
@@ -14,10 +20,26 @@ interface Props {
 
 export default function Chat({ channelId }: Props) {
   const backend = useContext(BackendContext);
+  if (!backend) {
+    throw new Error("Backend is undefined!");
+  }
   const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
+  const channelSubscribable = useMemo(
+    () => backend?.getChannel(channelId),
+    [backend, channelId]
+  );
+  const channel = useSyncExternalStore(
+    channelSubscribable.subscribe,
+    channelSubscribable.getSnapshot
+  );
+  const userSubscribable = useMemo(() => backend?.getUser(), [backend]);
+  const user = useSyncExternalStore(
+    userSubscribable.subscribe,
+    userSubscribable.getSnapshot
+  );
   useEffect(() => {
     let valid = true;
     setChannelBackend(null);
@@ -47,7 +69,7 @@ export default function Chat({ channelId }: Props) {
   }, [backend, channelId]);
   return (
     <>
-      <ConversationAppBar title="Channel" />
+      <ConversationAppBar title={channel?.name ?? ""} />
       <Box>
         {messages && messages.length > 0 ? (
           <ChatList messages={messages} sx={{ mb: "56px" }} />
@@ -68,7 +90,11 @@ export default function Chat({ channelId }: Props) {
             ml: { sm: `${drawerWidth + 24}px`, xs: "24px" },
             bottom: "24px",
           }}
-          placeholder="Message {chat name} as {nickname}"
+          placeholder={
+            channel && user
+              ? `Message ${channel.name} as ${user.nickname}...`
+              : ""
+          }
         />
       </Box>
     </>
