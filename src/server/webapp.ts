@@ -1,8 +1,12 @@
 /* eslint-disable import/prefer-default-export */
 export function doGet() {
-  const title = "Google Apps Script";
+  const title = "Conversation";
   const fileName = "client.html";
   return HtmlService.createHtmlOutputFromFile(fileName)
     .setTitle(title)
+    .addMetaTag(
+      "viewport",
+      "width=device-width, initial-scale=1, shrink-to-fit=no"
+    )
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
 }
