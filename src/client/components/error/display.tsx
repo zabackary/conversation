@@ -75,8 +75,9 @@ export default function ErrorPage({
             Oops!
           </Typography>
           <Typography variant="body2" component="div">
-            An unexpected error has occurred. Please inform the developer with
-            the details below.
+            An unexpected error has occurred. Please inform the developer and
+            make sure to include the debugging information. Press the `copy`
+            button to copy the needed information to your clipboard.
           </Typography>
           <Typography variant="body2" color="text.secondary">
             <i>{errorText}</i>

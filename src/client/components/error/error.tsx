@@ -1,9 +1,10 @@
 import normalizeException from "normalize-exception";
-import { useRouteError } from "react-router-dom";
+import { useLocation, useRouteError } from "react-router-dom";
 import ErrorPage from "./display";
 
 export function RouteErrorPage() {
   const routeError = useRouteError();
+  const location = useLocation();
   const error = normalizeException(routeError);
 
   if (
@@ -17,8 +18,10 @@ export function RouteErrorPage() {
         errorText={error.message}
         debuggingDetails={`Timestamp: ${new Date().toISOString()}
 User: unavailable
+Location: ${JSON.stringify(location)}
 Uncaught ${error.name}: ${error.message}
-Traceback:\n${error.stack || JSON.stringify(error)}`}
+Traceback:
+${error.stack || JSON.stringify(error)}`}
         traceback={error.stack || JSON.stringify(error)}
       />
     );
@@ -31,9 +34,11 @@ Traceback:\n${error.stack || JSON.stringify(error)}`}
   return (
     <ErrorPage
       errorText={text}
-      debuggingDetails={`This error may be caused by user fault.\nRoute error:\n${JSON.stringify(
-        routeError
-      )}`}
+      debuggingDetails={`This error may be caused by user fault.
+User: unavailable
+Location: ${JSON.stringify(location)}
+Route error:
+${JSON.stringify(routeError)}`}
       traceback={JSON.stringify(routeError)}
     />
   );
