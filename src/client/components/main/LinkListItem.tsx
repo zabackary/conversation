@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   ListItem,
   ListItemButton,
@@ -15,9 +16,16 @@ interface Props {
   to?: string;
   icon?: ReactNode;
   loading?: boolean;
+  badge?: number;
 }
-export default function LinkListItem(props: Props) {
-  const { primaryText, secondaryText, to, icon, loading = false } = props;
+export default function LinkListItem({
+  primaryText,
+  secondaryText,
+  to,
+  icon,
+  loading = false,
+  badge,
+}: Props) {
   const match = useMatch(to || "guaranteed_no_match_pattern_79350bb67dbc59e7");
 
   return (
@@ -57,7 +65,6 @@ export default function LinkListItem(props: Props) {
         ) : (
           <ListItemButton selected={!!match}>
             <ListItemIcon>{icon}</ListItemIcon>
-
             <ListItemText
               primary={primaryText}
               secondary={secondaryText}
@@ -68,7 +75,18 @@ export default function LinkListItem(props: Props) {
                 variant: "caption",
                 noWrap: true,
               }}
+              sx={{
+                marginRight: badge ? 2 : undefined,
+              }}
             />
+            {badge ? (
+              <Badge
+                badgeContent={badge}
+                color="primary"
+                max={99}
+                sx={{ marginRight: 1 }}
+              />
+            ) : null}
           </ListItemButton>
         )}
       </ListItem>

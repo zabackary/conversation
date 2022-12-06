@@ -22,6 +22,7 @@ export default function ChannelList(props: Props) {
                 secondaryText={channel.lastMessage?.markdown}
                 to={`/channel/${channel.id}`}
                 icon={<ChatIcon />}
+                badge={500}
               />
             ) : (
               <LinkListItem loading />

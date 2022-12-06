@@ -1,7 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
+import ForumIcon from "@mui/icons-material/Forum";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SortIcon from "@mui/icons-material/Sort";
-import { Divider, List, ListSubheader } from "@mui/material";
+import { List, ListSubheader } from "@mui/material";
 import { useId } from "react";
 import Channel from "../../../data/channel";
 import ChannelList from "./ChannelList";
@@ -18,6 +19,15 @@ export default function DrawerLists(props: Props) {
 
   return (
     <>
+      <List>
+        <LinkListItem
+          primaryText="Home"
+          secondaryText="From Alice, Bob, Joe, Eve, and more"
+          to="/"
+          badge={8}
+          icon={<ForumIcon />}
+        />
+      </List>
       <List
         aria-labelledby={channelListId}
         subheader={
@@ -33,7 +43,6 @@ export default function DrawerLists(props: Props) {
           icon={<AddIcon />}
         />
       </List>
-      <Divider />
       <List
         aria-labelledby={settingsListId}
         subheader={
