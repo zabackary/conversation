@@ -51,7 +51,10 @@ export default function ChatItem({ message, showAvatar }: Props) {
         secondary={
           <NoPaddingReactMarkdown>{message.markdown}</NoPaddingReactMarkdown>
         }
-        secondaryTypographyProps={{ component: "div" }}
+        secondaryTypographyProps={{
+          component: "div",
+          sx: { wordBreak: "break-word" },
+        }}
       />
     </ListItem>
   ) : (
@@ -60,7 +63,10 @@ export default function ChatItem({ message, showAvatar }: Props) {
         secondary={
           <NoPaddingReactMarkdown>{message.markdown}</NoPaddingReactMarkdown>
         }
-        secondaryTypographyProps={{ component: "div" }}
+        secondaryTypographyProps={{
+          component: "div",
+          sx: { wordBreak: "break-word" },
+        }}
         inset
       />
     </ListItem>
