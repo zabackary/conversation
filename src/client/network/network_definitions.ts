@@ -1,9 +1,10 @@
 import Channel, {
+  DmChannel,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../data/channel";
 import Message from "../../data/message";
-import User from "../../data/user";
+import User, { UserStatus } from "../../data/user";
 
 export interface ChannelJoinInfo {
   type: PrivacyLevel;
@@ -47,6 +48,20 @@ export default interface NetworkBackend {
    * @returns A subscribable echoing `User`s.
    */
   getUser(): Subscribable<User>;
+
+  /**
+   * Gets the status of a user.
+   *
+   * @param {string} user The user to fetch for.
+   *
+   * @returns A `UserStatus` or null if the user doesn't exist.
+   */
+  getStatus(user: string): Subscribable<UserStatus | null>;
+
+  /**
+   * Returns the DMs a user currently has open. These are `DmChannel`s.
+   */
+  getDMs(): Subscribable<DmChannel[]>;
 
   /**
    * Gets all channels with privacy "public" that can be joined without invite.

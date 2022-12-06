@@ -1,10 +1,11 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import Channel, {
+  DmChannel,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../data/channel";
-import User from "../../data/user";
+import User, { UserStatus } from "../../data/user";
 import MockChannelBackend from "./mock_channel";
 import { channels, users } from "./mock_data";
 import NetworkBackend, {
@@ -17,6 +18,28 @@ import { createSubscribable, wait } from "./utils";
 const LOGGED_IN_USER = users.bob;
 
 export default class MockBackend implements NetworkBackend {
+  getStatus(user: string): Subscribable<UserStatus | null> {
+    return createSubscribable(async (next) => {
+      await wait();
+      const dbUser = users[user];
+      next(dbUser ? dbUser.status : null);
+    });
+  }
+
+  getDMs(): Subscribable<DmChannel[]> {
+    return createSubscribable(async (next) => {
+      await wait();
+      next(
+        Object.values(channels).filter(
+          (channel) =>
+            channel.dm &&
+            channel.members.length === 2 &&
+            channel.members.includes(LOGGED_IN_USER)
+        ) as DmChannel[]
+      );
+    });
+  }
+
   getChannel(id: number): Subscribable<Channel | null> {
     return createSubscribable(async (next) => {
       await wait();

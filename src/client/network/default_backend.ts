@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import channel, { PublicChannelListing } from "../../data/channel";
-import user from "../../data/user";
+import channel, { DmChannel, PublicChannelListing } from "../../data/channel";
+import user, { UserStatus } from "../../data/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -12,6 +12,14 @@ import NetworkBackend, {
  * This will be replaced by a real one at build time.
  */
 export default class DefaultBackend implements NetworkBackend {
+  getStatus(username: string): Subscribable<UserStatus | null> {
+    throw new Error("Method not implemented.");
+  }
+
+  getDMs(): Subscribable<DmChannel[]> {
+    throw new Error("Method not implemented.");
+  }
+
   getUser(): Subscribable<user> {
     throw new Error("Method not implemented.");
   }

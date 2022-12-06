@@ -1,6 +1,6 @@
-import Channel, { PrivacyLevel } from "../../data/channel";
+import Channel, { DmChannel, PrivacyLevel } from "../../data/channel";
 import Message from "../../data/message";
-import User from "../../data/user";
+import User, { UserStatus } from "../../data/user";
 
 export const users: Record<string, User> = {
   bob: {
@@ -9,6 +9,7 @@ export const users: Record<string, User> = {
     email: "bob@example.com",
     profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
     id: 0,
+    status: UserStatus.Active,
   },
   alice: {
     name: "Alice Surname",
@@ -16,6 +17,7 @@ export const users: Record<string, User> = {
     email: "alice@example.com",
     profilePicture: "https://www.w3schools.com/howto/img_avatar2.png", // From w3schools
     id: 1,
+    status: UserStatus.Inactive,
   },
 };
 export const messages: Record<number, Message[]> = {
@@ -115,13 +117,37 @@ export const messages: Record<number, Message[]> = {
     },
     {
       user: users.bob,
-      markdown: "spam",
+      markdown: "Spoiler:\n\n>! Someone *dies*.",
       sent: new Date("January 3, 2020 2:11"),
       id: 272,
       parent: 5,
     },
+    {
+      user: users.alice,
+      markdown:
+        "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong",
+      sent: new Date("January 3, 2020 2:15"),
+      id: 273,
+      parent: 5,
+    },
   ],
   3: [],
+  19: [
+    {
+      user: users.alice,
+      markdown: `Hey @${users.bob.nickname}, this is ${users.alice.nickname}`,
+      sent: new Date("December 6th, 2022 13:47"),
+      id: 9381,
+      parent: 19,
+    },
+    {
+      user: users.bob,
+      markdown: `Got ur message`,
+      sent: new Date("December 6th, 2022 13:48"),
+      id: 9382,
+      parent: 19,
+    },
+  ],
 };
 
 export const channels: Record<number, Channel> = {
@@ -164,4 +190,13 @@ export const channels: Record<number, Channel> = {
     history: 10,
     dm: false,
   },
+  19: {
+    name: "",
+    description: "",
+    id: 19,
+    members: [users.alice, users.bob],
+    privacyLevel: PrivacyLevel.Private,
+    history: 10,
+    dm: true,
+  } as DmChannel,
 };
