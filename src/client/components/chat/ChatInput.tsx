@@ -17,6 +17,7 @@ import {
 import {
   ChangeEventHandler,
   forwardRef,
+  KeyboardEventHandler,
   MouseEventHandler,
   PointerEvent,
   useCallback,
@@ -86,6 +87,11 @@ export default function ChatInput({ onMessageSend, sx, placeholder }: Props) {
   const handleSendClick: MouseEventHandler<HTMLButtonElement> = useCallback(
     (_event) => {
       onMessageSend(message);
+      setMessage({
+        markdown: "",
+        images: [],
+        attachments: [],
+      });
     },
     [message, onMessageSend]
   );
@@ -97,6 +103,20 @@ export default function ChatInput({ onMessageSend, sx, placeholder }: Props) {
       });
     },
     [message]
+  );
+  const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = useCallback(
+    (event) => {
+      if (!event.getModifierState("Shift") && event.code === "Enter") {
+        event.preventDefault();
+        onMessageSend(message);
+        setMessage({
+          markdown: "",
+          images: [],
+          attachments: [],
+        });
+      }
+    },
+    [message, onMessageSend]
   );
   const handleEmojiSelect = useCallback(
     (emoji: Emoji, _event: PointerEvent) => {
@@ -117,13 +137,16 @@ export default function ChatInput({ onMessageSend, sx, placeholder }: Props) {
   const isOptionsMenuOpen = !!optionsMenuAnchor;
   return (
     <>
-      <Paper sx={{ borderRadius: 28, ...sx }}>
+      <Paper sx={{ borderRadius: "28px", ...sx }}>
         <OutlinedInput
           fullWidth
-          sx={{ borderRadius: 28 }}
+          sx={{ borderRadius: "28px" }}
           value={message.markdown}
           onChange={handleChange}
           placeholder={placeholder}
+          onKeyDown={handleKeyDown}
+          multiline
+          maxRows={4}
           startAdornment={
             <InputAdornment position="start">
               <Tooltip title="More options">
