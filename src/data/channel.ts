@@ -2,9 +2,9 @@ import Message from "./message";
 import User from "./user";
 
 export enum PrivacyLevel {
-  Public = 0,
-  Unlisted = 1,
-  Private = 2,
+  Public,
+  Unlisted,
+  Private,
 }
 
 export default interface Channel {
@@ -31,6 +31,9 @@ export default interface Channel {
 export interface DmChannel extends Channel {
   dm: true;
   members: [User, User];
+  name: "";
+  description: "";
+  privacyLevel: PrivacyLevel.Private;
 }
 
 export interface UnlistedChannel extends Channel {
