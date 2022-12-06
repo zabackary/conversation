@@ -81,6 +81,21 @@ export default function Settings() {
                 />
               </Stack>
             </SwitchItem>
+            <SwitchItem
+              value={themeMode === "dark"}
+              onChange={handleThemeChange}
+              label="Send on enter"
+              description="Press Shift+Enter to insert a newline if this is selected. Otherwise, press Shift+Enter to send."
+            >
+              <Stack direction="row" spacing={1}>
+                <Chip
+                  icon={<RestartAltIcon />}
+                  label="Reset"
+                  onClick={() => setThemeMode(DEFAULT_THEME_MODE)}
+                  variant="outlined"
+                />
+              </Stack>
+            </SwitchItem>
           </Grid>
         </TabPanel>
         <TabPanel current={tab} index={2} a11yId={appearanceId}>
