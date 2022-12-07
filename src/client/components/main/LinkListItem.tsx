@@ -9,7 +9,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { ReactNode } from "react";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatches } from "react-router-dom";
 
 interface Props {
   primaryText?: string;
@@ -29,7 +29,8 @@ export default function LinkListItem({
   badge,
   avatar,
 }: Props) {
-  const match = useMatch(to || "guaranteed_no_match_pattern_79350bb67dbc59e7");
+  const matches = useMatches().slice(1);
+  const isMatch = matches.find((match) => match.pathname === to);
 
   return (
     <Box component="li" sx={{ margin: "8px" }}>
@@ -66,7 +67,7 @@ export default function LinkListItem({
             />
           </ListItemButton>
         ) : (
-          <ListItemButton selected={!!match}>
+          <ListItemButton selected={!!isMatch}>
             {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
             {avatar ? <ListItemAvatar>{avatar}</ListItemAvatar> : null}
             <ListItemText
