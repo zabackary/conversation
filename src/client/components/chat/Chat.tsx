@@ -1,4 +1,6 @@
-import { Box } from "@mui/material";
+import FlagIcon from "@mui/icons-material/Flag";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { Box, Button, Card, CardHeader, IconButton } from "@mui/material";
 import {
   useContext,
   useEffect,
@@ -9,7 +11,7 @@ import {
 import Message from "../../../data/message";
 import BackendContext from "../../BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
-import { ConversationAppBar, drawerWidth } from "../DrawerLayout";
+import { ConversationAppBar } from "../DrawerLayout";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";
@@ -71,8 +73,32 @@ export default function Chat({ channelId }: Props) {
     <>
       <ConversationAppBar title={channel?.name ?? ""} />
       <Box>
-        {messages && messages.length > 0 ? (
-          <ChatList messages={messages} sx={{ mb: "56px" }} />
+        {messages ? (
+          <>
+            <Card variant="outlined">
+              <CardHeader
+                avatar={<FlagIcon fontSize="large" />}
+                title={
+                  <b>This is the start of {channel?.name ?? "this channel"}.</b>
+                }
+                subheader="It's pretty quiet in here. Why don't you go ahead and say something?"
+                action={
+                  <>
+                    <Button
+                      variant="filled"
+                      sx={{ display: { xs: "none", md: "block" } }}
+                    >
+                      Add members
+                    </Button>
+                    <IconButton sx={{ display: { md: "none" } }}>
+                      <PersonAddIcon />
+                    </IconButton>
+                  </>
+                }
+              />
+            </Card>
+            <ChatList messages={messages} />
+          </>
         ) : (
           <ChatListSkeleton />
         )}
@@ -81,13 +107,7 @@ export default function Chat({ channelId }: Props) {
             /* TODO: implement this */
           }}
           sx={{
-            position: "fixed",
-            left: 0,
-            width: {
-              sm: `calc(100% - ${drawerWidth + 48}px)`,
-              xs: "calc(100% - 48px)",
-            },
-            ml: { sm: `${drawerWidth + 24}px`, xs: "24px" },
+            position: "sticky",
             bottom: "24px",
           }}
           placeholder={
