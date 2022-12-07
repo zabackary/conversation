@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
-    "strict": true
+    "strict": true,
+    "allowSyntheticDefaultImports": true
   }
 }
