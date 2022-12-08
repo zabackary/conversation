@@ -9,7 +9,8 @@
     "build": "webpack --env=production",
     "upload": "clasp push",
     "deploy": "pnpm run build && pnpm run upload",
-    "local": "webpack serve --env=local"
+    "local": "webpack serve --env=local",
+    "lint": "eslint"
   },
   "devDependencies": {
     "@babel/core": "^7.19.1",
