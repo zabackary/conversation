@@ -4,6 +4,7 @@
 // eslint-disable-next-line import/default
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlInlineScriptPlugin from "html-inline-script-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import {
@@ -186,6 +187,7 @@ const build = (config) => {
                 );
               }
             ),
+            new ForkTsCheckerWebpackPlugin(),
           ]
         : [
             new webpack.NormalModuleReplacementPlugin(
