@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import channel, { PublicChannelListing } from "../../data/channel";
-import user from "../../data/user";
+import Channel, { DmChannel, PublicChannelListing } from "../../data/channel";
+import User, { UserStatus } from "../../data/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -10,7 +10,15 @@ import NetworkBackend, {
 
 // TODO: Implement this, and remove the eslint disables up top.
 export default class GASBackend implements NetworkBackend {
-  getUser(): Subscribable<user> {
+  getStatus(username: string): Subscribable<UserStatus | null> {
+    throw new Error("Method not implemented.");
+  }
+
+  getDMs(): Subscribable<DmChannel[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  getUser(): Subscribable<User> {
     throw new Error("Method not implemented.");
   }
 
@@ -24,7 +32,7 @@ export default class GASBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getChannels(): Subscribable<channel[]> {
+  getChannels(): Subscribable<Channel[]> {
     throw new Error("Method not implemented.");
   }
 
@@ -36,7 +44,7 @@ export default class GASBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getChannel(id: number): Subscribable<channel | null> {
+  getChannel(id: number): Subscribable<Channel | null> {
     throw new Error("Method not implemented.");
   }
 }
