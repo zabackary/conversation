@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import {
   useContext,
   useEffect,
@@ -10,9 +9,7 @@ import Message from "../../../data/message";
 import BackendContext from "../../BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
 import { ConversationAppBar } from "../DrawerLayout";
-import ChatInput from "./ChatInput";
-import ChatList from "./ChatList";
-import ChatListSkeleton from "./ChatListSkeleton";
+import ChatView from "./ChatView";
 
 interface Props {
   channelId: number;
@@ -27,6 +24,7 @@ export default function Chat({ channelId }: Props) {
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const channelSubscribable = useMemo(
     () => backend?.getChannel(channelId),
     [backend, channelId]
@@ -48,6 +46,10 @@ export default function Chat({ channelId }: Props) {
       (async () => {
         const newChannelBackend = await backend.connectChannel(channelId);
         if (!valid) return;
+        if (!newChannelBackend) {
+          setNotFound(true);
+          return;
+        }
         setChannelBackend(newChannelBackend);
         await newChannelBackend.connect();
         const newMessages = await newChannelBackend.listMessages();
@@ -70,23 +72,18 @@ export default function Chat({ channelId }: Props) {
   return (
     <>
       <ConversationAppBar title={channel?.name ?? ""} />
-      <Box>
-        {messages ? <ChatList messages={messages} /> : <ChatListSkeleton />}
-        <ChatInput
-          onMessageSend={() => {
-            /* TODO: implement this */
+      {notFound ? (
+        <ChatView
+          messages={messages ?? undefined}
+          username={user?.nickname}
+          channelName={channel?.name}
+          onSend={() => {
+            // TODO: Implement
           }}
-          sx={{
-            position: "sticky",
-            bottom: "24px",
-          }}
-          placeholder={
-            channel && user
-              ? `Message ${channel.name} as ${user.nickname}...`
-              : ""
-          }
         />
-      </Box>
+      ) : (
+        "Can't find that"
+      )}
     </>
   );
 }
