@@ -7,7 +7,7 @@ export enum PrivacyLevel {
   Private,
 }
 
-export default interface Channel {
+interface BaseChannel {
   members: User[];
   name: string;
   description: string;
@@ -28,7 +28,11 @@ export default interface Channel {
   dm: boolean;
 }
 
-export interface DmChannel extends Channel {
+export interface GroupChannel extends BaseChannel {
+  dm: false;
+}
+
+export interface DmChannel extends BaseChannel {
   dm: true;
   members: [User, User];
   name: "";
@@ -36,9 +40,15 @@ export interface DmChannel extends Channel {
   privacyLevel: PrivacyLevel.Private;
 }
 
-export interface UnlistedChannel extends Channel {
+type Channel = GroupChannel | DmChannel;
+export default Channel;
+
+export interface UnlistedChannel extends BaseChannel {
   privacyLevel: PrivacyLevel.Unlisted;
   key: string;
 }
 
-export type PublicChannelListing = Pick<Channel, "name" | "description" | "id">;
+export type PublicChannelListing = Pick<
+  BaseChannel,
+  "name" | "description" | "id"
+>;
