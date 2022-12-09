@@ -133,7 +133,10 @@ export default function ChatItem({ message, showAvatar }: Props) {
     return (
       <ListItem alignItems="flex-start" disablePadding>
         <ListItemAvatar>
-          <Avatar src={message.user.profilePicture} alt={message.user.name} />
+          <Avatar
+            src={message.user.profilePicture ?? undefined}
+            alt={message.user.name}
+          />
         </ListItemAvatar>
         <ListItemText
           primary={

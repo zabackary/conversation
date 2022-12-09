@@ -35,7 +35,7 @@ export default function DrawerHeader({ user }: DrawerHeaderProps) {
           >
             <Avatar
               alt={`${user.name}'s profile picture`}
-              src={user.profilePicture}
+              src={user.profilePicture ?? undefined}
             />
           </ContrastBadge>
           <Box sx={{ minWidth: 0, flex: 1 }}>
