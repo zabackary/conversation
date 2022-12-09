@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import type DefaultBackend from "./network/default_backend";
+import NetworkBackend from "./network/network_definitions";
 
-const BackendContext = createContext<DefaultBackend | null>(null);
+const BackendContext = createContext<NetworkBackend | null>(null);
 export default BackendContext;
