@@ -56,5 +56,12 @@ module.exports = {
       },
     ],
     "no-restricted-syntax": 0,
+    "@typescript-eslint/ban-ts-comment": [
+      2,
+      {
+        "ts-ignore": "allow-with-description",
+        minimumDescriptionLength: 10,
+      },
+    ],
   },
 };
