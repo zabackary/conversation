@@ -21,6 +21,7 @@ export default class MockBackend implements NetworkBackend {
   getStatus(user: string): Subscribable<UserStatus | null> {
     return createSubscribable(async (next) => {
       await wait();
+      // @ts-ignore There's a null check later. Relax, TypeScript!
       const dbUser = users[user];
       next(dbUser ? dbUser.status : null);
     });
@@ -43,6 +44,7 @@ export default class MockBackend implements NetworkBackend {
   getChannel(id: number): Subscribable<Channel | null> {
     return createSubscribable(async (next) => {
       await wait();
+      // @ts-ignore Again, there's a null check! It should be *fine*.
       const channel = channels[id];
       if (channel && channel.members.includes(LOGGED_IN_USER)) {
         next(channel);
@@ -70,7 +72,9 @@ export default class MockBackend implements NetworkBackend {
       next(
         Object.values(channels).filter(
           (channel) =>
-            !channel.members.includes(LOGGED_IN_USER) &&
+            !channel.members
+              .map((member) => member.id)
+              .includes(LOGGED_IN_USER.id) &&
             channel.privacyLevel === PrivacyLevel.Public
         )
       );
@@ -88,7 +92,11 @@ export default class MockBackend implements NetworkBackend {
       await wait();
       next(
         Object.values(channels).filter(
-          (channel) => !channel.dm && channel.members.includes(LOGGED_IN_USER)
+          (channel) =>
+            !channel.dm &&
+            channel.members
+              .map((member) => member.id)
+              .includes(LOGGED_IN_USER.id)
         )
       );
     });

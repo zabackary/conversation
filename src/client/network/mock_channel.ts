@@ -24,7 +24,8 @@ export default class MockChannelBackend implements ChannelBackend {
   async listMessages(): Promise<Message[]> {
     if (this.connected) {
       await wait();
-      return messages[this.id] ?? [];
+      // @ts-ignore If this.id is in messages, then it should be OK
+      return this.id in messages ? messages[this.id] : [];
     }
     throw new Error("Must be connected to list messages.");
   }

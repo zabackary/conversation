@@ -1,6 +1,4 @@
-import FlagIcon from "@mui/icons-material/Flag";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { Box, Button, Card, CardHeader, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import {
   useContext,
   useEffect,
@@ -73,35 +71,7 @@ export default function Chat({ channelId }: Props) {
     <>
       <ConversationAppBar title={channel?.name ?? ""} />
       <Box>
-        {messages ? (
-          <>
-            <Card variant="outlined">
-              <CardHeader
-                avatar={<FlagIcon fontSize="large" />}
-                title={
-                  <b>This is the start of {channel?.name ?? "this channel"}.</b>
-                }
-                subheader="It's pretty quiet in here. Why don't you go ahead and say something?"
-                action={
-                  <>
-                    <Button
-                      variant="filled"
-                      sx={{ display: { xs: "none", md: "block" } }}
-                    >
-                      Add members
-                    </Button>
-                    <IconButton sx={{ display: { md: "none" } }}>
-                      <PersonAddIcon />
-                    </IconButton>
-                  </>
-                }
-              />
-            </Card>
-            <ChatList messages={messages} />
-          </>
-        ) : (
-          <ChatListSkeleton />
-        )}
+        {messages ? <ChatList messages={messages} /> : <ChatListSkeleton />}
         <ChatInput
           onMessageSend={() => {
             /* TODO: implement this */

@@ -1,8 +1,20 @@
 import Channel, { DmChannel, PrivacyLevel } from "../../data/channel";
-import Message from "../../data/message";
+import Message, {
+  ServiceMessageBuiltInIcon,
+  ServiceMessageFormat,
+} from "../../data/message";
+import Service from "../../data/service";
 import User, { UserStatus } from "../../data/user";
 
-export const users: Record<string, User> = {
+export const services = {
+  conversation: {
+    name: "Conversation",
+    icon: "",
+    banner: "",
+    author: null,
+  },
+} satisfies Record<string, Service>;
+export const users = {
   bob: {
     name: "Bob Lastname",
     nickname: "Bob",
@@ -19,22 +31,46 @@ export const users: Record<string, User> = {
     id: 1,
     status: UserStatus.Inactive,
   },
-};
-export const messages: Record<number, Message[]> = {
+} satisfies Record<string, User>;
+export const messages = {
   5: [
+    {
+      icon: ServiceMessageBuiltInIcon.Flag,
+      user: services.conversation,
+      format: ServiceMessageFormat.Card,
+      title: "This is the start of Chat.",
+      subheader:
+        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      id: 9384,
+      parent: 5,
+      sent: new Date("December 25, 2019 5:05"),
+      isService: true,
+    },
     {
       user: users.bob,
       markdown: "This is *cool*.",
-      sent: new Date("January 1, 2020 5:06"),
+      sent: new Date("December 25, 2019 5:06"),
       id: 98,
       parent: 5,
+      isService: false,
+    },
+    {
+      icon: ServiceMessageBuiltInIcon.PersonAdd,
+      user: services.conversation,
+      format: ServiceMessageFormat.Caption,
+      title: `${users.bob.name} added ${users.alice.name} to the channel.`,
+      id: 9385,
+      parent: 5,
+      sent: new Date("December 25, 2019 5:06"),
+      isService: true,
     },
     {
       user: users.alice,
       markdown: "Imagine _mocking_ your brother :D",
-      sent: new Date("March 25, 2021 3:06"),
+      sent: new Date("December 25, 2019 6:05"),
       id: 35,
       parent: 3,
+      isService: false,
     },
     {
       user: users.alice,
@@ -42,6 +78,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 1, 2020 4:48"),
       id: 22,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -49,6 +86,17 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 1, 2020 5:05"),
       id: 97,
       parent: 5,
+      isService: false,
+    },
+    {
+      icon: ServiceMessageBuiltInIcon.Edit,
+      user: services.conversation,
+      format: ServiceMessageFormat.Caption,
+      title: `${users.bob.name} changed the name of this channel to Hey.`,
+      id: 9386,
+      parent: 5,
+      sent: new Date("January 1, 2020 5:09"),
+      isService: true,
     },
     {
       user: users.alice,
@@ -56,6 +104,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 1, 2020 5:10"),
       id: 104,
       parent: 5,
+      isService: false,
     },
     {
       user: users.alice,
@@ -63,6 +112,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:05"),
       id: 938,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -70,6 +120,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:06"),
       id: 939,
       parent: 5,
+      isService: false,
     },
     {
       user: users.alice,
@@ -78,6 +129,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:07"),
       id: 263,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -85,6 +137,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:08"),
       id: 265,
       parent: 5,
+      isService: false,
     },
     {
       user: users.alice,
@@ -93,6 +146,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:09"),
       id: 268,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -100,6 +154,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:10"),
       id: 269,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -107,6 +162,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:11"),
       id: 270,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -114,6 +170,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:11"),
       id: 271,
       parent: 5,
+      isService: false,
     },
     {
       user: users.bob,
@@ -121,6 +178,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:11"),
       id: 272,
       parent: 5,
+      isService: false,
     },
     {
       user: users.alice,
@@ -129,6 +187,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("January 3, 2020 2:15"),
       id: 273,
       parent: 5,
+      isService: false,
     },
   ],
   3: [],
@@ -139,6 +198,7 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("December 6th, 2022 13:47"),
       id: 9381,
       parent: 19,
+      isService: false,
     },
     {
       user: users.bob,
@@ -146,11 +206,12 @@ export const messages: Record<number, Message[]> = {
       sent: new Date("December 6th, 2022 13:48"),
       id: 9382,
       parent: 19,
+      isService: false,
     },
   ],
-};
+} satisfies Record<number, Message[]>;
 
-export const channels: Record<number, Channel> = {
+export const channels = {
   5: {
     name: "Hey",
     description: "Say hey to one another here.",
@@ -198,5 +259,5 @@ export const channels: Record<number, Channel> = {
     privacyLevel: PrivacyLevel.Private,
     history: 10,
     dm: true,
-  } as DmChannel,
-};
+  } satisfies DmChannel,
+} satisfies Record<number, Channel>;
