@@ -190,8 +190,33 @@ export const messages = {
       isService: false,
     },
   ],
-  3: [],
+  3: [
+    {
+      icon: ServiceMessageBuiltInIcon.Flag,
+      user: services.conversation,
+      format: ServiceMessageFormat.Card,
+      title: "This is the start of Mock.",
+      subheader:
+        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      id: 3749,
+      parent: 3,
+      sent: new Date("December 25, 2019 5:05"),
+      isService: true,
+    },
+  ],
   19: [
+    {
+      icon: ServiceMessageBuiltInIcon.Flag,
+      user: services.conversation,
+      format: ServiceMessageFormat.Card,
+      title: "This is the start of this DM.",
+      subheader:
+        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      id: 3750,
+      parent: 19,
+      sent: new Date("December 6th, 2022 13:47"),
+      isService: true,
+    },
     {
       user: users.alice,
       markdown: `Hey @${users.bob.nickname}, this is ${users.alice.nickname}`,
