@@ -136,7 +136,9 @@ export default function ChatItem({ message, showAvatar }: Props) {
           <Avatar
             src={message.user.profilePicture ?? undefined}
             alt={message.user.name}
-          />
+          >
+            {message.user.nickname[0]}
+          </Avatar>
         </ListItemAvatar>
         <ListItemText
           primary={
