@@ -47,6 +47,7 @@ module.exports = {
     "no-shadow": 0,
     "@typescript-eslint/no-shadow": [2],
     "react/require-default-props": 0,
+    "react/prop-types": 0,
     "@typescript-eslint/no-unused-vars": [
       1,
       {
