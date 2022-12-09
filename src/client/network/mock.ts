@@ -11,11 +11,12 @@ import { channels, users } from "./mock_data";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
+  LoggedOutException,
   Subscribable,
 } from "./network_definitions";
 import { createSubscribable, wait } from "./utils";
 
-const LOGGED_IN_USER = users.bob;
+const LOGGED_IN_USER: User | null = users.bob;
 
 export default class MockBackend implements NetworkBackend {
   getStatus(user: string): Subscribable<UserStatus | null> {
@@ -30,6 +31,7 @@ export default class MockBackend implements NetworkBackend {
   getDMs(): Subscribable<DmChannel[]> {
     return createSubscribable(async (next) => {
       await wait();
+      if (!LOGGED_IN_USER) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>
@@ -57,6 +59,7 @@ export default class MockBackend implements NetworkBackend {
   getUser(): Subscribable<User> {
     return createSubscribable(async (next) => {
       await wait();
+      if (!LOGGED_IN_USER) throw new LoggedOutException();
       next(LOGGED_IN_USER);
     });
   }
@@ -69,6 +72,7 @@ export default class MockBackend implements NetworkBackend {
   getPublicChannels(): Subscribable<PublicChannelListing[]> {
     return createSubscribable(async (next) => {
       await wait();
+      if (!LOGGED_IN_USER) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>
@@ -90,6 +94,7 @@ export default class MockBackend implements NetworkBackend {
   getChannels(): Subscribable<Channel[]> {
     return createSubscribable(async (next) => {
       await wait();
+      if (!LOGGED_IN_USER) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>

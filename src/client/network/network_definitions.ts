@@ -6,6 +6,8 @@ import Channel, {
 import Message from "../../data/message";
 import User, { UserStatus } from "../../data/user";
 
+export class LoggedOutException extends Error {}
+
 export interface ChannelJoinInfo {
   type: PrivacyLevel;
 }
@@ -45,6 +47,7 @@ export default interface NetworkBackend {
   /**
    * Gets the logged in user.
    *
+   * @throws {LoggedOutException} If the user is logged out.
    * @returns A subscribable echoing `User`s.
    */
   getUser(): Subscribable<User>;
@@ -60,6 +63,9 @@ export default interface NetworkBackend {
 
   /**
    * Returns the DMs a user currently has open. These are `DmChannel`s.
+   *
+   * @throws {LoggedOutException} if the user is logged out
+   * @returns A subscribable echoing `DmChannel`s.
    */
   getDMs(): Subscribable<DmChannel[]>;
 
@@ -85,6 +91,7 @@ export default interface NetworkBackend {
   /**
    * Gets the channels the user is in.
    *
+   * @throws {LoggedOutException}
    * @returns A subscribable with a list of `Channel`s.
    */
   getChannels(): Subscribable<Channel[]>;
@@ -102,9 +109,11 @@ export default interface NetworkBackend {
    * Connects to a given channel and returns a `ChannelBackend` associated with
    * it. Channel id must be in `getChannels()`.
    *
-   * @returns A promise that resolves to the `ChannelBackend` with the id given.
+   * @throws {LoggedOutException} if the user isn't logged in
+   * @returns A promise that resolves to the `ChannelBackend` with the id given
+   * or `null` if permissions don't allow it.
    */
-  connectChannel(id: number): Promise<ChannelBackend>;
+  connectChannel(id: number): Promise<ChannelBackend | null>;
 
   /**
    * Returns the channel corresponding to the `id`.

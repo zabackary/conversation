@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import channel, { DmChannel, PublicChannelListing } from "../../data/channel";
-import user, { UserStatus } from "../../data/user";
+import Channel, { DmChannel, PublicChannelListing } from "../../data/channel";
+import User, { UserStatus } from "../../data/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -12,15 +12,15 @@ import NetworkBackend, {
  * This will be replaced by a real one at build time.
  */
 export default class DefaultBackend implements NetworkBackend {
-  getStatus(username: string): Subscribable<UserStatus | null> {
+  getUser(): Subscribable<User> {
+    throw new Error("Method not implemented.");
+  }
+
+  getStatus(user: string): Subscribable<UserStatus | null> {
     throw new Error("Method not implemented.");
   }
 
   getDMs(): Subscribable<DmChannel[]> {
-    throw new Error("Method not implemented.");
-  }
-
-  getUser(): Subscribable<user> {
     throw new Error("Method not implemented.");
   }
 
@@ -34,7 +34,7 @@ export default class DefaultBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getChannels(): Subscribable<channel[]> {
+  getChannels(): Subscribable<Channel[]> {
     throw new Error("Method not implemented.");
   }
 
@@ -42,11 +42,11 @@ export default class DefaultBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  connectChannel(id: number): Promise<ChannelBackend> {
+  connectChannel(id: number): Promise<ChannelBackend | null> {
     throw new Error("Method not implemented.");
   }
 
-  getChannel(id: number): Subscribable<channel | null> {
+  getChannel(id: number): Subscribable<Channel | null> {
     throw new Error("Method not implemented.");
   }
 }
