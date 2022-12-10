@@ -718,7 +718,7 @@ export const getThemedComponents = (
           root: {
             background:
               theme.palette.mode === "dark"
-                ? darken(theme.palette.primary.main, 0.9)
+                ? darken(theme.palette.primary.main, 0.8)
                 : lighten(theme.palette.primary.main, 0.9),
             color: theme.palette.onSurface.main,
           },
