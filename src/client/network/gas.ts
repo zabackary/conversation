@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import Channel, { DmChannel, PublicChannelListing } from "../../data/channel";
-import User, { UserStatus } from "../../data/user";
+import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
+import User, { UserStatus } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,

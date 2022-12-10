@@ -1,10 +1,10 @@
-import Channel, { PrivacyLevel } from "../../data/channel";
+import Channel, { PrivacyLevel } from "../../model/channel";
 import Message, {
   ServiceMessageBuiltInIcon,
   ServiceMessageFormat,
-} from "../../data/message";
-import Service from "../../data/service";
-import User, { UserStatus } from "../../data/user";
+} from "../../model/message";
+import Service from "../../model/service";
+import User, { UserStatus } from "../../model/user";
 
 export const services = {
   conversation: {

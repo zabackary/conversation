@@ -3,14 +3,17 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import { Box, Chip, Grid, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { useCallback, useContext, useId, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { ConversationAppBar } from "../../../components/DrawerLayout";
+import { ConversationAppBar } from "../../../components/Layout";
 import TabPanel from "../../../components/TabPanel";
-import { DEFAULT_THEME_MODE, ThemeModeContext } from "../../../m3theme";
-import { ThemeSchemeContext } from "../../../m3theme/context/ThemeSchemeContext";
+import {
+  DEFAULT_THEME_MODE,
+  ThemeModeContext,
+  ThemeSchemeContext,
+} from "../../../theme";
 import ColorItem from "./ColorItem";
 import SwitchItem from "./SwitchItem";
 
-export default function Settings() {
+export default function SettingsRoute() {
   const [tab, setTab] = useState(0);
   const [generalId, behaviorId, appearanceId] = [useId(), useId(), useId()];
   const { themeMode, setThemeMode } = useContext(ThemeModeContext);

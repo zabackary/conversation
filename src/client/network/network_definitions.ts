@@ -2,9 +2,9 @@ import Channel, {
   DmChannel,
   PrivacyLevel,
   PublicChannelListing,
-} from "../../data/channel";
-import Message from "../../data/message";
-import User, { UserStatus } from "../../data/user";
+} from "../../model/channel";
+import Message from "../../model/message";
+import User, { UserStatus } from "../../model/user";
 
 export class LoggedOutException extends Error {}
 

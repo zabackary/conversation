@@ -7,7 +7,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import User, { UserStatus } from "../../../data/user";
+import User, { UserStatus } from "../../../model/user";
 
 export const ContrastBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {

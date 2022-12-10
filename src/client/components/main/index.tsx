@@ -1,7 +1,7 @@
 import React from "react";
-import Channel from "../../../data/channel";
-import User from "../../../data/user";
-import ResponsiveDrawer from "../DrawerLayout";
+import Channel from "../../../model/channel";
+import User from "../../../model/user";
+import ResponsiveDrawer from "../Layout";
 import DrawerHeader from "./DrawerHeader";
 import DrawerLists from "./DrawerLists";
 

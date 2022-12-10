@@ -4,8 +4,8 @@ import Channel, {
   DmChannel,
   PrivacyLevel,
   PublicChannelListing,
-} from "../../data/channel";
-import User, { UserStatus } from "../../data/user";
+} from "../../model/channel";
+import User, { UserStatus } from "../../model/user";
 import MockChannelBackend from "./mock_channel";
 import { channels, users } from "./mock_data";
 import NetworkBackend, {

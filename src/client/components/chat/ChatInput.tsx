@@ -25,7 +25,7 @@ import {
   useId,
   useState,
 } from "react";
-import { ThemeModeContext } from "../../m3theme";
+import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
 
 interface ExpandMoreProps extends IconButtonProps {

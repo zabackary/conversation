@@ -5,10 +5,10 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import Message from "../../../data/message";
-import BackendContext from "../../BackendContext";
+import Message from "../../../model/message";
+import BackendContext from "../../context/BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
-import { ConversationAppBar } from "../DrawerLayout";
+import { ConversationAppBar } from "../Layout";
 import ChatView from "./ChatView";
 
 interface Props {

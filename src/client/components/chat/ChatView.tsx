@@ -1,6 +1,6 @@
 import { Box, SxProps } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import Message from "../../../data/message";
+import Message from "../../../model/message";
 import ChatInput, { MessageEvent } from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";

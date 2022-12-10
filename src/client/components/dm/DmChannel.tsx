@@ -8,8 +8,8 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import Message from "../../../data/message";
-import BackendContext from "../../BackendContext";
+import Message from "../../../model/message";
+import BackendContext from "../../context/BackendContext";
 import { ChannelBackend } from "../../network/network_definitions";
 import ChatView from "../chat/ChatView";
 

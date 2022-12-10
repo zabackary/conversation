@@ -1,7 +1,7 @@
 import ChatIcon from "@mui/icons-material/Chat";
 import { Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import Channel from "../../../data/channel";
+import Channel from "../../../model/channel";
 import LinkListItem from "./LinkListItem";
 
 interface Props {

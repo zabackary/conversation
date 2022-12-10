@@ -1,6 +1,6 @@
 import { Collapse, List, SxProps } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
-import Message from "../../../data/message";
+import Message from "../../../model/message";
 import ChatItem from "./ChatItem";
 
 interface Props {

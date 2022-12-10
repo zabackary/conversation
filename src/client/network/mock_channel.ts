@@ -1,4 +1,4 @@
-import Message from "../../data/message";
+import Message from "../../model/message";
 import { messages } from "./mock_data";
 import { ChannelBackend, ChannelBackendEvent } from "./network_definitions";
 import { wait } from "./utils";

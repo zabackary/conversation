@@ -64,8 +64,8 @@ const build = (config) => {
       },
     },
     entry: {
-      server: getSrcPath("/server/server.ts"),
-      client: getSrcPath("/client/client.tsx"),
+      server: getSrcPath("/server/index.ts"),
+      client: getSrcPath("/client/index.tsx"),
     },
     output: {
       filename: `[name].js`,

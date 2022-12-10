@@ -25,7 +25,7 @@ import remarkGfm from "remark-gfm";
 import Message, {
   ServiceMessageBuiltInIcon,
   ServiceMessageFormat,
-} from "../../../data/message";
+} from "../../../model/message";
 
 function NoPaddingReactMarkdown(props: ReactMarkdownOptions) {
   const plugins: PluggableList = [remarkGfm, remarkBreaks];

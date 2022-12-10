@@ -7,11 +7,11 @@ import { ThemeModeContext } from "../context/ThemeModeContext";
 import { ThemeSchemeContext } from "../context/ThemeSchemeContext";
 import { getDesignTokens, getThemedComponents } from "./M3Theme";
 
-interface M3ThemeProps {
+export interface M3ThemeProps {
   children: React.ReactNode;
 }
 
-function M3ThemeProvider({ children }: M3ThemeProps) {
+export default function M3ThemeProvider({ children }: M3ThemeProps) {
   const { themeMode } = useContext(ThemeModeContext);
   const { themeScheme } = useContext(ThemeSchemeContext);
 
@@ -38,5 +38,3 @@ function M3ThemeProvider({ children }: M3ThemeProps) {
     </ThemeProvider>
   );
 }
-
-export default M3ThemeProvider;

@@ -2,7 +2,7 @@ import normalizeException from "normalize-exception";
 import { useLocation, useRouteError } from "react-router-dom";
 import ErrorPage from "./display";
 
-export function RouteErrorPage() {
+export default function RouteErrorPage() {
   const routeError = useRouteError();
   const location = useLocation();
   const error = normalizeException(routeError);

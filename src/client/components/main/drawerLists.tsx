@@ -4,7 +4,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import SortIcon from "@mui/icons-material/Sort";
 import { List, ListSubheader } from "@mui/material";
 import { useId } from "react";
-import Channel from "../../../data/channel";
+import Channel from "../../../model/channel";
 import ChannelList from "./ChannelList";
 import LinkListItem from "./LinkListItem";
 

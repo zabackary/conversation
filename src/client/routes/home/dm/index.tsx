@@ -1,21 +1,9 @@
-import { useContext, useMemo, useSyncExternalStore } from "react";
-import BackendContext from "../../../BackendContext";
-import Dm from "../../../components/dm";
+import { useParams } from "react-router-dom";
+import StatelessDmChannel from "../../../components/dm/DmChannel";
 
-export default function DmPage() {
-  const backend = useContext(BackendContext);
-  if (!backend) {
-    throw new Error("Backend is undefined!");
-  }
-  const dmsSubscribable = useMemo(() => backend.getDMs(), [backend]);
-  const dms = useSyncExternalStore(
-    dmsSubscribable.subscribe,
-    dmsSubscribable.getSnapshot
-  );
-  const userSubscribable = useMemo(() => backend.getUser(), [backend]);
-  const user = useSyncExternalStore(
-    userSubscribable.subscribe,
-    userSubscribable.getSnapshot
-  );
-  return <Dm channels={dms ?? undefined} user={user ?? undefined} />;
+export default function DmRoute() {
+  const { channelId: channelIdString } = useParams();
+  const channelId = parseInt(channelIdString || "", 10);
+  if (Number.isNaN(channelId)) throw new Error("Invalid channel id.");
+  return <StatelessDmChannel channelId={channelId} />;
 }
