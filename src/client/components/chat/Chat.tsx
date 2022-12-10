@@ -72,7 +72,7 @@ export default function Chat({ channelId }: Props) {
   return (
     <>
       <ConversationAppBar title={channel?.name ?? ""} />
-      {notFound ? (
+      {!notFound ? (
         <ChatView
           messages={messages ?? undefined}
           username={user?.nickname}
