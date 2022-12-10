@@ -1,12 +1,8 @@
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useState } from "react";
 import Message from "../../../model/message";
-import BackendContext from "../../context/BackendContext";
+import useBackend from "../../hooks/useBackend";
+import useChannel from "../../hooks/useChannel";
+import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/network_definitions";
 import { ConversationAppBar } from "../Layout";
 import ChatView from "./ChatView";
@@ -16,28 +12,14 @@ interface Props {
 }
 
 export default function Chat({ channelId }: Props) {
-  const backend = useContext(BackendContext);
-  if (!backend) {
-    throw new Error("Backend is undefined!");
-  }
+  const backend = useBackend();
   const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const channelSubscribable = useMemo(
-    () => backend?.getChannel(channelId),
-    [backend, channelId]
-  );
-  const channel = useSyncExternalStore(
-    channelSubscribable.subscribe,
-    channelSubscribable.getSnapshot
-  );
-  const userSubscribable = useMemo(() => backend?.getUser(), [backend]);
-  const user = useSyncExternalStore(
-    userSubscribable.subscribe,
-    userSubscribable.getSnapshot
-  );
+  const channel = useChannel(channelId);
+  const user = useUser();
   useEffect(() => {
     let valid = true;
     setChannelBackend(null);

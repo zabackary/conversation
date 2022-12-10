@@ -1,17 +1,17 @@
 import React from "react";
-import Channel from "../../../model/channel";
-import User from "../../../model/user";
+import useChannels from "../../hooks/useChannels";
+import useUser from "../../hooks/useUser";
 import ResponsiveDrawer from "../Layout";
 import DrawerHeader from "./DrawerHeader";
 import DrawerLists from "./DrawerLists";
 
 interface Props {
   children?: React.ReactNode;
-  user: User | null;
-  channels: Channel[] | null;
 }
 
-export default function Main({ user, children, channels }: Props) {
+export default function Main({ children }: Props) {
+  const user = useUser();
+  const channels = useChannels();
   return (
     <ResponsiveDrawer
       drawerHeader={<DrawerHeader user={user} />}
