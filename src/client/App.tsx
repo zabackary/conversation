@@ -1,8 +1,6 @@
 import { CssBaseline } from "@mui/material";
-import { useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import BackendContext from "./context/BackendContext";
-import DefaultBackend from "./network/default_backend";
+import BackendContextProvider from "./context/BackendContextProvider";
 import routes from "./routes";
 import {
   M3ThemeModeProvider,
@@ -13,9 +11,8 @@ import {
 const router = createBrowserRouter(routes);
 
 export default function App() {
-  const [backend] = useState(new DefaultBackend());
   return (
-    <BackendContext.Provider value={backend}>
+    <BackendContextProvider>
       <M3ThemeModeProvider>
         <M3ThemeSchemeProvider>
           <M3ThemeProvider>
@@ -24,6 +21,6 @@ export default function App() {
           </M3ThemeProvider>
         </M3ThemeSchemeProvider>
       </M3ThemeModeProvider>
-    </BackendContext.Provider>
+    </BackendContextProvider>
   );
 }
