@@ -1,4 +1,4 @@
-import Channel, { DmChannel, PrivacyLevel } from "../../data/channel";
+import Channel, { PrivacyLevel } from "../../data/channel";
 import Message, {
   ServiceMessageBuiltInIcon,
   ServiceMessageFormat,
@@ -30,6 +30,14 @@ export const users = {
     profilePicture: "https://www.w3schools.com/howto/img_avatar2.png", // From w3schools
     id: 1,
     status: UserStatus.Inactive,
+  },
+  eve: {
+    name: "Eve Familyname",
+    nickname: "Eve",
+    email: "eve@example.com",
+    profilePicture: null, // None on purpose
+    id: 2,
+    status: UserStatus.Active,
   },
 } satisfies Record<string, User>;
 export const messages = {
@@ -214,13 +222,13 @@ export const messages = {
         "It's pretty quiet in here. Why don't you go ahead and say something?",
       id: 3750,
       parent: 19,
-      sent: new Date("December 6th, 2022 13:47"),
+      sent: new Date("December 6, 2022 13:47"),
       isService: true,
     },
     {
       user: users.alice,
       markdown: `Hey @${users.bob.nickname}, this is ${users.alice.nickname}`,
-      sent: new Date("December 6th, 2022 13:47"),
+      sent: new Date("December 6, 2022 13:47"),
       id: 9381,
       parent: 19,
       isService: false,
@@ -228,9 +236,47 @@ export const messages = {
     {
       user: users.bob,
       markdown: `Got ur message`,
-      sent: new Date("December 6th, 2022 13:48"),
+      sent: new Date("December 6, 2022 13:48"),
       id: 9382,
       parent: 19,
+      isService: false,
+    },
+  ],
+  20: [
+    {
+      icon: ServiceMessageBuiltInIcon.Flag,
+      user: services.conversation,
+      format: ServiceMessageFormat.Card,
+      title: "This is the start of this DM.",
+      subheader:
+        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      id: 5750,
+      parent: 20,
+      sent: new Date("December 6, 2022 13:47"),
+      isService: true,
+    },
+    {
+      user: users.eve,
+      markdown: `You doing okay @${users.bob.nickname}?`,
+      sent: new Date("December 6, 2022 13:47"),
+      id: 1381,
+      parent: 20,
+      isService: false,
+    },
+    {
+      user: users.bob,
+      markdown: `Yeah, I'm fine`,
+      sent: new Date("December 6, 2022 13:48"),
+      id: 8382,
+      parent: 20,
+      isService: false,
+    },
+    {
+      user: users.eve,
+      markdown: `Just checking`,
+      sent: new Date("December 6, 2022 13:49"),
+      id: 8383,
+      parent: 20,
       isService: false,
     },
   ],
@@ -284,5 +330,14 @@ export const channels = {
     privacyLevel: PrivacyLevel.Private,
     history: 10,
     dm: true,
-  } satisfies DmChannel,
+  },
+  20: {
+    name: "",
+    description: "",
+    id: 20,
+    members: [users.eve, users.bob],
+    privacyLevel: PrivacyLevel.Private,
+    history: 10,
+    dm: true,
+  },
 } satisfies Record<number, Channel>;

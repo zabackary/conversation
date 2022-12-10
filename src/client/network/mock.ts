@@ -37,6 +37,7 @@ export default class MockBackend implements NetworkBackend {
           (channel) =>
             channel.dm &&
             channel.members.length === 2 &&
+            // @ts-ignore They're compatible, whatever
             channel.members.includes(LOGGED_IN_USER)
         ) as DmChannel[]
       );
