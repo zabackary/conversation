@@ -9,6 +9,7 @@ import M3ThemeProvider from "./m3theme/m3/M3ThemeProvider";
 import DefaultBackend from "./network/default_backend";
 import Channel from "./routes/home/channel/Channel";
 import DmPage from "./routes/home/dm";
+import DmChannel from "./routes/home/dm/DmChannel";
 import Home from "./routes/home/Home";
 import Settings from "./routes/home/settings/Settings";
 
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/dm/:channelId",
-            element: null,
+            element: <DmChannel />,
           },
         ],
       },

@@ -16,7 +16,7 @@ export default function Dm({ channels, user }: DmProps) {
     <>
       <ConversationAppBar title="Conversations" />
       <Stack direction="row">
-        <List>
+        <List sx={{ width: "240px", flexShrink: 0 }}>
           {channels
             ? channels.map((channel) => {
                 const person = channel.members.find(
@@ -34,7 +34,12 @@ export default function Dm({ channels, user }: DmProps) {
                         overlap="circular"
                         invisible={person?.status === UserStatus.Inactive}
                       >
-                        <Avatar alt={person?.name} />
+                        <Avatar
+                          src={person?.profilePicture ?? undefined}
+                          alt={person?.name}
+                        >
+                          {person?.nickname[0]}
+                        </Avatar>
                       </ContrastBadge>
                     }
                     key={channel.id}
@@ -43,8 +48,8 @@ export default function Dm({ channels, user }: DmProps) {
               })
             : null}
         </List>
+        <Outlet />
       </Stack>
-      <Outlet />
     </>
   );
 }
