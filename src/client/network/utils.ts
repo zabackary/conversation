@@ -15,7 +15,7 @@ async function wait(ms?: number) {
 }
 
 function createSubscribable<T>(
-  generator: (next: (value: T) => void | Promise<void>) => void,
+  generator: (next: (value: T) => void) => void | Promise<void>,
   initial: T | null = null
 ): Subscribable<T> {
   let state = initial;
