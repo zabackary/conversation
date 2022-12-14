@@ -14,6 +14,7 @@ export const services = {
     author: null,
   },
 } satisfies Record<string, Service>;
+
 export const users = {
   bob: {
     name: "Bob Lastname",
@@ -40,6 +41,7 @@ export const users = {
     status: UserStatus.Active,
   },
 } satisfies Record<string, User>;
+
 export const messages = {
   5: [
     {
@@ -341,3 +343,5 @@ export const channels = {
     dm: true,
   },
 } satisfies Record<number, Channel>;
+
+export const LOGGED_IN_USER: User | null = users.bob;

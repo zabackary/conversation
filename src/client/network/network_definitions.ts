@@ -168,6 +168,13 @@ export interface ChannelBackend
    * @returns A function that can be used to cancel the subscription.
    */
   subscribe(callback: (event: ChannelBackendEvent) => void): () => void;
+
+  /**
+   * Sends a message
+   *
+   * @returns a promise that resolves when the message is sent.
+   */
+  send(message: SentMessageEvent): Promise<void>;
 }
 
 export type ChannelBackendEvent =
@@ -184,3 +191,37 @@ export interface ChannelBackendMessageEvent {
   type: "message";
   newMessage: Message;
 }
+
+export interface SentMessage {
+  markdown: string;
+  images?: Blob[];
+  attachments?: Blob[];
+  replied?: number;
+}
+
+export type ActionPayload =
+  | number
+  | string
+  | boolean
+  | Date
+  | Blob
+  | ActionPayloadObject
+  | Array<ActionPayload>;
+
+interface ActionPayloadObject {
+  [key: string]: ActionPayload;
+}
+
+export interface Action {
+  /**
+   * Service the action is dispatching to.
+   */
+  serviceId: number;
+
+  /**
+   * The data associated with the action
+   */
+  data: ActionPayload;
+}
+
+export type SentMessageEvent = SentMessage | { action: Action };

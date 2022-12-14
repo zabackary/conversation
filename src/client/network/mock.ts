@@ -7,7 +7,7 @@ import Channel, {
 } from "../../model/channel";
 import User, { UserStatus } from "../../model/user";
 import MockChannelBackend from "./mock_channel";
-import { channels, users } from "./mock_data";
+import { channels, LOGGED_IN_USER, users } from "./mock_data";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -15,8 +15,6 @@ import NetworkBackend, {
   Subscribable,
 } from "./network_definitions";
 import { createSubscribable, wait } from "./utils";
-
-const LOGGED_IN_USER: User | null = users.bob;
 
 export default class MockBackend implements NetworkBackend {
   getStatus(user: string): Subscribable<UserStatus | null> {
@@ -48,8 +46,12 @@ export default class MockBackend implements NetworkBackend {
     return createSubscribable(async (next) => {
       await wait();
       // @ts-ignore Again, there's a null check! It should be *fine*.
-      const channel = channels[id];
-      if (channel && channel.members.includes(LOGGED_IN_USER)) {
+      const channel: Channel = channels[id];
+      if (
+        LOGGED_IN_USER &&
+        channel &&
+        channel.members.includes(LOGGED_IN_USER)
+      ) {
         next(channel);
       } else {
         next(null);
@@ -65,21 +67,29 @@ export default class MockBackend implements NetworkBackend {
     });
   }
 
-  async connectChannel(id: number): Promise<ChannelBackend> {
+  async connectChannel(id: number): Promise<ChannelBackend | null> {
     await wait();
+    // @ts-ignore Again, there's a null check! It should be *fine*.
+    const channel: Channel = channels[id];
+    if (
+      !LOGGED_IN_USER ||
+      !channel ||
+      !channel.members.includes(LOGGED_IN_USER)
+    ) {
+      return null;
+    }
     return new MockChannelBackend(id);
   }
 
   getPublicChannels(): Subscribable<PublicChannelListing[]> {
     return createSubscribable(async (next) => {
       await wait();
-      if (!LOGGED_IN_USER) throw new LoggedOutException();
+      const user = LOGGED_IN_USER;
+      if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>
-            !channel.members
-              .map((member) => member.id)
-              .includes(LOGGED_IN_USER.id) &&
+            !channel.members.map((member) => member.id).includes(user.id) &&
             channel.privacyLevel === PrivacyLevel.Public
         )
       );
@@ -95,14 +105,13 @@ export default class MockBackend implements NetworkBackend {
   getChannels(): Subscribable<Channel[]> {
     return createSubscribable(async (next) => {
       await wait();
-      if (!LOGGED_IN_USER) throw new LoggedOutException();
+      const user = LOGGED_IN_USER;
+      if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>
             !channel.dm &&
-            channel.members
-              .map((member) => member.id)
-              .includes(LOGGED_IN_USER.id)
+            channel.members.map((member) => member.id).includes(user.id)
         )
       );
     });

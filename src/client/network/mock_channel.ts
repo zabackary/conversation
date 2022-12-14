@@ -1,6 +1,10 @@
 import Message from "../../model/message";
-import { messages } from "./mock_data";
-import { ChannelBackend, ChannelBackendEvent } from "./network_definitions";
+import { LOGGED_IN_USER, messages } from "./mock_data";
+import {
+  ChannelBackend,
+  ChannelBackendEvent,
+  SentMessageEvent,
+} from "./network_definitions";
 import { wait } from "./utils";
 
 export default class MockChannelBackend implements ChannelBackend {
@@ -10,6 +14,36 @@ export default class MockChannelBackend implements ChannelBackend {
 
   // eslint-disable-next-line no-useless-constructor
   constructor(private id: number) {}
+
+  async send(message: SentMessageEvent): Promise<void> {
+    await wait();
+    if ("action" in message) {
+      // eslint-disable-next-line no-console
+      console.warn("message.action is not handled by the mock.");
+      return;
+    }
+    if (!LOGGED_IN_USER) {
+      // eslint-disable-next-line no-console
+      console.warn("Tried to send a message while signed out");
+      return;
+    }
+    const newMessage: Message = {
+      user: LOGGED_IN_USER,
+      parent: this.id,
+      id: Math.floor(Math.random() * 100000),
+      sent: new Date(),
+      isService: false,
+      markdown: message.markdown,
+    };
+    // @ts-ignore Shut up TypeScript, it's null thingy
+    messages[this.id]?.push(newMessage);
+    for (const listener of this.listeners) {
+      listener({
+        type: "message",
+        newMessage,
+      });
+    }
+  }
 
   async connect(): Promise<void> {
     await wait();
