@@ -25,6 +25,10 @@ import {
   useId,
   useState,
 } from "react";
+import {
+  SentMessage,
+  SentMessageEvent,
+} from "../../network/network_definitions";
 import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
 
@@ -46,16 +50,8 @@ const ExpandMore = styled(
   }),
 }));
 
-interface Message {
-  markdown: string;
-  images?: never[];
-  attachments: never[];
-}
-
-export type MessageEvent = Message | { action: never };
-
 interface Props {
-  onMessageSend: (message: MessageEvent) => void;
+  onMessageSend: (message: SentMessageEvent) => void;
   sx?: SxProps;
   placeholder: string;
   elevate?: boolean;
@@ -75,7 +71,7 @@ const StyledPaper = styled(Paper)`
 const ChatInput = forwardRef<HTMLDivElement, Props>(
   ({ onMessageSend, sx, placeholder, elevate = true }, ref) => {
     const { themeMode } = useContext(ThemeModeContext);
-    const [message, setMessage] = useState<Message>({
+    const [message, setMessage] = useState<SentMessage>({
       markdown: "",
       images: [],
       attachments: [],
