@@ -24,6 +24,7 @@ export default function DmChannel({ channelId }: DmChannelProps) {
   const user = useUser();
   useEffect(() => {
     let valid = true;
+    let cancel: (() => void) | null = null;
     setChannelBackend(null);
     setMessages(null);
     if (backend) {
@@ -36,12 +37,20 @@ export default function DmChannel({ channelId }: DmChannelProps) {
         }
         setChannelBackend(newChannelBackend);
         await newChannelBackend.connect();
+        cancel = newChannelBackend.subscribe((event) => {
+          if (event.type === "message") {
+            setMessages(
+              (oldMessages) => oldMessages?.concat([event.newMessage]) ?? null
+            );
+          }
+        });
         const newMessages = await newChannelBackend.listMessages();
         if (!valid) return;
         setMessages(newMessages);
       })();
       return () => {
         valid = false;
+        cancel?.call(undefined);
         channelBackend?.disconnect();
       };
     }
@@ -59,8 +68,8 @@ export default function DmChannel({ channelId }: DmChannelProps) {
       messages={messages ?? undefined}
       username={user?.nickname}
       channelName={otherMember?.name}
-      onSend={() => {
-        // TODO: Implement
+      onSend={(message) => {
+        channelBackend?.send(message);
       }}
       afterInput={
         <Stack direction="row" spacing={1}>
