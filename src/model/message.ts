@@ -20,6 +20,8 @@ export interface UserMessage extends BaseMessage {
   user: User;
   markdown: string;
   isService: false;
+  attachments?: string[];
+  images?: string[];
 }
 
 export enum ServiceMessageFormat {

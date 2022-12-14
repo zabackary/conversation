@@ -1,13 +1,14 @@
 import { Box, SxProps } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import Message from "../../../model/message";
-import ChatInput, { MessageEvent } from "./ChatInput";
+import { SentMessageEvent } from "../../network/network_definitions";
+import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";
 
 export interface ChatViewProps {
   messages?: Message[];
-  onSend: (event: MessageEvent) => void;
+  onSend: (event: SentMessageEvent) => void;
   username?: string;
   channelName?: string;
   afterInput?: ReactNode;
