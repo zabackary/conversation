@@ -18,6 +18,7 @@ import { fileURLToPath } from "url";
 import webpack from "webpack";
 // eslint-disable-next-line import/extensions
 import GasPlugin from "./plugins/GasPlugin.js";
+import ReactAxePlugin from "./plugins/ReactAxePlugin.js";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = getDirname(filename);
@@ -188,6 +189,7 @@ const build = (config) => {
               }
             ),
             new ForkTsCheckerWebpackPlugin(),
+            ReactAxePlugin(),
           ]
         : [
             new webpack.NormalModuleReplacementPlugin(
