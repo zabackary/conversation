@@ -17,7 +17,7 @@ import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
 // eslint-disable-next-line import/extensions
-import GasPlugin from "./plugins/gasplugin.js";
+import GasPlugin from "./plugins/GasPlugin.js";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = getDirname(filename);
