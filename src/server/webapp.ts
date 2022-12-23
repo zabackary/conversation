@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 export function doGet() {
   const title = "Conversation";
-  const fileName = "client.html";
+  const fileName = "index.html";
   return HtmlService.createHtmlOutputFromFile(fileName)
     .setTitle(title)
     .addMetaTag(

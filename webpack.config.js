@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 // @ts-check
 
-// eslint-disable-next-line import/default
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
@@ -16,7 +15,6 @@ import {
 import TerserPlugin from "terser-webpack-plugin";
 import { fileURLToPath } from "url";
 import webpack from "webpack";
-// eslint-disable-next-line import/extensions
 import GasPlugin from "./plugins/GasPlugin.js";
 import ReactAxePlugin from "./plugins/ReactAxePlugin.js";
 
@@ -38,7 +36,7 @@ const getSrcPath = (filePath) => {
  * Build.
  *
  * @param {any} config The config webpack passes
- * @returns The webpack config
+ * @returns {import("webpack").Configuration} The webpack config
  */
 const build = (config) => {
   const env =
@@ -52,7 +50,7 @@ const build = (config) => {
       `Enviornment mode "${env}" not supported. Supported values: development, production, local`
     );
   return {
-    mode: env === "local" ? "development" : env,
+    mode: env === "production" ? "production" : "development",
     context: dirname,
     devServer: {
       static: {
@@ -60,9 +58,7 @@ const build = (config) => {
       },
       compress: true,
       port: 9001,
-      historyApiFallback: {
-        rewrites: [{ from: /./, to: "/client.html" }],
-      },
+      historyApiFallback: true,
     },
     entry: {
       server: getSrcPath("/server/index.ts"),
@@ -170,9 +166,9 @@ const build = (config) => {
         meta: {
           viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
         },
-        title: "",
+        title: "Conversation",
         chunks: ["client"],
-        filename: "client.html",
+        filename: "index.html",
         inject: "body",
       }),
     ].concat(
@@ -181,6 +177,7 @@ const build = (config) => {
             new webpack.NormalModuleReplacementPlugin(
               /network\/default_backend(\.ts)?$/,
               (resource) => {
+                // You are literally supposed to reassign the parameter!
                 // eslint-disable-next-line no-param-reassign
                 resource.request = resource.request.replace(
                   "network/default_backend",
@@ -195,6 +192,7 @@ const build = (config) => {
             new webpack.NormalModuleReplacementPlugin(
               /network\/default_backend(\.ts)?$/,
               (resource) => {
+                // You are literally supposed to reassign the parameter!
                 // eslint-disable-next-line no-param-reassign
                 resource.request = resource.request.replace(
                   "network/default_backend",
