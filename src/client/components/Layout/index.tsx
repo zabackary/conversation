@@ -132,7 +132,7 @@ export function ConversationAppBar({ title, items }: ConversationAppBarProps) {
     >
       <Toolbar>
         {toolbarButton}
-        <Typography variant="h6" noWrap component="div">
+        <Typography variant="h6" noWrap component="h1">
           {title}
         </Typography>
         <Box sx={{ flexGrow: 1, display: { md: "flex" } }} />
