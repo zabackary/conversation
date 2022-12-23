@@ -59,7 +59,7 @@ export default class MockChannelBackend implements ChannelBackend {
     if (this.connected) {
       await wait();
       // @ts-ignore If this.id is in messages, then it should be OK
-      return this.id in messages ? messages[this.id] : [];
+      return this.id in messages ? [...messages[this.id]] : [];
     }
     throw new Error("Must be connected to list messages.");
   }
