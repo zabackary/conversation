@@ -117,6 +117,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
       (event) => {
         if (!event.getModifierState("Shift") && event.code === "Enter") {
           event.preventDefault();
+          if (message.markdown === "") return;
           onMessageSend(message);
           setMessage({
             markdown: "",
