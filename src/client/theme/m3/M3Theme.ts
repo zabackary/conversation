@@ -834,6 +834,61 @@ export const getThemedComponents = (
           },
         },
       },
+      MuiBottomNavigation: {
+        styleOverrides: {
+          root: {
+            height: "80px",
+          },
+        },
+      },
+      MuiBottomNavigationAction: {
+        styleOverrides: {
+          root: {
+            paddingTop: "12px",
+            paddingBottom: "16px",
+            marginLeft: "8px",
+            marginRight: "8px",
+            "& .MuiSvgIcon-root": {
+              height: "32px",
+              width: "64px",
+              borderRadius: "16px",
+              marginBottom: "4px",
+              color: theme.palette.onSurfaceVariant.main,
+              padding: "4px",
+            },
+            "&.Mui-selected": {
+              "& .MuiSvgIcon-root": {
+                backgroundColor: theme.palette.secondaryContainer.main,
+                color: theme.palette.onSecondaryContainer.main,
+              },
+            },
+            "&:hover": {
+              "& .MuiSvgIcon-root": {
+                backgroundColor: alpha(
+                  theme.palette.onSurfaceVariant.main,
+                  0.08
+                ),
+              },
+              "&.Mui-selected": {
+                "& .MuiSvgIcon-root": {
+                  backgroundColor: alpha(theme.palette.onSurface.main, 0.08),
+                },
+              },
+            },
+          },
+          label: {
+            lineHeight: "12px",
+            letterSpacing: "0.5px",
+            fontSize: "12px",
+            fontWeight: "500",
+            color: theme.palette.onSurfaceVariant.main,
+            "&.Mui-selected": {
+              color: theme.palette.onSurface.main,
+              fontSize: "12px",
+            },
+          },
+        },
+      },
       MuiSwitch: {
         styleOverrides: {
           root: {

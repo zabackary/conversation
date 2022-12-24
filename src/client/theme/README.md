@@ -1,7 +1,7 @@
 # Material 3 Theme for MUI
 
 The code in this folder is taken directly from the
-`ZakAlbert/react-material-you-theme` repository on GitHub. All credits for this
+[`ZakAlbert/react-material-you-theme` repository on GitHub](https://github.com/ZakAlbert/react-material-you-theme). All credits for this
 module belong to the owner.
 
 This folder is copied directly into the project to allow for customization and
