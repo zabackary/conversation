@@ -1,4 +1,4 @@
-import EmojiPicker, { Emoji } from "@emoji-mart/react";
+import { Emoji } from "@emoji-mart/react";
 import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import SendIcon from "@mui/icons-material/Send";
@@ -31,6 +31,7 @@ import {
 } from "../../network/network_definitions";
 import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
+import DelayedEmojiPicker from "./DelayedEmojiPicker";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -76,6 +77,10 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
       images: [],
       attachments: [],
     });
+    const cannotSendMessage =
+      message.markdown === "" &&
+      message.attachments?.length === 0 &&
+      message.images?.length === 0;
     const [optionsMenuAnchor, setOptionsMenuAnchor] =
       useState<HTMLButtonElement | null>(null);
     const handleOptionsMenuClick: MouseEventHandler<HTMLButtonElement> =
@@ -117,7 +122,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
       (event) => {
         if (!event.getModifierState("Shift") && event.code === "Enter") {
           event.preventDefault();
-          if (message.markdown === "") return;
+          if (cannotSendMessage) return;
           onMessageSend(message);
           setMessage({
             markdown: "",
@@ -126,7 +131,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
           });
         }
       },
-      [message, onMessageSend]
+      [cannotSendMessage, message, onMessageSend]
     );
     const handleEmojiSelect = useCallback(
       (emoji: Emoji, _event: PointerEvent) => {
@@ -185,11 +190,17 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
                     <InsertEmoticonIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Send">
-                  <IconButton onClick={handleSendClick}>
+                {cannotSendMessage ? (
+                  <IconButton onClick={handleSendClick} disabled>
                     <SendIcon />
                   </IconButton>
-                </Tooltip>
+                ) : (
+                  <Tooltip title="Send">
+                    <IconButton onClick={handleSendClick}>
+                      <SendIcon />
+                    </IconButton>
+                  </Tooltip>
+                )}
               </InputAdornment>
             }
           />
@@ -207,14 +218,10 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
             vertical: "bottom",
             horizontal: "right",
           }}
-          PaperProps={{ sx: { borderRadius: "10px", width: "352px" } }}
+          PaperProps={{ sx: { borderRadius: "10px" } }}
         >
-          <EmojiPicker
-            data={() =>
-              fetch("//cdn.jsdelivr.net/npm/@emoji-mart/data").then((res) =>
-                res.json()
-              )
-            }
+          <DelayedEmojiPicker
+            dataUrl="//cdn.jsdelivr.net/npm/@emoji-mart/data"
             onEmojiSelect={handleEmojiSelect}
             theme={themeMode}
           />
