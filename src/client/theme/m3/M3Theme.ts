@@ -844,10 +844,11 @@ export const getThemedComponents = (
       MuiBottomNavigationAction: {
         styleOverrides: {
           root: {
-            paddingTop: "12px",
-            paddingBottom: "16px",
+            paddingTop: "38px", // 12 + 52/2
+            paddingBottom: "42px", // 16 + 52/2
             marginLeft: "8px",
             marginRight: "8px",
+            overflow: "hidden",
             "& .MuiSvgIcon-root": {
               height: "32px",
               width: "64px",
@@ -855,7 +856,12 @@ export const getThemedComponents = (
               marginBottom: "4px",
               color: theme.palette.onSurfaceVariant.main,
               padding: "4px",
-              transition: theme.transitions.create("transform"),
+              transition: theme.transitions.create([
+                "transform",
+                "background-color",
+              ]),
+              boxShadow: `0px 0px 0px 1000px ${theme.palette.background.default}`,
+              zIndex: 9,
             },
             "&.Mui-selected": {
               "& .MuiSvgIcon-root": {
@@ -883,6 +889,7 @@ export const getThemedComponents = (
             fontSize: "12px",
             fontWeight: "500",
             color: theme.palette.onSurfaceVariant.main,
+            zIndex: 9,
             "&.Mui-selected": {
               color: theme.palette.onSurface.main,
               fontSize: "12px",
