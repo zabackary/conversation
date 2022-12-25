@@ -110,6 +110,7 @@ export default function ConversationNavigationRail({
       value={selected?.id}
       onChange={handleActionClick}
       sx={{ paddingTop: "64px", position: "sticky", top: "0" }}
+      showLabels
     >
       {routes.map((route) => (
         <ConversationNavigationRailAction key={route.id} route={route} rail />
