@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import Chat from "../../../components/chat/Chat";
+import Chat from "../../../../components/chat/Chat";
 
 export default function ChannelRoute() {
   const { channelId: channelIdString } = useParams();

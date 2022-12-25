@@ -4,7 +4,7 @@ import useBackend from "../../hooks/useBackend";
 import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/network_definitions";
-import { ConversationAppBar } from "../Layout";
+import { ConversationAppBar } from "../layout";
 import ChatView from "./ChatView";
 
 interface Props {

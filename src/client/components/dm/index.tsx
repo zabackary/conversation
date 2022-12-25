@@ -2,7 +2,7 @@ import { Avatar, List, Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { DmChannel } from "../../../model/channel";
 import User, { UserStatus } from "../../../model/user";
-import { ConversationAppBar } from "../Layout";
+import { ConversationAppBar } from "../layout";
 import { ContrastBadge } from "../main/DrawerHeader";
 import LinkListItem from "../main/LinkListItem";
 

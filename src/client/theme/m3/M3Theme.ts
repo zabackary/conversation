@@ -855,6 +855,7 @@ export const getThemedComponents = (
               marginBottom: "4px",
               color: theme.palette.onSurfaceVariant.main,
               padding: "4px",
+              transition: theme.transitions.create("transform"),
             },
             "&.Mui-selected": {
               "& .MuiSvgIcon-root": {
@@ -885,6 +886,11 @@ export const getThemedComponents = (
             "&.Mui-selected": {
               color: theme.palette.onSurface.main,
               fontSize: "12px",
+            },
+          },
+          iconOnly: {
+            "& .MuiSvgIcon-root": {
+              transform: "translateY(8px)",
             },
           },
         },

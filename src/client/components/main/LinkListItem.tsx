@@ -19,6 +19,7 @@ interface Props {
   avatar?: ReactNode;
   loading?: boolean;
   badge?: number;
+  exclude?: number;
 }
 export default function LinkListItem({
   primaryText,
@@ -28,8 +29,9 @@ export default function LinkListItem({
   loading = false,
   badge,
   avatar,
+  exclude = 1,
 }: Props) {
-  const matches = useMatches().slice(1);
+  const matches = useMatches().slice(exclude);
   const isMatch = matches.find((match) => match.pathname === to);
 
   return (

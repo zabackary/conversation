@@ -55,7 +55,10 @@ export default function ChatView({
         }}
         sx={{
           position: "sticky",
-          bottom: "24px",
+          bottom: {
+            xs: "104px",
+            sm: "24px",
+          },
           marginBottom: afterInput ? "12px" : "0px",
         }}
         placeholder={

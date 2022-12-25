@@ -1,23 +1,14 @@
 import MenuIcon from "@mui/icons-material/Menu";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useMemo,
-} from "react";
+import { createContext, ReactNode, useCallback, useMemo } from "react";
 
 export const drawerWidth = 240;
 
-const toolbarButtonContext = createContext<ReactNode | null>(null);
+export const toolbarButtonContext = createContext<ReactNode | null>(null);
 
 interface Props {
   /**
@@ -40,10 +31,10 @@ export default function ResponsiveDrawer({
   }, [mobileOpen]);
 
   const drawer = (
-    <div>
+    <>
       {drawerHeader}
       {drawerItems}
-    </div>
+    </>
   );
 
   const toolbarButton = useMemo(
@@ -62,8 +53,7 @@ export default function ResponsiveDrawer({
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
+    <>
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -89,9 +79,13 @@ export default function ResponsiveDrawer({
           variant="permanent"
           sx={{
             display: { xs: "none", sm: "block" },
+            position: "sticky",
+            top: "0",
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              paddingTop: "64px",
+              position: "unset",
             },
           }}
           open
@@ -101,43 +95,16 @@ export default function ResponsiveDrawer({
       </Box>
       <Box
         component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+        p={3}
       >
         <Toolbar />
         <toolbarButtonContext.Provider value={toolbarButton}>
           {children}
         </toolbarButtonContext.Provider>
       </Box>
-    </Box>
-  );
-}
-
-interface ConversationAppBarProps {
-  title: string;
-  items?: ReactNode[];
-}
-export function ConversationAppBar({ title, items }: ConversationAppBarProps) {
-  const toolbarButton = useContext(toolbarButtonContext);
-  return (
-    <AppBar
-      position="fixed"
-      sx={{
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        ml: { sm: `${drawerWidth}px` },
-      }}
-    >
-      <Toolbar>
-        {toolbarButton}
-        <Typography variant="h6" noWrap component="h1">
-          {title}
-        </Typography>
-        <Box sx={{ flexGrow: 1, display: { md: "flex" } }} />
-        {items}
-      </Toolbar>
-    </AppBar>
+    </>
   );
 }

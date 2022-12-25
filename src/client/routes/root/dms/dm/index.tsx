@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import StatelessDmChannel from "../../../components/dm/DmChannel";
+import StatelessDmChannel from "../../../../components/dm/DmChannel";
 
 export default function DmRoute() {
   const { channelId: channelIdString } = useParams();
