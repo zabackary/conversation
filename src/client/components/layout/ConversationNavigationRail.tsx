@@ -1,9 +1,18 @@
 import ChatIcon from "@mui/icons-material/Chat";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ForumIcon from "@mui/icons-material/Forum";
+import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
 import HomeIcon from "@mui/icons-material/Home";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import { ReactNode, SyntheticEvent } from "react";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  BottomNavigationActionProps,
+  Paper,
+} from "@mui/material";
+import { ReactNode } from "react";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
 
@@ -11,6 +20,7 @@ interface Route {
   label: string;
   href: string;
   icon: ReactNode;
+  filledIcon: ReactNode;
   id: number;
 }
 
@@ -18,58 +28,68 @@ const routes: Route[] = [
   {
     label: "Home",
     href: "/",
-    icon: <HomeIcon />,
+    icon: <HomeOutlinedIcon />,
+    filledIcon: <HomeIcon />,
     id: 0,
   },
   {
     label: "DMs",
     href: "/dms",
-    icon: <ChatIcon />,
+    icon: <ChatBubbleOutlineOutlinedIcon />,
+    filledIcon: <ChatIcon />,
     id: 1,
   },
   {
     label: "Channels",
     href: "/channels",
-    icon: <ForumIcon />,
+    icon: <ForumOutlinedIcon />,
+    filledIcon: <ForumIcon />,
     id: 2,
   },
   {
     label: "Settings",
     href: "/settings",
-    icon: <SettingsIcon />,
+    icon: <SettingsOutlinedIcon />,
+    filledIcon: <SettingsIcon />,
     id: 3,
   },
 ];
 
-interface ConversationNavigationRailActionProps {
+interface ConversationNavigationRailActionProps
+  extends BottomNavigationActionProps {
   route: Route;
   rail?: boolean;
+  selected?: boolean;
 }
 
 function ConversationNavigationRailAction({
   route,
   rail,
+  selected,
   ...props
 }: ConversationNavigationRailActionProps) {
   const handleClick = useLinkClickHandler(route.href);
   return rail ? (
     <NavigationRailAction
       label={route.label}
-      icon={route.icon}
+      icon={selected ? route.filledIcon : route.icon}
       value={route.id}
       component="a"
       // @ts-ignore This really does work. It's a bug in `styled()` I think
       onClick={handleClick}
+      selected={selected}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     />
   ) : (
     <BottomNavigationAction
       label={route.label}
-      icon={route.icon}
+      icon={selected ? route.filledIcon : route.icon}
       value={route.id}
       component="a"
+      // @ts-ignore This really does work. It's a bug in `styled()` I think
       onClick={handleClick}
+      selected={selected}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
     />
@@ -85,21 +105,13 @@ export default function ConversationNavigationRail({
 }: ConversationNavigationRailProps) {
   const matches = useMatches();
   const selected = routes.find((route) => route.href === matches[1].pathname);
-  const handleActionClick = (
-    _event: SyntheticEvent<Element, Event>,
-    newSelected: unknown
-  ) => {
-    if (typeof newSelected === "number") {
-      // setSelected(newSelected);
-    }
-  };
 
   return mobile ? (
     <Paper
       sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
       elevation={3}
     >
-      <BottomNavigation value={selected?.id} onChange={handleActionClick}>
+      <BottomNavigation value={selected?.id}>
         {routes.map((route) => (
           <ConversationNavigationRailAction key={route.id} route={route} />
         ))}
@@ -108,7 +120,6 @@ export default function ConversationNavigationRail({
   ) : (
     <NavigationRail
       value={selected?.id}
-      onChange={handleActionClick}
       sx={{ paddingTop: "64px", position: "sticky", top: "0" }}
       showLabels
     >
