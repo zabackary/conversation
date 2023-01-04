@@ -528,6 +528,9 @@ export const getThemedComponents = (
         styleOverrides: {
           root: {
             borderRadius: "18px",
+            textTransform: "unset",
+            fontWeight: "unset",
+            height: "58px",
           },
         },
         variants: [
