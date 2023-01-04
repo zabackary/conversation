@@ -344,4 +344,4 @@ export const channels = {
   },
 } satisfies Record<number, Channel>;
 
-export const LOGGED_IN_USER: User | null = users.bob;
+export const LOGGED_IN_USER: User | null = null;

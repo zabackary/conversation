@@ -6,7 +6,9 @@ import Channel, {
 import Message from "../../model/message";
 import User, { UserStatus } from "../../model/user";
 
-export class LoggedOutException extends Error {}
+export class LoggedOutException extends Error {
+  name = "LoggedOutException";
+}
 
 export interface ChannelJoinInfo {
   type: PrivacyLevel;
@@ -35,12 +37,15 @@ export interface Subscribable<T> {
    *
    * @returns A function you can use to cancel the subscription.
    */
-  subscribe(callback: (value: T) => void): () => void;
+  subscribe(callback: (value: T | Error) => void): () => void;
 
   /**
-   * Gets the current state of the subscribable.
+   * Get the current snapshot/state of the data source.
+   *
+   * @returns the current state of the subscribable or `null` if no data has
+   * been loaded.
    */
-  getSnapshot(): T | null;
+  getSnapshot(): T | null | Error;
 }
 
 export default interface NetworkBackend {

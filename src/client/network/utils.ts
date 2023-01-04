@@ -1,3 +1,4 @@
+import normalizeException from "normalize-exception";
 import { Subscribable } from "./network_definitions";
 
 async function wait(): Promise<void>;
@@ -15,17 +16,18 @@ async function wait(ms?: number) {
 }
 
 function createSubscribable<T>(
-  generator: (next: (value: T) => void) => void | Promise<void>,
+  generator: (next: (value: T | Error) => void) => void | Promise<void>,
   initial: T | null = null
 ): Subscribable<T> {
-  let state = initial;
-  const callbacks: ((value: T) => void)[] = [];
-  generator((value) => {
+  let state: T | null | Error = initial;
+  const callbacks: ((value: T | Error) => void)[] = [];
+  const handleOutput = (value: T | Error) => {
     state = value;
-    callbacks.forEach((callback) => {
-      callback(value);
-    });
-  });
+    callbacks.forEach((callback) => callback(value));
+  };
+  generator(handleOutput)?.catch((error: unknown) =>
+    handleOutput(normalizeException(error))
+  );
   return {
     subscribe(callback) {
       callbacks.push(callback);
