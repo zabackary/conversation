@@ -1,4 +1,4 @@
-import ChatIcon from "@mui/icons-material/Chat";
+import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import ForumIcon from "@mui/icons-material/Forum";
 import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
@@ -36,7 +36,7 @@ const routes: Route[] = [
     label: "DMs",
     href: "/dms",
     icon: <ChatBubbleOutlineOutlinedIcon />,
-    filledIcon: <ChatIcon />,
+    filledIcon: <ChatBubbleIcon />,
     id: 1,
   },
   {
