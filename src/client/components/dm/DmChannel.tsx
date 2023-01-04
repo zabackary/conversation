@@ -8,6 +8,7 @@ import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/network_definitions";
 import ChatView from "../chat/ChatView";
+import { ConversationAppBar } from "../layout";
 
 export interface DmChannelProps {
   channelId: number;
@@ -63,38 +64,43 @@ export default function DmChannel({ channelId }: DmChannelProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backend, channelId]);
   const otherMember = channel?.members.find((member) => member.id !== user?.id);
-  return !notFound ? (
-    <ChatView
-      messages={messages ?? undefined}
-      username={user?.nickname}
-      channelName={otherMember?.name}
-      onSend={(message) => {
-        channelBackend?.send(message);
-      }}
-      afterInput={
-        <Stack direction="row" spacing={1}>
-          <Chip
-            icon={<EmailIcon />}
-            label={`Email ${otherMember?.nickname}`}
-            component="a"
-            href={`mailto:${otherMember?.email}`}
-            target="_blank"
-            variant="outlined"
-            clickable
-          />
-          <Chip
-            icon={<BlockIcon />}
-            label="Block"
-            onClick={() => {
-              // TODO: Block user
-            }}
-            variant="outlined"
-          />
-        </Stack>
-      }
-      sx={{ flexGrow: 1 }}
-    />
-  ) : (
-    <>Can&apos;t find that</>
+  return (
+    <>
+      <ConversationAppBar title={otherMember?.name ?? ""} />
+      {!notFound ? (
+        <ChatView
+          messages={messages ?? undefined}
+          username={user?.nickname}
+          channelName={otherMember?.name}
+          onSend={(message) => {
+            channelBackend?.send(message);
+          }}
+          afterInput={
+            <Stack direction="row" spacing={1}>
+              <Chip
+                icon={<EmailIcon />}
+                label={`Email ${otherMember?.nickname}`}
+                component="a"
+                href={`mailto:${otherMember?.email}`}
+                target="_blank"
+                variant="outlined"
+                clickable
+              />
+              <Chip
+                icon={<BlockIcon />}
+                label="Block"
+                onClick={() => {
+                  // TODO: Block user
+                }}
+                variant="outlined"
+              />
+            </Stack>
+          }
+          sx={{ flexGrow: 1 }}
+        />
+      ) : (
+        <>Can&apos;t find that</>
+      )}
+    </>
   );
 }

@@ -64,10 +64,14 @@ export default function DrawerHeader({ user }: DrawerHeaderProps) {
             sx={{ marginRight: "8px" }}
           />
           <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography variant="h6">
+            <Typography variant="h6" aria-label="Loading...">
               <Skeleton />
             </Typography>
-            <Typography variant="caption" component="div">
+            <Typography
+              variant="caption"
+              component="div"
+              aria-label="Loading..."
+            >
               <Skeleton />
             </Typography>
           </Box>

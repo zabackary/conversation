@@ -191,7 +191,11 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
                   </IconButton>
                 </Tooltip>
                 {cannotSendMessage ? (
-                  <IconButton onClick={handleSendClick} disabled>
+                  <IconButton
+                    onClick={handleSendClick}
+                    disabled
+                    aria-label="Send (disabled)"
+                  >
                     <SendIcon />
                   </IconButton>
                 ) : (
