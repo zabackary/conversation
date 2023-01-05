@@ -498,6 +498,10 @@ export const getThemedComponents = (
               "&:hover": {
                 background: alpha(theme.palette.primary.main, 0.15),
               },
+              "&.Mui-disabled": {
+                background: alpha(theme.palette.primary.main, 0.12),
+                color: alpha(theme.palette.primary.main, 0.38),
+              },
             },
           },
           {
@@ -509,6 +513,10 @@ export const getThemedComponents = (
                 boxShadow: theme.shadows[1],
                 background: alpha(theme.palette.primary.main, 0.85),
               },
+              "&.Mui-disabled": {
+                background: alpha(theme.palette.primary.main, 0.12),
+                color: alpha(theme.palette.primary.main, 0.38),
+              },
             },
           },
           {
@@ -519,6 +527,10 @@ export const getThemedComponents = (
               "&:hover": {
                 boxShadow: theme.shadows[1],
                 background: alpha(theme.palette.secondaryContainer.main, 0.8),
+              },
+              "&.Mui-disabled": {
+                background: alpha(theme.palette.secondaryContainer.main, 0.12),
+                color: alpha(theme.palette.secondaryContainer.main, 0.38),
               },
             },
           },
