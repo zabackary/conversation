@@ -21,7 +21,7 @@ const routes: RouteObject[] = [
     errorElement: <ErrorRoute />,
     children: [
       {
-        path: "",
+        index: true,
         element: <DashboardRoute />,
       },
       {
@@ -29,7 +29,7 @@ const routes: RouteObject[] = [
         element: <DmListRoute />,
         children: [
           {
-            path: "",
+            index: true,
             element: <NoDmSelectedRoute />,
           },
           {
@@ -43,7 +43,7 @@ const routes: RouteObject[] = [
         element: <ChannelListRoute />,
         children: [
           {
-            path: "",
+            index: true,
             element: <NoChannelSelectedRoute />,
           },
           {
@@ -57,7 +57,7 @@ const routes: RouteObject[] = [
         element: <SettingsRoute />,
         children: [
           {
-            path: "",
+            index: true,
             element: <GeneralSettingsRoute />,
           },
           {
