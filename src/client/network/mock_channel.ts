@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import Message from "../../model/message";
-import { LOGGED_IN_USER, messages } from "./mock_data";
+import { getLoggedInUser, messages } from "./mock_data";
 import {
   ChannelBackend,
   ChannelBackendEvent,
@@ -18,17 +19,16 @@ export default class MockChannelBackend implements ChannelBackend {
   async send(message: SentMessageEvent): Promise<void> {
     await wait();
     if ("action" in message) {
-      // eslint-disable-next-line no-console
       console.warn("message.action is not handled by the mock.");
       return;
     }
-    if (!LOGGED_IN_USER) {
-      // eslint-disable-next-line no-console
+    const user = getLoggedInUser();
+    if (!user) {
       console.warn("Tried to send a message while signed out");
       return;
     }
     const newMessage: Message = {
-      user: LOGGED_IN_USER,
+      user,
       parent: this.id,
       id: Math.floor(Math.random() * 100000),
       sent: new Date(),

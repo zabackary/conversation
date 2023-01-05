@@ -4,7 +4,7 @@ import Channel, {
   PublicChannelListing,
 } from "../../model/channel";
 import Message from "../../model/message";
-import User, { UserStatus } from "../../model/user";
+import User, { NewUser, UserStatus } from "../../model/user";
 
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
@@ -127,6 +127,30 @@ export default interface NetworkBackend {
    * sufficient or the channel doesn't exist.
    */
   getChannel(id: number): Subscribable<Channel | null>;
+
+  /**
+   * Logs the user in given credentials.
+   *
+   * @returns A promise resolving if the login is successful, and rejecting on
+   * bad email/password.
+   */
+  authLogIn(email: string, password: string): Promise<void>;
+
+  /**
+   * Logs the current session out.
+   *
+   * @returns A promise resolving when the user is logged out.
+   */
+  authLogOut(): Promise<void>;
+
+  /**
+   * Creates a new account. Validation should be done beforehand on the client
+   * as no error reason is returned.
+   *
+   * @returns A promise resolving if the creation is successful, and rejecting
+   * is something went wrong.
+   */
+  authCreateAccount(newUser: NewUser, password: string): Promise<void>;
 }
 
 export interface ChannelBackend

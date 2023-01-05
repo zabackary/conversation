@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
-import User, { UserStatus } from "../../model/user";
+import User, { NewUser, UserStatus } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -10,6 +10,18 @@ import NetworkBackend, {
 
 // TODO: Implement this, and remove the eslint disables up top.
 export default class GASBackend implements NetworkBackend {
+  authLogIn(email: string, password: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  authLogOut(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
   getStatus(username: string): Subscribable<UserStatus | null> {
     throw new Error("Method not implemented.");
   }

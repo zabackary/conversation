@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
-import User, { UserStatus } from "../../model/user";
+import User, { NewUser, UserStatus } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -12,6 +12,18 @@ import NetworkBackend, {
  * This will be replaced by a real one at build time.
  */
 export default class DefaultBackend implements NetworkBackend {
+  authLogIn(username: string, password: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  authLogOut(): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  authCreateAccount(newUser: NewUser): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
   getUser(): Subscribable<User> {
     throw new Error("Method not implemented.");
   }

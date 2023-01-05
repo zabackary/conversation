@@ -42,6 +42,18 @@ export const users = {
   },
 } satisfies Record<string, User>;
 
+export const usersAuth = {
+  bob: {
+    password: "________", // 8 underscores
+  },
+  alice: {
+    password: "my great password",
+  },
+  eve: {
+    password: "NUL haha",
+  },
+} satisfies { [K in keyof typeof users]: { password: string } };
+
 export const messages = {
   5: [
     {
@@ -344,4 +356,12 @@ export const channels = {
   },
 } satisfies Record<number, Channel>;
 
-export const LOGGED_IN_USER: User | null = null;
+let loggedInUser: User | null = null;
+
+export function getLoggedInUser() {
+  return loggedInUser;
+}
+
+export function setLoggedInUser(user: User | null) {
+  loggedInUser = user;
+}

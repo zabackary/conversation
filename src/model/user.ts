@@ -11,3 +11,8 @@ export default interface User {
   id: number;
   status: UserStatus;
 }
+
+export type NewUser = Pick<
+  User,
+  "email" | "name" | "nickname" | "profilePicture"
+>;
