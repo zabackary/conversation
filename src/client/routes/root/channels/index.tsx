@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Fab, List } from "@mui/material";
-import { Link, Outlet } from "react-router-dom";
+import { Fab, Fade, List } from "@mui/material";
+import { Link, useMatches, useOutlet } from "react-router-dom";
+import { SwitchTransition } from "react-transition-group";
 import { ConversationNavigationDrawer } from "../../../components/layout";
 import ChannelList from "../../../components/main/ChannelList";
 import DrawerHeader from "../../../components/main/DrawerHeader";
@@ -8,6 +9,8 @@ import useChannels from "../../../hooks/useChannels";
 import useUser from "../../../hooks/useUser";
 
 export default function ChannelListRoute() {
+  const [, , match] = useMatches();
+  const currentOutlet = useOutlet();
   const channels = useChannels();
   const user = useUser();
   return (
@@ -29,7 +32,11 @@ export default function ChannelListRoute() {
         </List>
       }
     >
-      <Outlet />
+      <SwitchTransition>
+        <Fade key={match.pathname} timeout={200} unmountOnExit>
+          <div>{currentOutlet}</div>
+        </Fade>
+      </SwitchTransition>
     </ConversationNavigationDrawer>
   );
 }
