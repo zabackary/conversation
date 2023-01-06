@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import Message from "../../model/message";
-import { getLoggedInUser, messages } from "./mock_data";
+import { loggedInUser, messages } from "./mock_data";
 import {
   ChannelBackend,
   ChannelBackendEvent,
@@ -22,7 +22,7 @@ export default class MockChannelBackend implements ChannelBackend {
       console.warn("message.action is not handled by the mock.");
       return;
     }
-    const user = getLoggedInUser();
+    const user = loggedInUser.value.getSnapshot();
     if (!user) {
       console.warn("Tried to send a message while signed out");
       return;

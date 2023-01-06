@@ -5,6 +5,10 @@ import Message, {
 } from "../../model/message";
 import Service from "../../model/service";
 import User, { UserStatus } from "../../model/user";
+import {
+  CleanDispatchableSubscribable,
+  createCleanDispatchableSubscribable,
+} from "./utils";
 
 export const services = {
   conversation: {
@@ -16,31 +20,31 @@ export const services = {
 } satisfies Record<string, Service>;
 
 export const users = {
-  bob: {
+  bob: createCleanDispatchableSubscribable<User>({
     name: "Bob Lastname",
     nickname: "Bob",
-    email: "bob@example.com",
+    email: "noreply+bob@stu.his.ac.jp",
     profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
     id: 0,
     status: UserStatus.Active,
-  },
-  alice: {
+  }),
+  alice: createCleanDispatchableSubscribable<User>({
     name: "Alice Surname",
     nickname: "Alice",
-    email: "alice@example.com",
+    email: "noreply+alice@stu.his.ac.jp",
     profilePicture: "https://www.w3schools.com/howto/img_avatar2.png", // From w3schools
     id: 1,
     status: UserStatus.Inactive,
-  },
-  eve: {
+  }),
+  eve: createCleanDispatchableSubscribable<User>({
     name: "Eve Familyname",
     nickname: "Eve",
-    email: "eve@example.com",
+    email: "noreply+eve@stu.his.ac.jp",
     profilePicture: null, // None on purpose
     id: 2,
     status: UserStatus.Active,
-  },
-} satisfies Record<string, User>;
+  }),
+} satisfies Record<string, CleanDispatchableSubscribable<User>>;
 
 export const usersAuth = {
   bob: {
@@ -69,7 +73,7 @@ export const messages = {
       isService: true,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "This is *cool*.",
       sent: new Date("December 25, 2019 5:06"),
       id: 98,
@@ -80,14 +84,16 @@ export const messages = {
       icon: ServiceMessageBuiltInIcon.PersonAdd,
       user: services.conversation,
       format: ServiceMessageFormat.Caption,
-      title: `${users.bob.name} added ${users.alice.name} to the channel.`,
+      title: `${users.bob.value.getSnapshot().name} added ${
+        users.alice.value.getSnapshot().name
+      } to the channel.`,
       id: 9385,
       parent: 5,
       sent: new Date("December 25, 2019 5:06"),
       isService: true,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown: "Imagine _mocking_ your brother :D",
       sent: new Date("December 25, 2019 6:05"),
       id: 35,
@@ -95,7 +101,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown: "@all What do you think of this app?",
       sent: new Date("January 1, 2020 4:48"),
       id: 22,
@@ -103,7 +109,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "# Hello, world!\nJust checking this works :)",
       sent: new Date("January 1, 2020 5:05"),
       id: 97,
@@ -114,22 +120,24 @@ export const messages = {
       icon: ServiceMessageBuiltInIcon.Edit,
       user: services.conversation,
       format: ServiceMessageFormat.Caption,
-      title: `${users.bob.name} changed the name of this channel to Hey.`,
+      title: `${
+        users.bob.value.getSnapshot().name
+      } changed the name of this channel to Hey.`,
       id: 9386,
       parent: 5,
       sent: new Date("January 1, 2020 5:09"),
       isService: true,
     },
     {
-      user: users.alice,
-      markdown: `Ok, thanks @${users.bob.nickname}`,
+      user: users.alice.value.getSnapshot(),
+      markdown: `Ok, thanks @${users.bob.value.getSnapshot().nickname}`,
       sent: new Date("January 1, 2020 5:10"),
       id: 104,
       parent: 5,
       isService: false,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown: "How was your day today?",
       sent: new Date("January 3, 2020 2:05"),
       id: 938,
@@ -137,7 +145,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "Oh, it was ~~good~~ *bad*",
       sent: new Date("January 3, 2020 2:06"),
       id: 939,
@@ -145,7 +153,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown:
         "# Oh, I **see** now...\nWhat in the world did you eat for breakfast?",
       sent: new Date("January 3, 2020 2:07"),
@@ -154,7 +162,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "I ate a banana. アリスは？", // Test Japanese
       sent: new Date("January 3, 2020 2:08"),
       id: 265,
@@ -162,7 +170,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown:
         "My house burned down so I didn't have any breakfast today.\n\n# Imagine",
       sent: new Date("January 3, 2020 2:09"),
@@ -171,7 +179,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "## 面白い",
       sent: new Date("January 3, 2020 2:10"),
       id: 269,
@@ -179,7 +187,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "# spam",
       sent: new Date("January 3, 2020 2:11"),
       id: 270,
@@ -187,7 +195,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "## spam",
       sent: new Date("January 3, 2020 2:11"),
       id: 271,
@@ -195,7 +203,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: "Spoiler:\n\n>! Someone *dies*.",
       sent: new Date("January 3, 2020 2:11"),
       id: 272,
@@ -203,7 +211,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.alice,
+      user: users.alice.value.getSnapshot(),
       markdown:
         "longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglong",
       sent: new Date("January 3, 2020 2:15"),
@@ -240,15 +248,17 @@ export const messages = {
       isService: true,
     },
     {
-      user: users.alice,
-      markdown: `Hey @${users.bob.nickname}, this is ${users.alice.nickname}`,
+      user: users.alice.value.getSnapshot(),
+      markdown: `Hey @${users.bob.value.getSnapshot().nickname}, this is ${
+        users.alice.value.getSnapshot().nickname
+      }`,
       sent: new Date("December 6, 2022 13:47"),
       id: 9381,
       parent: 19,
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: `Got ur message`,
       sent: new Date("December 6, 2022 13:48"),
       id: 9382,
@@ -270,15 +280,15 @@ export const messages = {
       isService: true,
     },
     {
-      user: users.eve,
-      markdown: `You doing okay @${users.bob.nickname}?`,
+      user: users.eve.value.getSnapshot(),
+      markdown: `You doing okay @${users.bob.value.getSnapshot().nickname}?`,
       sent: new Date("December 6, 2022 13:47"),
       id: 1381,
       parent: 20,
       isService: false,
     },
     {
-      user: users.bob,
+      user: users.bob.value.getSnapshot(),
       markdown: `Yeah, I'm fine`,
       sent: new Date("December 6, 2022 13:48"),
       id: 8382,
@@ -286,7 +296,7 @@ export const messages = {
       isService: false,
     },
     {
-      user: users.eve,
+      user: users.eve.value.getSnapshot(),
       markdown: `Just checking`,
       sent: new Date("December 6, 2022 13:49"),
       id: 8383,
@@ -301,7 +311,7 @@ export const channels = {
     name: "Hey",
     description: "Say hey to one another here.",
     id: 5,
-    members: [users.bob, users.alice],
+    members: [users.bob.value.getSnapshot(), users.alice.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Unlisted,
     history: 10,
     dm: false,
@@ -311,7 +321,7 @@ export const channels = {
     name: "Mock",
     description: "I'm going to mock you a bunch.",
     id: 3,
-    members: [users.bob, users.alice],
+    members: [users.bob.value.getSnapshot(), users.alice.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Private,
     history: 10,
     dm: false,
@@ -321,7 +331,7 @@ export const channels = {
     name: "Hello World",
     description: "Place for people to say hello to their world a bunch.",
     id: 4,
-    members: [users.alice],
+    members: [users.alice.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Public,
     history: 10,
     dm: false,
@@ -331,7 +341,7 @@ export const channels = {
     description:
       "Place for people to bye hello to their world a bunch before they leave for Mars.",
     id: 18,
-    members: [users.alice],
+    members: [users.alice.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Public,
     history: 10,
     dm: false,
@@ -340,7 +350,7 @@ export const channels = {
     name: "",
     description: "",
     id: 19,
-    members: [users.alice, users.bob],
+    members: [users.alice.value.getSnapshot(), users.bob.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Private,
     history: 10,
     dm: true,
@@ -349,19 +359,13 @@ export const channels = {
     name: "",
     description: "",
     id: 20,
-    members: [users.eve, users.bob],
+    members: [users.eve.value.getSnapshot(), users.bob.value.getSnapshot()],
     privacyLevel: PrivacyLevel.Private,
     history: 10,
     dm: true,
   },
 } satisfies Record<number, Channel>;
 
-let loggedInUser: User | null = null;
-
-export function getLoggedInUser() {
-  return loggedInUser;
-}
-
-export function setLoggedInUser(user: User | null) {
-  loggedInUser = user;
-}
+export const loggedInUser = createCleanDispatchableSubscribable<User | null>(
+  null
+);

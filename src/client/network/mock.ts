@@ -15,13 +15,7 @@ import {
   validateUrl,
 } from "../../shared/validation";
 import MockChannelBackend from "./mock_channel";
-import {
-  channels,
-  getLoggedInUser,
-  setLoggedInUser,
-  users,
-  usersAuth,
-} from "./mock_data";
+import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -34,18 +28,18 @@ export default class MockBackend implements NetworkBackend {
   async authLogIn(email: string, password: string): Promise<void> {
     await wait();
     const name = Object.entries(users).find(
-      ([, user]) => user.email === email
+      ([, user]) => user.value.getSnapshot().email === email
     )?.[0] as keyof typeof users | undefined;
     if (!name || usersAuth[name].password !== password) {
       throw new Error("Failed to authenticate.");
     } else {
-      setLoggedInUser(users[name]);
+      loggedInUser.dispatch(users[name].value.getSnapshot());
     }
   }
 
   async authLogOut(): Promise<void> {
     await wait();
-    setLoggedInUser(null);
+    loggedInUser.dispatch(null);
   }
 
   async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
@@ -73,14 +67,14 @@ export default class MockBackend implements NetworkBackend {
   getDMs(): Subscribable<DmChannel[]> {
     return createSubscribable(async (next) => {
       await wait();
-      if (!getLoggedInUser()) throw new LoggedOutException();
+      const user = loggedInUser.value.getSnapshot();
+      if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
           (channel) =>
             channel.dm &&
             channel.members.length === 2 &&
-            // @ts-ignore They're compatible, whatever
-            channel.members.includes(getLoggedInUser())
+            channel.members.includes(user)
         ) as DmChannel[]
       );
     });
@@ -91,7 +85,7 @@ export default class MockBackend implements NetworkBackend {
       await wait();
       // @ts-ignore Again, there's a null check! It should be *fine*.
       const channel: Channel | undefined = channels[id];
-      const user = getLoggedInUser();
+      const user = loggedInUser.value.getSnapshot();
       if (user && channel && channel.members.includes(user)) {
         next(channel);
       } else {
@@ -101,19 +95,18 @@ export default class MockBackend implements NetworkBackend {
   }
 
   getUser(): Subscribable<User> {
-    return createSubscribable(async (next) => {
-      await wait();
-      const user = getLoggedInUser();
-      if (!user) throw new LoggedOutException();
-      next(user);
-    });
+    return createSubscribable<User>((next) => {
+      loggedInUser.value.subscribe((value) => {
+        next(value === null ? new LoggedOutException() : value);
+      });
+    }, new LoggedOutException());
   }
 
   async connectChannel(id: number): Promise<ChannelBackend | null> {
     await wait();
     // @ts-ignore Again, there's a null check! It should be *fine*.
     const channel: Channel | undefined = channels[id];
-    const user = getLoggedInUser();
+    const user = loggedInUser.value.getSnapshot();
     if (!user || !channel || !channel.members.includes(user)) {
       return null;
     }
@@ -123,7 +116,7 @@ export default class MockBackend implements NetworkBackend {
   getPublicChannels(): Subscribable<PublicChannelListing[]> {
     return createSubscribable(async (next) => {
       await wait();
-      const user = getLoggedInUser();
+      const user = loggedInUser.value.getSnapshot();
       if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
@@ -144,7 +137,7 @@ export default class MockBackend implements NetworkBackend {
   getChannels(): Subscribable<Channel[]> {
     return createSubscribable(async (next) => {
       await wait();
-      const user = getLoggedInUser();
+      const user = loggedInUser.value.getSnapshot();
       if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(

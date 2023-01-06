@@ -48,6 +48,15 @@ export interface Subscribable<T> {
   getSnapshot(): T | null | Error;
 }
 
+export interface CleanSubscribable<T> extends Subscribable<T> {
+  /**
+   * Get the current snapshot/state of the data source.
+   *
+   * @returns the current state of the subscribable or throws on invalid.
+   */
+  getSnapshot(): T;
+}
+
 export default interface NetworkBackend {
   /**
    * Gets the logged in user.
