@@ -2,8 +2,10 @@ import { Grow, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { ConversationNavigationRail } from "../../components/layout";
+import useRequireLogin from "../../hooks/useRequireLogin";
 
 export default function RootRoute() {
+  useRequireLogin();
   const [, match] = useMatches();
   const currentOutlet = useOutlet();
   const theme = useTheme();
