@@ -207,7 +207,7 @@ const build = (config) => {
             }),
           ]
     ),
-    devtool: "source-map",
+    devtool: env === "production" ? "source-map" : "cheap-module-source-map",
   };
 };
 export default build;
