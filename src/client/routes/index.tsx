@@ -1,6 +1,11 @@
 import { RouteObject } from "react-router-dom";
 import ErrorRoute from "./error";
-import LoginRoute from "./login";
+import LoginRootRoute from "./login";
+import LoginHelpRoute from "./login/help";
+import LoginRoute from "./login/login";
+import LoginRegisterRoute from "./login/register";
+import LoginResetRoute from "./login/reset";
+import LoginSettingsRoute from "./login/settings";
 import RootRoute from "./root";
 import ChannelListRoute from "./root/channels";
 import ChannelRoute from "./root/channels/channel";
@@ -74,9 +79,15 @@ const routes: RouteObject[] = [
   },
   {
     path: "login",
-    element: <LoginRoute />,
+    element: <LoginRootRoute />,
     errorElement: <ErrorRoute />,
-    children: [{ path: "create", element: null }],
+    children: [
+      { index: true, element: <LoginRoute /> },
+      { path: "new", element: <LoginRegisterRoute /> },
+      { path: "help", element: <LoginHelpRoute /> },
+      { path: "passwordreset", element: <LoginResetRoute /> },
+      { path: "settings", element: <LoginSettingsRoute /> },
+    ],
   },
 ];
 export default routes;
