@@ -85,24 +85,54 @@ export interface CleanDispatchableSubscribable<T>
 }
 
 export function createCleanDispatchableSubscribable<T>(
-  initial: T
+  initial: T,
+  ...allowNull: [T extends null ? false : true] extends [true]
+    ? [false?]
+    : [true]
 ): CleanDispatchableSubscribable<T> {
   const dirty = createDispatchableSubscribable(initial);
   return {
     ...dirty,
     value: {
       ...dirty.value,
-      getSnapshot() {
+      getSnapshot(): T {
         const snapshot = dirty.value.getSnapshot();
-        if (snapshot === null) {
+        if (!allowNull && snapshot === null) {
           throw new Error("Subscribable is unclean: value is null");
         } else if (snapshot instanceof Error) {
           snapshot.stack = new Error().stack;
           throw snapshot;
         } else {
+          // @ts-ignore I think my typings in the parameters as correct.
           return snapshot;
         }
       },
     },
   };
+}
+
+export function mapSubscribable<T, S>(
+  subscribable: Subscribable<T>,
+  map: (value: T | Error) => S | Error | Promise<S | Error>
+) {
+  const originalSnapshot = subscribable.getSnapshot();
+  let promisedUpdate: Promise<S | Error> | null = null;
+  return createSubscribable(
+    (next) => {
+      promisedUpdate?.then(next);
+      subscribable.subscribe(async (value) => {
+        next(await map(value));
+      });
+    },
+    originalSnapshot === null
+      ? null
+      : (() => {
+          const mapped = map(originalSnapshot);
+          if (mapped instanceof Promise) {
+            promisedUpdate = mapped;
+            return null;
+          }
+          return mapped;
+        })()
+  );
 }

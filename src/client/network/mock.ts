@@ -22,7 +22,7 @@ import NetworkBackend, {
   LoggedOutException,
   Subscribable,
 } from "./network_definitions";
-import { createSubscribable, wait } from "./utils";
+import { createSubscribable, mapSubscribable, wait } from "./utils";
 
 export default class MockBackend implements NetworkBackend {
   async authLogIn(email: string, password: string): Promise<void> {
@@ -33,7 +33,9 @@ export default class MockBackend implements NetworkBackend {
     if (!name || usersAuth[name].password !== password) {
       throw new Error("Failed to authenticate.");
     } else {
+      console.log("signing in w/", name);
       loggedInUser.dispatch(users[name].value.getSnapshot());
+      console.log(loggedInUser.value.getSnapshot());
     }
   }
 
@@ -81,25 +83,23 @@ export default class MockBackend implements NetworkBackend {
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
-    return createSubscribable(async (next) => {
+    return mapSubscribable(loggedInUser.value, async (user) => {
       await wait();
+      if (user === null) return new LoggedOutException();
+      if (user instanceof Error) return user;
       // @ts-ignore Again, there's a null check! It should be *fine*.
       const channel: Channel | undefined = channels[id];
-      const user = loggedInUser.value.getSnapshot();
       if (user && channel && channel.members.includes(user)) {
-        next(channel);
-      } else {
-        next(null);
+        return channel;
       }
+      return null;
     });
   }
 
   getUser(): Subscribable<User> {
-    return createSubscribable<User>((next) => {
-      loggedInUser.value.subscribe((value) => {
-        next(value === null ? new LoggedOutException() : value);
-      });
-    }, new LoggedOutException());
+    return mapSubscribable(loggedInUser.value, (user) =>
+      user === null ? new LoggedOutException() : user
+    );
   }
 
   async connectChannel(id: number): Promise<ChannelBackend | null> {
@@ -114,16 +114,14 @@ export default class MockBackend implements NetworkBackend {
   }
 
   getPublicChannels(): Subscribable<PublicChannelListing[]> {
-    return createSubscribable(async (next) => {
+    return mapSubscribable(loggedInUser.value, async (user) => {
       await wait();
-      const user = loggedInUser.value.getSnapshot();
-      if (!user) throw new LoggedOutException();
-      next(
-        Object.values(channels).filter(
-          (channel) =>
-            !channel.members.map((member) => member.id).includes(user.id) &&
-            channel.privacyLevel === PrivacyLevel.Public
-        )
+      if (user === null) return new LoggedOutException();
+      if (user instanceof Error) return user;
+      return Object.values(channels).filter(
+        (channel) =>
+          !channel.members.map((member) => member.id).includes(user.id) &&
+          channel.privacyLevel === PrivacyLevel.Public
       );
     });
   }
@@ -135,16 +133,14 @@ export default class MockBackend implements NetworkBackend {
   }
 
   getChannels(): Subscribable<Channel[]> {
-    return createSubscribable(async (next) => {
+    return mapSubscribable(loggedInUser.value, async (user) => {
       await wait();
-      const user = loggedInUser.value.getSnapshot();
-      if (!user) throw new LoggedOutException();
-      next(
-        Object.values(channels).filter(
-          (channel) =>
-            !channel.dm &&
-            channel.members.map((member) => member.id).includes(user.id)
-        )
+      if (user === null) return new LoggedOutException();
+      if (user instanceof Error) return user;
+      return Object.values(channels).filter(
+        (channel) =>
+          !channel.dm &&
+          channel.members.map((member) => member.id).includes(user.id)
       );
     });
   }

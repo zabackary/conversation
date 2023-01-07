@@ -367,5 +367,6 @@ export const channels = {
 } satisfies Record<number, Channel>;
 
 export const loggedInUser = createCleanDispatchableSubscribable<User | null>(
-  null
+  null,
+  true
 );

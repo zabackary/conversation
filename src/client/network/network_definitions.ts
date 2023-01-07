@@ -61,10 +61,9 @@ export default interface NetworkBackend {
   /**
    * Gets the logged in user.
    *
-   * @throws {LoggedOutException} If the user is logged out.
-   * @returns A subscribable echoing `User`s.
+   * @returns A subscribable echoing `User` or `null` on logged out.
    */
-  getUser(): Subscribable<User>;
+  getUser(): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.
