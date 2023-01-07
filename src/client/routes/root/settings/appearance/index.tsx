@@ -11,7 +11,11 @@ import {
   ThemeSchemeContext,
 } from "../../../../theme";
 
-export default function AppearanceSettingsRoute() {
+export default function AppearanceSettingsRoute({
+  noAppBar,
+}: {
+  noAppBar?: boolean;
+}) {
   const { themeMode, setThemeMode } = useContext(ThemeModeContext);
   const { themeScheme, generateThemeScheme, resetThemeScheme } =
     useContext(ThemeSchemeContext);
@@ -28,7 +32,7 @@ export default function AppearanceSettingsRoute() {
   );
   return (
     <>
-      <ConversationAppBar title="Appearance settings" />
+      {!noAppBar ? <ConversationAppBar title="Appearance settings" /> : null}
       <Grid container spacing={2}>
         <SwitchItem
           value={themeMode === "dark"}
