@@ -30,7 +30,6 @@ export default function useBackendFunction<T>(
 ) {
   const backend = useBackend();
   const value = useSubscribable(() => getSubscribable(backend));
-  console.warn("new value:", value);
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
