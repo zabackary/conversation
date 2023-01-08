@@ -1,14 +1,14 @@
-import Channel, { PrivacyLevel } from "../../model/channel";
+import Channel, { PrivacyLevel } from "../../../model/channel";
 import Message, {
   ServiceMessageBuiltInIcon,
   ServiceMessageFormat,
-} from "../../model/message";
-import Service from "../../model/service";
-import User, { UserStatus } from "../../model/user";
+} from "../../../model/message";
+import Service from "../../../model/service";
+import User, { UserStatus } from "../../../model/user";
 import {
   CleanDispatchableSubscribable,
   createCleanDispatchableSubscribable,
-} from "./utils";
+} from "../utils";
 
 export const services = {
   conversation: {

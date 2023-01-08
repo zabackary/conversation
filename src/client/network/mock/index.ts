@@ -5,24 +5,24 @@ import Channel, {
   DmChannel,
   PrivacyLevel,
   PublicChannelListing,
-} from "../../model/channel";
-import User, { NewUser, UserStatus } from "../../model/user";
+} from "../../../model/channel";
+import User, { NewUser, UserStatus } from "../../../model/user";
 import {
   InvalidPasswordReason,
   InvalidTextReason,
   validatePassword,
   validateText,
   validateUrl,
-} from "../../shared/validation";
-import MockChannelBackend from "./mock_channel";
-import { channels, loggedInUser, users, usersAuth } from "./mock_data";
+} from "../../../shared/validation";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   LoggedOutException,
   Subscribable,
-} from "./network_definitions";
-import { createSubscribable, mapSubscribable, wait } from "./utils";
+} from "../network_definitions";
+import { createSubscribable, mapSubscribable, wait } from "../utils";
+import MockChannelBackend from "./mock_channel";
+import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
   async authLogIn(email: string, password: string): Promise<void> {

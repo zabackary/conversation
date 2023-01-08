@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import Message from "../../model/message";
-import { loggedInUser, messages } from "./mock_data";
+import Message from "../../../model/message";
 import {
   ChannelBackend,
   ChannelBackendEvent,
   SentMessageEvent,
-} from "./network_definitions";
-import { wait } from "./utils";
+} from "../network_definitions";
+import { wait } from "../utils";
+import { loggedInUser, messages } from "./mock_data";
 
 export default class MockChannelBackend implements ChannelBackend {
   connected = false;
