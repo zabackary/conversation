@@ -7,9 +7,15 @@ import {
   Avatar,
   CircularProgress,
   Collapse,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControlLabel,
   IconButton,
   InputAdornment,
+  Popover,
   Stack,
   Tooltip,
   useTheme,
@@ -20,13 +26,23 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { FormEvent, useId, useState } from "react";
+import {
+  FormEvent,
+  MouseEventHandler,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import {
   Link as RouterLink,
   useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import PrivacyPolicy from "../../../documents/privacyPolicy";
+import TermsOfUse from "../../../documents/termsOfUse";
+import ImagePicker from "../../components/ImagePicker";
 import useBackend from "../../hooks/useBackend";
 
 function Header({ index, title }: { index: number; title: string }) {
@@ -49,24 +65,13 @@ export default function LoginRegisterRoute() {
   const [loading, setLoading] = useState(false);
   const [searchParams, _setSearchParams] = useSearchParams();
   const next = searchParams.get("next");
+  const formData = useRef<FormData>();
+  const [isTermsDialogOpen, setIsTermsDialogOpen] = useState(false);
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    formData.current = new FormData(event.currentTarget);
     setInvalid(false);
-    setLoading(true);
-    backend
-      .authLogIn(
-        `${data.get("email") as string}@stu.his.ac.jp`,
-        data.get("password") as string
-      )
-      .then(() => {
-        setLoading(false);
-        navigate(next ?? "/");
-      })
-      .catch(() => {
-        setLoading(false);
-        setInvalid(true);
-      });
+    setIsTermsDialogOpen(true);
   };
   const passwordId = useId();
   const emailId = useId();
@@ -82,6 +87,48 @@ export default function LoginRegisterRoute() {
   };
   const theme = useTheme();
   const location = useLocation();
+  const [imagePickerAnchor, setImagePickerAnchor] =
+    useState<HTMLButtonElement | null>(null);
+  const handleImagePickerOpen: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setImagePickerAnchor(e.currentTarget);
+  };
+  const handleImagePickerClose = () => {
+    setImagePickerAnchor(null);
+  };
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const handleFinalSubmission = () => {
+    setLoading(true);
+    const data = formData.current;
+    if (!data) throw new Error("Cannot get form data!");
+    backend
+      .authCreateAccount(
+        {
+          email: `${data.get("email")}@stu.his.ac.jp`,
+          name: `${data.get("firstName")} ${data.get("lastName")}`,
+          nickname: data.get("nickname") as string,
+          profilePicture: data.get("profilePicture") as string,
+        },
+        data.get("password") as string
+      )
+      .then(() => {
+        setLoading(false);
+        navigate(next ?? "/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setInvalid(true);
+        setIsTermsDialogOpen(false);
+        throw error;
+      });
+  };
+  useEffect(() => {
+    if (invalid === true)
+      window.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: "smooth",
+      });
+  }, [invalid]);
 
   return (
     <>
@@ -91,8 +138,8 @@ export default function LoginRegisterRoute() {
       <Collapse in={invalid}>
         <Alert severity="error" sx={{ m: 1 }}>
           <AlertTitle>Something went wrong.</AlertTitle>
-          Check your email and password for typos. If the issue persists,
-          contact the developer.
+          Check if your email and password meet the criteria. If the issue
+          persists, contact the developer.
         </Alert>
       </Collapse>
       <Box
@@ -202,7 +249,6 @@ export default function LoginRegisterRoute() {
               fullWidth
               id={firstNameId}
               label="First Name"
-              autoFocus
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -227,14 +273,41 @@ export default function LoginRegisterRoute() {
             />
           </Grid>
           <Grid item xs={12}>
+            <input type="hidden" name="profilePicture" value={avatarUrl} />
             <FormControlLabel
               control={
-                <IconButton onClick={() => console.log("click")}>
-                  <Avatar sx={{ m: "auto" }}>H</Avatar>
+                <IconButton onClick={handleImagePickerOpen}>
+                  <Avatar src={avatarUrl} />
                 </IconButton>
               }
               label="Profile picture"
             />
+            <Popover
+              id={undefined}
+              open={!!imagePickerAnchor}
+              anchorEl={imagePickerAnchor}
+              onClose={handleImagePickerClose}
+              anchorOrigin={{
+                horizontal: "left",
+                vertical: "top",
+              }}
+              transformOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              PaperProps={{
+                sx: {
+                  width: "100%",
+                  maxWidth: "600px",
+                },
+              }}
+            >
+              {/* TODO: Get the image upload working and allow files */}
+              <ImagePicker
+                onImageSelected={(url) => setAvatarUrl(url)}
+                allowFiles={false}
+              />
+            </Popover>
           </Grid>
         </Grid>
         <Grid container>
@@ -250,11 +323,34 @@ export default function LoginRegisterRoute() {
             </Button>
           </Grid>
           <Grid item>
+            <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
+              Next
+            </Button>
+          </Grid>
+        </Grid>
+        <Dialog
+          open={isTermsDialogOpen}
+          onClose={() => setIsTermsDialogOpen(false)}
+          scroll="paper"
+        >
+          <DialogTitle>Notices</DialogTitle>
+          <DialogContent dividers>
+            <Typography variant="h5">Terms of use</Typography>
+            <DialogContentText component="div">
+              <TermsOfUse />
+            </DialogContentText>
+            <Typography variant="h5">Privacy policy</Typography>
+            <DialogContentText component="div">
+              <PrivacyPolicy />
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsTermsDialogOpen(false)}>Cancel</Button>
             <Button
-              type="submit"
-              variant="filled"
-              sx={{ mt: 3, mb: 2, position: "relative" }}
+              onClick={handleFinalSubmission}
+              sx={{ position: "relative" }}
               disabled={loading}
+              autoFocus
             >
               {loading ? (
                 <CircularProgress
@@ -271,20 +367,32 @@ export default function LoginRegisterRoute() {
                 style={{ visibility: loading ? "hidden" : "visible" }}
                 aria-hidden={loading}
               >
-                Create account
+                Accept and continue
               </span>
             </Button>
-          </Grid>
-        </Grid>
-        <Link component={RouterLink} to="/login/passwordreset/" variant="body2">
+          </DialogActions>
+        </Dialog>
+        <Link
+          component={RouterLink}
+          to={`/login/passwordreset/${window.location.search}`}
+          variant="body2"
+        >
           Forgot password?
         </Link>{" "}
         -{" "}
-        <Link component={RouterLink} to="/login/help/" variant="body2">
+        <Link
+          component={RouterLink}
+          to={`/login/help/${window.location.search}`}
+          variant="body2"
+        >
           Help
         </Link>{" "}
         -{" "}
-        <Link component={RouterLink} to="/settings/appearance/" variant="body2">
+        <Link
+          component={RouterLink}
+          to={`/login/settings/${window.location.search}`}
+          variant="body2"
+        >
           Appearance preferences
         </Link>
       </Box>

@@ -1,20 +1,27 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Fade, Paper } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useMatches, useOutlet } from "react-router-dom";
+import { useEffect } from "react";
+import {
+  useMatches,
+  useNavigate,
+  useOutlet,
+  useSearchParams,
+} from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import useUser from "../../hooks/useUser";
 
 export default function LoginRootRoute() {
   const [, match] = useMatches();
   const currentOutlet = useOutlet();
-  /* const user = useUser(false);
+  const user = useUser(false);
   const navigate = useNavigate();
   const [searchParams, _setSearchParams] = useSearchParams();
   useEffect(() => {
     if (user !== null && searchParams.has("next")) {
       navigate(searchParams.get("next") ?? "/", { replace: true });
     }
-  }, [user, searchParams, navigate]); */
+  }, [user, searchParams, navigate]);
   return (
     <Container component="main" maxWidth="xs" sx={{ pt: 8, pb: 8 }}>
       <Paper
@@ -40,7 +47,11 @@ export default function LoginRootRoute() {
                 width: "100%",
               }}
             >
-              {false ? <>You&apos;re already logged in.</> : currentOutlet}
+              {user === null ? (
+                <>You&apos;re already logged in.</>
+              ) : (
+                currentOutlet
+              )}
             </Box>
           </Fade>
         </SwitchTransition>
