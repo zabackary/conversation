@@ -72,8 +72,9 @@ const SLURS = [
   "validationText_slur",
 ];
 
-// eslint-disable-next-line no-control-regex
-const INVALID_UNICODE_REGEX = /[\u0009\u000a\u000d\u0020-\uD7FF\uE000-\uFFFD]/;
+const INVALID_UNICODE_REGEX =
+  // eslint-disable-next-line no-control-regex
+  /[^\u0009\u000a\u000d\u0020-\uD7FF\uE000-\uFFFD]/u;
 
 export enum InvalidTextReason {
   SWEAR,
