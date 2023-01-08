@@ -1,5 +1,9 @@
 import { CssBaseline } from "@mui/material";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createHashRouter,
+  RouterProvider,
+} from "react-router-dom";
 import BackendContextProvider from "./context/BackendContextProvider";
 import routes from "./routes";
 import {
@@ -8,7 +12,10 @@ import {
   M3ThemeSchemeProvider,
 } from "./theme";
 
-const router = createBrowserRouter(routes);
+const router =
+  window.location.pathname === "/userCodeAppPanel"
+    ? createHashRouter(routes)
+    : createBrowserRouter(routes);
 
 export default function App() {
   return (

@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { forwardRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -84,7 +85,9 @@ export default function ErrorPage({
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Button size="small">Reload</Button>
+          <Button size="small" component={Link} to="/">
+            Go home
+          </Button>
           <Tooltip title={debuggingDetailsTooltip}>
             <Button size="small" onClick={handleCopyButtonClick}>
               Copy debugging details
