@@ -3,8 +3,11 @@ import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { ConversationNavigationRail } from "../../components/layout";
 import useRequireLogin from "../../hooks/useRequireLogin";
+import useRouteForward from "../../hooks/useRouteForward";
 
 export default function RootRoute() {
+  useRouteForward();
+
   useRequireLogin();
   const [, match] = useMatches();
   const currentOutlet = useOutlet();

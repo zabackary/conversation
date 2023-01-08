@@ -9,9 +9,12 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
 
 export default function LoginRootRoute() {
+  useRouteForward();
+
   const [, match] = useMatches();
   const currentOutlet = useOutlet();
   const user = useUser(false);
