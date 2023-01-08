@@ -50,7 +50,7 @@ export default function LoginRootRoute() {
                 width: "100%",
               }}
             >
-              {user === null ? (
+              {user !== null ? (
                 <>You&apos;re already logged in.</>
               ) : (
                 currentOutlet
