@@ -3,6 +3,12 @@ export enum UserStatus {
   Inactive,
 }
 
+export enum UserState {
+  Unverified,
+  Normal,
+  Admin,
+}
+
 export default interface User {
   name: string;
   nickname: string;
@@ -10,6 +16,7 @@ export default interface User {
   profilePicture: string | null;
   id: number;
   status: UserStatus;
+  state: UserState;
 }
 
 export type NewUser = Pick<
