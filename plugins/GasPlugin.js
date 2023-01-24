@@ -147,7 +147,7 @@ class GasPlugin {
     const plugin = { name: "GasPlugin" };
     const compilationHook = (
       /** @type {import("webpack").Compilation} */ compilation,
-      /** @type {} */ { normalModuleFactory }
+      /** @type {any} */ { normalModuleFactory }
     ) => {
       const gasDependencyTemplate = new GasDependency.Template({
         comment: this.options.comment,
