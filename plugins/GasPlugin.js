@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * From https://npmjs.com/package/gas-webpack-plugin
  */
@@ -8,7 +10,6 @@ import minimatch from "minimatch";
 import { isAbsolute, resolve } from "path";
 import slash from "slash";
 import webpackSources from "webpack-sources";
-// eslint-disable-next-line import/extensions
 import Dependency from "webpack/lib/Dependency.js";
 
 const { RawSource, SourceMapSource } = webpackSources;
@@ -19,6 +20,12 @@ const defaultOptions = {
   include: ["**/*"],
 };
 
+/**
+ * @param {any} compilation
+ * @param {import("webpack").Chunk} chunk
+ * @param {string} filename
+ * @param {Map<import("webpack").Module, any>} entryFunctions
+ */
 function gasify(compilation, chunk, filename, entryFunctions) {
   const asset = compilation.assets[filename];
   let source;
@@ -29,7 +36,7 @@ function gasify(compilation, chunk, filename, entryFunctions) {
     map = sourceAndMap.map;
   } else {
     source = asset.source();
-    map = typeof asset.map === "function" ? asset.map() : null;
+    map = typeof asset.map === "function" ? asset.map({}) : null;
   }
 
   const entries = compilation.chunkGraph
@@ -59,6 +66,9 @@ function gasify(compilation, chunk, filename, entryFunctions) {
 }
 
 class GasDependency extends Dependency {
+  /**
+   * @param {import("webpack").Module} m
+   */
   constructor(m) {
     super();
     this.m = m;
@@ -78,6 +88,10 @@ GasDependency.Template = class GasDependencyTemplate {
     return minimatch(slash(target), slash(pattern));
   }
 
+  /**
+   * @param {any} dep
+   * @param {any} source
+   */
   apply(dep, source) {
     const module = dep.m;
     if (
@@ -109,12 +123,19 @@ GasDependency.Template = class GasDependencyTemplate {
 };
 
 class GasPlugin {
+  /**
+   * @param {Partial<typeof defaultOptions>} options
+   */
   constructor(options) {
     this.options = { ...defaultOptions, ...(options || {}) };
   }
 
+  /**
+   * @param {import("webpack").Compiler} compiler
+   */
   apply(compiler) {
     const { context } = compiler.options;
+    if (!context) throw new Error("Cannot get context.");
     const autoGlobalExportsFilePatterns =
       this.options.autoGlobalExportsFiles.map((file) =>
         isAbsolute(file) ? file : resolve(context, file)
@@ -124,13 +145,17 @@ class GasPlugin {
     );
 
     const plugin = { name: "GasPlugin" };
-    const compilationHook = (compilation, { normalModuleFactory }) => {
+    const compilationHook = (
+      /** @type {import("webpack").Compilation} */ compilation,
+      /** @type {} */ { normalModuleFactory }
+    ) => {
       const gasDependencyTemplate = new GasDependency.Template({
         comment: this.options.comment,
         autoGlobalExportsFilePatterns,
         includePatterns,
       });
 
+      // @ts-ignore The webpack TS declarations seem to be a bit wrong.
       compilation.dependencyTemplates.set(GasDependency, gasDependencyTemplate);
 
       const handler = (parser) => {
