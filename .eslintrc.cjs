@@ -65,5 +65,7 @@ module.exports = {
         minimumDescriptionLength: 10,
       },
     ],
+    "class-methods-use-this": 0,
+    "no-console": 0, // TODO: Remove and fix on production
   },
 };
