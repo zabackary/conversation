@@ -2,6 +2,7 @@
 export function doGet() {
   const title = "Conversation";
   const fileName = "index.html";
+  console.log("doing get");
   return HtmlService.createHtmlOutputFromFile(fileName)
     .setTitle(title)
     .addMetaTag(

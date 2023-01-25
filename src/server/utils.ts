@@ -1,10 +1,17 @@
-import ejs from "ejs";
-
-// eslint-disable-next-line import/prefer-default-export
-export function template(file: string, data: ejs.Data) {
-  const fileContent = HtmlService.createHtmlOutputFromFile(file).getContent();
-  const rendered = ejs.render(fileContent, data, {
-    filename: file,
-  });
-  return rendered;
+/* eslint-disable import/prefer-default-export */
+/**
+ * https://stackoverflow.com/a/64123628
+ *
+ * @param value The value to check
+ * @param enumObject The Enum to check in
+ * @returns The value or `undefined` if it's not in the enum
+ */
+export function keepIfInEnum<T>(
+  value: string,
+  enumObject: { [key: string]: T }
+) {
+  if (Object.values(enumObject).includes(value as unknown as T)) {
+    return value as unknown as T;
+  }
+  return undefined;
 }
