@@ -124,7 +124,7 @@ GasDependency.Template = class GasDependencyTemplate {
 
 class GasPlugin {
   /**
-   * @param {Partial<typeof defaultOptions>} options
+   * @param {Partial<typeof defaultOptions>} [options]
    */
   constructor(options) {
     this.options = { ...defaultOptions, ...(options || {}) };
