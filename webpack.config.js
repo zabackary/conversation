@@ -74,7 +74,7 @@ const build = (config) => {
       extensions: [".js", ".ts", ".tsx", ".jsx"],
     },
     optimization:
-      env === "local"
+      env === "local" || env === "development"
         ? {}
         : {
             minimize: true,
@@ -84,7 +84,9 @@ const build = (config) => {
                 extractComments: false,
                 terserOptions: {
                   ecma: 2020,
-                  compress: true,
+                  compress: {
+                    drop_console: false,
+                  },
                   mangle: {
                     reserved: ["globals"],
                     keep_fnames: true, // Easier debugging in the browser
@@ -196,15 +198,12 @@ const build = (config) => {
                 // eslint-disable-next-line no-param-reassign
                 resource.request = resource.request.replace(
                   "network/default_backend",
-                  "network/mock" // TODO: Needs to be changed to "network/gas" once the backend is done.
+                  "network/gas"
                 );
               }
             ),
             new HtmlInlineScriptPlugin(),
-            new GasPlugin({
-              comments: false,
-              includePatterns: "**/server.ts",
-            }),
+            new GasPlugin(),
           ]
     ),
     devtool: env === "production" ? "source-map" : "cheap-module-source-map",
