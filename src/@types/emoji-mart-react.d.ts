@@ -254,5 +254,5 @@ declare module "@emoji-mart/react" {
    * The Emoji component
    */
   const EmojiPicker: FunctionComponent<EmojiPickerProps>;
-  export = EmojiPicker;
+  export default EmojiPicker;
 }
