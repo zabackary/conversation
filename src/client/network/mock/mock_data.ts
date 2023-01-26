@@ -4,7 +4,7 @@ import Message, {
   ServiceMessageFormat,
 } from "../../../model/message";
 import Service from "../../../model/service";
-import User, { UserStatus } from "../../../model/user";
+import User, { UserState, UserStatus } from "../../../model/user";
 import {
   CleanDispatchableSubscribable,
   createCleanDispatchableSubscribable,
@@ -27,6 +27,7 @@ export const users = {
     profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
     id: 0,
     status: UserStatus.Active,
+    state: UserState.Normal,
   }),
   alice: createCleanDispatchableSubscribable<User>({
     name: "Alice Surname",
@@ -35,6 +36,7 @@ export const users = {
     profilePicture: "https://www.w3schools.com/howto/img_avatar2.png", // From w3schools
     id: 1,
     status: UserStatus.Inactive,
+    state: UserState.Normal,
   }),
   eve: createCleanDispatchableSubscribable<User>({
     name: "Eve Familyname",
@@ -43,6 +45,7 @@ export const users = {
     profilePicture: null, // None on purpose
     id: 2,
     status: UserStatus.Active,
+    state: UserState.Normal,
   }),
 } satisfies Record<string, CleanDispatchableSubscribable<User>>;
 
