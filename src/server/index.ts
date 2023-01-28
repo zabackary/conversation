@@ -2,9 +2,9 @@ import apiCall from "./api";
 import test from "./test";
 import { doGet } from "./webapp";
 
-global.doGet = doGet;
-global.apiCall = apiCall;
-global.test = test;
+topLevelFunction.doGet = doGet;
+topLevelFunction.apiCall = apiCall;
+topLevelFunction.test = test;
 
 export interface ServerGlobals {
   doGet: typeof doGet;
