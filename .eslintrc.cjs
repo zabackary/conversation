@@ -46,7 +46,12 @@ module.exports = {
     "@typescript-eslint/no-use-before-define": [2],
     "react/jsx-filename-extension": [1, { extensions: [".tsx"] }],
     "no-shadow": 0,
-    "@typescript-eslint/no-shadow": [2],
+    "@typescript-eslint/no-shadow": [
+      2,
+      {
+        allow: ["_"],
+      },
+    ],
     "react/require-default-props": 0,
     "react/prop-types": 0,
     "@typescript-eslint/no-unused-vars": [

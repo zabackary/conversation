@@ -1,26 +1,61 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import { defineConfig } from "vite";
-import { createHtmlPlugin } from "vite-plugin-html";
+import react from "@vitejs/plugin-react";
+import { fileURLToPath } from "node:url";
+import { defineConfig, loadEnv } from "vite";
+import checker from "vite-plugin-checker";
+import gasTopLevel from "./plugins/gasTopLevel";
+import inlineScript from "./plugins/inlineScript";
+import reactAxe from "./plugins/reactAxe";
 
-const env = process.env.NODE_ENV || "production";
-
-export default defineConfig({
-  root: "src",
-  build: {
-    // Relative to the root
-    outDir: "../dist",
-  },
-  plugins: [
-    createHtmlPlugin({
-      template: "./client/index.html",
-      inject: {
-        data: {
-          title:
-            env === "production"
-              ? "Conversation"
-              : `Conversation [${env.toUpperCase()}]`,
+export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  return {
+    build: {
+      // Relative to the root
+      outDir: "dist",
+      assetsDir: "",
+      rollupOptions: {
+        input: {
+          server: fileURLToPath(
+            new URL("./src/server/index.ts", import.meta.url)
+          ),
+          client: fileURLToPath(new URL("./index.html", import.meta.url)),
         },
       },
-    }),
-  ],
+      chunkSizeWarningLimit: 999999,
+    },
+    resolve: {
+      alias: [
+        {
+          find: /network\/default_backend(\.ts)?/,
+          replacement: `network/${
+            env.NODE_ENV === "production" ? "gas/index.ts" : "mock/index.ts"
+          }`,
+        },
+      ],
+    },
+    plugins: [
+      react({
+        include: "**/*.{jsx,tsx}",
+      }),
+      checker({
+        typescript: {
+          tsconfigPath: "./tsconfig.json",
+        },
+        eslint: {
+          lintCommand: "eslint",
+        },
+      }),
+      reactAxe(),
+      ...(command === "serve"
+        ? []
+        : [
+            gasTopLevel({
+              entry: /src\/server\/index.ts/,
+              distEntry: /server/,
+            }),
+            inlineScript(),
+          ]),
+    ],
+  };
 });
