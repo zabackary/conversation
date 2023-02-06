@@ -72,5 +72,7 @@ module.exports = {
     ],
     "class-methods-use-this": 0,
     "no-console": 0, // TODO: Remove and fix on production
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": 1,
   },
 };
