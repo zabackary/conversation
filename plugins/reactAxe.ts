@@ -9,14 +9,17 @@ export default function reactAxe(): PluginOption {
     name: "react-axe",
     transform: (source, id) => {
       if (!/client\/index.tsx/.test(id)) return source;
-      const imports = /^[^]*?(?=\r?\n\r?\n)/.exec(source)?.[0];
-      const code = /(?<=\r?\n\r?\n)[^]*$/.exec(source)?.[0];
-      return `${imports}
+      const regex =
+        /^((?:import(?:[ \n\t]*(?:[^ \n\t{}]+[ \n\t]*,?)?(?:[ \n\t]*\{(?:[ \n\t]*[^ \n\t"'{}]+[ \n\t]*,?)+\})?[ \n\t]*)from[ \n\t]*(?:['"])(?:[^'"\n]+)(?:['"]);?\W*)*)([^]*)/.exec(
+          source
+        );
+      if (!regex) throw new Error("Cannot find imports in file.");
+      return `${regex[1]}
 import ReactDOM from "react-dom/client";
 import axe from "@axe-core/react";
 
 axe(React, ReactDOM, 1000);
-${code}`;
+${regex[2]}`;
     },
     apply: "serve",
   };
