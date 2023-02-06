@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { defineConfig, loadEnv } from "vite";
 import checker from "vite-plugin-checker";
 import gasTopLevel from "./plugins/gasTopLevel";
+import gasUpload from "./plugins/gasUpload";
 import inlineScript from "./plugins/inlineScript";
 import reactAxe from "./plugins/reactAxe";
 
@@ -19,7 +20,11 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
           server: fileURLToPath(
             new URL("./src/server/index.ts", import.meta.url)
           ),
-          client: fileURLToPath(new URL("./index.html", import.meta.url)),
+          ...(env.VITE_ONLYSERVER
+            ? {}
+            : {
+                client: fileURLToPath(new URL("./index.html", import.meta.url)),
+              }),
         },
       },
       chunkSizeWarningLimit: 999999,
@@ -47,15 +52,16 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
         },
       }),
       reactAxe(),
-      ...(command === "serve"
-        ? []
-        : [
+      ...(command === "build"
+        ? [
             gasTopLevel({
               entry: /src\/server\/index.ts/,
               distEntry: /server/,
             }),
             inlineScript(),
-          ]),
+          ]
+        : []),
+      ...(env.VITE_UPLOADONCOMPLETE ? [gasUpload()] : []),
     ],
   };
 });
