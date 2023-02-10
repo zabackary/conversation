@@ -155,12 +155,13 @@ export default function LoginRoute() {
                   }}
                 />
               ) : null}
-              <span
+              <Box
+                component="span"
                 style={{ visibility: loading ? "hidden" : "visible" }}
                 aria-hidden={loading}
               >
                 Sign In
-              </span>
+              </Box>
             </Button>
           </Grid>
         </Grid>
