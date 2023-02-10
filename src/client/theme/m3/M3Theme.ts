@@ -1001,6 +1001,15 @@ export const getThemedComponents = (
           },
         },
       },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: "24px",
+            paddingTop: "8px",
+            paddingBottom: "16px",
+          },
+        },
+      },
     },
   };
 };
