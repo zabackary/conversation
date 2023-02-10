@@ -16,8 +16,10 @@
     {
       "type": "npm",
       "script": "build",
-      "group": "build",
-      "problemMatcher": ["$ts-checker-webpack", "$ts-checker-eslint-webpack"]
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
     },
     {
       "type": "npm",
@@ -27,15 +29,34 @@
     },
     {
       "type": "npm",
-      "script": "local",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "script": "serve",
+      "group": "build",
       "isBackground": true,
       "problemMatcher": [
-        "$ts-checker-webpack-watch",
-        "$ts-checker-eslint-webpack-watch"
+        {
+          "owner": "typescript",
+          "source": "Typescript",
+          "fileLocation": "absolute",
+          "applyTo": "allDocuments",
+          "background": {
+            "activeOnStart": true
+            // "beginsPattern": "sd",
+            // "endsPattern": " > "
+          },
+          "pattern": [
+            {
+              "regexp": "(ERROR|WARNING)\\(TypeScript\\)  (.*)",
+              "severity": 1,
+              "message": 2
+            },
+            {
+              "regexp": "^ FILE  (.*):(\\d*):(\\d*)$",
+              "file": 1,
+              "line": 2,
+              "column": 3
+            }
+          ]
+        }
       ]
     }
   ]
