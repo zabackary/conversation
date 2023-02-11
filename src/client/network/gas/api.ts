@@ -115,7 +115,11 @@ export default class ApiManager {
       },
       (response) => {
         if (response.error) console.error(response.error);
-        if (response.response) callback(response.response);
+        // Hi me! If something went wrong, here it is. The server returns type
+        // `any` but I've casted it to the correct type, voiding the type
+        // safety. Sorry for any trouble I've caused you in the future!
+        if (response.response)
+          callback(response.response as Parameters<typeof callback>[0]);
       },
     ]);
     return () => {
