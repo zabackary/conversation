@@ -1,12 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import Channel, { DmChannel, PublicChannelListing } from "../../../model/channel";
+import Channel, {
+  DmChannel,
+  PublicChannelListing,
+} from "../../../model/channel";
 import User, { NewUser, UserStatus } from "../../../model/user";
+import { ApiSubscriptionType } from "../../../shared/apiSubscriptions";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   Subscribable,
 } from "../network_definitions";
+import { createSubscribable } from "../utils";
+import ApiManager from "./api";
 
 // TODO: Implement this, and remove the eslint disables up top.
 export default class GASBackend implements NetworkBackend {
@@ -22,8 +28,16 @@ export default class GASBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getUser(): Subscribable<User> {
-    throw new Error("Method not implemented.");
+  getUser(id?: number): Subscribable<User | null> {
+    return createSubscribable<User>((next) => {
+      ApiManager.getInstance().addSubscription(
+        ApiSubscriptionType.User,
+        id ?? null,
+        (response) => {
+          next(response);
+        }
+      );
+    }, null);
   }
 
   getStatus(username: string): Subscribable<UserStatus | null> {

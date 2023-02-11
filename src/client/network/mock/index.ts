@@ -96,7 +96,8 @@ export default class MockBackend implements NetworkBackend {
     });
   }
 
-  getUser(): Subscribable<User> {
+  getUser(id?: number): Subscribable<User> {
+    if (id) throw new Error("mock doesn't support getting users by ID yet");
     return mapSubscribable(loggedInUser.value, (user) =>
       user === null ? new LoggedOutException() : user
     );

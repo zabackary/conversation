@@ -59,11 +59,12 @@ export interface CleanSubscribable<T> extends Subscribable<T> {
 
 export default interface NetworkBackend {
   /**
-   * Gets the logged in user.
+   * Gets the logged in user or get by ID.
    *
-   * @returns A subscribable echoing `User` or `null` on logged out.
+   * @returns A subscribable echoing `User`, `null` on loading, or errors on
+   * logged out.
    */
-  getUser(): Subscribable<User | null>;
+  getUser(id?: number): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.

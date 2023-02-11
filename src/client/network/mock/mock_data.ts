@@ -369,7 +369,5 @@ export const channels = {
   },
 } satisfies Record<number, Channel>;
 
-export const loggedInUser = createCleanDispatchableSubscribable<User | null>(
-  null,
-  true
-);
+export const loggedInUser =
+  users.bob as CleanDispatchableSubscribable<User | null>;
