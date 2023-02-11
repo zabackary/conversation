@@ -1,3 +1,6 @@
+import InfoIcon from "@mui/icons-material/Info";
+import PeopleIcon from "@mui/icons-material/People";
+import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import Message from "../../../model/message";
 import useBackend from "../../hooks/useBackend";
@@ -18,6 +21,8 @@ export default function Chat({ channelId }: Props) {
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [notFound, setNotFound] = useState(false);
+  const [peopleOpen, setPeopleOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
   const channel = useChannel(channelId);
   const user = useUser();
   useEffect(() => {
@@ -62,7 +67,27 @@ export default function Chat({ channelId }: Props) {
   }, [backend, channelId]);
   return (
     <>
-      <ConversationAppBar title={channel?.name ?? ""} />
+      <ConversationAppBar
+        title={channel?.name ?? ""}
+        items={
+          <>
+            <IconButton
+              onClick={() => setInfoOpen((value) => !value)}
+              color={infoOpen ? "secondary" : undefined}
+              size="large"
+            >
+              <InfoIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => setPeopleOpen((value) => !value)}
+              color={peopleOpen ? "secondary" : undefined}
+              size="large"
+            >
+              <PeopleIcon />
+            </IconButton>
+          </>
+        }
+      />
       {!notFound ? (
         <ChatView
           messages={messages ?? undefined}
