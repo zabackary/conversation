@@ -16,6 +16,9 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
       outDir: "dist",
       assetsDir: "",
       rollupOptions: {
+        output: {
+          manualChunks: {},
+        },
         input: {
           server: fileURLToPath(
             new URL("./src/server/index.ts", import.meta.url)
