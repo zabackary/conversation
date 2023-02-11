@@ -9,6 +9,7 @@ import useBackend from "./useBackend";
 export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
   const subscribable = useMemo(getSubscribable, [getSubscribable]);
   // TODO: Figure out how to use `useSyncExternalStore`; it doesn't work and I don't know why
+  // Possiblely I need to use `structuredClone` or something and caching?
   const [value, setValue] = useState<T | Error | null>(
     subscribable.getSnapshot()
   );
