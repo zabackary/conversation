@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Message from "../../../model/message";
 import {
   ChannelBackend,

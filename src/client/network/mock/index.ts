@@ -1,5 +1,4 @@
 /* eslint-disable no-cond-assign */
-/* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
 import Channel, {
   DmChannel,

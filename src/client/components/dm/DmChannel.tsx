@@ -55,7 +55,6 @@ export default function DmChannel({ channelId }: DmChannelProps) {
         channelBackend?.disconnect();
       };
     }
-    // eslint-disable-next-line no-console
     console.error("Unable to render Chat due to unavalible backend.");
     return () => {
       // Noop
