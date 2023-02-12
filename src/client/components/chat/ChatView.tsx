@@ -48,7 +48,19 @@ export default function ChatView({
 
   return (
     <Box sx={sx} ref={containerRef}>
-      {messages ? <ChatList messages={messages} /> : <ChatListSkeleton />}
+      {messages ? (
+        <ChatList
+          messages={messages}
+          sx={{
+            pb: {
+              xs: "104px",
+              sm: "24px",
+            },
+          }}
+        />
+      ) : (
+        <ChatListSkeleton />
+      )}
       <ChatInput
         onMessageSend={(event) => {
           onSend(event);
