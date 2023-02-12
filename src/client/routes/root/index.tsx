@@ -14,7 +14,7 @@ export default function RootRoute() {
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   return (
-    <Stack direction={isMobile ? "column" : "row"}>
+    <Stack direction={isMobile ? "column" : "row"} height="100%">
       <ConversationNavigationRail mobile={isMobile} />
       <SwitchTransition>
         <Grow key={match.id} timeout={200} unmountOnExit>
