@@ -56,7 +56,11 @@ export default function ResponsiveDrawer({
     <>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+          display: "flex",
+        }}
       >
         <Drawer
           variant="temporary"
