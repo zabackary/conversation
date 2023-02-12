@@ -5,12 +5,13 @@ export interface LoadingButtonProps extends ButtonProps {
   loading?: boolean;
 }
 
-const LoadingButton = forwardRef<HTMLElement, LoadingButtonProps>(
-  ({ loading, children, sx, ...props }) => {
+const LoadingButton = forwardRef<HTMLButtonElement, LoadingButtonProps>(
+  ({ loading, children, sx, ...props }, ref) => {
     return (
       <Button
         sx={{ position: "relative", ...sx }}
         disabled={loading}
+        ref={ref}
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
       >
