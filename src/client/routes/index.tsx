@@ -9,6 +9,7 @@ import LoginSettingsRoute from "./login/settings";
 import RootRoute from "./root";
 import ChannelListRoute from "./root/channels";
 import ChannelRoute from "./root/channels/channel";
+import ChannelJoinScreen from "./root/channels/channel/join";
 import NoChannelSelectedRoute from "./root/channels/NoChannelSelectedRoute";
 import DashboardRoute from "./root/dashboard";
 import DmListRoute from "./root/dms";
@@ -50,6 +51,10 @@ const routes: RouteObject[] = [
           {
             index: true,
             element: <NoChannelSelectedRoute />,
+          },
+          {
+            path: "join",
+            element: <ChannelJoinScreen />,
           },
           {
             path: ":channelId",

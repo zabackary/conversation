@@ -17,7 +17,7 @@ import {
 import { useId, useState } from "react";
 import { ConversationAppBar } from "../../../../../components/layout";
 
-export default function JoinScreen() {
+export default function ChannelJoinScreen() {
   const [tab, setTab] = useState<number | null>(0);
   const handleTabChange =
     (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
