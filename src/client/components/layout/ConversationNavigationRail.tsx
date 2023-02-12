@@ -72,7 +72,7 @@ function ConversationNavigationRailAction({
   return rail ? (
     <NavigationRailAction
       label={route.label}
-      icon={selected ? route.filledIcon : route.icon}
+      icon={route.icon}
       value={route.id}
       component="a"
       // @ts-ignore This really does work. It's a bug in `styled()` I think
@@ -84,7 +84,9 @@ function ConversationNavigationRailAction({
   ) : (
     <BottomNavigationAction
       label={route.label}
-      icon={selected ? route.filledIcon : route.icon}
+      // TODO: Find a way where we can have the filled/outlined icon switch and
+      // still have the up/down animation
+      icon={route.icon}
       value={route.id}
       component="a"
       // @ts-ignore This really does work. It's a bug in `styled()` I think
