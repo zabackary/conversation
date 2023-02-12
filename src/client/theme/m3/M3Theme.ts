@@ -750,7 +750,7 @@ export const getThemedComponents = (
             // color: theme.palette.onSurface.main,
           },
           paper: {
-            border: "0px",
+            // border: "0px",
             // background: theme.palette.mode == 'light' ? lighten(theme.palette.primary.main, 0.85) : darken(theme.palette.primary.main, 0.8),
             // color: theme.palette.surface.contrastText,
             background: theme.palette.surface.main,
