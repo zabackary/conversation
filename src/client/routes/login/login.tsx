@@ -3,7 +3,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
   Alert,
   AlertTitle,
-  CircularProgress,
   Collapse,
   IconButton,
   InputAdornment,
@@ -24,6 +23,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
 
 export default function LoginRoute() {
@@ -138,31 +138,14 @@ export default function LoginRoute() {
             </Button>
           </Grid>
           <Grid item>
-            <Button
+            <LoadingButton
               type="submit"
               variant="filled"
-              sx={{ mt: 3, mb: 2, position: "relative" }}
-              disabled={loading}
+              sx={{ mt: 3, mb: 2 }}
+              loading={loading}
             >
-              {loading ? (
-                <CircularProgress
-                  color="inherit"
-                  size={16}
-                  sx={{
-                    position: "absolute",
-                    top: "calc(50% - 8px)",
-                    left: "calc(50% - 8px)",
-                  }}
-                />
-              ) : null}
-              <Box
-                component="span"
-                style={{ visibility: loading ? "hidden" : "visible" }}
-                aria-hidden={loading}
-              >
-                Sign In
-              </Box>
-            </Button>
+              Sign In
+            </LoadingButton>
           </Grid>
         </Grid>
         <Link
