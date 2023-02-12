@@ -1,7 +1,10 @@
-import { Grow, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Fade, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
-import { ConversationNavigationRail } from "../../components/layout";
+import {
+  ConversationNavigationRail,
+  navigationRailWidth,
+} from "../../components/layout";
 import useRequireLogin from "../../hooks/useRequireLogin";
 import useRouteForward from "../../hooks/useRouteForward";
 
@@ -15,17 +18,19 @@ export default function RootRoute() {
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   return (
     <Stack direction={isMobile ? "column" : "row"} height="100%">
-      <ConversationNavigationRail mobile={isMobile} />
+      <Box width={navigationRailWidth}>
+        <ConversationNavigationRail mobile={isMobile} />
+      </Box>
       <SwitchTransition>
-        <Grow key={match.id} timeout={200} unmountOnExit>
+        <Fade key={match.id} timeout={200} unmountOnExit>
           <Stack
             direction={isMobile ? "column" : "row"}
             height="100%"
-            width="100%"
+            width={`calc(100% - ${navigationRailWidth}px)`}
           >
             {currentOutlet}
           </Stack>
-        </Grow>
+        </Fade>
       </SwitchTransition>
     </Stack>
   );

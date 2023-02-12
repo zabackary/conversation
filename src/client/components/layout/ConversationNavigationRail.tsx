@@ -16,6 +16,8 @@ import { ReactNode } from "react";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
 
+export const navigationRailWidth = 88 as const;
+
 interface Route {
   label: string;
   href: string;
@@ -122,7 +124,7 @@ export default function ConversationNavigationRail({
   ) : (
     <NavigationRail
       value={selected?.id}
-      sx={{ paddingTop: "64px", position: "sticky", top: "0" }}
+      sx={{ paddingTop: "64px", position: "fixed", top: "0" }}
       showLabels
     >
       {routes.map((route) => (

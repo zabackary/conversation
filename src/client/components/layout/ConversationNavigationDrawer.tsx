@@ -69,28 +69,32 @@ export default function ResponsiveDrawer({
           ModalProps={{
             keepMounted: true,
           }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": {
+          PaperProps={{
+            sx: {
               boxSizing: "border-box",
               width: drawerWidth,
             },
+          }}
+          sx={{
+            display: { xs: "block", sm: "none" },
           }}
         >
           {drawer}
         </Drawer>
         <Drawer
           variant="permanent"
+          PaperProps={{
+            sx: {
+              boxSizing: "border-box",
+              width: drawerWidth,
+              paddingTop: "64px",
+              left: "unset",
+            },
+          }}
           sx={{
             display: { xs: "none", sm: "block" },
             position: "sticky",
             top: "0",
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-              paddingTop: "64px",
-              position: "unset",
-            },
           }}
           open
         >
