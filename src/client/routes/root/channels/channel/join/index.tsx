@@ -7,22 +7,27 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
-  Button,
   Grid,
   MenuItem,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useId, useState } from "react";
+import { FormEvent, SyntheticEvent, useId, useState } from "react";
 import { ConversationAppBar } from "../../../../../components/layout";
+import LoadingButton from "../../../../../components/LoadingButton";
 
 export default function ChannelJoinScreen() {
   const [tab, setTab] = useState<number | null>(0);
+  const [loading, setLoading] = useState(false);
   const handleTabChange =
-    (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setTab(isExpanded ? panel : null);
+    (panel: number) => (event: SyntheticEvent, isExpanded: boolean) => {
+      if (!loading) setTab(isExpanded ? panel : null);
     };
+  const handlePassphraseSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+  };
   const ids = [useId(), useId(), useId()];
   return (
     <>
@@ -61,7 +66,7 @@ export default function ChannelJoinScreen() {
           </Stack>
         </AccordionSummary>
         <AccordionDetails>
-          <form>
+          <form onSubmit={handlePassphraseSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <Typography>
@@ -79,7 +84,9 @@ export default function ChannelJoinScreen() {
                 <TextField fullWidth label="Passphrase" />
               </Grid>
               <Grid item xs={12}>
-                <Button variant="filled">Join</Button>
+                <LoadingButton variant="filled" type="submit" loading={loading}>
+                  Join
+                </LoadingButton>
               </Grid>
             </Grid>
           </form>
