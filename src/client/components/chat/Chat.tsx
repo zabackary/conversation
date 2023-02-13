@@ -1,6 +1,17 @@
+import CloseIcon from "@mui/icons-material/Close";
 import InfoIcon from "@mui/icons-material/Info";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PeopleIcon from "@mui/icons-material/People";
-import { IconButton } from "@mui/material";
+import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
+import {
+  Drawer,
+  IconButton,
+  styled,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import Message from "../../../model/message";
 import useBackend from "../../hooks/useBackend";
@@ -8,23 +19,52 @@ import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/network_definitions";
 import { ConversationAppBar } from "../layout";
+import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import ChatView from "./ChatView";
 
-interface Props {
+const sideSheetWidth = 300;
+
+const SideSheetToolbar = styled(Toolbar)(({ theme }) => ({
+  borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+const MainContainer = styled("div", {
+  shouldForwardProp: (prop) => prop !== "open",
+})<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  flexGrow: 1,
+  transition: theme.transitions.create("margin", {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginRight: sideSheetWidth,
+  }),
+}));
+
+export interface ChatProps {
   channelId: number;
 }
 
-export default function Chat({ channelId }: Props) {
+export default function Chat({ channelId }: ChatProps) {
   const backend = useBackend();
   const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
   const [messages, setMessages] = useState<Message[] | null>(null);
   const [notFound, setNotFound] = useState(false);
-  const [peopleOpen, setPeopleOpen] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
+  const [activeSidebar, setActiveSidebar] = useState<"people" | "info" | null>(
+    null
+  );
   const channel = useChannel(channelId);
   const user = useUser();
+  const theme = useTheme();
+  const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   useEffect(() => {
     let valid = true;
     let cancel: (() => void) | null = null;
@@ -68,37 +108,121 @@ export default function Chat({ channelId }: Props) {
     <>
       <ConversationAppBar
         title={channel?.name ?? ""}
+        sx={
+          !isMobile && activeSidebar
+            ? {
+                width: {
+                  sm: `calc(100% - ${drawerWidth + 88 + sideSheetWidth}px)`,
+                },
+                mr: `${sideSheetWidth}px`,
+              }
+            : {}
+        }
         items={
           <>
             <IconButton
-              onClick={() => setInfoOpen((value) => !value)}
-              color={infoOpen ? "secondary" : undefined}
+              onClick={() =>
+                setActiveSidebar((current) =>
+                  current === "info" ? null : "info"
+                )
+              }
+              color={activeSidebar === "info" ? "secondary" : undefined}
               size="large"
             >
-              <InfoIcon />
+              {activeSidebar === "info" ? <InfoIcon /> : <InfoOutlinedIcon />}
             </IconButton>
             <IconButton
-              onClick={() => setPeopleOpen((value) => !value)}
-              color={peopleOpen ? "secondary" : undefined}
+              onClick={() =>
+                setActiveSidebar((current) =>
+                  current === "people" ? null : "people"
+                )
+              }
+              color={activeSidebar === "people" ? "secondary" : undefined}
               size="large"
             >
-              <PeopleIcon />
+              {activeSidebar === "people" ? (
+                <PeopleIcon />
+              ) : (
+                <PeopleOutlineIcon />
+              )}
             </IconButton>
           </>
         }
       />
-      {!notFound ? (
-        <ChatView
-          messages={messages ?? undefined}
-          username={user?.nickname}
-          channelName={channel?.name}
-          onSend={(message) => {
-            channelBackend?.send(message);
-          }}
-        />
-      ) : (
-        "Can't find that"
-      )}
+      <MainContainer open={!isMobile && !!activeSidebar}>
+        {!notFound ? (
+          <ChatView
+            messages={messages ?? undefined}
+            username={user?.nickname}
+            channelName={channel?.name}
+            onSend={(message) => {
+              channelBackend?.send(message);
+            }}
+          />
+        ) : (
+          "Can't find that"
+        )}
+      </MainContainer>
+      <Drawer
+        variant={isMobile ? "temporary" : "persistent"}
+        anchor={isMobile ? "bottom" : "right"}
+        open={activeSidebar === "info"}
+        onClose={() => setActiveSidebar(null)}
+        sx={
+          isMobile
+            ? {
+                "& .MuiDrawer-paper": {
+                  minHeight: 360,
+                },
+              }
+            : {
+                width: sideSheetWidth,
+                flexShrink: 0,
+                "& .MuiDrawer-paper": {
+                  width: sideSheetWidth,
+                },
+              }
+        }
+      >
+        <SideSheetToolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Channel info
+          </Typography>
+          <IconButton onClick={() => setActiveSidebar(null)}>
+            <CloseIcon />
+          </IconButton>
+        </SideSheetToolbar>
+      </Drawer>
+      <Drawer
+        variant={isMobile ? "temporary" : "persistent"}
+        anchor={isMobile ? "bottom" : "right"}
+        open={activeSidebar === "people"}
+        onClose={() => setActiveSidebar(null)}
+        sx={
+          isMobile
+            ? {
+                "& .MuiDrawer-paper": {
+                  minHeight: 360,
+                },
+              }
+            : {
+                width: sideSheetWidth,
+                flexShrink: 0,
+                "& .MuiDrawer-paper": {
+                  width: sideSheetWidth,
+                },
+              }
+        }
+      >
+        <SideSheetToolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            People
+          </Typography>
+          <IconButton onClick={() => setActiveSidebar(null)}>
+            <CloseIcon />
+          </IconButton>
+        </SideSheetToolbar>
+      </Drawer>
     </>
   );
 }
