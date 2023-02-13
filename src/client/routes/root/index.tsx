@@ -26,7 +26,9 @@ export default function RootRoute() {
           <Stack
             direction={isMobile ? "column" : "row"}
             height="100%"
-            width={`calc(100% - ${navigationRailWidth}px)`}
+            width={
+              isMobile ? undefined : `calc(100% - ${navigationRailWidth}px)`
+            }
           >
             {currentOutlet}
           </Stack>
