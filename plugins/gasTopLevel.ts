@@ -50,13 +50,14 @@ export default function gasTopLevel(
         const filePath: string = resolve(root, outDir, file[0]);
 
         if (options.distEntry.test(file[0])) {
+          const content = (
+            await readFile(filePath, {
+              encoding: "utf8",
+            })
+          ).trimEnd();
           await writeFile(
             filePath,
-            `${banner}{const ${GLOBAL_IDENTIFIER_NAME}=this;${(
-              await readFile(filePath, {
-                encoding: "utf8",
-              })
-            ).trimEnd()}}\n`
+            `${banner}{const ${GLOBAL_IDENTIFIER_NAME}=this;${content}}\n`
           );
         }
       }
@@ -71,12 +72,10 @@ export default function gasTopLevel(
           return source;
         }
         used = true;
-        const ast = parse(
-          source,
-          Object.assign<ParserOptions, ParserOptions>(options.parserOptions, {
-            sourceType: "unambiguous",
-          })
-        );
+        const ast = parse(source, {
+          ...options.parserOptions,
+          sourceType: "unambiguous",
+        });
         traverse(ast, {
           AssignmentExpression({ node }) {
             if (
