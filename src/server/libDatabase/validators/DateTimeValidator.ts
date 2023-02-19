@@ -16,4 +16,8 @@ export default class DateTimeValidator extends BaseValidator<"string"> {
     if (Number.isNaN(date.getTime())) throw new Error("Date value is invalid");
     return date;
   }
+
+  autoAssign() {
+    return new Date().toISOString();
+  }
 }
