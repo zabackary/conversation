@@ -1,4 +1,30 @@
 import BaseValidator from "./validators/BaseValidator";
+import Unique from "./validators/Unique";
+
+const UNASSIGNED = Symbol("autoAssign: unassigned autoAssign");
+
+function computeAutoAssign<T extends PropertyType>(
+  schema: Property<T>
+): PropertyTypeMap[PropertyType] | typeof UNASSIGNED {
+  const validators = schema.validators ?? [];
+  const autoAssigned = validators
+    .map((validator) => validator.autoAssign())
+    .find((a) => a !== null);
+  if (autoAssigned) {
+    // Yay, one of the validators has a way to auto-assign, we can return.
+    return autoAssigned;
+  }
+  if (
+    schema.primaryKey &&
+    validators.some((validator) => validator instanceof Unique)
+  ) {
+    // The property is a primary key and it must be unique! That means we can
+    // just use the row number to shortcut things when we do lookup.
+    // Right now, it should be unassigned.
+    return UNASSIGNED;
+  }
+  throw new Error("Cannot compute auto-assign");
+}
 
 export interface PropertyTypeMap {
   string: string;
@@ -22,10 +48,15 @@ export interface Property<T extends PropertyType> {
   validators?: BaseValidator<T>[];
 }
 
+type PropertyTypeMapUnassigned<T extends Property<PropertyType>> =
+  T["autoAssign"] extends true
+    ? PropertyTypeMap[T["type"]] | typeof UNASSIGNED
+    : PropertyTypeMap[T["type"]];
+
 export type TypedProperty<T extends Property<PropertyType>> =
   T["nullable"] extends true
-    ? PropertyTypeMap[T["type"]] | null
-    : PropertyTypeMap[T["type"]];
+    ? PropertyTypeMapUnassigned<T> | null
+    : PropertyTypeMapUnassigned<T>;
 
 export type EntityPropertyInitializer<T extends Entity["schema"]> = {
   [P in keyof T]: T[P]["autoAssign"] extends true
@@ -59,7 +90,27 @@ export default abstract class Entity {
   constructor(private sheet: GoogleAppsScript.Spreadsheet.Spreadsheet) {}
 
   initialize(data: EntityPropertyInitializer<this["schema"]>) {
-    // TODO: implement
+    const newProperties: Partial<TypedPropertyData<this["schema"]>> = {};
+    for (const property in data) {
+      if (Object.prototype.hasOwnProperty.call(data, property)) {
+        const value = data[property];
+        if (typeof value === "undefined") {
+          if (!this.schema[property].autoAssign)
+            throw new Error("Must specify value if not undefined");
+          // @ts-ignore It's ok, there's checks.
+          newProperties[property] = computeAutoAssign(this.schema[property]);
+        } else {
+          newProperties[property] = value;
+        }
+      }
+    }
+    // Validation loop for safe cast
+    for (const property in this.schema) {
+      if (!(property in newProperties)) {
+        throw new Error("Incomplete data");
+      }
+    }
+    this.#properties = newProperties as TypedPropertyData<this["schema"]>;
   }
 
   setProperty<T extends keyof this["schema"]>(
@@ -71,8 +122,8 @@ export default abstract class Entity {
     this.unsaved = true;
   }
 
-  save() {
+  save(immediateFlush = true) {
     // TODO: implement
-    SpreadsheetApp.flush();
+    if (immediateFlush) SpreadsheetApp.flush();
   }
 }
