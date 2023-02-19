@@ -14,15 +14,21 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
     build: {
       // Relative to the root
       outDir: "dist",
+      emptyOutDir: !env.VITE_SECONDPASS,
       assetsDir: "",
       rollupOptions: {
         output: {
-          manualChunks: {},
+          chunkFileNames: "[name].js",
+          entryFileNames: "[name].js",
         },
         input: {
-          server: fileURLToPath(
-            new URL("./src/server/index.ts", import.meta.url)
-          ),
+          ...(env.VITE_ONLYCLIENT
+            ? {}
+            : {
+                server: fileURLToPath(
+                  new URL("./src/server/index.ts", import.meta.url)
+                ),
+              }),
           ...(env.VITE_ONLYSERVER
             ? {}
             : {
