@@ -1,7 +1,8 @@
-import { SPREADSHEET_ID } from "../constants";
 import { ArrayElement } from "../utils";
 import Entity, { PropertyType } from "./Entity";
 import Schema from "./Schema";
+
+export const METADATA_SHEET_NAME = "__sheetsDb_metadata";
 
 interface JsonRepresentation {
   tables: {
@@ -18,7 +19,7 @@ interface JsonRepresentation {
   }[];
 }
 
-function createJsonRepresentation(
+export function createJsonRepresentation(
   tables: Record<string, { new (...args: never[]): Entity }>
 ) {
   const output: JsonRepresentation = { tables: [], indices: [] };
@@ -53,7 +54,24 @@ function createJsonRepresentation(
 
 export default function migrateDatabase(
   schema: Schema,
-  spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID)
+  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet
 ) {
-  console.log(JSON.stringify(createJsonRepresentation(schema.entities)));
+  if (!spreadsheet.getSheetByName(METADATA_SHEET_NAME))
+    spreadsheet.insertSheet(METADATA_SHEET_NAME);
+  const sheets = spreadsheet.getSheets();
+  for (const sheet of sheets) {
+    if (sheet.getName() !== METADATA_SHEET_NAME) spreadsheet.deleteSheet(sheet);
+  }
+  for (const newTableClassName in schema.entities) {
+    if (
+      Object.prototype.hasOwnProperty.call(schema.entities, newTableClassName)
+    ) {
+      const NewTable = schema.entities[newTableClassName];
+      const { schema: tableSchema, tableName } = new NewTable(spreadsheet);
+      const sortedSchema = Object.keys(tableSchema).sort();
+      const sheet = spreadsheet.insertSheet(tableName);
+      sheet.appendRow(sortedSchema);
+      sheet.setFrozenRows(1);
+    }
+  }
 }
