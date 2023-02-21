@@ -13,7 +13,7 @@ export class User extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
@@ -32,19 +32,19 @@ export class User extends Entity {
     },
     profilePicture: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
       validators: [new UrlValidator()],
     },
     banner: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
       validators: [new UrlValidator()],
     },
     isService: {
       type: "boolean" as const,
     },
     serviceOwner: {
-      nullable: true,
+      nullable: true as const,
       type: "number" as const,
       foreignKey: "user.id",
     },
@@ -64,7 +64,7 @@ export class Channel extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
@@ -83,7 +83,7 @@ export class Channel extends Entity {
     },
     password: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
     },
   };
 }
@@ -94,7 +94,7 @@ export class UserChannelMap extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
@@ -119,7 +119,7 @@ export class Message extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
@@ -141,7 +141,7 @@ export class Message extends Entity {
     },
     markdown: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
     },
     attachments: {
       type: "string" as const,
@@ -149,7 +149,7 @@ export class Message extends Entity {
     },
     richParts: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
       validators: [new JsonValidator()],
     },
   };
@@ -161,26 +161,27 @@ export class Session extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
     userId: {
       type: "number" as const,
-      nullable: true,
+      nullable: true as const,
       foreignKey: "user.id",
     },
     createdTime: {
       type: "string" as const,
+      autoAssign: true as const,
       validators: [new DateTimeValidator()],
     },
     userAgent: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
     },
     token: {
       type: "string" as const,
-      nullable: true,
+      nullable: true as const,
     },
   };
 }
@@ -191,7 +192,7 @@ export class Invite extends Entity {
   schema = {
     id: {
       type: "number" as const,
-      autoAssign: true,
+      autoAssign: true as const,
       primaryKey: true,
       validators: [new Unique()],
     },
