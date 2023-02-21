@@ -1,0 +1,187 @@
+import {
+  EntityPropertyInitializer,
+  Property,
+  PropertyType,
+  TypedPropertyData,
+} from "./Entity";
+import { spreadsheetToValue, valueToSpreadsheet } from "./mapSpreadsheetValue";
+import migrateDatabase, { createJsonRepresentation } from "./migrateDatabase";
+import Schema from "./Schema";
+import Unique from "./validators/Unique";
+
+export interface DatabaseAccessor<T extends Schema> {
+  migrate: (newSchema: Schema) => boolean;
+  createEntity: EntitiesWrapper<T>;
+
+  /**
+   * Run a pretty simple search algorithm to find exact matches on properties.
+   *
+   * Basic outline of simpleSearch algorithm:
+   *
+   * 1. Get search canidates
+   *
+   *    a. If any property has primaryKey=true and a Unique validator,
+   *       skip ahead and just get the row number from the query. Then
+   *       short-circuit
+   *
+   *    b. Gather a list of "hot text" - e.g. the query converted to
+   *       strings, run a TextFinder on each of them, then find the
+   *       overlapping row numbers. If any property is `Unique`, once a
+   *       match is found, short-circuit.
+   *
+   * 2. Check each canidate to make sure it matches
+   *
+   * 3. Gather the data then return the `Entities`.
+   */
+  simpleSearch: EntitySearch<T>;
+}
+
+type EntitiesWrapper<T extends Schema> = {
+  [Property in keyof T["entities"]]: (
+    data: EntityPropertyInitializer<
+      InstanceType<T["entities"][Property]>["schema"]
+    >
+  ) => InstanceType<T["entities"][Property]>;
+};
+
+type EntitySearch<T extends Schema> = {
+  [Property in keyof T["entities"]]: (
+    data: Partial<
+      TypedPropertyData<InstanceType<T["entities"][Property]>["schema"]>
+    >
+  ) => InstanceType<T["entities"][Property]>[];
+};
+
+export default function loadDatabase<T extends Schema>(
+  spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
+  schema: T
+): DatabaseAccessor<T> {
+  createJsonRepresentation(schema.entities);
+  return {
+    migrate(newSchema) {
+      migrateDatabase(newSchema, spreadsheet);
+      return true;
+    },
+    createEntity: Object.fromEntries(
+      Object.entries(schema.entities).map(([name, Entity]) => [
+        name,
+        (...args) => {
+          const a = new Entity(spreadsheet);
+          a.initialize(...args);
+          return a;
+        },
+      ])
+    ) as EntitiesWrapper<T>,
+
+    simpleSearch: Object.fromEntries(
+      Object.entries(schema.entities).map(([name, Entity]) => [
+        name,
+        (partial) => {
+          // Description of algorithm in interface above.
+
+          // Set up required information
+          const { schema: tableSchema, tableName } = new Entity(spreadsheet);
+          const keys = Object.keys(tableSchema).sort();
+          const sheet = spreadsheet.getSheetByName(tableName);
+          if (!sheet) throw new Error("Can't find sheet");
+
+          // Enumerate properties
+          const properties: [string, Property<PropertyType>][] = [];
+          for (const property in partial) {
+            if (Object.prototype.hasOwnProperty.call(partial, property)) {
+              properties.push([property, tableSchema[property]]);
+            }
+          }
+          const getPropertyRank = (
+            value: [string, Property<PropertyType>]
+          ): 0 | 1 | 2 =>
+            // eslint-disable-next-line no-nested-ternary
+            (value[1].validators ?? []).some(
+              (validator) => validator instanceof Unique
+            )
+              ? value[1].primaryKey && value[1].type === "number"
+                ? 0
+                : 1
+              : 2;
+          properties.sort((a, b) => getPropertyRank(a) - getPropertyRank(b));
+          const rankedProperties = properties.map<
+            [string, Property<PropertyType>, 0 | 1 | 2]
+          >((value) => [...value, getPropertyRank(value)]);
+
+          // Find candidates
+          let candidates: number[] = [];
+          for (const [propertyName, , rank] of rankedProperties) {
+            if (rank === 0) {
+              candidates.push(Number(partial[propertyName]));
+              break;
+            } else if (rank === 1) {
+              const column = sheet
+                .getSheetValues(
+                  2,
+                  keys.indexOf(propertyName) + 1,
+                  sheet.getLastRow() - 1,
+                  1
+                )
+                .flat();
+              candidates.push(
+                column.indexOf(
+                  valueToSpreadsheet(partial[propertyName] ?? null)
+                ) + 1
+              );
+              break;
+            } else {
+              const indices = sheet
+                .createTextFinder(
+                  valueToSpreadsheet(partial[propertyName] ?? null)
+                )
+                .findAll()
+                .map((value) => value.getRowIndex());
+              if (candidates.length === 0) {
+                candidates.push(...indices);
+              } else {
+                candidates = candidates.filter((value) =>
+                  indices.includes(value)
+                );
+              }
+            }
+          }
+
+          // Check!
+          // First is the row index, second is the cached row (to speed things up)
+          const matches: [number, string[]?][] = [];
+          for (const candidate of candidates) {
+            const rowContent = sheet.getSheetValues(
+              candidate,
+              1,
+              1,
+              keys.length
+            )[0];
+            let pass = true;
+            for (const key in partial) {
+              if (Object.prototype.hasOwnProperty.call(partial, key)) {
+                const value = partial[key];
+                if (rowContent[keys.indexOf(key)] !== value) pass = false;
+              }
+            }
+            if (pass) matches.push([candidate, rowContent]);
+          }
+
+          return matches.map((match) => {
+            const rowContent =
+              match[1] ?? sheet.getSheetValues(match[0], 1, 1, keys.length)[0];
+            const entity = new Entity(spreadsheet);
+            entity.initialize(
+              Object.fromEntries(
+                rowContent.map((content, index) => [
+                  keys[index],
+                  spreadsheetToValue(content),
+                ])
+              ) as EntityPropertyInitializer<typeof tableSchema>
+            );
+            return entity;
+          });
+        },
+      ])
+    ) as EntitySearch<T>,
+  };
+}
