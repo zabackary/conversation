@@ -2,7 +2,7 @@ import { valueToSpreadsheet } from "./mapSpreadsheetValue";
 import BaseValidator from "./validators/BaseValidator";
 import Unique from "./validators/Unique";
 
-const UNASSIGNED = Symbol("autoAssign: unassigned autoAssign");
+export const UNASSIGNED = Symbol("autoAssign: unassigned autoAssign");
 
 function computeAutoAssign<T extends PropertyType>(
   schema: Property<T>

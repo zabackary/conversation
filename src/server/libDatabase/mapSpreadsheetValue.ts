@@ -1,10 +1,14 @@
+import { UNASSIGNED } from "./Entity";
+
 const TRUE = "TRUE";
 const FALSE = "FALSE";
 const NULL = "#N/A";
 
 export function valueToSpreadsheet(
-  value: string | number | boolean | null
+  value: string | number | boolean | null | typeof UNASSIGNED
 ): string {
+  if (value === UNASSIGNED)
+    throw new Error("Cannot seralize unassigned to spreadsheet.");
   if (value === true) return TRUE;
   if (value === false) return FALSE;
   if (value === null) return NULL;
