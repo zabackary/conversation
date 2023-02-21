@@ -1,3 +1,4 @@
+import { valueToSpreadsheet } from "./mapSpreadsheetValue";
 import BaseValidator from "./validators/BaseValidator";
 import Unique from "./validators/Unique";
 
@@ -58,10 +59,16 @@ export type TypedProperty<T extends Property<PropertyType>> =
     ? PropertyTypeMapUnassigned<T> | null
     : PropertyTypeMapUnassigned<T>;
 
-export type EntityPropertyInitializer<T extends Entity["schema"]> = {
+/* export type EntityPropertyInitializer<T extends Entity["schema"]> = {
   [P in keyof T]: T[P]["autoAssign"] extends true
     ? undefined
     : TypedProperty<T[P]>;
+}; */
+
+export type EntityPropertyInitializer<T extends Entity["schema"]> = {
+  [Key in keyof T]: T[Key]["autoAssign"] extends true
+    ? undefined
+    : TypedProperty<T[Key]>;
 };
 
 export type TypedPropertyData<T extends Entity["schema"]> = {
@@ -87,19 +94,39 @@ export default abstract class Entity {
     return this.#properties;
   }
 
-  constructor(private sheet: GoogleAppsScript.Spreadsheet.Spreadsheet) {}
+  #sheet: GoogleAppsScript.Spreadsheet.Sheet | undefined;
 
-  initialize(data: EntityPropertyInitializer<this["schema"]>) {
+  get sheet() {
+    if (this.#sheet) {
+      return this.#sheet;
+    }
+    const sheet = this.spreadsheet.getSheetByName(this.tableName);
+    if (!sheet) throw new Error("Cannot find corresponding sheet.");
+    this.#sheet = sheet;
+    return sheet;
+  }
+
+  constructor(
+    private spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
+    /** @internal */ private inDatabase = false
+  ) {}
+
+  initialize(
+    data: EntityPropertyInitializer<this["schema"]>,
+    /** @internal */ creating = true
+  ) {
+    if (creating) this.unsaved = true;
     const newProperties: Partial<TypedPropertyData<this["schema"]>> = {};
-    for (const property in data) {
-      if (Object.prototype.hasOwnProperty.call(data, property)) {
-        const value = data[property];
+    for (const property in this.schema) {
+      if (Object.prototype.hasOwnProperty.call(this.schema, property)) {
+        const value = data[property as keyof typeof data];
         if (typeof value === "undefined") {
           if (!this.schema[property].autoAssign)
             throw new Error("Must specify value if not undefined");
-          // @ts-ignore It's ok, there's checks.
+          // @ts-ignore It's from the same schema.
           newProperties[property] = computeAutoAssign(this.schema[property]);
         } else {
+          // @ts-ignore It's fine...
           newProperties[property] = value;
         }
       }
@@ -123,7 +150,26 @@ export default abstract class Entity {
   }
 
   save(immediateFlush = true) {
-    // TODO: implement
+    if (!this.unsaved) return;
+    if (this.#properties === undefined) throw new Error("Not initialized");
+    if (this.inDatabase) {
+      // TODO: implement
+    } else {
+      const newRow = this.sheet.getLastRow() + 1;
+      const sortedSchema = Object.keys(this.schema).sort();
+      const values: Exclude<
+        TypedProperty<this["schema"][string]>,
+        typeof UNASSIGNED
+      >[] = [];
+      for (const name of sortedSchema) {
+        let value = this.#properties[name];
+        // @ts-ignore It's fine if we polute our db, I think... Don't get mad
+        // later.
+        if (value === UNASSIGNED) value = newRow;
+        values.push(value as Exclude<typeof value, typeof UNASSIGNED>);
+      }
+      this.sheet.appendRow(values.map((value) => valueToSpreadsheet(value)));
+    }
     if (immediateFlush) SpreadsheetApp.flush();
   }
 }
