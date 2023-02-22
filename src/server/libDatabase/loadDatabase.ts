@@ -65,10 +65,10 @@ export default function loadDatabase<T extends Schema>(
     createEntity: Object.fromEntries(
       Object.entries(schema.entities).map(([name, Entity]) => [
         name,
-        (...args) => {
-          const a = new Entity(spreadsheet);
-          a.initialize(...args);
-          return a;
+        (data) => {
+          const entity = new Entity(spreadsheet);
+          entity.initialize(data, null, true);
+          return entity;
         },
       ])
     ) as EntitiesWrapper<T>,
@@ -110,40 +110,47 @@ export default function loadDatabase<T extends Schema>(
 
           // Find candidates
           let candidates: number[] = [];
-          for (const [propertyName, , rank] of rankedProperties) {
-            if (rank === 0) {
-              candidates.push(Number(partial[propertyName]));
-              break;
-            } else if (rank === 1) {
-              const column = sheet
-                .getSheetValues(
-                  2,
-                  keys.indexOf(propertyName) + 1,
-                  sheet.getLastRow() - 1,
-                  1
-                )
-                .flat();
-              candidates.push(
-                column.indexOf(
-                  valueToSpreadsheet(partial[propertyName] ?? null)
-                ) + 1
-              );
-              break;
-            } else {
-              const indices = sheet
-                .createTextFinder(
-                  valueToSpreadsheet(partial[propertyName] ?? null)
-                )
-                .findAll()
-                .map((value) => value.getRowIndex());
-              if (candidates.length === 0) {
-                candidates.push(...indices);
-              } else {
-                candidates = candidates.filter((value) =>
-                  indices.includes(value)
+          if (rankedProperties.length > 0) {
+            for (const [propertyName, , rank] of rankedProperties) {
+              if (rank === 0) {
+                candidates.push(Number(partial[propertyName]));
+                break;
+              } else if (rank === 1) {
+                const column = sheet
+                  .getSheetValues(
+                    2,
+                    keys.indexOf(propertyName) + 1,
+                    sheet.getLastRow() - 1,
+                    1
+                  )
+                  .flat();
+                candidates.push(
+                  column.indexOf(
+                    valueToSpreadsheet(partial[propertyName] ?? null)
+                  ) + 1
                 );
+                break;
+              } else {
+                const indices = sheet
+                  .createTextFinder(
+                    valueToSpreadsheet(partial[propertyName] ?? null)
+                  )
+                  .findAll()
+                  .map((value) => value.getRowIndex())
+                  .filter((value, i, array) => array.indexOf(value) === i);
+                if (candidates.length === 0) {
+                  candidates.push(...indices);
+                } else {
+                  candidates = candidates.filter((value) =>
+                    indices.includes(value)
+                  );
+                }
               }
             }
+          } else {
+            candidates.push(
+              ...Array.from({ length: sheet.getLastRow() - 1 }, (v, k) => k + 2)
+            );
           }
 
           // Check!
@@ -160,7 +167,8 @@ export default function loadDatabase<T extends Schema>(
             for (const key in partial) {
               if (Object.prototype.hasOwnProperty.call(partial, key)) {
                 const value = partial[key];
-                if (rowContent[keys.indexOf(key)] !== value) pass = false;
+                if (spreadsheetToValue(rowContent[keys.indexOf(key)]) !== value)
+                  pass = false;
               }
             }
             if (pass) matches.push([candidate, rowContent]);
@@ -176,7 +184,9 @@ export default function loadDatabase<T extends Schema>(
                   keys[index],
                   spreadsheetToValue(content),
                 ])
-              ) as EntityPropertyInitializer<typeof tableSchema>
+              ) as EntityPropertyInitializer<typeof tableSchema>,
+              match[0],
+              false
             );
             return entity;
           });

@@ -84,6 +84,8 @@ export default abstract class Entity {
 
   unsaved = false;
 
+  rowNumber: number | null = null;
+
   get isInitialized() {
     return this.#properties !== undefined;
   }
@@ -106,16 +108,15 @@ export default abstract class Entity {
     return sheet;
   }
 
-  constructor(
-    private spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet,
-    /** @internal */ private inDatabase = false
-  ) {}
+  constructor(private spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet) {}
 
   initialize(
     data: EntityPropertyInitializer<this["schema"]>,
-    /** @internal */ creating = true
+    rowNumber: number | null,
+    unsaved: boolean
   ) {
-    if (creating) this.unsaved = true;
+    this.rowNumber = rowNumber;
+    if (unsaved) this.unsaved = true;
     const newProperties: Partial<TypedPropertyData<this["schema"]>> = {};
     for (const property in this.schema) {
       if (Object.prototype.hasOwnProperty.call(this.schema, property)) {
@@ -152,24 +153,28 @@ export default abstract class Entity {
   save(immediateFlush = true) {
     if (!this.unsaved) return;
     if (this.#properties === undefined) throw new Error("Not initialized");
-    if (this.inDatabase) {
-      // TODO: implement
-    } else {
-      const newRow = this.sheet.getLastRow() + 1;
-      const sortedSchema = Object.keys(this.schema).sort();
-      const values: Exclude<
-        TypedProperty<this["schema"][string]>,
-        typeof UNASSIGNED
-      >[] = [];
-      for (const name of sortedSchema) {
-        let value = this.#properties[name];
-        // @ts-ignore It's fine if we polute our db, I think... Don't get mad
-        // later.
-        if (value === UNASSIGNED) value = newRow;
-        values.push(value as Exclude<typeof value, typeof UNASSIGNED>);
-      }
-      this.sheet.appendRow(values.map((value) => valueToSpreadsheet(value)));
+    const newRow =
+      this.rowNumber === null ? this.sheet.getLastRow() + 1 : this.rowNumber;
+    const sortedSchema = Object.keys(this.schema).sort();
+    const values: Exclude<
+      TypedProperty<this["schema"][string]>,
+      typeof UNASSIGNED
+    >[] = [];
+    for (const name of sortedSchema) {
+      let value = this.#properties[name];
+      // @ts-ignore It's fine if we polute our db, I think... Don't get mad
+      // later.
+      if (value === UNASSIGNED) value = newRow;
+      values.push(value as Exclude<typeof value, typeof UNASSIGNED>);
     }
+    if (this.rowNumber === null) {
+      this.sheet.appendRow(values.map((value) => valueToSpreadsheet(value)));
+    } else {
+      this.sheet
+        .getRange(this.rowNumber, 1, 1, sortedSchema.length)
+        .setValues([values.map((value) => valueToSpreadsheet(value))]);
+    }
+
     if (immediateFlush) SpreadsheetApp.flush();
   }
 }
