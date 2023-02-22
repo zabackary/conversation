@@ -21,7 +21,7 @@ export default class User extends Entity {
     },
     email: {
       type: "string" as const,
-      validators: [new EmailValidator()],
+      validators: [new EmailValidator(), new Unique()],
     },
     status: {
       type: "boolean" as const,
