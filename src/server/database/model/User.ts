@@ -1,3 +1,5 @@
+import SharedModelService from "../../../model/service";
+import SharedModelUser, { UserStatus } from "../../../model/user";
 import Entity from "../../libDatabase/Entity";
 import EmailValidator from "../../libDatabase/validators/EmailValidator";
 import RangeValidator from "../../libDatabase/validators/RangeValidator";
@@ -53,4 +55,32 @@ export default class User extends Entity {
       type: "string" as const,
     },
   };
+
+  toSharedModel(
+    userFromId: (id: number) => User
+  ): SharedModelUser | SharedModelService {
+    if (this.rowNumber === null)
+      throw new Error("Cannot serilize when rowNumber is unset");
+    const { properties } = this;
+    if (properties.isService) {
+      return {
+        name: properties.name as string,
+        icon: properties.profilePicture as string | null,
+        banner: properties.banner as string | null,
+        author: userFromId(properties.serviceOwner as number).toSharedModel(
+          userFromId
+        ) as SharedModelUser,
+        id: properties.id as number,
+      } satisfies SharedModelService;
+    }
+    return {
+      name: properties.name as string,
+      nickname: properties.nickname as string,
+      email: properties.email as string,
+      profilePicture: properties.profilePicture as string | null,
+      id: properties.id as number,
+      status: properties.status ? UserStatus.Active : UserStatus.Inactive,
+      state: properties.state as number,
+    } satisfies SharedModelUser;
+  }
 }
