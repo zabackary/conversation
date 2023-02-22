@@ -131,7 +131,7 @@ export default class ApiManager {
   }
 
   runAction<T extends ApiActionType>(type: T, arg: ApiActionArguments[T]) {
-    return new Promise((resolve, reject) => {
+    return new Promise<ApiActionResponse<T>>((resolve, reject) => {
       const id = uuidv4();
       this.pendingActions.push([
         id,
@@ -141,7 +141,8 @@ export default class ApiManager {
         },
         (response) => {
           if (response.error) reject(response.error);
-          else if (response.response) resolve(response.response);
+          else if (response.response)
+            resolve(response.response as ApiActionResponse<T>);
         },
       ]);
     });
