@@ -1,9 +1,9 @@
 import makeSchema from "../libDatabase/makeSchema";
-import Channel from "./entities/Channel";
-import Member from "./entities/Member";
-import Message from "./entities/Message";
-import Session from "./entities/Session";
-import User from "./entities/User";
+import Channel from "./model/Channel";
+import Member from "./model/Member";
+import Message from "./model/Message";
+import Session from "./model/Session";
+import User from "./model/User";
 
 export default makeSchema({
   version: 0,
