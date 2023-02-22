@@ -18,6 +18,7 @@ specifiers:
   '@mui/utils': ^5.10.16
   '@types/babel__generator': ^7.6.4
   '@types/babel__traverse': ^7.18.3
+  '@types/bcryptjs': ^2.4.2
   '@types/ejs': ^3.1.1
   '@types/eslint': ^8.4.10
   '@types/google-apps-script': ^1.0.56
@@ -78,6 +79,7 @@ dependencies:
   '@mui/icons-material': 5.10.16_x5g5t372wpbxfzkqxtxktxetsq
   '@mui/material': 5.10.17_lskpmcsdi7ipu6qpuapyu56ihm
   '@mui/utils': 5.10.16_react@18.2.0
+  '@types/bcryptjs': 2.4.2
   bcryptjs: 2.4.3
   emoji-mart: 5.3.3
   gas-client: 1.0.0
@@ -1054,6 +1056,10 @@ packages:
     dependencies:
       '@babel/types': 7.20.7
     dev: true
+
+  /@types/bcryptjs/2.4.2:
+    resolution: {integrity: sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==}
+    dev: false
 
   /@types/cacheable-request/6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}

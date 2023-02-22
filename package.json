@@ -68,6 +68,7 @@
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.17",
     "@mui/utils": "^5.10.16",
+    "@types/bcryptjs": "^2.4.2",
     "bcryptjs": "^2.4.3",
     "emoji-mart": "^5.3.3",
     "gas-client": "^1.0.0",
