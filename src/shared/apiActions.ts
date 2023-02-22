@@ -13,7 +13,7 @@ export interface ApiActionArguments {
     password: string;
   };
   [ApiActionType.LogOut]: null;
-  [ApiActionType.CreateAccount]: NewUser;
+  [ApiActionType.CreateAccount]: NewUser & { password: string };
 }
 
 export interface ApiActionResponses {
