@@ -150,7 +150,7 @@ export default abstract class Entity {
     this.unsaved = true;
   }
 
-  save(immediateFlush = true) {
+  save(immediateFlush = false) {
     if (!this.unsaved) return;
     if (this.#properties === undefined) throw new Error("Not initialized");
     const newRow =

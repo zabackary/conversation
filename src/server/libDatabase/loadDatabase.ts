@@ -10,8 +10,18 @@ import Schema from "./Schema";
 import Unique from "./validators/Unique";
 
 export interface DatabaseAccessor<T extends Schema> {
+  /**
+   * Migrate the spreadsheet to a new schema, attempting to preserve all data.
+   *
+   * @param newSchema The new schema
+   * @returns A boolean indicating success.
+   */
   migrate: (newSchema: Schema) => boolean;
-  createEntity: EntitiesWrapper<T>;
+
+  /**
+   * Create an entity.
+   */
+  createEntity: CreateEntitiesWrapper<T>;
 
   /**
    * Run a pretty simple search algorithm to find exact matches on properties.
@@ -34,9 +44,14 @@ export interface DatabaseAccessor<T extends Schema> {
    * 3. Gather the data then return the `Entities`.
    */
   simpleSearch: EntitySearch<T>;
+
+  /**
+   * Flush the database to Google Sheets.
+   */
+  flush: () => void;
 }
 
-type EntitiesWrapper<T extends Schema> = {
+type CreateEntitiesWrapper<T extends Schema> = {
   [Property in keyof T["entities"]]: (
     data: EntityPropertyInitializer<
       InstanceType<T["entities"][Property]>["schema"]
@@ -71,7 +86,7 @@ export default function loadDatabase<T extends Schema>(
           return entity;
         },
       ])
-    ) as EntitiesWrapper<T>,
+    ) as CreateEntitiesWrapper<T>,
 
     simpleSearch: Object.fromEntries(
       Object.entries(schema.entities).map(([name, Entity]) => [
@@ -193,5 +208,8 @@ export default function loadDatabase<T extends Schema>(
         },
       ])
     ) as EntitySearch<T>,
+    flush() {
+      SpreadsheetApp.flush();
+    },
   };
 }
