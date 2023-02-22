@@ -1,8 +1,5 @@
 import Channel, { PrivacyLevel } from "../../../model/channel";
-import Message, {
-  ServiceMessageBuiltInIcon,
-  ServiceMessageFormat,
-} from "../../../model/message";
+import Message from "../../../model/message";
 import Service from "../../../model/service";
 import User, { UserState, UserStatus } from "../../../model/user";
 import {
@@ -16,6 +13,7 @@ export const services = {
     icon: "",
     banner: "",
     author: null,
+    id: 98219,
   },
 } satisfies Record<string, Service>;
 
@@ -64,12 +62,8 @@ export const usersAuth = {
 export const messages = {
   5: [
     {
-      icon: ServiceMessageBuiltInIcon.Flag,
       user: services.conversation,
-      format: ServiceMessageFormat.Card,
-      title: "This is the start of Chat.",
-      subheader:
-        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      markdown: "!translation:chat_start:Chat",
       id: 9384,
       parent: 5,
       sent: new Date("December 25, 2019 5:05"),
@@ -84,12 +78,10 @@ export const messages = {
       isService: false,
     },
     {
-      icon: ServiceMessageBuiltInIcon.PersonAdd,
       user: services.conversation,
-      format: ServiceMessageFormat.Caption,
-      title: `${users.bob.value.getSnapshot().name} added ${
-        users.alice.value.getSnapshot().name
-      } to the channel.`,
+      markdown: `!translation:chat_member_add:${
+        users.bob.value.getSnapshot().name
+      }:${users.alice.value.getSnapshot().name}`,
       id: 9385,
       parent: 5,
       sent: new Date("December 25, 2019 5:06"),
@@ -120,12 +112,10 @@ export const messages = {
       isService: false,
     },
     {
-      icon: ServiceMessageBuiltInIcon.Edit,
       user: services.conversation,
-      format: ServiceMessageFormat.Caption,
-      title: `${
+      markdown: `!translation:chat_name_change:${
         users.bob.value.getSnapshot().name
-      } changed the name of this channel to Hey.`,
+      }:Hey.`,
       id: 9386,
       parent: 5,
       sent: new Date("January 1, 2020 5:09"),
@@ -225,12 +215,8 @@ export const messages = {
   ],
   3: [
     {
-      icon: ServiceMessageBuiltInIcon.Flag,
       user: services.conversation,
-      format: ServiceMessageFormat.Card,
-      title: "This is the start of Mock.",
-      subheader:
-        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      markdown: "!translation:chat_start:Mock",
       id: 3749,
       parent: 3,
       sent: new Date("December 25, 2019 5:05"),
@@ -239,12 +225,8 @@ export const messages = {
   ],
   19: [
     {
-      icon: ServiceMessageBuiltInIcon.Flag,
       user: services.conversation,
-      format: ServiceMessageFormat.Card,
-      title: "This is the start of this DM.",
-      subheader:
-        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      markdown: "!translation:dm_start",
       id: 3750,
       parent: 19,
       sent: new Date("December 6, 2022 13:47"),
@@ -271,12 +253,8 @@ export const messages = {
   ],
   20: [
     {
-      icon: ServiceMessageBuiltInIcon.Flag,
       user: services.conversation,
-      format: ServiceMessageFormat.Card,
-      title: "This is the start of this DM.",
-      subheader:
-        "It's pretty quiet in here. Why don't you go ahead and say something?",
+      markdown: "!translation:dm_start",
       id: 5750,
       parent: 20,
       sent: new Date("December 6, 2022 13:47"),

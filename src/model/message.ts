@@ -7,6 +7,9 @@ interface BaseMessage {
   id: number;
   sent: Date;
   isService: boolean;
+  markdown: string;
+  attachments?: string[];
+  images?: string[];
 
   /**
    * The message this message is replying to, if any. May also be a
@@ -18,33 +21,12 @@ interface BaseMessage {
 
 export interface UserMessage extends BaseMessage {
   user: User;
-  markdown: string;
   isService: false;
-  attachments?: string[];
-  images?: string[];
-}
-
-export enum ServiceMessageFormat {
-  Card,
-  Message,
-  Caption,
-}
-
-export type ServiceMessageInteractive = unknown;
-
-export enum ServiceMessageBuiltInIcon {
-  Flag,
-  PersonAdd,
-  Edit,
 }
 
 export interface ServiceMessage extends BaseMessage {
   user: Service;
-  format: ServiceMessageFormat;
-  title: string;
-  subheader?: string;
-  icon?: string | ServiceMessageBuiltInIcon;
-  interactive?: ServiceMessageInteractive;
+  rich?: unknown;
   isService: true;
 }
 
