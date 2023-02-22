@@ -59,12 +59,6 @@ export type TypedProperty<T extends Property<PropertyType>> =
     ? PropertyTypeMapUnassigned<T> | null
     : PropertyTypeMapUnassigned<T>;
 
-/* export type EntityPropertyInitializer<T extends Entity["schema"]> = {
-  [P in keyof T]: T[P]["autoAssign"] extends true
-    ? undefined
-    : TypedProperty<T[P]>;
-}; */
-
 export type EntityPropertyInitializer<T extends Entity["schema"]> = {
   [Key in keyof T]: T[Key]["autoAssign"] extends true
     ? undefined
@@ -91,7 +85,7 @@ export default abstract class Entity {
   }
 
   get properties() {
-    if (!this.isInitialized)
+    if (!this.isInitialized || !this.#properties)
       throw new Error("Entity has not been initialized yet");
     return this.#properties;
   }
