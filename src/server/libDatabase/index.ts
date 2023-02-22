@@ -1,2 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
-export { default as migrateDatabase } from "./migrateDatabase";
+import loadDatabase from "./loadDatabase";
+
+export default loadDatabase;
+export { default as makeSchema } from "./makeSchema";
+export type { default as Schema } from "./Schema";
