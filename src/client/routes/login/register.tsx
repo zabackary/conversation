@@ -17,12 +17,11 @@ import {
   Popover,
   Stack,
   Tooltip,
-  useTheme,
+  useTheme
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import {
@@ -31,13 +30,13 @@ import {
   useEffect,
   useId,
   useRef,
-  useState,
+  useState
 } from "react";
 import {
   Link as RouterLink,
   useLocation,
   useNavigate,
-  useSearchParams,
+  useSearchParams
 } from "react-router-dom";
 import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
@@ -357,29 +356,6 @@ export default function LoginRegisterRoute() {
             </LoadingButton>
           </DialogActions>
         </Dialog>
-        <Link
-          component={RouterLink}
-          to={`/login/passwordreset/${window.location.search}`}
-          variant="body2"
-        >
-          Forgot password?
-        </Link>{" "}
-        -{" "}
-        <Link
-          component={RouterLink}
-          to={`/login/help/${window.location.search}`}
-          variant="body2"
-        >
-          Help
-        </Link>{" "}
-        -{" "}
-        <Link
-          component={RouterLink}
-          to={`/login/settings/${window.location.search}`}
-          variant="body2"
-        >
-          Appearance preferences
-        </Link>
       </Box>
     </>
   );

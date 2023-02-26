@@ -13,7 +13,6 @@ import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { FormEvent, useId, useState } from "react";
@@ -148,29 +147,6 @@ export default function LoginRoute() {
             </LoadingButton>
           </Grid>
         </Grid>
-        <Link
-          component={RouterLink}
-          to={`/login/passwordreset/${window.location.search}`}
-          variant="body2"
-        >
-          Forgot password?
-        </Link>{" "}
-        -{" "}
-        <Link
-          component={RouterLink}
-          to={`/login/help/${window.location.search}`}
-          variant="body2"
-        >
-          Help
-        </Link>{" "}
-        -{" "}
-        <Link
-          component={RouterLink}
-          to={`/login/settings/${window.location.search}`}
-          variant="body2"
-        >
-          Appearance preferences
-        </Link>
       </Box>
     </>
   );

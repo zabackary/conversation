@@ -1,8 +1,9 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Fade, Paper } from "@mui/material";
+import { Avatar, Box, Fade, Link, Paper } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useEffect } from "react";
 import {
+  Link as RouterLink,
   useMatches,
   useNavigate,
   useOutlet,
@@ -55,6 +56,29 @@ export default function LoginRootRoute() {
               ) : (
                 currentOutlet
               )}
+              <Link
+                component={RouterLink}
+                to={`/login/passwordreset/${window.location.search}`}
+                variant="body2"
+              >
+                Forgot password?
+              </Link>{" "}
+              -{" "}
+              <Link
+                component={RouterLink}
+                to={`/login/help/${window.location.search}`}
+                variant="body2"
+              >
+                Help
+              </Link>{" "}
+              -{" "}
+              <Link
+                component={RouterLink}
+                to={`/login/settings/${window.location.search}`}
+                variant="body2"
+              >
+                Appearance preferences
+              </Link>
             </Box>
           </Fade>
         </SwitchTransition>
