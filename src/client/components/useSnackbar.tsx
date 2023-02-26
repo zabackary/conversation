@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { IconButton, Snackbar, SnackbarProps } from "@mui/material";
+import { IconButton, Snackbar, SnackbarProps, styled } from "@mui/material";
 import {
   createContext,
   ReactNode,
@@ -8,6 +8,10 @@ import {
   useMemo,
   useState,
 } from "react";
+
+const SurfaceIconButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.inverseOnSurface.main,
+}));
 
 interface SnackbarQueueItem {
   options: SnackbarOptions;
@@ -21,6 +25,12 @@ export enum SnackbarDuration {
 }
 
 export interface SnackbarOptions {
+  /**
+   * Whether to immediately close the old snackbar
+   * @default false
+   */
+  urgent: boolean;
+
   /**
    * The action button of the snackbar.
    *
@@ -86,6 +96,7 @@ export function SnackbarProvider({
 }: SnackbarProviderProps) {
   const [queue, setQueue] = useState<readonly SnackbarQueueItem[]>([]);
   const [open, setOpen] = useState(false);
+  const [removedMessage, setRemovedMessage] = useState<number>();
   const [currentMessage, setCurrentMessage] = useState<SnackbarQueueItem>();
   const handleClose = (_?: unknown, reason?: string) => {
     if (reason === "clickaway") {
@@ -102,6 +113,7 @@ export function SnackbarProvider({
         const key = Math.random();
         const options: SnackbarOptions = {
           action: null,
+          urgent: false,
           autoHideDuration: SnackbarDuration.Short,
           autoHide: true,
           showCloseButton: false,
@@ -112,25 +124,35 @@ export function SnackbarProvider({
         setQueue((prev) => [...prev, { message, options, key }]);
         return () => {
           setQueue((prev) => prev.filter((item) => item.key !== key));
-          if (currentMessage?.key === key) {
-            handleClose();
-          }
+          setRemovedMessage(key);
         };
       },
     }),
-    [currentMessage?.key, defaultSnackbarOptions]
+    [defaultSnackbarOptions]
   );
 
   useEffect(() => {
-    if (queue.length && !currentMessage) {
+    if (
+      removedMessage &&
+      currentMessage &&
+      removedMessage === currentMessage.key
+    ) {
+      setRemovedMessage(undefined);
+      handleClose();
+    } else if (queue.length > 0 && !currentMessage) {
       setCurrentMessage({ ...queue[0] });
       setQueue((prev) => prev.slice(1));
       setOpen(true);
-    } else if (queue.length && currentMessage && open) {
+    } else if (
+      queue.length > 0 &&
+      queue[0].options.urgent &&
+      currentMessage &&
+      open
+    ) {
       // Close an active snack when a new one is added
       setOpen(false);
     }
-  }, [queue, currentMessage, open]);
+  }, [queue, currentMessage, open, removedMessage]);
 
   return (
     <>
@@ -151,14 +173,13 @@ export function SnackbarProvider({
           <>
             {currentMessage?.options.action}
             {currentMessage?.options.showCloseButton ? (
-              <IconButton
+              <SurfaceIconButton
                 aria-label="close"
-                color="inherit"
                 sx={{ p: 0.5 }}
                 onClick={handleClose}
               >
                 <CloseIcon />
-              </IconButton>
+              </SurfaceIconButton>
             ) : null}
           </>
         }
