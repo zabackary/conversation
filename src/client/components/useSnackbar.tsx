@@ -70,17 +70,19 @@ export interface SnackbarContext {
 const SnackbarContext = createContext<SnackbarContext | null>(null);
 
 export default function useSnackbar() {
-  return useContext(SnackbarContext);
+  const context = useContext(SnackbarContext);
+  if (!context) throw new Error("Not within context of snackbar provider.");
+  return context;
 }
 
 export interface SnackbarProviderProps {
-  defaultSnackbarOptions: Partial<SnackbarOptions>;
+  defaultSnackbarOptions?: Partial<SnackbarOptions>;
   children: ReactNode;
 }
 
 export function SnackbarProvider({
   children,
-  defaultSnackbarOptions,
+  defaultSnackbarOptions = {},
 }: SnackbarProviderProps) {
   const [queue, setQueue] = useState<readonly SnackbarQueueItem[]>([]);
   const [open, setOpen] = useState(false);
