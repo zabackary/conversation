@@ -1,4 +1,10 @@
-module.exports = {
+// @ts-check
+
+const path = require("path");
+
+/** @type {import("eslint").Linter.Config} */
+const config = {
+  ignorePatterns: ["/*", "!/src"],
   settings: {
     "import/resolver": {
       typescript: {},
@@ -17,6 +23,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -25,6 +32,7 @@ module.exports = {
     },
     ecmaVersion: "latest",
     sourceType: "module",
+    project: [path.join(__dirname, "tsconfig.json")],
   },
   plugins: [
     "react",
@@ -74,5 +82,8 @@ module.exports = {
     "no-console": 0, // TODO: Remove and fix on production
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": 1,
+    "@typescript-eslint/no-unnecessary-condition": 1,
   },
 };
+
+module.exports = config;
