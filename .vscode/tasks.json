@@ -12,7 +12,6 @@
         }
       }
     },
-
     {
       "type": "npm",
       "script": "build",
@@ -26,6 +25,11 @@
       "script": "lint",
       "group": "build",
       "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "type": "npm",
+      "script": "deploy:watch",
+      "group": "build"
     },
     {
       "type": "npm",
