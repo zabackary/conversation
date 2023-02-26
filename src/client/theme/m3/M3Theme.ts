@@ -745,16 +745,35 @@ export const getThemedComponents = (
       },
       MuiDrawer: {
         styleOverrides: {
-          root: {
-            // background: theme.palette.surface.main,
-            // color: theme.palette.onSurface.main,
+          paperAnchorLeft: {
+            borderTopRightRadius: 16,
+            borderBottomRightRadius: 16,
+          },
+          paperAnchorRight: {
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+          },
+          paperAnchorTop: {
+            borderBottomRightRadius: 16,
+            borderBottomLeftRadius: 16,
+          },
+          paperAnchorBottom: {
+            borderTopRightRadius: 16,
+            borderTopLeftRadius: 16,
           },
           paper: {
-            // border: "0px",
-            // background: theme.palette.mode == 'light' ? lighten(theme.palette.primary.main, 0.85) : darken(theme.palette.primary.main, 0.8),
-            // color: theme.palette.surface.contrastText,
-            background: theme.palette.surface.main,
-            color: theme.palette.onSurface.main,
+            border: "0px",
+            background:
+              theme.palette.mode === "light"
+                ? lighten(theme.palette.primary.main, 0.85)
+                : darken(theme.palette.primary.main, 0.8),
+            color: theme.palette.surface.contrastText,
+          },
+          docked: {
+            "& .MuiPaper-root": {
+              background: theme.palette.surface.main,
+              color: theme.palette.onSurface.main,
+            },
           },
         },
       },
