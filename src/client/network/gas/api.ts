@@ -1,6 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import type { ServerGlobals } from "../../../server";
-import { ApiActionArguments, ApiActionType } from "../../../shared/apiActions";
+import {
+  ApiActionArguments,
+  ApiActionResponses,
+  ApiActionType,
+} from "../../../shared/apiActions";
 import {
   ApiSubscriptionArguments,
   ApiSubscriptionResponses,
@@ -56,7 +60,7 @@ export default class ApiManager {
   beginPooling(interval = 1000) {
     window.clearInterval(this.intervalId);
     this.intervalId = window.setInterval(() => {
-      this.dispatchPooled();
+      void this.dispatchPooled();
     }, interval);
   }
 
@@ -131,7 +135,7 @@ export default class ApiManager {
   }
 
   runAction<T extends ApiActionType>(type: T, arg: ApiActionArguments[T]) {
-    return new Promise<ApiActionResponse<T>>((resolve, reject) => {
+    return new Promise<ApiActionResponses[T]>((resolve, reject) => {
       const id = uuidv4();
       this.pendingActions.push([
         id,
@@ -140,9 +144,9 @@ export default class ApiManager {
           arg,
         },
         (response) => {
-          if (response.error !== undefined) reject(response.error);
-          else if (response.response !== undefined)
-            resolve(response.response as ApiActionResponse<T>);
+          if ("error" in response) reject(response.error);
+          else if ("reponse" in response)
+            resolve(response.response as ApiActionResponses[T]);
         },
       ]);
     });
