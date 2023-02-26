@@ -5,6 +5,7 @@ import Channel, {
   PublicChannelListing,
 } from "../../../model/channel";
 import User, { NewUser, UserStatus } from "../../../model/user";
+import { ApiActionType } from "../../../shared/apiActions";
 import { ApiSubscriptionType } from "../../../shared/apiSubscriptions";
 import NetworkBackend, {
   ChannelBackend,
@@ -16,21 +17,37 @@ import ApiManager from "./api";
 
 // TODO: Implement this, and remove the eslint disables up top.
 export default class GASBackend implements NetworkBackend {
-  authLogIn(email: string, password: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  apiManager: ApiManager;
+
+  constructor() {
+    this.apiManager = ApiManager.getInstance();
+    this.apiManager.beginPooling();
   }
 
-  authLogOut(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async authLogIn(email: string, password: string): Promise<void> {
+    const success = await this.apiManager.runAction(ApiActionType.LogIn, {
+      email,
+      password,
+    });
+    if (!success) throw new Error("login failure");
   }
 
-  authCreateAccount(newUser: NewUser, password: string): Promise<void> {
-    throw new Error("Method not implemented.");
+  async authLogOut(): Promise<void> {
+    const success = await this.apiManager.runAction(ApiActionType.LogOut, null);
+    if (!success) throw new Error("logout failure");
+  }
+
+  async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+    const success = await this.apiManager.runAction(
+      ApiActionType.CreateAccount,
+      { ...newUser, password }
+    );
+    if (!success) throw new Error("create account failure");
   }
 
   getUser(id?: number): Subscribable<User | null> {
     return createSubscribable<User>((next) => {
-      ApiManager.getInstance().addSubscription(
+      this.apiManager.addSubscription(
         ApiSubscriptionType.User,
         id ?? null,
         (response) => {

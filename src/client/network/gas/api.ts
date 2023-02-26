@@ -140,8 +140,8 @@ export default class ApiManager {
           arg,
         },
         (response) => {
-          if (response.error) reject(response.error);
-          else if (response.response)
+          if (response.error !== undefined) reject(response.error);
+          else if (response.response !== undefined)
             resolve(response.response as ApiActionResponse<T>);
         },
       ]);

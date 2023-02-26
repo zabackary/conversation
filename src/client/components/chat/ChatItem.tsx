@@ -65,7 +65,9 @@ export default function ChatItem({ message, showAvatar }: Props) {
           primary={
             <>
               {message.isService ? message.user.name : message.user.nickname}{" "}
-              {message.isService ? <InlineBadge>bot</InlineBadge> : null}{" "}
+              {message.isService ? (
+                <InlineBadge color="primary" badgeContent="bot" />
+              ) : null}{" "}
               <Typography
                 variant="body2"
                 component="span"
