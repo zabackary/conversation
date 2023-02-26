@@ -59,7 +59,14 @@ export default function ChatView({
           }}
         />
       ) : (
-        <ChatListSkeleton />
+        <ChatListSkeleton
+          sx={{
+            pb: {
+              xs: "104px",
+              sm: "24px",
+            },
+          }}
+        />
       )}
       <ChatInput
         onMessageSend={(event) => {

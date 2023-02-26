@@ -4,6 +4,7 @@ import {
   ListItemAvatar,
   ListItemText,
   Skeleton,
+  SxProps,
   Typography,
 } from "@mui/material";
 
@@ -15,7 +16,11 @@ interface ListItemSkeletonProps {
 
 function ListItemSkeleton({ header, image, width }: ListItemSkeletonProps) {
   return (
-    <ListItem alignItems="flex-start" disablePadding>
+    <ListItem
+      alignItems="flex-start"
+      disablePadding
+      sx={{ overflow: "hidden" }}
+    >
       <ListItemAvatar>
         <Skeleton width={40} height={40} variant="circular" />
       </ListItemAvatar>
@@ -41,9 +46,13 @@ function ListItemSkeleton({ header, image, width }: ListItemSkeletonProps) {
   );
 }
 
-export default function ChatListSkeleton() {
+interface ChatListSkeletonProps {
+  sx: SxProps;
+}
+
+export default function ChatListSkeleton({ sx }: ChatListSkeletonProps) {
   return (
-    <List>
+    <List sx={{ ...sx }}>
       <ListItemSkeleton width={300} />
       <ListItemSkeleton width={350} image />
       <ListItemSkeleton width={200} header />
