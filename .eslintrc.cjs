@@ -83,6 +83,7 @@ const config = {
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": 1,
     "@typescript-eslint/no-unnecessary-condition": 1,
+    "no-void": 0,
   },
 };
 
