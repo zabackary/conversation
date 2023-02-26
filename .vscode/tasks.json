@@ -28,11 +28,6 @@
     },
     {
       "type": "npm",
-      "script": "deploy:watch",
-      "group": "build"
-    },
-    {
-      "type": "npm",
       "script": "serve",
       "group": "build",
       "isBackground": true,

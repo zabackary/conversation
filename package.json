@@ -9,7 +9,6 @@
     "build:server-dev": "cross-env NODE_ENV=production VITE_ONLYSERVER=1 VITE_UPLOADONCOMPLETE=1 VITE_SECONDPASS=1 vite build --watch",
     "upload": "clasp push",
     "deploy": "pnpm run build && pnpm run upload",
-    "deploy:watch": "cross-env VITE_UPLOADONCOMPLETE=1 pnpm run build",
     "serve": "cross-env NODE_ENV=local vite serve",
     "lint": "eslint"
   },
