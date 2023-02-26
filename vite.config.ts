@@ -66,6 +66,7 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
             gasTopLevel({
               entry: /src\/server\/index.ts/,
               distEntry: /server/,
+              sideEffect: "globalThis.setTimeout=(a)=>{a()};",
             }),
             inlineScript(),
           ]
