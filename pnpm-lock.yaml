@@ -49,6 +49,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   gas-client: ^1.0.0
   gas-entry-generator: ^2.2.0
+  isaac-prng: ^1.0.16
   match-sorter: ^6.3.1
   minimatch: ^5.1.1
   normalize-exception: ^2.11.0
@@ -84,6 +85,7 @@ dependencies:
   emoji-mart: 5.3.3
   gas-client: 1.0.0
   gas-entry-generator: 2.2.0
+  isaac-prng: 1.0.16
   minimatch: 5.1.1
   normalize-exception: 2.11.0
   react: 18.2.0
@@ -3263,6 +3265,10 @@ packages:
     dependencies:
       is-docker: 2.2.1
     dev: true
+
+  /isaac-prng/1.0.16:
+    resolution: {integrity: sha512-lbGV00EwHk2Z/GsAQROvwqc2N1DbBCQWlBfMkAYXRIhYOWgzxvHL240XCxNBgeVod/12yzsB3OPCTVt3qKcRTQ==}
+    dev: false
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}

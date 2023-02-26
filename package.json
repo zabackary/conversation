@@ -7,7 +7,7 @@
   "scripts": {
     "build": "cross-env VITE_ONLYSERVER=1 vite build && cross-env VITE_ONLYCLIENT=1 VITE_SECONDPASS=1 vite build",
     "build:dev": "cross-env NODE_ENV=development vite build",
-    "build:server-dev": "cross-env NODE_ENV=production VITE_ONLYSERVER=1 VITE_UPLOADONCOMPLETE=1 vite build --watch",
+    "build:server-dev": "cross-env NODE_ENV=production VITE_ONLYSERVER=1 VITE_UPLOADONCOMPLETE=1 VITE_SECONDPASS=1 vite build --watch",
     "upload": "clasp push",
     "deploy": "pnpm run build && pnpm run upload",
     "deploy:dev": "pnpm run build:dev && pnpm run upload",
@@ -73,6 +73,7 @@
     "emoji-mart": "^5.3.3",
     "gas-client": "^1.0.0",
     "gas-entry-generator": "^2.2.0",
+    "isaac-prng": "^1.0.16",
     "minimatch": "^5.1.1",
     "normalize-exception": "^2.11.0",
     "react": "^18.2.0",
