@@ -63,7 +63,7 @@ export interface SnackbarContext {
    */
   showSnackbar: (
     message: string,
-    options: Partial<SnackbarOptions>
+    options?: Partial<SnackbarOptions>
   ) => () => void;
 }
 
@@ -98,7 +98,7 @@ export function SnackbarProvider({
   };
   const context: SnackbarContext = useMemo(
     () => ({
-      showSnackbar(message, partialOptions) {
+      showSnackbar(message, partialOptions = {}) {
         const key = Math.random();
         const options: SnackbarOptions = {
           action: null,
