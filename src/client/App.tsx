@@ -4,6 +4,7 @@ import {
   createHashRouter,
   RouterProvider,
 } from "react-router-dom";
+import { SnackbarProvider } from "./components/useSnackbar";
 import BackendContextProvider from "./context/BackendContextProvider";
 import routes from "./routes";
 import {
@@ -24,7 +25,9 @@ export default function App() {
         <M3ThemeSchemeProvider>
           <M3ThemeProvider>
             <CssBaseline enableColorScheme />
-            <RouterProvider router={router} />
+            <SnackbarProvider>
+              <RouterProvider router={router} />
+            </SnackbarProvider>
           </M3ThemeProvider>
         </M3ThemeSchemeProvider>
       </M3ThemeModeProvider>
