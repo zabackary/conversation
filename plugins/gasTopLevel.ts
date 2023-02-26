@@ -15,12 +15,10 @@ const traverse: typeof _traverse = _traverse.default;
 // @ts-expect-error See https://github.com/babel/babel/issues/13855
 const generate: typeof _generate = _generate.default;
 
-const GLOBAL_IDENTIFIER_NAME = "__GAS_TOP_LEVEL__";
-
 export interface GasTopLevelOptions {
   entry: RegExp;
   distEntry: RegExp;
-
+  sideEffect: string;
   parserOptions: ParserOptions;
 }
 
@@ -31,6 +29,7 @@ export default function gasTopLevel(
     entry: /.^/,
     distEntry: /.^/,
     parserOptions: {},
+    sideEffect: "",
     ...userOptions,
   };
   let banner = "";
@@ -50,6 +49,9 @@ export default function gasTopLevel(
         const filePath: string = resolve(root, outDir, file[0]);
 
         if (options.distEntry.test(file[0])) {
+          const sideEffectContent = options.sideEffect
+            ? `(function(){${options.sideEffect}})();`
+            : "";
           const content = (
             await readFile(filePath, {
               encoding: "utf8",
@@ -57,7 +59,7 @@ export default function gasTopLevel(
           ).trimEnd();
           await writeFile(
             filePath,
-            `${banner}{const ${GLOBAL_IDENTIFIER_NAME}=this;${content}}\n`
+            `${banner}${sideEffectContent}(function(){${content}})();\n`
           );
         }
       }
@@ -84,7 +86,7 @@ export default function gasTopLevel(
               node.left.object.name === "topLevelFunction" &&
               node.left.property.type === "Identifier"
             ) {
-              node.left.object = t.identifier(GLOBAL_IDENTIFIER_NAME);
+              node.left.object = t.identifier("globalThis");
               banner += `function ${node.left.property.name}(){}`;
             }
           },
