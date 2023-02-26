@@ -28,8 +28,10 @@ ${error.stack || JSON.stringify(error)}`}
   }
   // Route error
   const text =
-    typeof routeError === "object" && routeError !== null
-      ? Reflect.get(routeError, "statusText")
+    typeof routeError === "object" &&
+    routeError !== null &&
+    "statusText" in routeError
+      ? String(routeError.statusText)
       : error.message;
   return (
     <ErrorPage

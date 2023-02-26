@@ -5,7 +5,6 @@ import {
   Alert,
   AlertTitle,
   Avatar,
-  CircularProgress,
   Collapse,
   Dialog,
   DialogActions,
@@ -43,6 +42,7 @@ import {
 import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
 import ImagePicker from "../../components/ImagePicker";
+import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
 
 function Header({ index, title }: { index: number; title: string }) {
@@ -103,8 +103,10 @@ export default function LoginRegisterRoute() {
     backend
       .authCreateAccount(
         {
-          email: `${data.get("email")}@stu.his.ac.jp`,
-          name: `${data.get("firstName")} ${data.get("lastName")}`,
+          email: `${data.get("email") as string}@stu.his.ac.jp`,
+          name: `${data.get("firstName") as string} ${
+            data.get("lastName") as string
+          }`,
           nickname: data.get("nickname") as string,
           profilePicture: data.get("profilePicture") as string,
         },
@@ -346,30 +348,13 @@ export default function LoginRegisterRoute() {
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setIsTermsDialogOpen(false)}>Cancel</Button>
-            <Button
+            <LoadingButton
               onClick={handleFinalSubmission}
-              sx={{ position: "relative" }}
-              disabled={loading}
+              loading={loading}
               autoFocus
             >
-              {loading ? (
-                <CircularProgress
-                  color="inherit"
-                  size={16}
-                  sx={{
-                    position: "absolute",
-                    top: "calc(50% - 8px)",
-                    left: "calc(50% - 8px)",
-                  }}
-                />
-              ) : null}
-              <span
-                style={{ visibility: loading ? "hidden" : "visible" }}
-                aria-hidden={loading}
-              >
-                Accept and continue
-              </span>
-            </Button>
+              Accept and continue
+            </LoadingButton>
           </DialogActions>
         </Dialog>
         <Link

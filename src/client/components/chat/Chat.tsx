@@ -66,44 +66,37 @@ export default function Chat({ channelId }: ChatProps) {
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   useEffect(() => {
-    let valid = true;
+    const valid = { value: true };
     let cancel: (() => void) | null = null;
     setChannelBackend(null);
     setMessages(null);
-    if (backend) {
-      (async () => {
-        const newChannelBackend = await backend.connectChannel(channelId);
-        if (!valid) return;
-        if (!newChannelBackend) {
-          setNotFound(true);
-          return;
+    void (async () => {
+      const newChannelBackend = await backend.connectChannel(channelId);
+      if (!valid.value) return;
+      if (!newChannelBackend) {
+        setNotFound(true);
+        return;
+      }
+      setChannelBackend(newChannelBackend);
+      await newChannelBackend.connect();
+      cancel = newChannelBackend.subscribe((event) => {
+        if (event.type === "message") {
+          setMessages(
+            (oldMessages) => oldMessages?.concat([event.newMessage]) ?? null
+          );
         }
-        setChannelBackend(newChannelBackend);
-        await newChannelBackend.connect();
-        cancel = newChannelBackend.subscribe((event) => {
-          if (event.type === "message") {
-            setMessages(
-              (oldMessages) => oldMessages?.concat([event.newMessage]) ?? null
-            );
-          }
-        });
-        const newMessages = await newChannelBackend.listMessages();
-        if (!valid) return;
-        setMessages(newMessages);
-      })();
-      return () => {
-        valid = false;
-        cancel?.call(undefined);
-        channelBackend?.disconnect();
-      };
-    }
-    console.error("Unable to render Chat due to unavalible backend.");
+      });
+      const newMessages = await newChannelBackend.listMessages();
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- Time could have passed since this is async
+      if (!valid.value) return;
+      setMessages(newMessages);
+    })();
     return () => {
-      // Noop
+      valid.value = false;
+      cancel?.call(undefined);
+      void channelBackend?.disconnect();
     };
-    // Don't care whether channelBackend changes, we just need to disconnect.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [backend, channelId]);
+  }, [backend, channelBackend, channelId]);
   return (
     <>
       <ConversationAppBar
@@ -156,7 +149,7 @@ export default function Chat({ channelId }: ChatProps) {
             username={user?.nickname}
             channelName={channel?.name}
             onSend={(message) => {
-              channelBackend?.send(message);
+              void channelBackend?.send(message);
             }}
           />
         ) : (

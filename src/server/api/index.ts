@@ -9,8 +9,6 @@ import {
 import getDatabaseHandle from "../database";
 import getActionHandler from "./actions";
 
-const ISAAC_SEED_LENGTH = 10;
-
 export default function apiCall(
   payload: ApiRequestPayload
 ): ApiResponsePayload {
@@ -18,6 +16,7 @@ export default function apiCall(
     let bcryptEnabled = false;
     const enableBcrypt = () => {
       if (bcryptEnabled) return;
+      // TODO: Add a better secure, random algorithm
       setRandomFallback((length) =>
         Array.from(new Array(length), () => Math.random() * 0x100000000)
       );
@@ -45,7 +44,9 @@ export default function apiCall(
           error: {
             name: normalizedError.name,
             description: normalizedError.message,
-            meta: `Stack: ${normalizedError.stack}\nDate: ${new Date()}`,
+            meta: `Stack: ${
+              normalizedError.stack ?? "undefined"
+            }\nDate: ${new Date().toISOString()}`,
           },
         };
       }

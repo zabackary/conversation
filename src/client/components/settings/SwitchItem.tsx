@@ -1,5 +1,6 @@
 import { Grid, Switch, Typography } from "@mui/material";
 import { ChangeEvent, ReactNode, useState } from "react";
+import useSnackbar from "../useSnackbar";
 
 interface Props {
   value: boolean;
@@ -17,11 +18,17 @@ export default function SwitchItem({
   children,
 }: Props) {
   const [disabled, setDisabled] = useState(false);
+  const snackbar = useSnackbar();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setDisabled(true);
-    onChange(e.currentTarget.checked).then(() => {
-      setDisabled(false);
-    });
+    onChange(e.currentTarget.checked)
+      .then(() => {
+        setDisabled(false);
+      })
+      .catch(() => {
+        setDisabled(false);
+        snackbar.showSnackbar("Failed to save preferences.");
+      });
   };
   return (
     <>

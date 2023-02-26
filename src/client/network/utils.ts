@@ -27,6 +27,7 @@ export function createSubscribable<T>(
     state = value;
     callbacks.forEach((callback) => callback(value));
   };
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition --- To catch on async
   generator(handleOutput)?.catch((error: unknown) =>
     handleOutput(normalizeException(error))
   );
@@ -97,6 +98,7 @@ export function createCleanDispatchableSubscribable<T>(
       ...dirty.value,
       getSnapshot(): T {
         const snapshot = dirty.value.getSnapshot();
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (!allowNull && snapshot === null) {
           throw new Error("Subscribable is unclean: value is null");
         } else if (snapshot instanceof Error) {
@@ -119,9 +121,16 @@ export function mapSubscribable<T, S>(
   let promisedUpdate: Promise<S | Error> | null = null;
   return createSubscribable(
     (next) => {
-      promisedUpdate?.then(next);
-      subscribable.subscribe(async (value) => {
-        next(await map(value));
+      void promisedUpdate?.then(next);
+      subscribable.subscribe((value) => {
+        const mapped = map(value);
+        if (mapped && typeof mapped === "object" && "then" in mapped) {
+          void mapped.then((resolved) => {
+            next(resolved);
+          });
+        } else {
+          next(mapped);
+        }
       });
     },
     originalSnapshot === null

@@ -182,7 +182,10 @@ export default function loadDatabase<T extends Schema>(
             for (const key in partial) {
               if (Object.prototype.hasOwnProperty.call(partial, key)) {
                 const value = partial[key];
-                if (spreadsheetToValue(rowContent[keys.indexOf(key)]) !== value)
+                if (
+                  spreadsheetToValue(String(rowContent[keys.indexOf(key)])) !==
+                  value
+                )
                   pass = false;
               }
             }
@@ -197,7 +200,7 @@ export default function loadDatabase<T extends Schema>(
               Object.fromEntries(
                 rowContent.map((content, index) => [
                   keys[index],
-                  spreadsheetToValue(content),
+                  spreadsheetToValue(String(content)),
                 ])
               ) as EntityPropertyInitializer<typeof tableSchema>,
               match[0],

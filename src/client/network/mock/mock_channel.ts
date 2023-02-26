@@ -35,7 +35,7 @@ export default class MockChannelBackend implements ChannelBackend {
       markdown: message.markdown,
     };
     // @ts-ignore Shut up TypeScript, it's null thingy
-    messages[this.id]?.push(newMessage);
+    (messages[this.id] as Message[] | undefined)?.push(newMessage);
     for (const listener of this.listeners) {
       listener({
         type: "message",
@@ -58,7 +58,7 @@ export default class MockChannelBackend implements ChannelBackend {
     if (this.connected) {
       await wait();
       // @ts-ignore If this.id is in messages, then it should be OK
-      return this.id in messages ? [...messages[this.id]] : [];
+      return this.id in messages ? [...(messages[this.id] as Message[])] : [];
     }
     throw new Error("Must be connected to list messages.");
   }

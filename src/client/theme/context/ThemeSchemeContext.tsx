@@ -1,6 +1,7 @@
 import {
   argbFromHex,
   hexFromArgb,
+  themeFromImage,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
@@ -13,14 +14,14 @@ import {
 
 export interface ThemeSchemeContextType {
   themeScheme: M3ThemeScheme;
-  generateThemeScheme: (base: string) => void;
+  generateThemeScheme: (base: string | HTMLImageElement) => Promise<void>;
   resetThemeScheme: () => void;
 }
 
 export const ThemeSchemeContext = createContext<ThemeSchemeContextType>({
   themeScheme: DEFAULT_M3_THEME_SCHEME,
-  generateThemeScheme: async (_base: string) => {
-    // Default
+  generateThemeScheme: (_base: unknown) => {
+    return Promise.resolve();
   },
   resetThemeScheme: () => {
     // Default
@@ -44,7 +45,7 @@ function ThemeSchemeProvider({ children }: ThemeSchemeProviderProps) {
     if (localStorage.getItem(THEME_SCHEME_KEY)) {
       const localThemeScheme = JSON.parse(
         localStorage.getItem(THEME_SCHEME_KEY) || "{}"
-      );
+      ) as M3ThemeScheme; // Some years later, I will find this, but hopefully no one tampers
       setThemeScheme(localThemeScheme);
     }
   }, []);
@@ -52,17 +53,13 @@ function ThemeSchemeProvider({ children }: ThemeSchemeProviderProps) {
   const themeSchemeValue = useMemo(
     () => ({
       themeScheme,
-      async generateThemeScheme(colorBase: string) {
-        const theme = themeFromSourceColor(argbFromHex(colorBase));
-
-        /*
-        let theme = undefined;
-        if (typeof colorBase == 'string') {
+      async generateThemeScheme(colorBase: string | HTMLImageElement) {
+        let theme;
+        if (typeof colorBase === "string") {
           theme = themeFromSourceColor(argbFromHex(colorBase));
         } else {
           theme = await themeFromImage(colorBase);
         }
-        */
 
         const paletteTones: Record<string, Record<Tone, string>> = {};
 

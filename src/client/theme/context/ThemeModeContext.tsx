@@ -34,9 +34,10 @@ function ThemeModeProvider({ children }: ThemeModeProviderProps) {
     if (localStorage.getItem(THEME_MODE_KEY)) {
       const localMode = JSON.parse(
         localStorage.getItem(THEME_MODE_KEY) || "{}"
-      );
+      ) as unknown;
+      if (typeof localMode !== "string") return;
       if (["dark", "light"].includes(localMode)) {
-        setThemeMode(localMode);
+        setThemeMode(localMode as "dark" | "light");
       } else {
         setThemeMode(DEFAULT_THEME_MODE);
       }

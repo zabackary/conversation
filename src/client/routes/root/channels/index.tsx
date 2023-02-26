@@ -33,7 +33,7 @@ export default function ChannelListRoute() {
       }
     >
       <SwitchTransition>
-        <Fade key={match?.pathname} timeout={200} unmountOnExit>
+        <Fade key={match.pathname} timeout={200} unmountOnExit>
           <div>{currentOutlet}</div>
         </Fade>
       </SwitchTransition>

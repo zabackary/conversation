@@ -89,7 +89,12 @@ export default function ErrorPage({
             Go home
           </Button>
           <Tooltip title={debuggingDetailsTooltip}>
-            <Button size="small" onClick={handleCopyButtonClick}>
+            <Button
+              size="small"
+              onClick={() => {
+                void handleCopyButtonClick();
+              }}
+            >
               Copy debugging details
             </Button>
           </Tooltip>

@@ -7,8 +7,6 @@ import Channel, {
 } from "../../../model/channel";
 import User, { NewUser, UserStatus } from "../../../model/user";
 import {
-  InvalidPasswordReason,
-  InvalidTextReason,
   validatePassword,
   validateText,
   validateUrl,
@@ -19,7 +17,12 @@ import NetworkBackend, {
   LoggedOutException,
   Subscribable,
 } from "../network_definitions";
-import { createSubscribable, mapSubscribable, wait } from "../utils";
+import {
+  CleanDispatchableSubscribable,
+  createSubscribable,
+  mapSubscribable,
+  wait,
+} from "../utils";
 import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
@@ -45,23 +48,24 @@ export default class MockBackend implements NetworkBackend {
 
   async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
     await wait();
-    let reason: InvalidPasswordReason | InvalidTextReason | null = null;
     if (
-      (reason = validatePassword(password)) !== null ||
-      (reason = validateText(newUser.name)) !== null ||
-      (reason = validateText(newUser.nickname)) !== null ||
+      validatePassword(password) !== null ||
+      validateText(newUser.name) !== null ||
+      validateText(newUser.nickname) !== null ||
       (!!newUser.profilePicture && validateUrl(newUser.profilePicture) !== null)
     ) {
-      throw new Error(`Failed to validate: ${reason}`);
+      throw new Error(`Failed to validate`);
     }
   }
 
   getStatus(user: string): Subscribable<UserStatus | null> {
     return createSubscribable(async (next) => {
       await wait();
-      // @ts-ignore There's a null check later. Relax, TypeScript!
-      const dbUser = users[user];
-      next(dbUser ? dbUser.status : null);
+      // @ts-ignore The cast is safe
+      const dbUser = users[user] as
+        | CleanDispatchableSubscribable<User>
+        | undefined;
+      next(dbUser ? dbUser.value.getSnapshot().status : null);
     });
   }
 
@@ -72,10 +76,7 @@ export default class MockBackend implements NetworkBackend {
       if (!user) throw new LoggedOutException();
       next(
         Object.values(channels).filter(
-          (channel) =>
-            channel.dm &&
-            channel.members.length === 2 &&
-            channel.members.includes(user)
+          (channel) => channel.dm && channel.members.includes(user)
         ) as DmChannel[]
       );
     });
@@ -87,8 +88,8 @@ export default class MockBackend implements NetworkBackend {
       if (user === null) return new LoggedOutException();
       if (user instanceof Error) return user;
       // @ts-ignore Again, there's a null check! It should be *fine*.
-      const channel: Channel | undefined = channels[id];
-      if (user && channel && channel.members.includes(user)) {
+      const channel = channels[id] as Channel | undefined;
+      if (channel && channel.members.includes(user)) {
         return channel;
       }
       return null;
@@ -105,7 +106,7 @@ export default class MockBackend implements NetworkBackend {
   async connectChannel(id: number): Promise<ChannelBackend | null> {
     await wait();
     // @ts-ignore Again, there's a null check! It should be *fine*.
-    const channel: Channel | undefined = channels[id];
+    const channel = channels[id] as Channel | undefined;
     const user = loggedInUser.value.getSnapshot();
     if (!user || !channel || !channel.members.includes(user)) {
       return null;
@@ -145,7 +146,10 @@ export default class MockBackend implements NetworkBackend {
     });
   }
 
-  async clearCache() {
+  clearCache() {
     console.log("Cache cleared, but there is no cache! :D");
+    return new Promise<void>((resolve) => {
+      resolve();
+    });
   }
 }

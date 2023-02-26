@@ -5,6 +5,7 @@ import { useCallback, useContext } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
+import useSnackbar from "../../../../components/useSnackbar";
 import {
   DEFAULT_THEME_MODE,
   ThemeModeContext,
@@ -20,13 +21,18 @@ export default function AppearanceSettingsRoute({
   const { themeScheme, generateThemeScheme, resetThemeScheme } =
     useContext(ThemeSchemeContext);
 
+  const snackbar = useSnackbar();
+
   const handleColorChange = useDebouncedCallback((color: string) => {
-    generateThemeScheme(color);
+    generateThemeScheme(color).catch(() => {
+      snackbar.showSnackbar("Failed to set theme color");
+    });
   }, 200);
 
   const handleThemeChange = useCallback(
-    async (newTheme: boolean): Promise<void> => {
+    (newTheme: boolean) => {
       setThemeMode(newTheme ? "dark" : "light");
+      return Promise.resolve(undefined);
     },
     [setThemeMode]
   );
@@ -60,7 +66,7 @@ export default function AppearanceSettingsRoute({
               icon={<ShuffleIcon />}
               label="Randomize"
               onClick={() =>
-                generateThemeScheme(
+                handleColorChange(
                   `#${Math.floor(Math.random() * 16777215)
                     .toString(16)
                     .padStart(6, "0")}`

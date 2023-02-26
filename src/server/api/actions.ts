@@ -6,6 +6,7 @@ import {
   ApiActionType,
 } from "../../shared/apiActions";
 import { ConversationDatabaseHandle } from "../database";
+import DatabaseUser from "../database/model/User";
 
 type ActionMap = {
   [Key in ApiActionType]: (
@@ -26,7 +27,9 @@ export default function getActionHandler<T extends ApiActionType>(
       profilePicture,
       password,
     }) {
-      const [existingUser] = database.simpleSearch.user({ email });
+      const existingUser = database.simpleSearch.user({ email })[0] as
+        | DatabaseUser
+        | undefined;
       if (existingUser) return null;
       enableBcrypt();
       const passwordHash = hashSync(password);
@@ -45,7 +48,9 @@ export default function getActionHandler<T extends ApiActionType>(
       });
       newUser.save();
       const userFromId = (id: number) => {
-        const user = database.simpleSearch.user({ id })[0];
+        const user = database.simpleSearch.user({ id })[0] as
+          | DatabaseUser
+          | undefined;
         if (!user) throw new Error("Can't get user");
         return user;
       };
@@ -53,7 +58,9 @@ export default function getActionHandler<T extends ApiActionType>(
     },
     [ApiActionType.LogIn]({ email, password }) {
       enableBcrypt();
-      const [user] = database.simpleSearch.user({ email });
+      const user = database.simpleSearch.user({ email })[0] as
+        | DatabaseUser
+        | undefined;
       if (user && compareSync(password, user.properties.passwordHash)) {
         // TODO: Update session accordingly
         return true;
