@@ -138,11 +138,11 @@ export default function loadDatabase<T extends Schema>(
                     sheet.getLastRow() - 1,
                     1
                   )
-                  .flat();
+                  .flat() as string[];
                 candidates.push(
                   column.indexOf(
                     valueToSpreadsheet(partial[propertyName] ?? null)
-                  ) + 1
+                  ) + 2
                 );
                 break;
               } else {
@@ -177,7 +177,7 @@ export default function loadDatabase<T extends Schema>(
               1,
               1,
               keys.length
-            )[0];
+            )[0] as string[];
             let pass = true;
             for (const key in partial) {
               if (Object.prototype.hasOwnProperty.call(partial, key)) {
