@@ -163,6 +163,7 @@ export default abstract class Entity {
     }
     if (this.rowNumber === null) {
       this.sheet.appendRow(values.map((value) => valueToSpreadsheet(value)));
+      this.rowNumber = newRow;
     } else {
       this.sheet
         .getRange(this.rowNumber, 1, 1, sortedSchema.length)
