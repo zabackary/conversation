@@ -144,8 +144,9 @@ export default class ApiManager {
           arg,
         },
         (response) => {
+          console.log(`${id} =>`, response);
           if ("error" in response) reject(response.error);
-          else if ("reponse" in response)
+          else if ("response" in response)
             resolve(response.response as ApiActionResponses[T]);
         },
       ]);
