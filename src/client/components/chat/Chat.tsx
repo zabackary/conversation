@@ -96,7 +96,8 @@ export default function Chat({ channelId }: ChatProps) {
       cancel?.call(undefined);
       void channelBackend?.disconnect();
     };
-  }, [backend, channelBackend, channelId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps --- We don't care when the backend changes.
+  }, [backend, channelId]);
   return (
     <>
       <ConversationAppBar
