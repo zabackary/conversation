@@ -24,6 +24,7 @@ import {
 } from "react-router-dom";
 import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
+import Footer from "./Footer";
 
 export default function LoginRoute() {
   const backend = useBackend();
@@ -148,6 +149,7 @@ export default function LoginRoute() {
           </Grid>
         </Grid>
       </Box>
+      <Footer />
     </>
   );
 }

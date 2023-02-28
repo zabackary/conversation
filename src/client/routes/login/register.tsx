@@ -17,7 +17,7 @@ import {
   Popover,
   Stack,
   Tooltip,
-  useTheme
+  useTheme,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -30,13 +30,13 @@ import {
   useEffect,
   useId,
   useRef,
-  useState
+  useState,
 } from "react";
 import {
   Link as RouterLink,
   useLocation,
   useNavigate,
-  useSearchParams
+  useSearchParams,
 } from "react-router-dom";
 import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
@@ -303,9 +303,10 @@ export default function LoginRegisterRoute() {
                 },
               }}
             >
-              {/* TODO: Get the image upload working and allow files */}
               <ImagePicker
-                onImageSelected={(url) => setAvatarUrl(url)}
+                onImageSelected={(url) =>
+                  setAvatarUrl(url === "" ? undefined : url)
+                }
                 allowFiles={false}
               />
             </Popover>
