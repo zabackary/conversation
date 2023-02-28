@@ -61,6 +61,7 @@ export default function getActionHandler<T extends ApiActionType>(
       const user = database.simpleSearch.user({ email })[0] as
         | DatabaseUser
         | undefined;
+      console.log(user);
       if (user && compareSync(password, user.properties.passwordHash)) {
         // TODO: Update session accordingly
         return true;
