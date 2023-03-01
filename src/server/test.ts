@@ -1,5 +1,4 @@
 import getDatabaseHandle from "./database";
-import schema from "./database/schema";
 
 export default function test() {
   let last = new Date();
@@ -13,9 +12,19 @@ export default function test() {
   const database = getDatabaseHandle();
   logTime("opened");
 
-  database.migrate(schema);
-  logTime("migrated");
+  // database.migrate(schema);
+  // logTime("migrated");
 
-  database.flush();
-  logTime("flushed");
+  console.log(
+    database.simpleSearch
+      .user({ email: "zacharycheng@stu.his.ac.jp" })
+      .map((result) =>
+        result.toSharedModel(() => {
+          throw new Error();
+        })
+      )
+  );
+
+  // database.flush();
+  // logTime("flushed");
 }
