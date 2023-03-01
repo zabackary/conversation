@@ -49,6 +49,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   gas-client: ^1.0.0
   gas-entry-generator: ^2.2.0
+  i18next: ^22.4.10
   isaac-prng: ^1.0.16
   match-sorter: ^6.3.1
   minimatch: ^5.1.1
@@ -57,6 +58,7 @@ specifiers:
   react: ^18.2.0
   react-colorful: ^5.6.1
   react-dom: ^18.2.0
+  react-i18next: ^12.2.0
   react-markdown: ^8.0.4
   react-router-dom: ^6.4.5
   react-timeago: ^7.1.0
@@ -85,12 +87,14 @@ dependencies:
   emoji-mart: 5.3.3
   gas-client: 1.0.0
   gas-entry-generator: 2.2.0
+  i18next: 22.4.10
   isaac-prng: 1.0.16
   minimatch: 5.1.1
   normalize-exception: 2.11.0
   react: 18.2.0
   react-colorful: 5.6.1_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
+  react-i18next: 12.2.0_3yopsigl4h4eb2nqrqfsy65uwi
   react-markdown: 8.0.4_kzbn2opkn2327fwg5yzwzya5o4
   react-router-dom: 6.4.5_biqbaboplfbrettd7655fr4n2y
   react-timeago: 7.1.0_react@18.2.0
@@ -2947,6 +2951,12 @@ packages:
       lru-cache: 6.0.0
     dev: true
 
+  /html-parse-stringify/3.0.1:
+    resolution: {integrity: sha512-KknJ50kTInJ7qIScF3jeaFRpMpE8/lfiTdzf/twXyPBLAGrLRTmkz3AdTnKeh40X8k9L2fdYwEp/42WGXIRGcg==}
+    dependencies:
+      void-elements: 3.1.0
+    dev: false
+
   /htmlparser2/8.0.1:
     resolution: {integrity: sha512-4lVbmc1diZC7GUJQtRQ5yBAeUCL1exyMwmForWkRLnwyzWBFxN633SALPMGYaWZvKe9j1pRZJpauvmxENSp/EA==}
     dependencies:
@@ -2977,6 +2987,12 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /i18next/22.4.10:
+    resolution: {integrity: sha512-3EqgGK6fAJRjnGgfkNSStl4mYLCjUoJID338yVyLMj5APT67HUtWoqSayZewiiC5elzMUB1VEUwcmSCoeQcNEA==}
+    dependencies:
+      '@babel/runtime': 7.20.6
+    dev: false
 
   /iconv-lite/0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -4381,6 +4397,26 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-i18next/12.2.0_3yopsigl4h4eb2nqrqfsy65uwi:
+    resolution: {integrity: sha512-5XeVgSygaGfyFmDd2WcXvINRw2WEC1XviW1LXY/xLOEMzsCFRwKqfnHN+hUjla8ZipbVJR27GCMSuTr0BhBBBQ==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.20.6
+      html-parse-stringify: 3.0.1
+      i18next: 22.4.10
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -5297,6 +5333,11 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
+
+  /void-elements/3.1.0:
+    resolution: {integrity: sha512-Dhxzh5HZuiHQhbvTW9AMetFfBHDMYpo23Uo9btPXgdYP+3T5S+p+jgNy7spra+veYhBP2dCSgxR/i2Y02h5/6w==}
+    engines: {node: '>=0.10.0'}
+    dev: false
 
   /vscode-jsonrpc/6.0.0:
     resolution: {integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==}
