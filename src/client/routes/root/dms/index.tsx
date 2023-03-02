@@ -11,7 +11,7 @@ import useDMs from "../../../hooks/useDMs";
 import useUser from "../../../hooks/useUser";
 
 export default function DmListRoute() {
-  const [, , match] = useMatches();
+  const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const dms = useDMs();
   const user = useUser();
@@ -42,7 +42,7 @@ export default function DmListRoute() {
       }
     >
       <SwitchTransition>
-        <Fade key={match.pathname} timeout={200} unmountOnExit>
+        <Fade key={match?.pathname} timeout={200} unmountOnExit>
           <div>{currentOutlet}</div>
         </Fade>
       </SwitchTransition>

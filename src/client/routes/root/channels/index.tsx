@@ -9,7 +9,7 @@ import useChannels from "../../../hooks/useChannels";
 import useUser from "../../../hooks/useUser";
 
 export default function ChannelListRoute() {
-  const [, , match] = useMatches();
+  const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const channels = useChannels();
   const user = useUser();
@@ -33,7 +33,7 @@ export default function ChannelListRoute() {
       }
     >
       <SwitchTransition>
-        <Fade key={match.pathname} timeout={200} unmountOnExit>
+        <Fade key={match?.pathname} timeout={200} unmountOnExit>
           <div>{currentOutlet}</div>
         </Fade>
       </SwitchTransition>
