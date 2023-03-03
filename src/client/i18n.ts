@@ -8,7 +8,8 @@ i18next
   .use(emoji)
   .init({
     resources,
-    lng: "en",
+    ns: ["general", "channel", "message", "settings"],
+    lng: "cimode",
     interpolation: {
       escapeValue: false,
     },

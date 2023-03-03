@@ -1,3 +1,23 @@
 {
-  "en": {}
+  "en": {
+    "general": {
+      "help": "Help",
+      "about": "About",
+      "home": "Home",
+      "dms": "DMs",
+      "channels": "Channels",
+      "settings": "Settings",
+      "done": "Done",
+      "aboutDialog": {
+        "title": "About Conversation",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation contributors. All rights reserved."
+      }
+    },
+    "channel": {
+      "join": "Join channel"
+    },
+    "message": {},
+    "settings": {}
+  }
 }

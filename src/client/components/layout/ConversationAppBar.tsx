@@ -26,6 +26,7 @@ import {
   useId,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   drawerWidth,
   toolbarButtonContext,
@@ -69,6 +70,7 @@ export default function ConversationAppBar({
     setAboutOpen(true);
     handleClose();
   };
+  const { t } = useTranslation();
 
   return (
     <>
@@ -112,8 +114,8 @@ export default function ConversationAppBar({
               {overflowItems}
             </closeOverflowFunctionContext.Provider>
             {overflowItems ? <Divider /> : null}
-            <MenuItem onClick={handleClose}>Help</MenuItem>
-            <MenuItem onClick={handleAboutMenu}>About</MenuItem>
+            <MenuItem onClick={handleClose}>{t("help")}</MenuItem>
+            <MenuItem onClick={handleAboutMenu}>{t("about")}</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
