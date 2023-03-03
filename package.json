@@ -71,6 +71,7 @@
     "gas-client": "^1.0.0",
     "gas-entry-generator": "^2.2.0",
     "i18next": "^22.4.10",
+    "i18next-emoji-postprocessor": "^1.0.2",
     "isaac-prng": "^1.0.16",
     "minimatch": "^5.1.1",
     "normalize-exception": "^2.11.0",
