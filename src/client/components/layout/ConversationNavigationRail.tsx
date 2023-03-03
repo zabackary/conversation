@@ -13,6 +13,7 @@ import {
   Paper,
 } from "@mui/material";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
 
@@ -26,40 +27,43 @@ interface Route {
   id: number;
 }
 
-const routes: Route[] = [
+const routes = [
   {
-    label: "Home",
+    label: "home" as const,
     href: "/",
     icon: <HomeOutlinedIcon />,
     filledIcon: <HomeIcon />,
     id: 0,
   },
   {
-    label: "DMs",
+    label: "dms" as const,
     href: "/dms",
     icon: <ChatBubbleOutlineOutlinedIcon />,
     filledIcon: <ChatBubbleIcon />,
     id: 1,
   },
   {
-    label: "Channels",
+    label: "channels" as const,
     href: "/channels",
     icon: <ForumOutlinedIcon />,
     filledIcon: <ForumIcon />,
     id: 2,
   },
   {
-    label: "Settings",
+    label: "settings" as const,
     href: "/settings",
     icon: <SettingsOutlinedIcon />,
     filledIcon: <SettingsIcon />,
     id: 3,
   },
-];
+] satisfies Route[];
+
+type ArrayElement<ArrayType extends readonly unknown[]> =
+  ArrayType extends readonly (infer ElementType)[] ? ElementType : never;
 
 interface ConversationNavigationRailActionProps
   extends BottomNavigationActionProps {
-  route: Route;
+  route: ArrayElement<typeof routes>;
   rail?: boolean;
   selected?: boolean;
 }
@@ -71,9 +75,10 @@ function ConversationNavigationRailAction({
   ...props
 }: ConversationNavigationRailActionProps) {
   const handleClick = useLinkClickHandler(route.href);
+  const { t } = useTranslation();
   return rail ? (
     <NavigationRailAction
-      label={route.label}
+      label={t(route.label)}
       icon={route.icon}
       value={route.id}
       component="a"
@@ -85,7 +90,7 @@ function ConversationNavigationRailAction({
     />
   ) : (
     <BottomNavigationAction
-      label={route.label}
+      label={t(route.label)}
       // TODO: Find a way where we can have the filled/outlined icon switch and
       // still have the up/down animation
       icon={route.icon}
