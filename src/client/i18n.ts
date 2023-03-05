@@ -9,7 +9,7 @@ i18next
   .init({
     resources,
     ns: ["general", "channel", "message", "settings"],
-    lng: "cimode",
+    lng: "en",
     interpolation: {
       escapeValue: false,
     },
