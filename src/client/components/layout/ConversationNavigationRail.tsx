@@ -6,16 +6,27 @@ import HomeIcon from "@mui/icons-material/Home";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SettingsIcon from "@mui/icons-material/Settings";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import TranslateIcon from "@mui/icons-material/Translate";
 import {
   BottomNavigation,
   BottomNavigationAction,
   BottomNavigationActionProps,
+  IconButton,
   Paper,
+  styled,
 } from "@mui/material";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
+
+const LanguageSwitcherIconButton = styled(IconButton, {
+  shouldForwardProp(propName) {
+    return propName !== "showLabel";
+  },
+})(() => ({
+  margin: "auto auto 12px auto",
+}));
 
 export const navigationRailWidth = 88 as const;
 
@@ -135,6 +146,9 @@ export default function ConversationNavigationRail({
       {routes.map((route) => (
         <ConversationNavigationRailAction key={route.id} route={route} rail />
       ))}
+      <LanguageSwitcherIconButton size="large">
+        <TranslateIcon />
+      </LanguageSwitcherIconButton>
     </NavigationRail>
   );
 }
