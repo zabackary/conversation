@@ -54,7 +54,7 @@ interface Props {
 }
 
 export default function ChatItem({ message, showAvatar }: Props) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("message");
   const translatedMarkdown = useMemo(() => {
     if (!message.markdown.startsWith(TRANSLATION_MARKER))
       return message.markdown;
