@@ -125,7 +125,7 @@ export default function ConversationAppBar({
         aria-labelledby={aboutHeaderId}
         aria-describedby={aboutDescriptionId}
       >
-        <DialogTitle id={aboutHeaderId}>About Conversation</DialogTitle>
+        <DialogTitle id={aboutHeaderId}>{t("aboutDialog.title")}</DialogTitle>
         <DialogContent>
           <div id={aboutDescriptionId}>
             <Stack alignItems="center">
@@ -136,18 +136,15 @@ export default function ConversationAppBar({
                 [icon]
               </Avatar>
               <Typography variant="h5" my={2}>
-                Conversation 4
+                {t("aboutDialog.header")}
               </Typography>
-              <Typography>
-                &copy;2020-{new Date().getFullYear()} Conversation contributors.
-                All rights reserved.
-              </Typography>
+              <Typography>{t("aboutDialog.copyright")}</Typography>
             </Stack>
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAboutOpen(false)} autoFocus>
-            Done
+            {t("done")}
           </Button>
         </DialogActions>
       </Dialog>
