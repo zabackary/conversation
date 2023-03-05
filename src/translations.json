@@ -15,9 +15,42 @@
       }
     },
     "channel": {
-      "join": "Join channel"
+      "notFound": "Can't find the channel you're looking for. Check the logged in user and try again.",
+      "join": "Join channel",
+      "joinDm": "New DM",
+      "prompt": "Message {{ channelOrUsername }} as {{ currentUser }}...",
+      "email": "Email {{ username }}",
+      "block": "Block",
+      "overflowTooltip": "More options",
+      "upload": {
+        "title": "Upload file",
+        "hint": "You can also double-click the 🔼"
+      },
+      "attach": {
+        "title": "Attach image",
+        "hint": "Try pasting an image into the textbox"
+      },
+      "action": {
+        "title": "Run action",
+        "hint": "Alternatively, type a / in the input"
+      },
+      "emoji": "Insert emoji",
+      "send": "Send message",
+      "sendDisabled": "Send (disabled)",
+      "channelInfo": {
+        "title": "Channel info"
+      },
+      "people": {
+        "title": "People"
+      }
     },
-    "message": {},
+    "message": {
+      "dm_start": "This is the start of this DM. Let's start chatting!",
+      "chat_start": "{{ 0 }} created this channel. Be the first one to say something!",
+      "chat_member_add": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
+      "chat_name_change": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
+      "easteregg": "Someone found an easter egg! 🤩"
+    },
     "settings": {
       "reset": "Reset",
       "random": "Random",

@@ -1,5 +1,6 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Fab, Fade, List } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { Link, useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { ConversationNavigationDrawer } from "../../../components/layout";
@@ -13,6 +14,7 @@ export default function ChannelListRoute() {
   const currentOutlet = useOutlet();
   const channels = useChannels();
   const user = useUser();
+  const { t } = useTranslation("channel");
   return (
     <ConversationNavigationDrawer
       drawerHeader={<DrawerHeader user={user} />}
@@ -26,7 +28,7 @@ export default function ChannelListRoute() {
             to="join/"
           >
             <AddIcon sx={{ mr: 1 }} />
-            Join channel
+            {t("join")}
           </Fab>
           <ChannelList channels={channels} />
         </List>

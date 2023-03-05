@@ -1,5 +1,6 @@
 import { Box, SxProps } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/network_definitions";
 import ChatInput from "./ChatInput";
@@ -26,6 +27,7 @@ export default function ChatView({
   const [isSticky, setIsSticky] = useState(false);
   const inputRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const { t } = useTranslation("channel");
 
   useEffect(() => {
     if (!inputRef.current || !containerRef.current) return undefined;
@@ -82,7 +84,10 @@ export default function ChatView({
         }}
         placeholder={
           channelName && username
-            ? `Message ${channelName} as ${username}...`
+            ? t("prompt", {
+                channelOrUsername: channelName,
+                currentUser: username,
+              })
             : ""
         }
         elevate={!isSticky}

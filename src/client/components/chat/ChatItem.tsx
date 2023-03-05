@@ -8,7 +8,8 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import {
   PluggableList,
@@ -18,6 +19,15 @@ import TimeAgo from "react-timeago";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import Message from "../../../model/message";
+
+const WHITELISTED_TRANSLATIONS = [
+  "dm_start",
+  "chat_start",
+  "chat_member_add",
+  "chat_name_change",
+  "easteregg",
+];
+const TRANSLATION_MARKER = "!translation:";
 
 function NoPaddingReactMarkdown(props: ReactMarkdownOptions) {
   const plugins: PluggableList = [remarkGfm, remarkBreaks];
@@ -44,6 +54,16 @@ interface Props {
 }
 
 export default function ChatItem({ message, showAvatar }: Props) {
+  const { t } = useTranslation();
+  const translatedMarkdown = useMemo(() => {
+    if (!message.markdown.startsWith(TRANSLATION_MARKER))
+      return message.markdown;
+    const split = message.markdown.slice(TRANSLATION_MARKER.length).split(":");
+    if (WHITELISTED_TRANSLATIONS.includes(split[0])) {
+      return t(split[0], Object(split.slice(1)));
+    }
+    return message.markdown;
+  }, [message.markdown, t]);
   if (showAvatar) {
     return (
       <ListItem alignItems="flex-start" disablePadding>
@@ -78,7 +98,9 @@ export default function ChatItem({ message, showAvatar }: Props) {
             </>
           }
           secondary={
-            <NoPaddingReactMarkdown>{message.markdown}</NoPaddingReactMarkdown>
+            <NoPaddingReactMarkdown>
+              {translatedMarkdown}
+            </NoPaddingReactMarkdown>
           }
           secondaryTypographyProps={{
             component: "div",
@@ -92,7 +114,7 @@ export default function ChatItem({ message, showAvatar }: Props) {
     <ListItem alignItems="flex-start" disablePadding>
       <ListItemText
         secondary={
-          <NoPaddingReactMarkdown>{message.markdown}</NoPaddingReactMarkdown>
+          <NoPaddingReactMarkdown>{translatedMarkdown}</NoPaddingReactMarkdown>
         }
         secondaryTypographyProps={{
           component: "div",

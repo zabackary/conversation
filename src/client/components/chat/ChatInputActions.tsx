@@ -5,8 +5,10 @@ import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
+import { useTranslation } from "react-i18next";
 
 export default function ChatInputActions() {
+  const { t } = useTranslation("channel");
   return (
     <>
       <MenuItem>
@@ -14,8 +16,8 @@ export default function ChatInputActions() {
           <AttachFileIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primary="Upload file"
-          secondary={"You can also double-click the \u{1F53C}"}
+          primary={t("upload.title")}
+          secondary={t("upload.hint")}
         />
       </MenuItem>
       <MenuItem>
@@ -23,8 +25,8 @@ export default function ChatInputActions() {
           <AddPhotoAlternateIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primary="Attach image"
-          secondary="You can also paste an image in the text field"
+          primary={t("attach.title")}
+          secondary={t("attach.hint")}
         />
       </MenuItem>
       <Divider />
@@ -33,8 +35,8 @@ export default function ChatInputActions() {
           <PlayCircleOutlineIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText
-          primary="Run action"
-          secondary="You can also press / in the text field"
+          primary={t("attach.title")}
+          secondary={t("attach.hint")}
         />
       </MenuItem>
     </>

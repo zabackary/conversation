@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Message from "../../../model/message";
 import useBackend from "../../hooks/useBackend";
 import useChannel from "../../hooks/useChannel";
@@ -53,6 +54,7 @@ export interface ChatProps {
 
 export default function Chat({ channelId }: ChatProps) {
   const backend = useBackend();
+  const { t } = useTranslation("channel");
   const [channelBackend, setChannelBackend] = useState<ChannelBackend | null>(
     null
   );
@@ -154,7 +156,7 @@ export default function Chat({ channelId }: ChatProps) {
             }}
           />
         ) : (
-          "Can't find that"
+          t("notFound")
         )}
       </MainContainer>
       <Drawer
@@ -180,7 +182,7 @@ export default function Chat({ channelId }: ChatProps) {
       >
         <SideSheetToolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Channel info
+            {t("channelInfo.title")}
           </Typography>
           <IconButton onClick={() => setActiveSidebar(null)}>
             <CloseIcon />
@@ -210,7 +212,7 @@ export default function Chat({ channelId }: ChatProps) {
       >
         <SideSheetToolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            People
+            {t("people.title")}
           </Typography>
           <IconButton onClick={() => setActiveSidebar(null)}>
             <CloseIcon />
