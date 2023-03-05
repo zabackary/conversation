@@ -1,25 +1,27 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Chip, Grid, Stack } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { ConversationAppBar } from "../../../../components/layout";
 import { SwitchItem } from "../../../../components/settings";
 
 export default function BehaviorSettingsRoute() {
+  const { t } = useTranslation("settings");
   return (
     <>
-      <ConversationAppBar title="Behavior settings" />
+      <ConversationAppBar title={t("behavior.title")} />
       <Grid container spacing={2}>
         <SwitchItem
           value
           onChange={async (_newValue) => {
             // TODO: implement
           }}
-          label="Close emoji picker on select"
-          description="When you select an emoji, the emoji picker will close automatically if this option is on. If you usually select multiple emoji at a time, disable this option."
+          label={t("behavior.emojiclose.title")}
+          description={t("behavior.emojiclose.description")}
         >
           <Stack direction="row" spacing={1}>
             <Chip
               icon={<RestartAltIcon />}
-              label="Reset"
+              label={t("reset")}
               onClick={() => {
                 // TODO: implement
               }}
@@ -32,13 +34,13 @@ export default function BehaviorSettingsRoute() {
           onChange={async (_newValue) => {
             // TODO: implement
           }}
-          label="Send on enter"
-          description="Press Shift+Enter to insert a newline if this is selected. Otherwise, press Shift+Enter to send."
+          label={t("behavior.sendenter.title")}
+          description={t("behavior.sendenter.description")}
         >
           <Stack direction="row" spacing={1}>
             <Chip
               icon={<RestartAltIcon />}
-              label="Reset"
+              label={t("reset")}
               onClick={() => {
                 // TODO: implement
               }}

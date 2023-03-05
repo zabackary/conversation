@@ -18,6 +18,39 @@
       "join": "Join channel"
     },
     "message": {},
-    "settings": {}
+    "settings": {
+      "reset": "Reset",
+      "random": "Random",
+      "general": {
+        "label": "General",
+        "title": "General Settings",
+        "placeholder": "There's nothing here yet."
+      },
+      "behavior": {
+        "label": "Behavior",
+        "title": "Behavioral Settings",
+        "emojiclose": {
+          "title": "Close emoji picker on select",
+          "description": "When you select an emoji, the emoji picker will close automatically if this option is on. If you usually select multiple emoji at a time, disable this option."
+        },
+        "sendenter": {
+          "title": "Send on enter",
+          "description": "Press Shift+Enter to insert a newline if this is selected. Otherwise, press Shift+Enter to send."
+        }
+      },
+      "appearance": {
+        "label": "Appearance",
+        "title": "Appearance Settings",
+        "darkmode": {
+          "title": "Dark mode",
+          "description": "Turn out the light to save your eyesight at night."
+        },
+        "theme": {
+          "title": "Theme color",
+          "description": "Customize the interface's Material You primary accent color to your liking. The picker may jump around as the palette is generated dynamically from the selected color.",
+          "error": "Failed to set theme color."
+        }
+      }
+    }
   }
 }
