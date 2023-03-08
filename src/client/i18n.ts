@@ -7,9 +7,10 @@ i18next
   .use(initReactI18next)
   .use(emoji)
   .init({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     resources,
-    ns: ["general", "channel", "message", "settings"],
-    lng: "en",
+    ns: ["general", "channel", "message", "settings", "emoji"],
+    lng: "en-US",
     interpolation: {
       escapeValue: false,
     },
