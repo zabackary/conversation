@@ -52,8 +52,25 @@ export interface SubscribableDatabaseAccessor<T extends Schema>
   ) => void;
 }
 
-export default function getDatabaseHandle() {
-  return loadDatabase(SpreadsheetApp.openById(SPREADSHEET_ID), schema);
+export default function getDatabaseHandle(): SubscribableDatabaseAccessor<
+  typeof schema
+> {
+  const database = loadDatabase(
+    SpreadsheetApp.openById(SPREADSHEET_ID),
+    schema
+  );
+  return {
+    ...database,
+    listen(tableName, criteria, lastKnownGood, fastAccess) {
+      throw new Error("Unimplemented");
+    },
+    notifyChanged(tableName, newEntity) {
+      throw new Error("Unimplemented");
+    },
+    subscribe(tableName, rowNumber, lastKnownGood, fastAccess) {
+      throw new Error("Unimplemented");
+    },
+  };
 }
 
 export type ConversationDatabaseHandle = DatabaseAccessor<typeof schema>;

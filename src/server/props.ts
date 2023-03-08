@@ -1,11 +1,15 @@
 import { expBackoff } from "./server_utils";
 
-type PropertyStoreType = "user" | "script" | "document";
+function getStringSize(str: string) {
+  return Utilities.newBlob(str).getBytes().length;
+}
+
 interface PropertyStore {
   user?: GoogleAppsScript.Properties.Properties;
   script?: GoogleAppsScript.Properties.Properties;
   document?: GoogleAppsScript.Properties.Properties;
 }
+type PropertyStoreType = keyof PropertyStore;
 const store: PropertyStore = {};
 function getPropertyStore(
   type: PropertyStoreType
@@ -34,14 +38,19 @@ function getPropertyStore(
   return foundStore;
 }
 
-export function getProperty(name: string, type: PropertyStoreType = "script") {
+export function getProperty(
+  name: string,
+  type: PropertyStoreType = "script",
+  split = true
+) {
   return getPropertyStore(type).getProperty(name) || "";
 }
 
 export function setProperty(
   name: string,
   value: string,
-  type: PropertyStoreType = "script"
+  type: PropertyStoreType = "script",
+  split = true
 ) {
   getPropertyStore(type).setProperty(name, value);
 }
