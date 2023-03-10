@@ -230,6 +230,10 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
             dataUrl="//cdn.jsdelivr.net/npm/@emoji-mart/data"
             onEmojiSelect={handleEmojiSelect}
             theme={themeMode}
+            i18n={t("emojiPicker:emojiMart", {
+              returnObjects: true,
+              defaultValue: "",
+            })}
           />
         </Popover>
         <Menu
