@@ -1,0 +1,741 @@
+{
+  "en-US": {
+    "channel": {
+      "notFound": "Can't find the channel you're looking for. Check the logged in user and try again.",
+      "join": "Join channel",
+      "joinDm": "New DM",
+      "prompt": "Message {{ channelOrUsername }} as {{ currentUser }}...",
+      "email": "Email {{ username }}",
+      "block": "Block",
+      "overflowTooltip": "More options",
+      "upload": {
+        "title": "Upload file",
+        "hint": "You can also double-click the 🔼"
+      },
+      "attach": {
+        "title": "Attach image",
+        "hint": "Try pasting an image into the textbox"
+      },
+      "action": {
+        "title": "Run action",
+        "hint": "Alternatively, type a / in the input"
+      },
+      "emoji": "Insert emoji",
+      "send": "Send message",
+      "sendDisabled": "Send (disabled)",
+      "channelInfo": {
+        "title": "Channel info"
+      },
+      "people": {
+        "title": "People"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "Search",
+        "search_no_results": "Oh no!",
+        "search_no_results_2": "That emoji couldn't be found",
+        "pick": "Pick an emoji...",
+        "add_custom": "Add custom emoji",
+        "categories": {
+          "activity": "Activity",
+          "custom": "Custom",
+          "flags": "Flags",
+          "foods": "Food & Drink",
+          "frequent": "Frequently used",
+          "nature": "Animals & Nature",
+          "objects": "Objects",
+          "people": "Smileys & People",
+          "places": "Travel & Places",
+          "search": "Search Results",
+          "symbols": "Symbols"
+        },
+        "skins": {
+          "1": "Default",
+          "2": "Light",
+          "3": "Medium-Light",
+          "4": "Medium",
+          "5": "Medium-Dark",
+          "6": "Dark",
+          "choose": "Choose default skin tone"
+        }
+      }
+    },
+    "general": {
+      "help": "Help",
+      "about": "About",
+      "home": "Home",
+      "dms": "DMs",
+      "channels": "Channels",
+      "settings": "Settings",
+      "done": "Done",
+      "aboutDialog": {
+        "title": "About Conversation",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation contributors. All rights reserved."
+      },
+      "error": "Something went wrong. Try again later.",
+      "languageSelect": "Select language"
+    },
+    "message": {
+      "dm_start": "This is the start of this DM. Let's start chatting!",
+      "chat_start": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
+      "chat_member_add": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
+      "chat_name_change": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
+      "easteregg": "Someone found an easter egg! 🤩"
+    },
+    "settings": {
+      "reset": "Reset",
+      "random": "Randomize",
+      "general": {
+        "label": "General",
+        "title": "General Settings",
+        "placeholder": "There's nothing here yet. Be on the lookout for new settings!",
+        "language": {
+          "label": "Language",
+          "description": "Set the UI language to your preference."
+        }
+      },
+      "behavior": {
+        "label": "Behavior",
+        "title": "Behavioral Settings",
+        "emojiclose": {
+          "title": "Close emoji picker on select",
+          "description": "Closes the emoji picker automatically after an emoji is selected. If you usually select multiple emoji at a time, disable this option."
+        },
+        "sendenter": {
+          "title": "Send on enter",
+          "description": "Send when the enter button is pressed. Press Shift+Enter to insert a newline."
+        }
+      },
+      "appearance": {
+        "label": "Appearance",
+        "title": "Appearance Settings",
+        "darkmode": {
+          "title": "Dark mode",
+          "description": "Turn out the light to save your eyesight at night."
+        },
+        "theme": {
+          "title": "Theme color",
+          "description": "Customize the interface's Material You primary accent color to your liking.",
+          "error": "Failed to set the theme color."
+        }
+      }
+    }
+  },
+  "en-GB": {
+    "channel": {
+      "notFound": "Can't find the channel you're looking for. Check the logged in user and try again.",
+      "join": "Join channel",
+      "joinDm": "New DM",
+      "prompt": "Message {{ channelOrUsername }} as {{ currentUser }}...",
+      "email": "Email {{ username }}",
+      "block": "Block",
+      "overflowTooltip": "More options",
+      "upload": {
+        "title": "Upload file",
+        "hint": "You can also double-click the 🔼"
+      },
+      "attach": {
+        "title": "Attach image",
+        "hint": "Try pasting an image into the textbox"
+      },
+      "action": {
+        "title": "Run action",
+        "hint": "Alternatively, type a / in the input"
+      },
+      "emoji": "Insert emoji",
+      "send": "Send message",
+      "sendDisabled": "Send (disabled)",
+      "channelInfo": {
+        "title": "Channel info"
+      },
+      "people": {
+        "title": "People"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "Search",
+        "search_no_results": "Oh no!",
+        "search_no_results_2": "That emoji couldn't be found",
+        "pick": "Pick an emoji...",
+        "add_custom": "Add custom emoji",
+        "categories": {
+          "activity": "Activity",
+          "custom": "Custom",
+          "flags": "Flags",
+          "foods": "Food & Drink",
+          "frequent": "Frequently used",
+          "nature": "Animals & Nature",
+          "objects": "Objects",
+          "people": "Smileys & People",
+          "places": "Travel & Places",
+          "search": "Search Results",
+          "symbols": "Symbols"
+        },
+        "skins": {
+          "1": "Default",
+          "2": "Light",
+          "3": "Medium-Light",
+          "4": "Medium",
+          "5": "Medium-Dark",
+          "6": "Dark",
+          "choose": "Choose default skin tone"
+        }
+      }
+    },
+    "general": {
+      "help": "Help",
+      "about": "About",
+      "home": "Home",
+      "dms": "DMs",
+      "channels": "Channels",
+      "settings": "Settings",
+      "done": "Done",
+      "aboutDialog": {
+        "title": "About Conversation",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation contributors. All rights reserved."
+      },
+      "error": "Something went wrong. Try again later."
+    },
+    "message": {
+      "dm_start": "This is the start of this DM. Let's start chatting!",
+      "chat_start": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
+      "chat_member_add": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
+      "chat_name_change": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
+      "easteregg": "Someone found an easter egg! 🤩"
+    },
+    "settings": {
+      "reset": "Reset",
+      "random": "Randomize",
+      "general": {
+        "label": "General",
+        "title": "General Settings",
+        "placeholder": "There's nothing here yet. Be on the lookout for new settings!",
+        "language": {
+          "label": "Language",
+          "description": "Set the UI language to your preference."
+        }
+      },
+      "behavior": {
+        "label": "Behavior",
+        "title": "Behavioral Settings",
+        "emojiclose": {
+          "title": "Close emoji picker on select",
+          "description": "Closes the emoji picker automatically after an emoji is selected. If you usually select multiple emoji at a time, disable this option."
+        },
+        "sendenter": {
+          "title": "Send on enter",
+          "description": "Send when the enter button is pressed. Press Shift+Enter to insert a newline."
+        }
+      },
+      "appearance": {
+        "label": "Appearance",
+        "title": "Appearance Settings",
+        "darkmode": {
+          "title": "Dark mode",
+          "description": "Turn out the light to save your eyesight at night."
+        },
+        "theme": {
+          "title": "Theme colour",
+          "description": "Customize the interface's Material You primary accent colour to your liking.",
+          "error": "Failed to set the theme colour."
+        }
+      }
+    }
+  },
+  "ja": {
+    "channel": {
+      "notFound": "お探しのチャンネルが見つかりませんでした。 ログインしているユーザーを確認し、再試行してください。",
+      "join": "チャンネルに参加",
+      "joinDm": "新しいDM",
+      "prompt": "メッセージ {{ channelOrUsername }} を {{ currentUser }} として...",
+      "email": "{{ username }} にメールをする",
+      "block": "ブロック",
+      "overflowTooltip": "より多くのオプション",
+      "upload": {
+        "title": "ファイルをアップロードする",
+        "hint": "🔼をダブルクリックすることもできます"
+      },
+      "attach": {
+        "title": "画像を添付",
+        "hint": "テキストボックスに画像を貼り付けてみてください"
+      },
+      "action": {
+        "title": "アクションを実行",
+        "hint": "または、/ を入力してください"
+      },
+      "emoji": "絵文字を挿入",
+      "send": "メッセージを送る",
+      "sendDisabled": "送信（無効）",
+      "channelInfo": {
+        "title": "チャンネルの情報"
+      },
+      "people": {
+        "title": "メンバー"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "検索",
+        "search_no_results": "残念！",
+        "search_no_results_2": "その絵文字は見つかりませんでした",
+        "pick": "絵文字を選択...",
+        "add_custom": "絵文字を追加する",
+        "categories": {
+          "activity": "アクティビティ",
+          "custom": "カスタム",
+          "flags": "旗",
+          "foods": "フード＆ドリンク",
+          "frequent": "よく使う絵文字",
+          "nature": "動物＆自然",
+          "objects": "オブジェクト",
+          "people": "スマイリー＆人",
+          "places": "トラベル＆場所",
+          "search": "検索結果",
+          "symbols": "記号"
+        },
+        "skins": {
+          "1": "標準",
+          "2": "明るい肌色",
+          "3": "やや明るい肌色",
+          "4": "肌色",
+          "5": "やや濃い肌色",
+          "6": "濃い肌色",
+          "choose": "デフォルトの肌の色を選択する"
+        }
+      }
+    },
+    "general": {
+      "help": "ヘルプ",
+      "about": "アプリについて",
+      "home": "ホーム",
+      "dms": "DMs",
+      "channels": "チャンネル",
+      "settings": "設定",
+      "done": "閉じる",
+      "aboutDialog": {
+        "title": "Conversationについて",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation コントリビューター。 全著作権所有。"
+      },
+      "error": "エラーが発生しました。 あとでもう一度試してみてください。"
+    },
+    "message": {
+      "dm_start": "これがこのDMの始まりです。 チャットを始めましょう！",
+      "chat_start": "これが「{{ 0 }}」の始まりです。 何かを言う最初の人になりましょう！",
+      "chat_member_add": "{{ 0 }} が {{ 1 }} をこのチャンネルに追加しました! 🎉",
+      "chat_name_change": "{{ 0 }} がこのチャンネルの名前を「{{ 1 }}」に変更しました",
+      "easteregg": "誰かがイースターエッグを見つけた！ 🤩"
+    },
+    "settings": {
+      "reset": "リセット",
+      "random": "ランダム化",
+      "general": {
+        "label": "一般",
+        "title": "一般設定",
+        "placeholder": "ここにはまだ何もありません。 新しい設定に目を光らせてください！",
+        "language": {
+          "label": "言語",
+          "description": "UI 言語を好みに合わせて設定します。"
+        }
+      },
+      "behavior": {
+        "label": "このアプリ/WEBの行動",
+        "title": "このアプリ/WEBの行動設定",
+        "emojiclose": {
+          "title": "選択時に絵文字一覧を閉じる",
+          "description": "絵文字を選択すると、絵文字一覧が自動的に閉じます。 通常、一度に複数の絵文字を選択する場合は、このオプションを無効にします。"
+        },
+        "sendenter": {
+          "title": "エンターキーで送信",
+          "description": "エンターキーが押されたときに送信します。 Shift+Enter を押して新しい行に移動します。"
+        }
+      },
+      "appearance": {
+        "label": "外観",
+        "title": "外観設定",
+        "darkmode": {
+          "title": "ダークモード",
+          "description": "夜間の時にダークモードにすると自分の視力を守れます"
+        },
+        "theme": {
+          "title": "テーマカラー",
+          "description": "インターフェイスの Material You テーマの色を好みに合わせてカスタマイズします。",
+          "error": "テーマの色を設定できませんでした。"
+        }
+      }
+    }
+  },
+  "ko": {
+    "channel": {
+      "notFound": "원하는 채널을 찾을 수 없습니다. 로그인한 사용자를 확인하고 다시 시도하십시오.",
+      "join": "채널 가입",
+      "joinDm": "새 DM",
+      "prompt": "{{ channelOrUsername }}에게 메시지...",
+      "email": "이메일 {{ username }}",
+      "block": "차단",
+      "overflowTooltip": "설정",
+      "upload": {
+        "title": "파일 업로드",
+        "hint": "🔼을 두 번 클릭해도 됩니다."
+      },
+      "attach": {
+        "title": "이미지 첨부",
+        "hint": "텍스트 상자에 이미지 붙여넣기 시도"
+      },
+      "action": {
+        "title": "작업 실행",
+        "hint": "또는 입력란에 /를 입력하세요."
+      },
+      "emoji": "이모티콘 삽입",
+      "send": "문자 보내기",
+      "sendDisabled": "문자를 보낼 수 없습니다.",
+      "channelInfo": {
+        "title": "채널 정보"
+      },
+      "people": {
+        "title": "사람들"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "검색",
+        "search_no_results": "어머나!",
+        "search_no_results_2": "결과를 찾을 수 없어요",
+        "pick": "이모지 선택하기",
+        "add_custom": " 커스텀 이모지 추가하기",
+        "categories": {
+          "activity": "활동",
+          "custom": "커스텀",
+          "flags": "깃발",
+          "foods": "음식 및 음료",
+          "frequent": "자주 사용하는 항목",
+          "nature": "동물 및 자연",
+          "objects": "사물",
+          "people": "웃는 얼굴 및 사람",
+          "places": "여행 및 장소",
+          "search": "검색 결과",
+          "symbols": "기호"
+        },
+        "skins": {
+          "1": "표준",
+          "2": "밝은 피부색",
+          "3": "약간 밝은 피부색",
+          "4": "중간 피부색",
+          "5": "약간 어두운 피부색",
+          "6": "어두운 피부색",
+          "choose": "기준 피부색 선택하기"
+        }
+      }
+    },
+    "general": {
+      "help": "도움말",
+      "about": "정보",
+      "home": "홈",
+      "dms": "DM",
+      "channels": "채널",
+      "settings": "설정",
+      "done": "완료",
+      "aboutDialog": {
+        "title": "대화에 대한 정보",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation 기여자. 판권 소유."
+      },
+      "error": "문제가 발생했습니다. 나중에 다시 시도하십시오."
+    },
+    "message": {
+      "dm_start": "DM이 시작했습니다. 채팅을 시작해보세요!",
+      "chat_start": "\"{{ 0 }}\"이 시작했습니다. 가장 먼저 말하십시오!",
+      "chat_member_add": "{{ 0 }}님이 {{ 1 }}님을 이 채널에 추가했습니다! 🎉",
+      "chat_name_change": "{{ 0 }}님이 이 채널의 이름을 \"{{ 1 }}\"(으)로 변경했습니다.",
+      "easteregg": "누군가 이스터에그를 찾았어요! 🤩"
+    },
+    "settings": {
+      "reset": "초기화",
+      "random": "무작위화",
+      "general": {
+        "label": "일반 설정",
+        "title": "일반 설정",
+        "placeholder": "아직 아무것도 없습니다. 새로운 설정을 찾아보세요!",
+        "language": {
+          "label": "언어",
+          "description": "UI 언어를 원하는 대로 설정합니다."
+        }
+      },
+      "behavior": {
+        "label": "세부 설정",
+        "title": "세부 설정",
+        "emojiclose": {
+          "title": "선택 시 그림 이모티콘 선택기 닫기",
+          "description": "이모지를 선택한 후 이모지 선택기를 자동으로 닫습니다. 일반적으로 한 번에 여러 이모지를 선택하는 경우 이 옵션을 비활성화하십시오."
+        },
+        "sendenter": {
+          "title": "입력시 보내기",
+          "description": "엔터 버튼을 누르면 전송됩니다. 새 줄을 삽입하려면 Shift+Enter를 누르십시오."
+        }
+      },
+      "appearance": {
+        "label": "외관",
+        "title": "외관 설정",
+        "darkmode": {
+          "title": "다크 모드",
+          "description": "안경을 쓰고 싶지 않은 사람을 위한 다크 모드"
+        },
+        "theme": {
+          "title": "테마 색상",
+          "description": "인터페이스의 기본 색상을 원하는 대로 설정할 수 있습니다.",
+          "error": "테마 색상을 설정하지 못했습니다."
+        }
+      }
+    }
+  },
+  "zh-Hans": {
+    "channel": {
+      "notFound": "找不到您要查找的频道。 请检查登录用户再重试。",
+      "join": "加入频道",
+      "joinDm": "新私信",
+      "prompt": "消息 {{ channelOrUsername }} 作为 {{ currentUser }}...",
+      "email": "电子邮件 {{ username }}",
+      "block": "屏蔽",
+      "overflowTooltip": "其他",
+      "upload": {
+        "title": "上传文件",
+        "hint": "您也可以双击 🔼"
+      },
+      "attach": {
+        "title": "上传图片",
+        "hint": "尝试将图像粘贴到对话框中"
+      },
+      "action": {
+        "title": "行动",
+        "hint": "或者，在输入中键入 ”/“"
+      },
+      "emoji": "输入表情包",
+      "send": "发信息",
+      "sendDisabled": "发送（禁用）",
+      "channelInfo": {
+        "title": "频道信息"
+      },
+      "people": {
+        "title": "群成员"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "搜索",
+        "search_no_results": "糟糕！",
+        "search_no_results_2": "找不到那个表情符号",
+        "pick": "选择一个表情符号...",
+        "add_custom": "添加自定义表情符号",
+        "categories": {
+          "activity": "活动",
+          "custom": "自定",
+          "flags": "旗帜",
+          "foods": "食物和饮料",
+          "frequent": "经常使用",
+          "nature": "动物与自然",
+          "objects": "物体",
+          "people": "旅游与地点",
+          "places": "表情符号与人物",
+          "search": "搜索结果",
+          "symbols": "符号"
+        },
+        "skins": {
+          "1": "默认",
+          "2": "亮",
+          "3": "中亮",
+          "4": "中等的",
+          "5": "中深色",
+          "6": "暗黑",
+          "choose": "请选择默认肤色"
+        }
+      }
+    },
+    "general": {
+      "help": "帮助",
+      "about": "关于",
+      "home": "主页",
+      "dms": "消息",
+      "channels": "频道",
+      "settings": "设置",
+      "done": "确定",
+      "aboutDialog": {
+        "title": "关于 Conversation",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation 贡献者。 版权所有。"
+      },
+      "error": "发现问题，稍后再试。"
+    },
+    "message": {
+      "dm_start": "这是DM的开头。 让我们开始聊天吧！",
+      "chat_start": "这是“{{ 0 }}”的开头。 成为第一个说些什么的人",
+      "chat_member_add": "{{ 0 }} 添加了 {{ 1 }} 到这个频道！ 🎉",
+      "chat_name_change": "{{ 0 }} 将此频道的名称更改为“{{ 1 }}”",
+      "easteregg": "有人发现了彩蛋！ 🤗"
+    },
+    "settings": {
+      "reset": "重启",
+      "random": "随机",
+      "general": {
+        "label": "通用",
+        "title": "通用设置",
+        "placeholder": "这里什么都没有。 留意新设置！",
+        "language": {
+          "label": "语言",
+          "description": "根据您的喜好设置 UI 语言。"
+        }
+      },
+      "behavior": {
+        "label": "行为",
+        "title": "行为设置",
+        "emojiclose": {
+          "title": "选择时关闭表情符号选择器",
+          "description": "选择表情符号后自动关闭表情符号选择器。 如果您通常一次选择多个表情符号，请禁用此选项。"
+        },
+        "sendenter": {
+          "title": "输入“enter”发送",
+          "description": "按下回车按钮时发送。 按 Shift+Enter 插入换行符。"
+        }
+      },
+      "appearance": {
+        "label": "装扮",
+        "title": "装扮设置",
+        "darkmode": {
+          "title": "暗黑模式",
+          "description": "晚上关灯以保护视力。"
+        },
+        "theme": {
+          "title": "主题色",
+          "description": "根据您的喜好自定义界面的 Material You 主要强调色。",
+          "error": "设置主题颜色失败。"
+        }
+      }
+    }
+  },
+  "zh-Hant": {
+    "channel": {
+      "notFound": "找不到您要查找的頻道。 檢查登錄用戶並重試。",
+      "join": "加入頻道",
+      "joinDm": "新私信",
+      "prompt": "消息 {{ channelOrUsername }} 作為 {{ currentUser }}...",
+      "email": "電子郵件 {{ username }}",
+      "block": "堵塞",
+      "overflowTooltip": "更多的選擇",
+      "upload": {
+        "title": "上傳文件",
+        "hint": "您也可以雙擊 🔼"
+      },
+      "attach": {
+        "title": "附上圖片",
+        "hint": "嘗試將圖像粘貼到文本框中"
+      },
+      "action": {
+        "title": "運行動作",
+        "hint": "或者，在輸入中鍵入 /"
+      },
+      "emoji": "插入表情符號",
+      "send": "發信息",
+      "sendDisabled": "發送（禁用）",
+      "channelInfo": {
+        "title": "頻道信息"
+      },
+      "people": {
+        "title": "人們"
+      }
+    },
+    "emojiPicker": {
+      "emojiMart": {
+        "search": "搜索",
+        "search_no_results": "不好了！",
+        "search_no_results_2": "找不到那個表情符號",
+        "pick": "選擇一個表情符號...",
+        "add_custom": "添加自定義表情符號",
+        "categories": {
+          "activity": "活動",
+          "custom": "風俗",
+          "flags": "旗幟",
+          "foods": "食物和飲料",
+          "frequent": "經常使用",
+          "nature": "動物與自然",
+          "objects": "對象",
+          "people": "旅遊與地點",
+          "places": "笑臉和人物",
+          "search": "搜索結果",
+          "symbols": "符號"
+        },
+        "skins": {
+          "1": "默認",
+          "2": "光",
+          "3": "中光",
+          "4": "中等的",
+          "5": "中深色",
+          "6": "黑暗的",
+          "choose": "選擇默認膚色"
+        }
+      }
+    },
+    "general": {
+      "help": "幫助",
+      "about": "關於",
+      "home": "主頁",
+      "dms": "私信",
+      "channels": "頻道",
+      "settings": "設置",
+      "done": "完畢",
+      "aboutDialog": {
+        "title": "關於 Conversation",
+        "header": "Conversation 4",
+        "copyright": "©2020-2023 Conversation 貢獻者。 版權所有。"
+      },
+      "error": "出了些問題。 稍後再試。"
+    },
+    "message": {
+      "dm_start": "這是這個DM的開始。 讓我們開始聊天吧！",
+      "chat_start": "這是“{{ 0 }}”的開始。 成為第一個說些什麼的人！",
+      "chat_member_add": "{{ 0 }} 添加了 {{ 1 }} 到這個頻道！ 🎉",
+      "chat_name_change": "{{ 0 }} 將此頻道的名稱更改為“{{ 1 }}”",
+      "easteregg": "有人發現了彩蛋！ 🤗"
+    },
+    "settings": {
+      "reset": "重置",
+      "random": "隨機化",
+      "general": {
+        "label": "一般的",
+        "title": "常規設置",
+        "placeholder": "這裡什麼都沒有。 留意新設置！",
+        "language": {
+          "label": "語言",
+          "description": "根據您的喜好設置 UI 語言。"
+        }
+      },
+      "behavior": {
+        "label": "行為",
+        "title": "行為設置",
+        "emojiclose": {
+          "title": "選擇時關閉表情符號選擇器",
+          "description": "選擇表情符號後自動關閉表情符號選擇器。 如果您通常一次選擇多個表情符號，請禁用此選項。"
+        },
+        "sendenter": {
+          "title": "輸入時發送",
+          "description": "按下回車按鈕時發送。 按 Shift+Enter 插入換行符。"
+        }
+      },
+      "appearance": {
+        "label": "外觀",
+        "title": "外觀設置",
+        "darkmode": {
+          "title": "深色模式",
+          "description": "晚上關燈以保護視力。"
+        },
+        "theme": {
+          "title": "主題色",
+          "description": "根據您的喜好自定義界面的 Material You 主要強調色。",
+          "error": "設置主題顏色失敗。"
+        }
+      }
+    }
+  }
+}

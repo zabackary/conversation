@@ -26,6 +26,7 @@ import {
   useId,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   drawerWidth,
   toolbarButtonContext,
@@ -69,6 +70,7 @@ export default function ConversationAppBar({
     setAboutOpen(true);
     handleClose();
   };
+  const { t } = useTranslation();
 
   return (
     <>
@@ -112,8 +114,8 @@ export default function ConversationAppBar({
               {overflowItems}
             </closeOverflowFunctionContext.Provider>
             {overflowItems ? <Divider /> : null}
-            <MenuItem onClick={handleClose}>Help</MenuItem>
-            <MenuItem onClick={handleAboutMenu}>About</MenuItem>
+            <MenuItem onClick={handleClose}>{t("help")}</MenuItem>
+            <MenuItem onClick={handleAboutMenu}>{t("about")}</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
@@ -123,7 +125,7 @@ export default function ConversationAppBar({
         aria-labelledby={aboutHeaderId}
         aria-describedby={aboutDescriptionId}
       >
-        <DialogTitle id={aboutHeaderId}>About Conversation</DialogTitle>
+        <DialogTitle id={aboutHeaderId}>{t("aboutDialog.title")}</DialogTitle>
         <DialogContent>
           <div id={aboutDescriptionId}>
             <Stack alignItems="center">
@@ -134,18 +136,15 @@ export default function ConversationAppBar({
                 [icon]
               </Avatar>
               <Typography variant="h5" my={2}>
-                Conversation 4
+                {t("aboutDialog.header")}
               </Typography>
-              <Typography>
-                &copy;2020-{new Date().getFullYear()} Conversation contributors.
-                All rights reserved.
-              </Typography>
+              <Typography>{t("aboutDialog.copyright")}</Typography>
             </Stack>
           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setAboutOpen(false)} autoFocus>
-            Done
+            {t("done")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -2,6 +2,7 @@ import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import { Chip, Grid, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { useDebouncedCallback } from "use-debounce";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
@@ -22,10 +23,11 @@ export default function AppearanceSettingsRoute({
     useContext(ThemeSchemeContext);
 
   const snackbar = useSnackbar();
+  const { t } = useTranslation("settings");
 
   const handleColorChange = useDebouncedCallback((color: string) => {
     generateThemeScheme(color).catch(() => {
-      snackbar.showSnackbar("Failed to set theme color");
+      snackbar.showSnackbar(t("appearance.theme.error"));
     });
   }, 200);
 
@@ -38,18 +40,18 @@ export default function AppearanceSettingsRoute({
   );
   return (
     <>
-      {!noAppBar ? <ConversationAppBar title="Appearance settings" /> : null}
+      {!noAppBar ? <ConversationAppBar title={t("appearance.title")} /> : null}
       <Grid container spacing={2}>
         <SwitchItem
           value={themeMode === "dark"}
           onChange={handleThemeChange}
-          label="Dark Mode"
-          description="Turn out the light to save your eyesight at night."
+          label={t("appearance.darkmode.title")}
+          description={t("appearance.darkmode.description")}
         >
           <Stack direction="row" spacing={1}>
             <Chip
               icon={<RestartAltIcon />}
-              label="Reset"
+              label={t("reset")}
               onClick={() => setThemeMode(DEFAULT_THEME_MODE)}
               variant="outlined"
             />
@@ -58,13 +60,13 @@ export default function AppearanceSettingsRoute({
         <ColorItem
           value={themeScheme.light.primary}
           onChange={handleColorChange}
-          label="Theme Color"
-          description="Customize the interface's primary accent color to your liking. The picker may jump around as the palette is generated dynamically from the selected color."
+          label={t("appearance.theme.title")}
+          description={t("appearance.theme.description")}
         >
           <Stack direction="row" spacing={1}>
             <Chip
               icon={<ShuffleIcon />}
-              label="Randomize"
+              label={t("random")}
               onClick={() =>
                 handleColorChange(
                   `#${Math.floor(Math.random() * 16777215)
@@ -76,7 +78,7 @@ export default function AppearanceSettingsRoute({
             />
             <Chip
               icon={<RestartAltIcon />}
-              label="Reset"
+              label={t("reset")}
               onClick={() => resetThemeScheme()}
               variant="outlined"
             />

@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Fab, Fade, List } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { ConversationNavigationDrawer } from "../../../components/layout";
@@ -17,6 +18,7 @@ export default function DmListRoute() {
   const user = useUser();
   const snackbar = useSnackbar();
   const [count, setCount] = useState(0);
+  const { t } = useTranslation("channel");
   return (
     <ConversationNavigationDrawer
       drawerHeader={<DrawerHeader user={user} />}
@@ -35,7 +37,7 @@ export default function DmListRoute() {
             }}
           >
             <AddIcon sx={{ mr: 1 }} />
-            New DM
+            {t("joinDm")}
           </Fab>
           <ChannelList channels={dms} />
         </List>

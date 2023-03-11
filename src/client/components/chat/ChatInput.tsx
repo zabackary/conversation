@@ -25,6 +25,7 @@ import {
   useId,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import {
   SentMessage,
   SentMessageEvent,
@@ -71,6 +72,7 @@ const StyledPaper = styled(Paper)`
 
 const ChatInput = forwardRef<HTMLDivElement, Props>(
   ({ onMessageSend, sx, placeholder, elevate = true }, ref) => {
+    const { t } = useTranslation("channel");
     const { themeMode } = useContext(ThemeModeContext);
     const [message, setMessage] = useState<SentMessage>({
       markdown: "",
@@ -172,7 +174,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
             maxRows={4}
             startAdornment={
               <InputAdornment position="start">
-                <Tooltip title="More options">
+                <Tooltip title={t("overflowTooltip")}>
                   <ExpandMore
                     expand={isOptionsMenuOpen}
                     onClick={handleOptionsMenuClick}
@@ -185,7 +187,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
             }
             endAdornment={
               <InputAdornment position="end">
-                <Tooltip title="Insert emoji">
+                <Tooltip title={t("emoji")}>
                   <IconButton onClick={handleEmojiClick}>
                     <InsertEmoticonIcon />
                   </IconButton>
@@ -194,12 +196,12 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
                   <IconButton
                     onClick={handleSendClick}
                     disabled
-                    aria-label="Send (disabled)"
+                    aria-label={t("sendDisabled")}
                   >
                     <SendIcon />
                   </IconButton>
                 ) : (
-                  <Tooltip title="Send">
+                  <Tooltip title={t("send")}>
                     <IconButton onClick={handleSendClick}>
                       <SendIcon />
                     </IconButton>
@@ -228,6 +230,10 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
             dataUrl="//cdn.jsdelivr.net/npm/@emoji-mart/data"
             onEmojiSelect={handleEmojiSelect}
             theme={themeMode}
+            i18n={t("emojiPicker:emojiMart", {
+              returnObjects: true,
+              defaultValue: "",
+            })}
           />
         </Popover>
         <Menu
