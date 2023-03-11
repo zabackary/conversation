@@ -69,11 +69,8 @@ export default function LanguagePickerDialog({
       <DialogTitle>{t("languageSelect")}</DialogTitle>
       <List sx={{ pt: 0 }}>
         {languageInfos.map((language) => (
-          <ListItem disableGutters>
-            <ListItemButton
-              onClick={() => handleListItemClick(language.code)}
-              key={language.code}
-            >
+          <ListItem disableGutters key={language.code}>
+            <ListItemButton onClick={() => handleListItemClick(language.code)}>
               <ListItemAvatar>
                 <Avatar
                   sx={{ bgcolor: "primary.main" }}
