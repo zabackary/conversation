@@ -15,10 +15,11 @@ import {
   Paper,
   styled,
 } from "@mui/material";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
+import LanguagePickerDialog from "./LanguagePickerDialog";
 
 const LanguageSwitcherIconButton = styled(IconButton, {
   shouldForwardProp(propName) {
@@ -125,30 +126,48 @@ export default function ConversationNavigationRail({
 }: ConversationNavigationRailProps) {
   const matches = useMatches();
   const selected = routes.find((route) => route.href === matches[1].pathname);
+  const { i18n } = useTranslation();
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
+  const handleClickOpen = () => {
+    setLanguagePickerOpen(true);
+  };
+  const handleClose = (value?: string) => {
+    setLanguagePickerOpen(false);
+    if (value) void i18n.changeLanguage(value);
+  };
 
-  return mobile ? (
-    <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
-      elevation={3}
-    >
-      <BottomNavigation value={selected?.id}>
-        {routes.map((route) => (
-          <ConversationNavigationRailAction key={route.id} route={route} />
-        ))}
-      </BottomNavigation>
-    </Paper>
-  ) : (
-    <NavigationRail
-      value={selected?.id}
-      sx={{ paddingTop: "64px", position: "fixed", top: "0" }}
-      showLabels
-    >
-      {routes.map((route) => (
-        <ConversationNavigationRailAction key={route.id} route={route} rail />
-      ))}
-      <LanguageSwitcherIconButton size="large">
-        <TranslateIcon />
-      </LanguageSwitcherIconButton>
-    </NavigationRail>
+  return (
+    <>
+      {mobile ? (
+        <Paper
+          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
+          elevation={3}
+        >
+          <BottomNavigation value={selected?.id}>
+            {routes.map((route) => (
+              <ConversationNavigationRailAction key={route.id} route={route} />
+            ))}
+          </BottomNavigation>
+        </Paper>
+      ) : (
+        <NavigationRail
+          value={selected?.id}
+          sx={{ paddingTop: "64px", position: "fixed", top: "0" }}
+          showLabels
+        >
+          {routes.map((route) => (
+            <ConversationNavigationRailAction
+              key={route.id}
+              route={route}
+              rail
+            />
+          ))}
+          <LanguageSwitcherIconButton size="large" onClick={handleClickOpen}>
+            <TranslateIcon />
+          </LanguageSwitcherIconButton>
+        </NavigationRail>
+      )}
+      <LanguagePickerDialog open={languagePickerOpen} onClose={handleClose} />
+    </>
   );
 }
