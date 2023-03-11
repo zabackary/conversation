@@ -1,7 +1,8 @@
 import PaletteIcon from "@mui/icons-material/Palette";
-import { Grid, IconButton, Popover, Tooltip, Typography } from "@mui/material";
+import { IconButton, Popover, Tooltip } from "@mui/material";
 import { MouseEvent, ReactNode, useId, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import BaseItem from "./BaseItem";
 
 interface Props {
   value: string;
@@ -36,25 +37,27 @@ export default function ColorItem({
   const id = open ? popoverId : undefined;
   return (
     <>
-      <Grid item xs={8}>
-        <Typography variant="h6">{label}</Typography>
-        <Typography variant="body1">{description}</Typography>
-      </Grid>
-      <Grid item xs={4} sx={{ textAlign: "right" }}>
-        <Tooltip title="Open color palette">
-          <IconButton
-            onClick={handleClick}
-            color="primary"
-            sx={{
-              bgcolor: "primary.main",
-              color: "primary.contrastText",
-              "&:hover": { bgcolor: "primary.main" },
-            }}
-          >
-            <PaletteIcon />
-          </IconButton>
-        </Tooltip>
-      </Grid>
+      <BaseItem
+        label={label}
+        description={description}
+        control={
+          <Tooltip title="Open color palette">
+            <IconButton
+              onClick={handleClick}
+              color="primary"
+              sx={{
+                bgcolor: "primary.main",
+                color: "primary.contrastText",
+                "&:hover": { bgcolor: "primary.main" },
+              }}
+            >
+              <PaletteIcon />
+            </IconButton>
+          </Tooltip>
+        }
+      >
+        {children}
+      </BaseItem>
       <Popover
         id={id}
         open={open}
@@ -72,11 +75,6 @@ export default function ColorItem({
       >
         <HexColorPicker color={value} onChange={handleChange} />
       </Popover>
-      {children ? (
-        <Grid item xs={12}>
-          {children}
-        </Grid>
-      ) : null}
     </>
   );
 }

@@ -1,6 +1,7 @@
-import { Grid, Switch, Typography } from "@mui/material";
+import { Switch } from "@mui/material";
 import { ChangeEvent, ReactNode, useState } from "react";
 import useSnackbar from "../useSnackbar";
+import BaseItem from "./BaseItem";
 
 interface Props {
   value: boolean;
@@ -31,19 +32,14 @@ export default function SwitchItem({
       });
   };
   return (
-    <>
-      <Grid item xs={8}>
-        <Typography variant="h6">{label}</Typography>
-        <Typography variant="body1">{description}</Typography>
-      </Grid>
-      <Grid item xs={4} sx={{ textAlign: "right" }}>
+    <BaseItem
+      label={label}
+      description={description}
+      control={
         <Switch checked={value} onChange={handleChange} disabled={disabled} />
-      </Grid>
-      {children ? (
-        <Grid item xs={12}>
-          {children}
-        </Grid>
-      ) : null}
-    </>
+      }
+    >
+      {children}
+    </BaseItem>
   );
 }
