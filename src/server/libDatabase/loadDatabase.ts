@@ -237,6 +237,7 @@ export default function loadDatabase<T extends Schema>(
           return matches.map((match) => {
             const rowContent =
               match[1] ?? sheet.getSheetValues(match[0], 1, 1, keys.length)[0];
+            // TODO: Think about optimizing this with the cache
             const entity = new Entity(spreadsheet);
             entity.initialize(
               Object.fromEntries(
