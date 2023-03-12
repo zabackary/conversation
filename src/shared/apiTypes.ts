@@ -11,7 +11,6 @@ import {
 } from "./apiSubscriptions";
 
 export interface ApiRequestPayload {
-  clientId?: string;
   token?: string;
   subscriptions: Record<string, ApiSubscriptionRequest<ApiSubscriptionType>>;
   actions: Record<string, ApiActionRequest<ApiActionType>>;
@@ -22,7 +21,6 @@ export interface ApiRequestPayload {
 export interface ApiResponsePayload {
   subscriptions: Record<string, ApiSubscriptionResponse<ApiSubscriptionType>>;
   actions: Record<string, ApiActionResponse<ApiActionType>>;
-  newClientId?: string;
 }
 
 export interface ApiSubscriptionRequest<T extends ApiSubscriptionType> {
