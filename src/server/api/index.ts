@@ -1,5 +1,6 @@
 import { setRandomFallback } from "bcryptjs";
 import normalizeException from "normalize-exception";
+import jwtPrivateKey from "../../../jwt.key?raw";
 import { ApiActionArguments, ApiActionType } from "../../shared/apiActions";
 import {
   ApiSubscriptionArguments,
@@ -12,6 +13,7 @@ import {
   ApiSubscriptionResponse,
 } from "../../shared/apiTypes";
 import getDatabaseHandle from "../database";
+import { readJWT } from "../utils";
 import getActionHandler from "./actions";
 import getSubscriptionHandler from "./subscriptions";
 
@@ -34,6 +36,11 @@ export default function apiCall(
     bcryptEnabled = true;
   };
 
+  const userId = payload.token
+    ? Number(readJWT(payload.token, jwtPrivateKey).sub)
+    : null;
+  if (Number.isNaN(userId)) throw new Error("userId isn't a number");
+
   const database = getDatabaseHandle();
   logTime("opened database");
 
@@ -43,11 +50,18 @@ export default function apiCall(
   )) {
     try {
       subscriptions[subscriptionId] = {
-        response: (
-          getSubscriptionHandler(database, subscription.type, enableBcrypt) as (
-            arg: ApiSubscriptionArguments[ApiSubscriptionType]
-          ) => ApiSubscriptionResponse<ApiSubscriptionType>["response"]
-        )(subscription.arg),
+        response:
+          (
+            getSubscriptionHandler(
+              database,
+              subscription.type,
+              enableBcrypt,
+              userId
+            ) as (
+              lastChecked: Date,
+              arg: ApiSubscriptionArguments[ApiSubscriptionType]
+            ) => ApiSubscriptionResponse<ApiSubscriptionType>["response"] | null
+          )(new Date(subscription.lastCheck), subscription.arg) ?? undefined,
         checked: new Date().getTime(),
       };
       logTime(
@@ -74,7 +88,7 @@ export default function apiCall(
     try {
       actions[actionId] = {
         response: (
-          getActionHandler(database, action.type, enableBcrypt) as (
+          getActionHandler(database, action.type, enableBcrypt, userId) as (
             arg: ApiActionArguments[ApiActionType]
           ) => ApiActionResponse<ApiActionType>["response"]
         )(action.arg),

@@ -1,4 +1,5 @@
 import { compareSync, hashSync } from "bcryptjs";
+import jwtPrivateKey from "../../../jwt.key?raw";
 import User, { UserState } from "../../model/user";
 import {
   ApiActionArguments,
@@ -7,6 +8,10 @@ import {
 } from "../../shared/apiActions";
 import { ConversationDatabaseHandle } from "../database";
 import DatabaseUser from "../database/model/User";
+import { generateJWT } from "../utils";
+
+// TODO: Decide on a better JWT expiration date
+const EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
 type ActionMap = {
   [Key in ApiActionType]: (
@@ -17,7 +22,8 @@ type ActionMap = {
 export default function getActionHandler<T extends ApiActionType>(
   database: ConversationDatabaseHandle,
   actionType: T,
-  enableBcrypt: () => void
+  enableBcrypt: () => void,
+  _userId: number | null
 ): ActionMap[T] {
   const map: ActionMap = {
     [ApiActionType.CreateAccount]({
@@ -63,13 +69,19 @@ export default function getActionHandler<T extends ApiActionType>(
         | undefined;
       console.log(user);
       if (user && compareSync(password, user.properties.passwordHash)) {
-        // TODO: Update session accordingly
-        return true;
+        return generateJWT(
+          { sub: String(user.properties.id) },
+          jwtPrivateKey,
+          new Date(new Date().getTime() + EXPIRATION_TIME)
+        );
       }
-      return false;
+      return null;
     },
     [ApiActionType.LogOut]() {
       // TODO: Update session accordingly
+      // This may not be possible if we're using JWTs and the token should just
+      // be removed from the client.
+      // @see https://stackoverflow.com/q/21978658
       return true;
     },
   };
