@@ -18,9 +18,10 @@ export interface ApiActionArguments {
 
 export interface ApiActionResponses {
   /**
-   * Indicates whether the email/password were valid.
+   * Indicates whether the email/password were valid, with a `string` holding a
+   * JWT if success.
    */
-  [ApiActionType.LogIn]: boolean;
+  [ApiActionType.LogIn]: string | null;
 
   /**
    * Indicates whether the logout succeeded.
