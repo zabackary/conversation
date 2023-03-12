@@ -25,5 +25,7 @@ export function isStale(sheet: string, row: number, lastKnownGood: Date) {
   const lastChanged = Number(
     cache.get(`${__BUILD_TIMESTAMP__}:${sheet}__${row}`)?.split(";")[0]
   );
-  return lastChanged > lastKnownGood.getTime();
+  return Number.isNaN(lastChanged)
+    ? lastChanged > lastKnownGood.getTime()
+    : true;
 }
