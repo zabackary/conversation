@@ -78,7 +78,7 @@ export function generateJWT(
       Utilities.newBlob(`${header}.${payload}`).getBytes(),
       Utilities.base64Decode(base64Secret)
     )
-  );
+  ).replace(/=+$/, "");
   return `${header}.${payload}.${signature}`;
 }
 
@@ -87,7 +87,7 @@ export function readJWT(jwt: string, base64Secret: string) {
   const header = JSON.parse(
     Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[0])).getDataAsString()
   );
-  if (typeof header !== "object" || header.type !== "JWT")
+  if (typeof header !== "object" || header.typ !== "JWT")
     throw new Error("JOSE is not a JWT.");
   const payload = JSON.parse(
     Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[1])).getDataAsString()
@@ -105,7 +105,7 @@ export function readJWT(jwt: string, base64Secret: string) {
       Utilities.newBlob(`${parts[0]}.${parts[1]}`).getBytes(),
       Utilities.base64Decode(base64Secret)
     )
-  );
+  ).replace(/=+$/, "");
   if (signature !== parts[2]) throw new Error("Signatures don't match");
   return payload as Record<string, any>;
 }
