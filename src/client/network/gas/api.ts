@@ -35,8 +35,6 @@ export default class ApiManager {
 
   private pendingActions: Action<ApiActionType>[] = [];
 
-  private clientId: string | undefined;
-
   private token: string | undefined;
 
   private constructor() {
@@ -55,6 +53,10 @@ export default class ApiManager {
         .withFailureHandler(reject)
         [methodName](...methodArgs);
     });
+  }
+
+  setToken(newToken: string) {
+    this.token = newToken;
   }
 
   beginPooling(interval = 1000) {
@@ -86,11 +88,9 @@ export default class ApiManager {
       actions,
       subscriptions,
       requestTime: new Date().getTime(),
-      clientId: this.clientId,
       token: this.token,
       userAgent: navigator.doNotTrack ? "DNT" : navigator.userAgent,
     });
-    if (response.newClientId) this.clientId = response.newClientId;
     Object.entries(response.actions).forEach(([id, actionResponse]) => {
       actionCallbacks[id](actionResponse);
     });

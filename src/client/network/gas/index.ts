@@ -25,11 +25,12 @@ export default class GASBackend implements NetworkBackend {
   }
 
   async authLogIn(email: string, password: string): Promise<void> {
-    const success = await this.apiManager.runAction(ApiActionType.LogIn, {
+    const token = await this.apiManager.runAction(ApiActionType.LogIn, {
       email,
       password,
     });
-    if (!success) throw new Error("login failure");
+    if (!token) throw new Error("login failure");
+    this.apiManager.setToken(token);
   }
 
   async authLogOut(): Promise<void> {
@@ -51,6 +52,7 @@ export default class GASBackend implements NetworkBackend {
         ApiSubscriptionType.User,
         id ?? null,
         (response) => {
+          console.log(response);
           next(response);
         }
       );
