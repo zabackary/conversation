@@ -1,3 +1,4 @@
+import { putCacheSheetRowContent } from "./cache";
 import { valueToSpreadsheet } from "./mapSpreadsheetValue";
 import BaseValidator from "./validators/BaseValidator";
 import Unique from "./validators/Unique";
@@ -172,14 +173,16 @@ export default abstract class Entity {
       if (value === UNASSIGNED) value = newRow;
       values.push(value as Exclude<typeof value, typeof UNASSIGNED>);
     }
+    const rowContent = values.map((value) => valueToSpreadsheet(value));
     if (this.rowNumber === null) {
-      this.sheet.appendRow(values.map((value) => valueToSpreadsheet(value)));
+      this.sheet.appendRow(rowContent);
       this.rowNumber = newRow;
     } else {
       this.sheet
         .getRange(this.rowNumber, 1, 1, sortedSchema.length)
-        .setValues([values.map((value) => valueToSpreadsheet(value))]);
+        .setValues([rowContent]);
     }
+    putCacheSheetRowContent(this.tableName, this.rowNumber, rowContent);
 
     if (immediateFlush) SpreadsheetApp.flush();
   }
