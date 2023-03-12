@@ -11,6 +11,9 @@ import reactAxe from "./plugins/reactAxe";
 export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
+    define: {
+      __BUILD_TIMESTAMP__: `"${new Date().toISOString()}"`,
+    },
     build: {
       // Relative to the root
       outDir: "dist",
