@@ -1,3 +1,4 @@
+import { getCachedSheetRowContent, putCacheSheetRowContent } from "./cache";
 import {
   EntityPropertyInitializer,
   Property,
@@ -24,6 +25,11 @@ export interface DatabaseAccessor<T extends Schema> {
   createEntity: CreateEntitiesWrapper<T>;
 
   /**
+   * Get an entity by its primary key -- with caching!
+   */
+  getById: GetByIdWrapper<T>;
+
+  /**
    * Run a pretty simple search algorithm to find exact matches on properties.
    *
    * Basic outline of simpleSearch algorithm:
@@ -43,7 +49,7 @@ export interface DatabaseAccessor<T extends Schema> {
    *
    * 3. Gather the data then return the `Entities`.
    */
-  simpleSearch: EntitySearch<T>;
+  simpleSearch: SimpleSearchWrapper<T>;
 
   /**
    * Flush the database to Google Sheets.
@@ -59,7 +65,13 @@ type CreateEntitiesWrapper<T extends Schema> = {
   ) => InstanceType<T["entities"][Property]>;
 };
 
-type EntitySearch<T extends Schema> = {
+type GetByIdWrapper<T extends Schema> = {
+  [Property in keyof T["entities"]]: (
+    id: number
+  ) => InstanceType<T["entities"][Property]>;
+};
+
+type SimpleSearchWrapper<T extends Schema> = {
   [Property in keyof T["entities"]]: (
     data: Partial<
       TypedPropertyData<InstanceType<T["entities"][Property]>["schema"]>
@@ -87,12 +99,42 @@ export default function loadDatabase<T extends Schema>(
         },
       ])
     ) as CreateEntitiesWrapper<T>,
-
+    getById: Object.fromEntries(
+      Object.entries(schema.entities).map(([name, Entity]) => [
+        name,
+        (id) => {
+          const { schema: tableSchema, tableName } = new Entity(spreadsheet);
+          const keys = Object.keys(tableSchema).sort();
+          const cached = getCachedSheetRowContent(tableName, id);
+          let rowContent: unknown[];
+          if (cached) {
+            rowContent = cached;
+          } else {
+            const sheet = spreadsheet.getSheetByName(tableName);
+            if (!sheet) throw new Error("Cannot find sheet!");
+            [rowContent] = sheet.getSheetValues(id, 1, 1, keys.length);
+            putCacheSheetRowContent(tableName, id, rowContent);
+          }
+          const entity = new Entity(spreadsheet);
+          entity.initialize(
+            Object.fromEntries(
+              rowContent.map((content, index) => [
+                keys[index],
+                spreadsheetToValue(String(content)),
+              ])
+            ) as EntityPropertyInitializer<typeof tableSchema>,
+            id,
+            false
+          );
+          return entity;
+        },
+      ])
+    ) as GetByIdWrapper<T>,
     simpleSearch: Object.fromEntries(
       Object.entries(schema.entities).map(([name, Entity]) => [
         name,
         (partial) => {
-          // Description of algorithm in interface above.
+          // Implementation of algorithm in interface above.
 
           // Set up required information
           const { schema: tableSchema, tableName } = new Entity(spreadsheet);
@@ -210,7 +252,7 @@ export default function loadDatabase<T extends Schema>(
           });
         },
       ])
-    ) as EntitySearch<T>,
+    ) as SimpleSearchWrapper<T>,
     flush() {
       SpreadsheetApp.flush();
     },
