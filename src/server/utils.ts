@@ -53,3 +53,60 @@ export function cyrb53(str: string, seed = 0) {
   );
   /* eslint-enable no-bitwise */
 }
+
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
+export function generateJWT(
+  claims: Record<string, any>,
+  base64Secret: string,
+  expiration?: Date
+) {
+  const header = Utilities.base64EncodeWebSafe(
+    JSON.stringify({
+      alg: "HS256",
+      typ: "JWT",
+    })
+  );
+  const payload = Utilities.base64EncodeWebSafe(
+    JSON.stringify({
+      ...claims,
+      iat: Math.floor(new Date().getTime() / 1000),
+      exp: expiration ? Math.floor(expiration.getTime() / 1000) : undefined,
+    })
+  );
+  const signature = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature(
+      Utilities.newBlob(`${header}.${payload}`).getBytes(),
+      Utilities.base64Decode(base64Secret)
+    )
+  );
+  return `${header}.${payload}.${signature}`;
+}
+
+export function readJWT(jwt: string, base64Secret: string) {
+  const parts = jwt.split(".");
+  const header = JSON.parse(
+    Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[0])).getDataAsString()
+  );
+  if (typeof header !== "object" || header.type !== "JWT")
+    throw new Error("JOSE is not a JWT.");
+  const payload = JSON.parse(
+    Utilities.newBlob(Utilities.base64DecodeWebSafe(parts[1])).getDataAsString()
+  );
+  if (typeof payload !== "object") throw new Error("Malformed JWT");
+  if (
+    "exp" in payload &&
+    typeof payload.exp === "number" &&
+    new Date().getTime() > new Date(payload.exp * 1000).getTime()
+  ) {
+    throw new Error("JWT expired");
+  }
+  const signature = Utilities.base64EncodeWebSafe(
+    Utilities.computeHmacSha256Signature(
+      Utilities.newBlob(`${parts[0]}.${parts[1]}`).getBytes(),
+      Utilities.base64Decode(base64Secret)
+    )
+  );
+  if (signature !== parts[2]) throw new Error("Signatures don't match");
+  return payload as Record<string, any>;
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
