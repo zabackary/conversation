@@ -156,6 +156,17 @@ export default abstract class Entity {
     >[] = [];
     for (const name of sortedSchema) {
       let value = this.#properties[name];
+      if (
+        value !== null &&
+        value !== UNASSIGNED &&
+        !this.schema[name].validators?.every((validator) =>
+          validator.validate(
+            value as Exclude<typeof value, null | typeof UNASSIGNED>
+          )
+        )
+      ) {
+        throw new Error("Failed to save: doesn't satisfy validators");
+      }
       // @ts-ignore It's fine if we polute our db, I think... Don't get mad
       // later.
       if (value === UNASSIGNED) value = newRow;
