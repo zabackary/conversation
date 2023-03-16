@@ -70,6 +70,8 @@ export default function apiCall(
         } ${JSON.stringify(subscription.arg)}`
       );
     } catch (e) {
+      console.warn(`subscription failed:`);
+      console.error(e);
       const normalizedError = normalizeException(e);
       subscriptions[subscriptionId] = {
         checked: -1,
@@ -97,6 +99,8 @@ export default function apiCall(
         `ran action: ${actionId} ${action.type} ${JSON.stringify(action.arg)}`
       );
     } catch (e) {
+      console.warn(`action failed:`);
+      console.error(e);
       const normalizedError = normalizeException(e);
       actions[actionId] = {
         error: {
@@ -112,6 +116,6 @@ export default function apiCall(
 
   return {
     actions,
-    subscriptions: {},
+    subscriptions,
   };
 }
