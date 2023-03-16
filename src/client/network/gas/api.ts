@@ -17,23 +17,25 @@ import {
   ApiSubscriptionResponse,
 } from "../../../shared/apiTypes";
 
-type Subscribable<T extends ApiSubscriptionType> = [
-  string,
-  ApiSubscriptionRequest<T>,
-  (response: ApiSubscriptionResponse<T>) => void
-];
-type Action<T extends ApiActionType> = [
-  string,
-  ApiActionRequest<T>,
-  (response: ApiActionResponse<T>) => void
-];
+type Subscribable<T extends ApiSubscriptionType> = {
+  request: ApiSubscriptionRequest<T>;
+  listeners: {
+    id: string;
+    callback: (response: ApiSubscriptionResponse<T>) => void;
+  }[];
+};
+
+type Action<T extends ApiActionType> = {
+  request: ApiActionRequest<T>;
+  listener: { id: string; callback: (response: ApiActionResponse<T>) => void };
+};
 
 export default class ApiManager {
   private intervalId: number | undefined;
 
-  private subscriptions: Subscribable<ApiSubscriptionType>[] = [];
+  private subscriptions: Record<string, Subscribable<ApiSubscriptionType>> = {};
 
-  private pendingActions: Action<ApiActionType>[] = [];
+  private pendingActions: Record<string, Action<ApiActionType>> = {};
 
   private token: string | undefined;
 
@@ -67,39 +69,34 @@ export default class ApiManager {
   }
 
   async dispatchPooled() {
-    const actions: Record<string, Action<ApiActionType>[1]> = {};
-    const subscriptions: Record<string, Subscribable<ApiSubscriptionType>[1]> =
-      {};
-    const actionCallbacks: Record<string, Action<ApiActionType>[2]> = {};
-    const subscriptionCallbacks: Record<
-      string,
-      Subscribable<ApiSubscriptionType>[2]
-    > = {};
-    for (const subscription of this.subscriptions) {
-      [, subscriptions[subscription[0]]] = subscription;
-      [, , subscriptionCallbacks[subscription[0]]] = subscription;
-    }
-    for (const action of this.pendingActions) {
-      [, actions[action[0]]] = action;
-      [, , actionCallbacks[action[0]]] = action;
-    }
-    this.pendingActions = [];
+    const actions = this.pendingActions;
+    this.pendingActions = {};
     const response = await this.runAsync("apiCall", {
-      actions,
-      subscriptions,
+      actions: Object.fromEntries(
+        Object.entries(actions).map(([k, v]) => [k, v.request])
+      ),
+      subscriptions: Object.fromEntries(
+        Object.entries(this.subscriptions).map(([k, v]) => [k, v.request])
+      ),
       requestTime: new Date().getTime(),
       token: this.token,
       userAgent: navigator.doNotTrack ? "DNT" : navigator.userAgent,
     });
     Object.entries(response.actions).forEach(([id, actionResponse]) => {
-      actionCallbacks[id](actionResponse);
+      actions[id].listener.callback(actionResponse);
     });
     Object.entries(response.subscriptions).forEach(
       ([id, subscriptionCallback]) => {
-        this.subscriptions[
-          this.subscriptions.findIndex((sub) => sub[0] === id)
-        ][1].lastCheck = subscriptionCallback.checked;
-        subscriptionCallbacks[id](subscriptionCallback);
+        if (!(id in this.subscriptions))
+          console.warn(
+            "Recieved response from server but subscription was canceled."
+          );
+        if (subscriptionCallback.error)
+          console.error(subscriptionCallback.error);
+        this.subscriptions[id].request.lastCheck = subscriptionCallback.checked;
+        this.subscriptions[id].listeners.forEach((listener) =>
+          listener.callback(subscriptionCallback)
+        );
       }
     );
   }
@@ -110,25 +107,53 @@ export default class ApiManager {
     callback: (response: ApiSubscriptionResponses[T]) => void
   ) {
     const id = uuidv4();
-    this.subscriptions.push([
-      id,
-      {
-        type,
-        arg,
-        lastCheck: 0,
-      },
-      (response) => {
-        if (response.error) console.error(response.error);
-        // Hi me! If something went wrong, here it is. The server returns type
-        // `any` but I've casted it to the correct type, voiding the type
-        // safety. Sorry for any trouble I've caused you in the future!
-        if (response.response)
-          callback(response.response as Parameters<typeof callback>[0]);
-      },
-    ]);
+    const processResponse = (
+      response: ApiSubscriptionResponse<ApiSubscriptionType>
+    ) => {
+      console.log(`[\u27F3] ${id} =>`, response);
+      // Hi me! If something went wrong, here it is. The server returns type
+      // `any` but I've casted it to the correct type, voiding the type
+      // safety. Sorry for any trouble I've caused you in the future!
+      if (response.response)
+        callback(response.response as Parameters<typeof callback>[0]);
+    };
+    console.log(`[\u27F3] ${type}(${JSON.stringify(arg)}) +${id.slice(0, 5)}`);
+    const sameSub = Object.entries(this.subscriptions).find(
+      ([_id, { request }]) => request.type === type && request.arg === arg
+    )?.[0];
+    if (sameSub) {
+      this.subscriptions[sameSub].listeners.push({
+        id,
+        callback: processResponse,
+      });
+    } else {
+      this.subscriptions[id] = {
+        request: {
+          type,
+          arg,
+          lastCheck: 0,
+        },
+        listeners: [
+          {
+            id,
+            callback: processResponse,
+          },
+        ],
+      };
+    }
     return () => {
-      this.subscriptions.splice(
-        this.subscriptions.findIndex(([subId]) => subId === id),
+      const foundId = Object.entries(this.subscriptions).find(
+        ([_id, { listeners }]) =>
+          !!listeners.find((listener) => listener.id === id)
+      )?.[0];
+      if (!foundId) {
+        console.warn("Can't find request.");
+        return;
+      }
+      this.subscriptions[foundId].listeners.splice(
+        this.subscriptions[foundId].listeners.findIndex(
+          ({ id: subId }) => subId === id
+        ),
         1
       );
     };
@@ -137,19 +162,22 @@ export default class ApiManager {
   runAction<T extends ApiActionType>(type: T, arg: ApiActionArguments[T]) {
     return new Promise<ApiActionResponses[T]>((resolve, reject) => {
       const id = uuidv4();
-      this.pendingActions.push([
-        id,
-        {
+      console.log(`[\u2192] ${type}(${JSON.stringify(arg)}) +${id}`);
+      this.pendingActions[id] = {
+        listener: {
+          id,
+          callback(response) {
+            console.log(`[\u2192] ${id} =>`, response);
+            if ("error" in response) reject(response.error);
+            else if ("response" in response)
+              resolve(response.response as ApiActionResponses[T]);
+          },
+        },
+        request: {
           type,
           arg,
         },
-        (response) => {
-          console.log(`${id} =>`, response);
-          if ("error" in response) reject(response.error);
-          else if ("response" in response)
-            resolve(response.response as ApiActionResponses[T]);
-        },
-      ]);
+      };
     });
   }
 
