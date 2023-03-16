@@ -1,4 +1,4 @@
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useState } from "react";
 import DefaultBackend from "../network/default_backend";
 import BackendContext from "./BackendContext";
 
@@ -8,7 +8,7 @@ export interface BackendContextProviderProps {
 export default function BackendContextProvider({
   children,
 }: BackendContextProviderProps) {
-  const backend = useMemo(() => new DefaultBackend(), []);
+  const [backend] = useState(() => new DefaultBackend());
   return (
     <BackendContext.Provider value={backend}>
       {children}
