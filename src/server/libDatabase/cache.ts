@@ -1,3 +1,5 @@
+const MAX_CACHE_TIME = 60 * 60 * 6;
+
 let cachedCache: GoogleAppsScript.Cache.Cache | undefined;
 
 export function putCacheSheetRowContent(
@@ -8,7 +10,8 @@ export function putCacheSheetRowContent(
   const cache = cachedCache || CacheService.getScriptCache();
   cache.put(
     `${__BUILD_TIMESTAMP__}:${sheet}__${row}`,
-    `${new Date().getTime()};${JSON.stringify(rowContent)}`
+    `${new Date().getTime()};${JSON.stringify(rowContent)}`,
+    MAX_CACHE_TIME
   );
 }
 
@@ -26,6 +29,6 @@ export function isStale(sheet: string, row: number, lastKnownGood: Date) {
     cache.get(`${__BUILD_TIMESTAMP__}:${sheet}__${row}`)?.split(";")[0]
   );
   return Number.isNaN(lastChanged)
-    ? lastChanged > lastKnownGood.getTime()
-    : true;
+    ? true
+    : lastChanged > lastKnownGood.getTime();
 }
