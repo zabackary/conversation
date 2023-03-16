@@ -15,7 +15,7 @@ export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
   );
   useEffect(() => {
     const unsubscribe = subscribable.subscribe((newValue) => {
-      setValue(newValue);
+      if (!(newValue instanceof Error)) setValue(newValue);
     });
     return () => {
       unsubscribe();
@@ -38,6 +38,7 @@ export default function useBackendFunction<T>(
       navigateToLoginOnAuthFailure &&
       ((isUser && value === null) || value instanceof LoggedOutException)
     ) {
+      console.log({ isUser, value, navigateToLoginOnAuthFailure });
       navigate(
         `/login/?next=${encodeURIComponent(
           location.pathname + location.hash + location.search
