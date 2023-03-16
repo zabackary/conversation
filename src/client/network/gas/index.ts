@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import Channel, {
   DmChannel,
   PublicChannelListing,
@@ -15,13 +13,24 @@ import NetworkBackend, {
 import { createSubscribable } from "../utils";
 import ApiManager from "./api";
 
-// TODO: Implement this, and remove the eslint disables up top.
 export default class GASBackend implements NetworkBackend {
   apiManager: ApiManager;
+
+  currentUser: Subscribable<User>;
 
   constructor() {
     this.apiManager = ApiManager.getInstance();
     this.apiManager.beginPooling();
+    this.currentUser = createSubscribable<User>((next) => {
+      this.apiManager.addSubscription(
+        ApiSubscriptionType.User,
+        null,
+        (response) => {
+          console.log(response);
+          next(response);
+        }
+      );
+    }, null);
   }
 
   async authLogIn(email: string, password: string): Promise<void> {
@@ -47,10 +56,11 @@ export default class GASBackend implements NetworkBackend {
   }
 
   getUser(id?: number): Subscribable<User | null> {
+    if (!id) return this.currentUser;
     return createSubscribable<User>((next) => {
       this.apiManager.addSubscription(
         ApiSubscriptionType.User,
-        id ?? null,
+        id,
         (response) => {
           console.log(response);
           next(response);
@@ -59,7 +69,7 @@ export default class GASBackend implements NetworkBackend {
     }, null);
   }
 
-  getStatus(username: string): Subscribable<UserStatus | null> {
+  getStatus(_username: string): Subscribable<UserStatus | null> {
     throw new Error("Method not implemented.");
   }
 
@@ -72,7 +82,7 @@ export default class GASBackend implements NetworkBackend {
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(
-    info: JoinInfo
+    _info: JoinInfo
   ): Promise<string | null> {
     throw new Error("Method not implemented.");
   }
@@ -85,11 +95,11 @@ export default class GASBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  connectChannel(id: number): Promise<ChannelBackend> {
+  connectChannel(_id: number): Promise<ChannelBackend> {
     throw new Error("Method not implemented.");
   }
 
-  getChannel(id: number): Subscribable<Channel | null> {
+  getChannel(_id: number): Subscribable<Channel | null> {
     throw new Error("Method not implemented.");
   }
 }
