@@ -46,7 +46,9 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
         {
           find: /network\/default_backend(\.ts)?/,
           replacement: `network/${
-            env.NODE_ENV === "production" ? "gas/index.ts" : "mock/index.ts"
+            env.NODE_ENV === "production"
+              ? "supabase/index.ts"
+              : "mock/index.ts"
           }`,
         },
       ],
