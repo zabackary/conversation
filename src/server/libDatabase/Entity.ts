@@ -1,5 +1,5 @@
 import { putCacheSheetRowContent } from "./cache";
-import { valueToSpreadsheet } from "./mapSpreadsheetValue";
+import { spreadsheetToValue, valueToSpreadsheet } from "./mapSpreadsheetValue";
 import BaseValidator from "./validators/BaseValidator";
 import Unique from "./validators/Unique";
 
@@ -157,16 +157,31 @@ export default abstract class Entity {
     >[] = [];
     for (const name of sortedSchema) {
       let value = this.#properties[name];
-      if (
-        value !== null &&
-        value !== UNASSIGNED &&
-        !this.schema[name].validators?.every((validator) =>
-          validator.validate(
-            value as Exclude<typeof value, null | typeof UNASSIGNED>
-          )
-        )
-      ) {
-        throw new Error("Failed to save: doesn't satisfy validators");
+      if (value !== null && value !== UNASSIGNED) {
+        this.schema[name].validators?.forEach((validator) => {
+          if (validator instanceof Unique) {
+            if (
+              this.sheet
+                .createTextFinder(valueToSpreadsheet(value))
+                .findAll()
+                .filter(
+                  (range) =>
+                    range.getColumn() === sortedSchema.indexOf(name) + 1 &&
+                    spreadsheetToValue(range.getValue()) === value
+                ).length !== 0
+            ) {
+              throw new Error(
+                `${validator.constructor.name}: Failed to validate "${String(
+                  value
+                )}": found other value`
+              );
+            }
+          } else {
+            validator.validate(
+              value as Exclude<typeof value, null | typeof UNASSIGNED>
+            );
+          }
+        });
       }
       // @ts-ignore It's fine if we polute our db, I think... Don't get mad
       // later.

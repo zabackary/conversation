@@ -10,6 +10,10 @@ export default class RangeValidator extends BaseValidator<"number"> {
   }
 
   validate(value: number) {
-    return value >= this.min && value <= this.max;
+    if (!(value >= this.min && value <= this.max)) {
+      throw new Error(
+        `${this.constructor.name}: Failed to validate "${value}": is not >= ${this.min} and <= ${this.max}`
+      );
+    }
   }
 }

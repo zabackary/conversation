@@ -6,8 +6,13 @@ export default class JsonValidator extends BaseValidator<"string"> {
   }
 
   validate(value: string) {
-    return !/[^,:{}[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(
-      value.replace(/"(\\.|[^"\\])*"/g, "")
-    );
+    try {
+      JSON.parse(value);
+    } catch (cause) {
+      throw new Error(
+        `${this.constructor.name}: Failed to validate "${value}": can't parse JSON`,
+        { cause }
+      );
+    }
   }
 }

@@ -7,6 +7,10 @@ export default class UrlValidator extends BaseValidator<"string"> {
   }
 
   validate(value: string) {
-    return !!validateUrl(value);
+    if (!validateUrl(value)) {
+      throw new Error(
+        `${this.constructor.name}: Failed to validate "${value}": failed shared validation`
+      );
+    }
   }
 }

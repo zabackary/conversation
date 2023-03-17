@@ -2,9 +2,15 @@ import BaseValidator from "./BaseValidator";
 
 export default class DateTimeValidator extends BaseValidator<"string"> {
   validate(value: string) {
-    return /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/.test(
-      value
-    );
+    if (
+      !/\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/.test(
+        value
+      )
+    ) {
+      throw new Error(
+        `${this.constructor.name}: Failed to validate "${value}": does not match ISO date.`
+      );
+    }
   }
 
   static fromDate(value: Date) {
