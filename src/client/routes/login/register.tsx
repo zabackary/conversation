@@ -99,6 +99,7 @@ export default function LoginRegisterRoute() {
     setLoading(true);
     const data = formData.current;
     if (!data) throw new Error("Cannot get form data!");
+    const pfp = data.get("profilePicture") as string;
     backend
       .authCreateAccount(
         {
@@ -107,7 +108,7 @@ export default function LoginRegisterRoute() {
             data.get("lastName") as string
           }`,
           nickname: data.get("nickname") as string,
-          profilePicture: data.get("profilePicture") as string,
+          profilePicture: pfp === "" ? null : pfp,
         },
         data.get("password") as string
       )
