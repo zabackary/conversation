@@ -9,13 +9,14 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      channel: {
+      channels: {
         Row: {
           created_at: string | null
           description: string | null
           id: number
           is_dm: boolean | null
           name: string | null
+          owner: string
           password: string
           privacy_level: number
         }
@@ -25,6 +26,7 @@ export interface Database {
           id?: number
           is_dm?: boolean | null
           name?: string | null
+          owner: string
           password: string
           privacy_level: number
         }
@@ -34,37 +36,32 @@ export interface Database {
           id?: number
           is_dm?: boolean | null
           name?: string | null
+          owner?: string
           password?: string
           privacy_level?: number
         }
       }
-      member: {
+      members: {
         Row: {
           channel_id: number
-          created_at: string | null
-          id: number
           invite_message: string | null
           last_view: string | null
           user_id: string
         }
         Insert: {
           channel_id: number
-          created_at?: string | null
-          id?: never
           invite_message?: string | null
           last_view?: string | null
           user_id: string
         }
         Update: {
           channel_id?: number
-          created_at?: string | null
-          id?: never
           invite_message?: string | null
           last_view?: string | null
           user_id?: string
         }
       }
-      message: {
+      messages: {
         Row: {
           channel_id: number
           id: number
