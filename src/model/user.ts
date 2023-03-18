@@ -14,7 +14,7 @@ export default interface User {
   nickname: string;
   email: string;
   profilePicture: string | null;
-  id: number;
+  id: number | string;
   status: UserStatus;
   state: UserState;
 }
