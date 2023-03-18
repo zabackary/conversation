@@ -48,7 +48,7 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
           replacement: `network/${
             env.NODE_ENV === "production"
               ? "supabase/index.ts"
-              : "mock/index.ts"
+              : "supabase/index.ts"
           }`,
         },
       ],
