@@ -97,26 +97,29 @@ export interface Database {
         Row: {
           banner_url: string | null
           id: string
-          is_bot: boolean | null
-          name: string | null
+          is_bot: boolean
+          name: string
+          nickname: string
           profile_picture_url: string | null
-          trusted: boolean | null
+          trusted: boolean
         }
         Insert: {
           banner_url?: string | null
           id: string
-          is_bot?: boolean | null
-          name?: string | null
+          is_bot: boolean
+          name: string
+          nickname: string
           profile_picture_url?: string | null
-          trusted?: boolean | null
+          trusted: boolean
         }
         Update: {
           banner_url?: string | null
           id?: string
-          is_bot?: boolean | null
-          name?: string | null
+          is_bot?: boolean
+          name?: string
+          nickname?: string
           profile_picture_url?: string | null
-          trusted?: boolean | null
+          trusted?: boolean
         }
       }
     }
