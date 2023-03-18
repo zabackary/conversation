@@ -42,28 +42,28 @@ interface Route {
 const routes = [
   {
     label: "home" as const,
-    href: "/",
+    href: "/app",
     icon: <HomeOutlinedIcon />,
     filledIcon: <HomeIcon />,
     id: 0,
   },
   {
     label: "dms" as const,
-    href: "/dms",
+    href: "/app/dms",
     icon: <ChatBubbleOutlineOutlinedIcon />,
     filledIcon: <ChatBubbleIcon />,
     id: 1,
   },
   {
     label: "channels" as const,
-    href: "/channels",
+    href: "/app/channels",
     icon: <ForumOutlinedIcon />,
     filledIcon: <ForumIcon />,
     id: 2,
   },
   {
     label: "settings" as const,
-    href: "/settings",
+    href: "/app/settings",
     icon: <SettingsOutlinedIcon />,
     filledIcon: <SettingsIcon />,
     id: 3,
@@ -125,7 +125,7 @@ export default function ConversationNavigationRail({
   mobile,
 }: ConversationNavigationRailProps) {
   const matches = useMatches();
-  const selected = routes.find((route) => route.href === matches[1].pathname);
+  const selected = routes.find((route) => route.href === matches[1]?.pathname);
   const { i18n } = useTranslation();
   const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
   const handleClickOpen = () => {

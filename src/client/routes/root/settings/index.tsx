@@ -6,21 +6,25 @@ import LinkListItem from "../../../components/main/LinkListItem";
 
 export default function SettingsRoute() {
   // TODO: Add accessible labels and switches via `inputProps`
-  const {t} = useTranslation("settings");
+  const { t } = useTranslation("settings");
 
   return (
     <ConversationNavigationDrawer
       drawerItems={
         <List>
-          <LinkListItem primaryText={t("general.label")} to="/settings/" exclude={2} />
+          <LinkListItem
+            primaryText={t("general.label")}
+            to="/app/settings/"
+            exclude={2}
+          />
           <LinkListItem
             primaryText={t("behavior.label")}
-            to="/settings/behavior/"
+            to="/app/settings/behavior/"
             exclude={2}
           />
           <LinkListItem
             primaryText={t("appearance.label")}
-            to="/settings/appearance/"
+            to="/app/settings/appearance/"
             exclude={2}
           />
         </List>

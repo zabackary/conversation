@@ -12,7 +12,7 @@ export default function RootRoute() {
   useRouteForward();
 
   useRequireLogin();
-  const [, match] = useMatches();
+  const match = useMatches()[1] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
@@ -22,7 +22,7 @@ export default function RootRoute() {
         <ConversationNavigationRail mobile={isMobile} />
       </Box>
       <SwitchTransition>
-        <Fade key={match.id} timeout={200} unmountOnExit>
+        <Fade key={match?.id} timeout={200} unmountOnExit>
           <Stack
             direction={isMobile ? "column" : "row"}
             height="100%"
