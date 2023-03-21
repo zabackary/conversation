@@ -64,7 +64,7 @@ export default interface NetworkBackend {
    * @returns A subscribable echoing `User`, `null` on loading, or errors on
    * logged out.
    */
-  getUser(id?: number): Subscribable<User | null>;
+  getUser(id?: number | string): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.
