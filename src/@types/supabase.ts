@@ -14,47 +14,50 @@ export interface Database {
           created_at: string | null
           description: string | null
           id: number
-          is_dm: boolean | null
+          is_dm: boolean
           name: string | null
           owner: string
-          password: string
+          password: string | null
           privacy_level: number
         }
         Insert: {
           created_at?: string | null
           description?: string | null
           id?: number
-          is_dm?: boolean | null
+          is_dm: boolean
           name?: string | null
           owner: string
-          password: string
+          password?: string | null
           privacy_level: number
         }
         Update: {
           created_at?: string | null
           description?: string | null
           id?: number
-          is_dm?: boolean | null
+          is_dm?: boolean
           name?: string | null
           owner?: string
-          password?: string
+          password?: string | null
           privacy_level?: number
         }
       }
       members: {
         Row: {
+          accepted: boolean
           channel_id: number
           invite_message: string | null
           last_view: string | null
           user_id: string
         }
         Insert: {
+          accepted: boolean
           channel_id: number
           invite_message?: string | null
           last_view?: string | null
           user_id: string
         }
         Update: {
+          accepted?: boolean
           channel_id?: number
           invite_message?: string | null
           last_view?: string | null
