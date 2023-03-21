@@ -26,6 +26,7 @@ export const users = {
     id: 0,
     status: UserStatus.Active,
     state: UserState.Normal,
+    banner: null,
   }),
   alice: createCleanDispatchableSubscribable<User>({
     name: "Alice Surname",
@@ -35,6 +36,7 @@ export const users = {
     id: 1,
     status: UserStatus.Inactive,
     state: UserState.Normal,
+    banner: null,
   }),
   eve: createCleanDispatchableSubscribable<User>({
     name: "Eve Familyname",
@@ -44,6 +46,7 @@ export const users = {
     id: 2,
     status: UserStatus.Active,
     state: UserState.Normal,
+    banner: null,
   }),
 } satisfies Record<string, CleanDispatchableSubscribable<User>>;
 
