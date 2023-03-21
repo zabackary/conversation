@@ -18,7 +18,7 @@ function ChannelListItem({ channel }: ChannelListItemProps) {
       <LinkListItem
         primaryText={person?.name}
         secondaryText={person?.email}
-        to={`/dms/${channel.id}`}
+        to={`/app/dms/${channel.id}`}
         avatar={
           <ContrastBadge
             color="success"
@@ -43,7 +43,7 @@ function ChannelListItem({ channel }: ChannelListItemProps) {
     <LinkListItem
       primaryText={channel.name}
       secondaryText={lastMessage?.isService ? undefined : lastMessage?.markdown}
-      to={`/channels/${channel.id}`}
+      to={`/app/channels/${channel.id}`}
       icon={<ChatIcon />}
       badge={500}
     />
