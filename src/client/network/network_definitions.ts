@@ -71,9 +71,10 @@ export default interface NetworkBackend {
    *
    * @param {string} user The user to fetch for.
    *
-   * @returns A `UserStatus` or null if the user doesn't exist.
+   * @returns A boolean indicating whether the user is active or `null` if the
+   * user doesn't exist.
    */
-  getStatus(user: string): Subscribable<boolean | null>;
+  getUserActivity(user: string): Subscribable<boolean | null>;
 
   /**
    * Returns the DMs a user currently has open. These are `DmChannel`s.

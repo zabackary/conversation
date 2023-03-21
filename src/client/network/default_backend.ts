@@ -28,7 +28,7 @@ export default class DefaultBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getStatus(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: string): Subscribable<boolean | null> {
     throw new Error("Method not implemented.");
   }
 

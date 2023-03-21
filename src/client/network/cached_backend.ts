@@ -34,10 +34,11 @@ export default class CachedBackend implements NetworkBackend {
 
   statusSubscribableMap: Record<string, Subscribable<boolean | null>> = {};
 
-  getStatus(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: string): Subscribable<boolean | null> {
     return (
       this.statusSubscribableMap[user] ||
-      (this.statusSubscribableMap[user] = this.mirroredBackend.getStatus(user))
+      (this.statusSubscribableMap[user] =
+        this.mirroredBackend.getUserActivity(user))
     );
   }
 

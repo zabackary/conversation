@@ -62,7 +62,7 @@ export default class MockBackend implements NetworkBackend {
     }
   }
 
-  getStatus(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: string): Subscribable<boolean | null> {
     return createSubscribable(async (next) => {
       await wait();
       // @ts-ignore The cast is safe

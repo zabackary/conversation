@@ -149,7 +149,7 @@ export default class SupabaseBackend implements NetworkBackend {
     });
   }
 
-  getStatus(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: string): Subscribable<boolean | null> {
     throw new Error("Method not implemented.");
   }
 
