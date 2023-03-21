@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-return-assign */
 import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
-import User, { NewUserMetadata } from "../../model/user";
+import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -34,7 +34,7 @@ export default class CachedBackend implements NetworkBackend {
 
   statusSubscribableMap: Record<string, Subscribable<boolean | null>> = {};
 
-  getUserActivity(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: UserId): Subscribable<boolean | null> {
     return (
       this.statusSubscribableMap[user] ||
       (this.statusSubscribableMap[user] =

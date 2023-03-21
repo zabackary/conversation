@@ -4,7 +4,7 @@ import Channel, {
   PublicChannelListing,
 } from "../../model/channel";
 import Message from "../../model/message";
-import User, { NewUserMetadata } from "../../model/user";
+import User, { NewUserMetadata, UserId } from "../../model/user";
 
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
@@ -74,7 +74,7 @@ export default interface NetworkBackend {
    * @returns A boolean indicating whether the user is active or `null` if the
    * user doesn't exist.
    */
-  getUserActivity(user: string): Subscribable<boolean | null>;
+  getUserActivity(user: UserId): Subscribable<boolean | null>;
 
   /**
    * Returns the DMs a user currently has open. These are `DmChannel`s.

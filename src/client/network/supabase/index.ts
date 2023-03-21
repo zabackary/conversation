@@ -4,7 +4,11 @@ import Channel, {
   DmChannel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUserMetadata, PrivilegeLevel } from "../../../model/user";
+import User, {
+  NewUserMetadata,
+  PrivilegeLevel,
+  UserId,
+} from "../../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -149,7 +153,7 @@ export default class SupabaseBackend implements NetworkBackend {
     });
   }
 
-  getUserActivity(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: UserId): Subscribable<boolean | null> {
     throw new Error("Method not implemented.");
   }
 

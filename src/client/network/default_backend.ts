@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
 import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
-import User, { NewUserMetadata } from "../../model/user";
+import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -28,7 +28,7 @@ export default class DefaultBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getUserActivity(user: string): Subscribable<boolean | null> {
+  getUserActivity(user: UserId): Subscribable<boolean | null> {
     throw new Error("Method not implemented.");
   }
 
