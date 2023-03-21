@@ -4,7 +4,7 @@ import Channel, {
   DmChannel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUser, UserState, UserStatus } from "../../../model/user";
+import User, { NewUserMetadata, PrivilegeLevel } from "../../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -58,10 +58,11 @@ const userSubscribable = createSubscribable<User>(async (next) => {
               email: newSession.user.email ?? "",
               name,
               nickname,
-              state: UserState.Unverified,
-              profilePicture,
-              status: UserStatus.Inactive,
-              banner: null,
+              privilegeLevel: PrivilegeLevel.Unverified,
+              profilePicture: profilePicture ?? undefined,
+              active: false,
+              banner: undefined,
+              isBot: false,
             });
             await supabase.from("users").insert({
               id: newSession.user.id,
@@ -79,10 +80,13 @@ const userSubscribable = createSubscribable<User>(async (next) => {
             email: newSession.user.email ?? "",
             name: userMetadata.name,
             nickname: userMetadata.nickname,
-            state: userMetadata.trusted ? 0 : 1,
-            profilePicture: userMetadata.profile_picture_url,
-            status: UserStatus.Inactive,
-            banner: userMetadata.banner_url,
+            privilegeLevel: userMetadata.trusted
+              ? PrivilegeLevel.Normal
+              : PrivilegeLevel.Unverified,
+            profilePicture: userMetadata.profile_picture_url ?? undefined,
+            active: false,
+            banner: userMetadata.banner_url ?? undefined,
+            isBot: false,
           });
         }
         userId = newSession.user.id;
@@ -125,9 +129,12 @@ export default class SupabaseBackend implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+  async authCreateAccount(
+    newUser: NewUserMetadata,
+    password: string
+  ): Promise<void> {
     const { error } = await supabase.auth.signUp({
-      ...newUser,
+      email: newUser.email,
       password,
     });
     if (error) throw error;
@@ -142,7 +149,7 @@ export default class SupabaseBackend implements NetworkBackend {
     });
   }
 
-  getStatus(user: string): Subscribable<UserStatus | null> {
+  getStatus(user: string): Subscribable<boolean | null> {
     throw new Error("Method not implemented.");
   }
 

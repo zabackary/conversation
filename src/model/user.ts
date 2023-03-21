@@ -1,27 +1,45 @@
-export enum UserStatus {
-  Active,
-  Inactive,
-}
+export type UserId = number | string;
 
-export enum UserState {
+export enum PrivilegeLevel {
   Unverified,
   Normal,
   Admin,
 }
 
-export default interface User {
+export interface BaseUser {
   name: string;
-  nickname: string;
-  email: string;
-  banner: string | null; // TODO: Same as below
-  profilePicture: string | null; // TODO: convert to ? type
-  id: number | string;
-  status: UserStatus;
-  state: UserState;
-  isBot?: boolean;
+  /** If undefined, use the full name */
+  nickname?: string;
+  /** SSO means there might not be an email */
+  email?: string;
+  /** Show this on the user details page. */
+  banner?: string;
+  /** Can also be the bot's icon */
+  profilePicture?: string;
+  id: UserId;
+  active?: boolean;
+  privilegeLevel: PrivilegeLevel;
+  isBot: boolean;
+  status?: string;
 }
 
-export type NewUser = Pick<
-  User,
-  "email" | "name" | "nickname" | "profilePicture"
->;
+export interface RegisteredUser extends BaseUser {
+  isBot: false;
+  tag?: string;
+}
+
+export interface BotUser extends BaseUser {
+  isBot: true;
+  nickname?: undefined;
+  author?: RegisteredUser | UserId;
+}
+
+type User = RegisteredUser | BotUser;
+export default User;
+
+export interface NewUserMetadata {
+  email: string;
+  name: string;
+  nickname?: string;
+  profilePicture: string;
+}

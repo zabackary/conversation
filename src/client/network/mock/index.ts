@@ -5,7 +5,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUser, UserStatus } from "../../../model/user";
+import User, { NewUserMetadata } from "../../../model/user";
 import {
   validatePassword,
   validateText,
@@ -46,11 +46,15 @@ export default class MockBackend implements NetworkBackend {
     loggedInUser.dispatch(null);
   }
 
-  async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+  async authCreateAccount(
+    newUser: NewUserMetadata,
+    password: string
+  ): Promise<void> {
     await wait();
     if (
       validatePassword(password) !== null ||
       validateText(newUser.name) !== null ||
+      !newUser.nickname ||
       validateText(newUser.nickname) !== null ||
       (!!newUser.profilePicture && validateUrl(newUser.profilePicture) !== null)
     ) {
@@ -58,14 +62,14 @@ export default class MockBackend implements NetworkBackend {
     }
   }
 
-  getStatus(user: string): Subscribable<UserStatus | null> {
+  getStatus(user: string): Subscribable<boolean | null> {
     return createSubscribable(async (next) => {
       await wait();
       // @ts-ignore The cast is safe
       const dbUser = users[user] as
         | CleanDispatchableSubscribable<User>
         | undefined;
-      next(dbUser ? dbUser.value.getSnapshot().status : null);
+      next(dbUser ? dbUser.value.getSnapshot().active ?? null : null);
     });
   }
 

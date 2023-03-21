@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-return-assign */
 import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
-import User, { NewUser, UserStatus } from "../../model/user";
+import User, { NewUserMetadata } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
@@ -19,7 +19,7 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.authLogOut();
   }
 
-  authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+  authCreateAccount(newUser: NewUserMetadata, password: string): Promise<void> {
     return this.mirroredBackend.authCreateAccount(newUser, password);
   }
 
@@ -32,9 +32,9 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  statusSubscribableMap: Record<string, Subscribable<UserStatus | null>> = {};
+  statusSubscribableMap: Record<string, Subscribable<boolean | null>> = {};
 
-  getStatus(user: string): Subscribable<UserStatus | null> {
+  getStatus(user: string): Subscribable<boolean | null> {
     return (
       this.statusSubscribableMap[user] ||
       (this.statusSubscribableMap[user] = this.mirroredBackend.getStatus(user))

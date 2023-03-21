@@ -7,7 +7,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import User, { UserStatus } from "../../../model/user";
+import User from "../../../model/user";
 
 export const ContrastBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -28,7 +28,7 @@ export default function DrawerHeader({ user }: DrawerHeaderProps) {
       {user ? (
         <Box sx={{ display: "flex" }}>
           <ContrastBadge
-            color={user.status === UserStatus.Active ? "success" : "error"}
+            color={user.active ? "success" : "error"}
             variant="dot"
             sx={{ marginRight: "8px" }}
             overlap="circular"
@@ -37,7 +37,7 @@ export default function DrawerHeader({ user }: DrawerHeaderProps) {
               alt={`${user.name}'s profile picture`}
               src={user.profilePicture ?? undefined}
             >
-              {user.nickname[0]}
+              {(user.nickname ?? user.name)[0]}
             </Avatar>
           </ContrastBadge>
           <Box sx={{ minWidth: 0, flex: 1 }}>

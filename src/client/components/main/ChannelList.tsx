@@ -2,7 +2,6 @@ import ChatIcon from "@mui/icons-material/Chat";
 import { Avatar, Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../model/channel";
-import { UserStatus } from "../../../model/user";
 import useUser from "../../hooks/useUser";
 import { ContrastBadge } from "./DrawerHeader";
 import LinkListItem from "./LinkListItem";
@@ -14,23 +13,21 @@ function ChannelListItem({ channel }: ChannelListItemProps) {
   const user = useUser();
   if (channel.dm) {
     const person = channel.members.find((member) => member.id !== user?.id);
+    if (!person) throw new Error("Couldn't find the other person in this DM.");
     return (
       <LinkListItem
-        primaryText={person?.name}
-        secondaryText={person?.email}
+        primaryText={person.name}
+        secondaryText={person.email}
         to={`/app/dms/${channel.id}`}
         avatar={
           <ContrastBadge
             color="success"
             variant="dot"
             overlap="circular"
-            invisible={person?.status === UserStatus.Inactive}
+            invisible={!person.active}
           >
-            <Avatar
-              src={person?.profilePicture ?? undefined}
-              alt={person?.name}
-            >
-              {person?.nickname[0]}
+            <Avatar src={person.profilePicture ?? undefined} alt={person.name}>
+              {(person.nickname ?? person.name)[0]}
             </Avatar>
           </ContrastBadge>
         }

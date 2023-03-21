@@ -1,7 +1,6 @@
 import Channel, { PrivacyLevel } from "../../../model/channel";
 import Message from "../../../model/message";
-import Service from "../../../model/service";
-import User, { UserState, UserStatus } from "../../../model/user";
+import User, { PrivilegeLevel } from "../../../model/user";
 import {
   CleanDispatchableSubscribable,
   createCleanDispatchableSubscribable,
@@ -10,12 +9,14 @@ import {
 export const services = {
   conversation: {
     name: "Conversation",
-    icon: "",
+    profilePicture: "",
     banner: "",
-    author: null,
+    author: undefined,
     id: 98219,
+    isBot: true,
+    privilegeLevel: PrivilegeLevel.Normal,
   },
-} satisfies Record<string, Service>;
+} satisfies Record<string, User>;
 
 export const users = {
   bob: createCleanDispatchableSubscribable<User>({
@@ -24,9 +25,10 @@ export const users = {
     email: "noreply+bob@stu.his.ac.jp",
     profilePicture: "https://www.w3schools.com/howto/img_avatar.png", // From w3schools
     id: 0,
-    status: UserStatus.Active,
-    state: UserState.Normal,
-    banner: null,
+    status: "Testing stuff",
+    privilegeLevel: PrivilegeLevel.Normal,
+    active: true,
+    isBot: false,
   }),
   alice: createCleanDispatchableSubscribable<User>({
     name: "Alice Surname",
@@ -34,19 +36,19 @@ export const users = {
     email: "noreply+alice@stu.his.ac.jp",
     profilePicture: "https://www.w3schools.com/howto/img_avatar2.png", // From w3schools
     id: 1,
-    status: UserStatus.Inactive,
-    state: UserState.Normal,
-    banner: null,
+    privilegeLevel: PrivilegeLevel.Normal,
+    active: false,
+    isBot: false,
   }),
   eve: createCleanDispatchableSubscribable<User>({
     name: "Eve Familyname",
     nickname: "Eve",
     email: "noreply+eve@stu.his.ac.jp",
-    profilePicture: null, // None on purpose
+    profilePicture: undefined, // None on purpose
     id: 2,
-    status: UserStatus.Active,
-    state: UserState.Normal,
-    banner: null,
+    privilegeLevel: PrivilegeLevel.Normal,
+    active: true,
+    isBot: false,
   }),
 } satisfies Record<string, CleanDispatchableSubscribable<User>>;
 
@@ -126,7 +128,7 @@ export const messages = {
     },
     {
       user: users.alice.value.getSnapshot(),
-      markdown: `Ok, thanks @${users.bob.value.getSnapshot().nickname}`,
+      markdown: `Ok, thanks @${users.bob.value.getSnapshot().nickname ?? ""}`,
       sent: new Date("January 1, 2020 5:10"),
       id: 104,
       parent: 5,
@@ -237,9 +239,9 @@ export const messages = {
     },
     {
       user: users.alice.value.getSnapshot(),
-      markdown: `Hey @${users.bob.value.getSnapshot().nickname}, this is ${
-        users.alice.value.getSnapshot().nickname
-      }`,
+      markdown: `Hey @${
+        users.bob.value.getSnapshot().nickname ?? ""
+      }, this is ${users.alice.value.getSnapshot().nickname ?? ""}`,
       sent: new Date("December 6, 2022 13:47"),
       id: 9381,
       parent: 19,
@@ -265,7 +267,9 @@ export const messages = {
     },
     {
       user: users.eve.value.getSnapshot(),
-      markdown: `You doing okay @${users.bob.value.getSnapshot().nickname}?`,
+      markdown: `You doing okay @${
+        users.bob.value.getSnapshot().nickname ?? ""
+      }?`,
       sent: new Date("December 6, 2022 13:47"),
       id: 1381,
       parent: 20,

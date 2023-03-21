@@ -4,7 +4,7 @@ import Channel, {
   PublicChannelListing,
 } from "../../model/channel";
 import Message from "../../model/message";
-import User, { NewUser, UserStatus } from "../../model/user";
+import User, { NewUserMetadata } from "../../model/user";
 
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
@@ -73,7 +73,7 @@ export default interface NetworkBackend {
    *
    * @returns A `UserStatus` or null if the user doesn't exist.
    */
-  getStatus(user: string): Subscribable<UserStatus | null>;
+  getStatus(user: string): Subscribable<boolean | null>;
 
   /**
    * Returns the DMs a user currently has open. These are `DmChannel`s.
@@ -159,7 +159,7 @@ export default interface NetworkBackend {
    * @returns A promise resolving if the creation is successful, and rejecting
    * is something went wrong.
    */
-  authCreateAccount(newUser: NewUser, password: string): Promise<void>;
+  authCreateAccount(newUser: NewUserMetadata, password: string): Promise<void>;
 }
 
 export interface ChannelBackend
