@@ -248,6 +248,17 @@ declare module "@mui/material/Fab" {
   }
 }
 
+declare module "@mui/material/Chip" {
+  interface ChipPropsVariantOverrides {
+    outlined: true;
+    elevated: true;
+    tonal: true;
+  }
+  interface ChipPropsColorOverrides {
+    tertiary: true;
+  }
+}
+
 export const getDesignTokens = (
   mode: M3ThemeMode,
   scheme: M3ColorTokens,
@@ -849,6 +860,32 @@ export const getThemedComponents = (
         },
       },
       MuiChip: {
+        variants: [
+          {
+            props: { variant: "elevated" },
+            style: {
+              boxShadow: theme.shadows[1],
+            },
+          },
+          {
+            props: { variant: "outlined" },
+            style: {
+              border: `1px solid ${theme.palette.outline}`,
+            },
+          },
+          {
+            props: { variant: "tonal" },
+            style: {
+              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            },
+          },
+          {
+            props: { color: "tertiary" },
+            style: {
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.08),
+            },
+          },
+        ],
         styleOverrides: {
           root: {
             borderRadius: "8px",
