@@ -17,12 +17,7 @@ import NetworkBackend, {
   LoggedOutException,
   Subscribable,
 } from "../network_definitions";
-import {
-  CleanDispatchableSubscribable,
-  createSubscribable,
-  mapSubscribable,
-  wait,
-} from "../utils";
+import { createSubscribable, mapSubscribable, wait } from "../utils";
 import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
@@ -62,14 +57,13 @@ export default class MockBackend implements NetworkBackend {
     }
   }
 
-  getUserActivity(user: string): Subscribable<boolean | null> {
+  getUserActivity(_user: string): Subscribable<boolean | null> {
     return createSubscribable(async (next) => {
-      await wait();
-      // @ts-ignore The cast is safe
-      const dbUser = users[user] as
-        | CleanDispatchableSubscribable<User>
-        | undefined;
-      next(dbUser ? dbUser.value.getSnapshot().active ?? null : null);
+      for (;;) {
+        // eslint-disable-next-line no-await-in-loop
+        await wait(2000 + Math.random() * 10000);
+        next(Math.random() > 0.5);
+      }
     });
   }
 
