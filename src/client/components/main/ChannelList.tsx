@@ -3,37 +3,47 @@ import { Avatar, Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../model/channel";
 import useUser from "../../hooks/useUser";
+import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "./DrawerHeader";
 import LinkListItem from "./LinkListItem";
 
-interface ChannelListItemProps {
+export interface DmChannelListItemProps {
   channel: Channel;
 }
-function ChannelListItem({ channel }: ChannelListItemProps) {
+
+export function DmChannelListItem({ channel }: ChannelListItemProps) {
   const user = useUser();
+  const person = channel.members.find((member) => member.id !== user?.id);
+  if (!person) throw new Error("Couldn't find the other person in this DM.");
+  const active = useUserActivity(person.id);
+  return (
+    <LinkListItem
+      primaryText={person.name}
+      secondaryText={person.email}
+      to={`/app/dms/${channel.id}`}
+      avatar={
+        <ContrastBadge
+          color="success"
+          variant="dot"
+          overlap="circular"
+          invisible={!active}
+        >
+          <Avatar src={person.profilePicture ?? undefined} alt={person.name}>
+            {(person.nickname ?? person.name)[0]}
+          </Avatar>
+        </ContrastBadge>
+      }
+      badge={500}
+    />
+  );
+}
+
+export interface ChannelListItemProps {
+  channel: Channel;
+}
+export function ChannelListItem({ channel }: ChannelListItemProps) {
   if (channel.dm) {
-    const person = channel.members.find((member) => member.id !== user?.id);
-    if (!person) throw new Error("Couldn't find the other person in this DM.");
-    return (
-      <LinkListItem
-        primaryText={person.name}
-        secondaryText={person.email}
-        to={`/app/dms/${channel.id}`}
-        avatar={
-          <ContrastBadge
-            color="success"
-            variant="dot"
-            overlap="circular"
-            invisible={!person.active}
-          >
-            <Avatar src={person.profilePicture ?? undefined} alt={person.name}>
-              {(person.nickname ?? person.name)[0]}
-            </Avatar>
-          </ContrastBadge>
-        }
-        badge={500}
-      />
-    );
+    return <DmChannelListItem channel={channel} />;
   }
   const { lastMessage } = channel;
   return (

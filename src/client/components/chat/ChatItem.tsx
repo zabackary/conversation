@@ -19,6 +19,8 @@ import TimeAgo from "react-timeago";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import Message from "../../../model/message";
+import useUserActivity from "../../hooks/useUserActivity";
+import { ContrastBadge } from "../main/DrawerHeader";
 
 const WHITELISTED_TRANSLATIONS = [
   "dm_start",
@@ -64,16 +66,25 @@ export default function ChatItem({ message, showAvatar }: Props) {
     }
     return message.markdown;
   }, [message.markdown, t]);
+  const active = useUserActivity(message.user.id);
   if (showAvatar) {
     return (
       <ListItem alignItems="flex-start" disablePadding>
         <ListItemAvatar>
-          <Avatar
-            src={message.user.profilePicture ?? undefined}
-            alt={message.user.name}
+          <ContrastBadge
+            color="success"
+            variant="dot"
+            sx={{ marginRight: "8px" }}
+            overlap="circular"
+            invisible={!active}
           >
-            {(message.user.nickname ?? message.user.name)[0]}
-          </Avatar>
+            <Avatar
+              src={message.user.profilePicture ?? undefined}
+              alt={message.user.name}
+            >
+              {(message.user.nickname ?? message.user.name)[0]}
+            </Avatar>
+          </ContrastBadge>
         </ListItemAvatar>
         <ListItemText
           primary={
