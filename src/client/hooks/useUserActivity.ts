@@ -1,7 +1,7 @@
 import { UserId } from "../../model/user";
 import useBackendFunction from "./useBackendFunction";
 
-export default function useUser(
+export default function useUserActivity(
   userId: UserId,
   navigateToLoginOnAuthFailure = true
 ) {

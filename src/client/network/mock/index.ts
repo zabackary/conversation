@@ -59,6 +59,8 @@ export default class MockBackend implements NetworkBackend {
 
   getUserActivity(_user: string): Subscribable<boolean | null> {
     return createSubscribable(async (next) => {
+      await wait();
+      next(Math.random() > 0.5);
       for (;;) {
         // eslint-disable-next-line no-await-in-loop
         await wait(2000 + Math.random() * 10000);
