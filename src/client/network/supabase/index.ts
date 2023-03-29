@@ -1,24 +1,20 @@
-import { AuthChangeEvent, createClient, Session } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
 import Channel, {
   DmChannel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, {
-  NewUserMetadata,
-  PrivilegeLevel,
-  UserId,
-} from "../../../model/user";
+import User, { NewUserMetadata, UserId } from "../../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
-  LoggedOutException,
   Subscribable,
 } from "../network_definitions";
 import { createSubscribable, mapSubscribable } from "../utils";
 import SupabaseCache from "./cache";
 import convertChannel from "./converters/convertChannel";
 import convertUser from "./converters/convertUser";
+import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
@@ -35,97 +31,10 @@ export default class SupabaseBackend implements NetworkBackend {
 
   cache = new SupabaseCache();
 
-  userSubscribable: Subscribable<User>;
+  loggedInUserSubscribable: Subscribable<User>;
 
   constructor() {
-    let userId: string | undefined;
-
-    this.userSubscribable = createSubscribable<User>(async (next) => {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1);
-      });
-      const handleAuthChanged = async (
-        event: AuthChangeEvent,
-        newSession: Session | null
-      ) => {
-        switch (event) {
-          case "USER_UPDATED":
-          case "SIGNED_IN": {
-            if (!newSession) throw new Error("Signed in w/o session");
-            if (userId === newSession.user.id) return;
-            const { data: userMetadatas } = await this.client
-              .from("users")
-              .select()
-              .eq("id", newSession.user.id)
-              .limit(1);
-            const userMetadata = userMetadatas?.[0];
-            if (!userMetadata) {
-              // TODO: Make this good UI
-              // eslint-disable-next-line no-restricted-globals
-              if (confirm("Let's set up your account.")) {
-                const name = prompt("Name?") ?? "";
-                const nickname = prompt("Nickname?") ?? "";
-                const profilePicture = prompt("Profile picture URL?");
-                next({
-                  ...newSession.user,
-                  email: newSession.user.email ?? "",
-                  name,
-                  nickname,
-                  privilegeLevel: PrivilegeLevel.Unverified,
-                  profilePicture: profilePicture ?? undefined,
-                  active: false,
-                  banner: undefined,
-                  isBot: false,
-                });
-                await this.client.from("users").insert({
-                  id: newSession.user.id,
-                  is_bot: false,
-                  name,
-                  nickname,
-                  trusted: false,
-                  banner_url: null,
-                  profile_picture_url: profilePicture,
-                });
-              }
-            } else {
-              next({
-                ...newSession.user,
-                email: newSession.user.email ?? "",
-                name: userMetadata.name,
-                nickname: userMetadata.nickname,
-                privilegeLevel: userMetadata.trusted
-                  ? PrivilegeLevel.Normal
-                  : PrivilegeLevel.Unverified,
-                profilePicture: userMetadata.profile_picture_url ?? undefined,
-                active: false,
-                banner: userMetadata.banner_url ?? undefined,
-                isBot: false,
-              });
-            }
-            userId = newSession.user.id;
-            break;
-          }
-          case "USER_DELETED":
-          case "SIGNED_OUT": {
-            userId = undefined;
-            next(new LoggedOutException());
-            break;
-          }
-          default:
-            void 0;
-        }
-      };
-      const {
-        data: { session: currentSession },
-      } = await this.client.auth.getSession();
-      await handleAuthChanged(
-        currentSession ? "SIGNED_IN" : "SIGNED_OUT",
-        currentSession
-      );
-      this.client.auth.onAuthStateChange((...args) => {
-        void handleAuthChanged(...args);
-      });
-    });
+    this.loggedInUserSubscribable = getLoggedInUserSubscribable(this.client);
   }
 
   async authLogIn(email: string, password: string): Promise<void> {
@@ -153,7 +62,7 @@ export default class SupabaseBackend implements NetworkBackend {
 
   getUser(id?: string): Subscribable<User> {
     if (id === undefined) {
-      return this.userSubscribable;
+      return this.loggedInUserSubscribable;
     }
     return createSubscribable(async (next) => {
       next(convertUser(await getUser(this.client, id)));
@@ -167,7 +76,7 @@ export default class SupabaseBackend implements NetworkBackend {
   }
 
   getDMs(): Subscribable<DmChannel[]> {
-    return mapSubscribable(this.userSubscribable, async (value) => {
+    return mapSubscribable(this.loggedInUserSubscribable, async (value) => {
       if (value instanceof Error) {
         return value;
       }
@@ -190,7 +99,7 @@ export default class SupabaseBackend implements NetworkBackend {
   }
 
   getChannels(): Subscribable<Channel[]> {
-    return mapSubscribable(this.userSubscribable, async (value) => {
+    return mapSubscribable(this.loggedInUserSubscribable, async (value) => {
       if (value instanceof Error) {
         return value;
       }
