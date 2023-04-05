@@ -17,7 +17,7 @@ export default function AccountSettingsRoute() {
       <Grid container spacing={2}>
         <BaseItem
           label={user.name}
-          description={user.email}
+          description={user.email ?? user.nickname ?? String(user.id)}
           control={
             <Button
               variant="tonal"

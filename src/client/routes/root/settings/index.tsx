@@ -32,11 +32,6 @@ export default function SettingsRoute() {
             to="/app/settings/account/"
             exclude={2}
           />
-          <LinkListItem
-            primaryText="Account"
-            to="/app/settings/account/"
-            exclude={2}
-          />
         </List>
       }
     >
