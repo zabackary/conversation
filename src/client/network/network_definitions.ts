@@ -59,12 +59,19 @@ export interface CleanSubscribable<T> extends Subscribable<T> {
 
 export default interface NetworkBackend {
   /**
+   * Whether the backend is ready to recieve requests. If `false`, requests
+   * should not be sent. They should be queued, for example, using
+   * {@link QueuedBackend `QueuedBackend`}
+   */
+  isReady?: boolean;
+
+  /**
    * Gets the logged in user or get by ID.
    *
    * @returns A subscribable echoing `User`, `null` on loading, or errors on
    * logged out.
    */
-  getUser(id?: number | string): Subscribable<User | null>;
+  getUser(id?: UserId): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.
