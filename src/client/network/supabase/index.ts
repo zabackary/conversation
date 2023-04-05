@@ -5,12 +5,15 @@ import Channel, {
   PublicChannelListing,
 } from "../../../model/channel";
 import User, { NewUserMetadata, UserId } from "../../../model/user";
+import { isGASWebApp, updatedHash } from "../../hooks/useRouteForward";
+import QueuedBackend from "../QueuedBackend";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   Subscribable,
 } from "../network_definitions";
 import { createSubscribable, mapSubscribable } from "../utils";
+import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache from "./cache";
 import convertChannel from "./converters/convertChannel";
 import convertUser from "./converters/convertUser";
@@ -18,12 +21,11 @@ import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
-import SupabaseChannelBackend from "./SupabaseChannelBackend";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
 
-export default class SupabaseBackend implements NetworkBackend {
+class SupabaseBackend implements NetworkBackend {
   client = createClient<Database>(
     "https://pcenneuseahncajmkcoe.supabase.co/",
     SUPABASE_ANON_KEY
@@ -33,8 +35,16 @@ export default class SupabaseBackend implements NetworkBackend {
 
   loggedInUserSubscribable: Subscribable<User>;
 
+  isReady: Promise<void>;
+
   constructor() {
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(this.client);
+    this.isReady = new Promise((resolve, reject) => {
+      this.client.auth
+        .initialize()
+        .then(() => resolve())
+        .catch(reject);
+    });
   }
 
   async authLogIn(email: string, password: string): Promise<void> {
@@ -138,3 +148,25 @@ export default class SupabaseBackend implements NetworkBackend {
     });
   }
 }
+
+function SupabaseBackendConstructor() {
+  const queuedBackend = new QueuedBackend();
+  if (isGASWebApp) {
+    void updatedHash.then(() => {
+      const supabaseBackend = new SupabaseBackend();
+      void supabaseBackend.isReady.then(() => {
+        queuedBackend.routeTo(supabaseBackend);
+      });
+    });
+  } else {
+    const supabaseBackend = new SupabaseBackend();
+    void supabaseBackend.isReady.then(() => {
+      queuedBackend.routeTo(supabaseBackend);
+    });
+  }
+  return queuedBackend;
+}
+
+export default SupabaseBackendConstructor as unknown as {
+  new (): NetworkBackend;
+};
