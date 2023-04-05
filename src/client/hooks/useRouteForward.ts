@@ -1,14 +1,20 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const isGoogle = "google" in window && "script" in window.google;
+let resolveUpdatedHash: (() => void) | undefined;
+
+export const updatedHash = new Promise<void>((resolve) => {
+  resolveUpdatedHash = resolve;
+});
+
+export const isGASWebApp = "google" in window && "script" in window.google;
 
 let changeHandlerSet = false;
 export default function useRouteForward() {
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isGoogle) {
+    if (isGASWebApp) {
       google.script.history.replace(
         undefined,
         undefined,
@@ -17,9 +23,13 @@ export default function useRouteForward() {
     }
   }, [location.hash, location.pathname, location.search]);
   useEffect(() => {
-    if (!changeHandlerSet && isGoogle) {
+    if (!changeHandlerSet && isGASWebApp) {
       google.script.history.setChangeHandler((event) => {
         navigate(event.location.hash, { replace: true });
+      });
+      google.script.url.getLocation((currentLocation) => {
+        navigate(currentLocation.hash, { replace: true });
+        if (resolveUpdatedHash) resolveUpdatedHash();
       });
       changeHandlerSet = true;
     }
