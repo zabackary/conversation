@@ -8,14 +8,15 @@ import LoginResetRoute from "./login/reset";
 import LoginSettingsRoute from "./login/settings";
 import RootRoute from "./root";
 import ChannelListRoute from "./root/channels";
+import NoChannelSelectedRoute from "./root/channels/NoChannelSelectedRoute";
 import ChannelRoute from "./root/channels/channel";
 import ChannelJoinScreen from "./root/channels/channel/join";
-import NoChannelSelectedRoute from "./root/channels/NoChannelSelectedRoute";
 import DashboardRoute from "./root/dashboard";
 import DmListRoute from "./root/dms";
-import DmRoute from "./root/dms/dm";
 import NoDmSelectedRoute from "./root/dms/NoDmSelectedRoute";
+import DmRoute from "./root/dms/dm";
 import SettingsRoute from "./root/settings";
+import AccountSettingsRoute from "./root/settings/account";
 import AppearanceSettingsRoute from "./root/settings/appearance";
 import BehaviorSettingsRoute from "./root/settings/behavior";
 import GeneralSettingsRoute from "./root/settings/general";
@@ -77,6 +78,10 @@ const routes: RouteObject[] = [
           {
             path: "appearance",
             element: <AppearanceSettingsRoute />,
+          },
+          {
+            path: "account",
+            element: <AccountSettingsRoute />,
           },
         ],
       },
