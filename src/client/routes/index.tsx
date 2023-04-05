@@ -1,5 +1,7 @@
 import { RouteObject } from "react-router-dom";
 import ErrorRoute from "./error";
+import LandingRootRoute from "./landing";
+import LandingRoute from "./landing/landing";
 import LoginRootRoute from "./login";
 import LoginHelpRoute from "./login/help";
 import LoginRoute from "./login/login";
@@ -24,11 +26,22 @@ import GeneralSettingsRoute from "./root/settings/general";
 const routes: RouteObject[] = [
   {
     path: "",
-    element: <RootRoute />,
+    element: <LandingRootRoute />,
     errorElement: <ErrorRoute />,
     children: [
       {
         index: true,
+        element: <LandingRoute />,
+      },
+    ],
+  },
+  {
+    path: "app",
+    element: <RootRoute />,
+    errorElement: <ErrorRoute />,
+    children: [
+      {
+        path: "app",
         element: <DashboardRoute />,
       },
       {

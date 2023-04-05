@@ -29,7 +29,7 @@ export default function LinkListItem({
   loading = false,
   badge,
   avatar,
-  exclude = 1,
+  exclude = 2,
 }: Props) {
   const matches = useMatches().slice(exclude);
   const isMatch = matches.find((match) => match.pathname === to);

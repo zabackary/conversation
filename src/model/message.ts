@@ -1,8 +1,7 @@
-import Service from "./service";
 import User from "./user";
 
-interface BaseMessage {
-  user: User | Service;
+export default interface Message {
+  user: User;
   parent: number;
   id: number;
   sent: Date;
@@ -14,24 +13,10 @@ interface BaseMessage {
   /**
    * The message this message is replying to, if any. May also be a
    * `MessageSnippet` if the original message is not in the channel's history
-   * anymore.
+   * anymore, or `null` if the message is "not avalible anymore"
    */
-  replied?: BaseMessage | MessageSnippet;
+  replied?: Message | MessageSnippet | null;
 }
-
-export interface UserMessage extends BaseMessage {
-  user: User;
-  isService: false;
-}
-
-export interface ServiceMessage extends BaseMessage {
-  user: Service;
-  rich?: unknown;
-  isService: true;
-}
-
-type Message = UserMessage | ServiceMessage;
-export default Message;
 
 export interface MessageSnippet {
   user: User;

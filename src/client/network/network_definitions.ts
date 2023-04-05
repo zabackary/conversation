@@ -4,7 +4,8 @@ import Channel, {
   PublicChannelListing,
 } from "../../model/channel";
 import Message from "../../model/message";
-import User, { NewUser, UserStatus } from "../../model/user";
+import User, { NewUserMetadata, UserId } from "../../model/user";
+import type _QueuedBackend from "./QueuedBackend";
 
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
@@ -59,21 +60,29 @@ export interface CleanSubscribable<T> extends Subscribable<T> {
 
 export default interface NetworkBackend {
   /**
+   * A promise resolving when the backend is finished initializing. If not,
+   * requests to the backend should be queued, for example, using
+   * {@link _QueuedBackend `QueuedBackend`}
+   */
+  isReady?: Promise<void>;
+
+  /**
    * Gets the logged in user or get by ID.
    *
    * @returns A subscribable echoing `User`, `null` on loading, or errors on
    * logged out.
    */
-  getUser(id?: number): Subscribable<User | null>;
+  getUser(id?: UserId): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.
    *
    * @param {string} user The user to fetch for.
    *
-   * @returns A `UserStatus` or null if the user doesn't exist.
+   * @returns A boolean indicating whether the user is active or `null` if the
+   * user doesn't exist.
    */
-  getStatus(user: string): Subscribable<UserStatus | null>;
+  getUserActivity(user: UserId): Subscribable<boolean | null>;
 
   /**
    * Returns the DMs a user currently has open. These are `DmChannel`s.
@@ -159,7 +168,7 @@ export default interface NetworkBackend {
    * @returns A promise resolving if the creation is successful, and rejecting
    * is something went wrong.
    */
-  authCreateAccount(newUser: NewUser, password: string): Promise<void>;
+  authCreateAccount(newUser: NewUserMetadata, password: string): Promise<void>;
 }
 
 export interface ChannelBackend

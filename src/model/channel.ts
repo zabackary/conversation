@@ -14,6 +14,7 @@ interface BaseChannel {
   privacyLevel: PrivacyLevel;
   history: number;
   id: number;
+  passphrase?: string;
 
   /**
    * The last message sent in the channel (used for preview). May be `undefined`

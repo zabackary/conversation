@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import CachedBackend from "../network/cached_backend";
 import DefaultBackend from "../network/default_backend";
 import BackendContext from "./BackendContext";
 
@@ -8,7 +9,7 @@ export interface BackendContextProviderProps {
 export default function BackendContextProvider({
   children,
 }: BackendContextProviderProps) {
-  const [backend] = useState(() => new DefaultBackend());
+  const [backend] = useState(() => new CachedBackend(new DefaultBackend()));
   return (
     <BackendContext.Provider value={backend}>
       {children}

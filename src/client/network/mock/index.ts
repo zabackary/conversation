@@ -5,7 +5,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUser, UserStatus } from "../../../model/user";
+import User, { NewUserMetadata } from "../../../model/user";
 import {
   validatePassword,
   validateText,
@@ -17,12 +17,7 @@ import NetworkBackend, {
   LoggedOutException,
   Subscribable,
 } from "../network_definitions";
-import {
-  CleanDispatchableSubscribable,
-  createSubscribable,
-  mapSubscribable,
-  wait,
-} from "../utils";
+import { createSubscribable, mapSubscribable, wait } from "../utils";
 import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
@@ -46,11 +41,15 @@ export default class MockBackend implements NetworkBackend {
     loggedInUser.dispatch(null);
   }
 
-  async authCreateAccount(newUser: NewUser, password: string): Promise<void> {
+  async authCreateAccount(
+    newUser: NewUserMetadata,
+    password: string
+  ): Promise<void> {
     await wait();
     if (
       validatePassword(password) !== null ||
       validateText(newUser.name) !== null ||
+      !newUser.nickname ||
       validateText(newUser.nickname) !== null ||
       (!!newUser.profilePicture && validateUrl(newUser.profilePicture) !== null)
     ) {
@@ -58,14 +57,15 @@ export default class MockBackend implements NetworkBackend {
     }
   }
 
-  getStatus(user: string): Subscribable<UserStatus | null> {
+  getUserActivity(_user: string): Subscribable<boolean | null> {
     return createSubscribable(async (next) => {
       await wait();
-      // @ts-ignore The cast is safe
-      const dbUser = users[user] as
-        | CleanDispatchableSubscribable<User>
-        | undefined;
-      next(dbUser ? dbUser.value.getSnapshot().status : null);
+      next(Math.random() > 0.5);
+      for (;;) {
+        // eslint-disable-next-line no-await-in-loop
+        await wait(2000 + Math.random() * 10000);
+        next(Math.random() > 0.5);
+      }
     });
   }
 

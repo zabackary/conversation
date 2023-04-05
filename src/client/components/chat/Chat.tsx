@@ -4,6 +4,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PeopleIcon from "@mui/icons-material/People";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import {
+  CircularProgress,
   Drawer,
   IconButton,
   styled,
@@ -22,6 +23,8 @@ import { ChannelBackend } from "../../network/network_definitions";
 import { ConversationAppBar } from "../layout";
 import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import ChatView from "./ChatView";
+import InfoMenu from "./InfoMenu";
+import PeopleMenu from "./PeopleMenu";
 
 const sideSheetWidth = 300;
 
@@ -188,6 +191,11 @@ export default function Chat({ channelId }: ChatProps) {
             <CloseIcon />
           </IconButton>
         </SideSheetToolbar>
+        {channel ? (
+          <InfoMenu channel={channel} sx={{ p: 2 }} />
+        ) : (
+          <CircularProgress />
+        )}
       </Drawer>
       <Drawer
         variant={isMobile ? "temporary" : "persistent"}
@@ -218,6 +226,11 @@ export default function Chat({ channelId }: ChatProps) {
             <CloseIcon />
           </IconButton>
         </SideSheetToolbar>
+        {channel ? (
+          <PeopleMenu channel={channel} sx={{ p: 2 }} />
+        ) : (
+          <CircularProgress />
+        )}
       </Drawer>
     </>
   );

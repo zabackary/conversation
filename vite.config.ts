@@ -41,16 +41,6 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
       },
       chunkSizeWarningLimit: 999999,
     },
-    resolve: {
-      alias: [
-        {
-          find: /network\/default_backend(\.ts)?/,
-          replacement: `network/${
-            env.NODE_ENV === "production" ? "gas/index.ts" : "mock/index.ts"
-          }`,
-        },
-      ],
-    },
     plugins: [
       react({
         include: "**/*.{jsx,tsx}",

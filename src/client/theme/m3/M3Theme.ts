@@ -248,6 +248,17 @@ declare module "@mui/material/Fab" {
   }
 }
 
+declare module "@mui/material/Chip" {
+  interface ChipPropsVariantOverrides {
+    outlined: true;
+    elevated: true;
+    tonal: true;
+  }
+  interface ChipPropsColorOverrides {
+    tertiary: true;
+  }
+}
+
 export const getDesignTokens = (
   mode: M3ThemeMode,
   scheme: M3ColorTokens,
@@ -474,6 +485,38 @@ export const getThemedComponents = (
                 duration: theme.transitions.duration.short,
               }
             ),
+          },
+        },
+      },
+      MuiToggleButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: "40px",
+            textTransform: "none",
+            borderColor: theme.palette.outline,
+            paddingX: "12px",
+            "&::before": {
+              content: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+                theme.palette.onSecondaryContainer.main
+              )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+              width: "0px",
+              marginRight: "0px",
+              transform: "scale(0) translate(-12px, 3px)",
+              transition: theme.transitions.create([
+                "width",
+                "transform",
+                "marginRight",
+              ]),
+            },
+            "&.Mui-selected": {
+              backgroundColor: theme.palette.secondaryContainer.main,
+              color: theme.palette.secondaryContainer.contrastText,
+              "&::before": {
+                width: "24px",
+                marginRight: "12px",
+                transform: "scale(1) translate(0px, 3px)",
+              },
+            },
           },
         },
       },
@@ -849,6 +892,32 @@ export const getThemedComponents = (
         },
       },
       MuiChip: {
+        variants: [
+          {
+            props: { variant: "elevated" },
+            style: {
+              boxShadow: theme.shadows[1],
+            },
+          },
+          {
+            props: { variant: "outlined" },
+            style: {
+              border: `1px solid ${theme.palette.outline}`,
+            },
+          },
+          {
+            props: { variant: "tonal" },
+            style: {
+              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            },
+          },
+          {
+            props: { color: "tertiary" },
+            style: {
+              backgroundColor: alpha(theme.palette.tertiary.main, 0.08),
+            },
+          },
+        ],
         styleOverrides: {
           root: {
             borderRadius: "8px",

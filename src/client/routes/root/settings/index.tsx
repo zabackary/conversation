@@ -14,22 +14,27 @@ export default function SettingsRoute() {
         <List>
           <LinkListItem
             primaryText={t("general.label")}
-            to="/settings/"
+            to="/app/settings/"
             exclude={2}
           />
           <LinkListItem
             primaryText={t("behavior.label")}
-            to="/settings/behavior/"
+            to="/app/settings/behavior/"
             exclude={2}
           />
           <LinkListItem
             primaryText={t("appearance.label")}
-            to="/settings/appearance/"
+            to="/app/settings/appearance/"
             exclude={2}
           />
           <LinkListItem
             primaryText="Account"
-            to="/settings/account/"
+            to="/app/settings/account/"
+            exclude={2}
+          />
+          <LinkListItem
+            primaryText="Account"
+            to="/app/settings/account/"
             exclude={2}
           />
         </List>
