@@ -55,8 +55,9 @@ class SupabaseBackend implements NetworkBackend {
     if (error) throw error;
   }
 
-  authLogOut(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async authLogOut(): Promise<void> {
+    const { error } = await this.client.auth.signOut();
+    if (error) throw error;
   }
 
   async authCreateAccount(
