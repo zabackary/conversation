@@ -5,6 +5,7 @@ import Channel, {
 } from "../../model/channel";
 import Message from "../../model/message";
 import User, { NewUserMetadata, UserId } from "../../model/user";
+import type _QueuedBackend from "./QueuedBackend";
 
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
@@ -59,11 +60,11 @@ export interface CleanSubscribable<T> extends Subscribable<T> {
 
 export default interface NetworkBackend {
   /**
-   * Whether the backend is ready to recieve requests. If `false`, requests
-   * should not be sent. They should be queued, for example, using
-   * {@link QueuedBackend `QueuedBackend`}
+   * A promise resolving when the backend is finished initializing. If not,
+   * requests to the backend should be queued, for example, using
+   * {@link _QueuedBackend `QueuedBackend`}
    */
-  isReady?: boolean;
+  isReady?: Promise<void>;
 
   /**
    * Gets the logged in user or get by ID.
