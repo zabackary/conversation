@@ -25,10 +25,18 @@ export default class CachedBackend implements NetworkBackend {
 
   userSubscribable: Subscribable<User | null> | undefined;
 
-  getUser(): Subscribable<User | null> {
+  userSubscribableMap: Record<string, Subscribable<User | null>> = {};
+
+  getUser(user?: UserId): Subscribable<User | null> {
+    if (!user) {
+      return (
+        this.userSubscribable ||
+        (this.userSubscribable = this.mirroredBackend.getUser())
+      );
+    }
     return (
-      this.userSubscribable ||
-      (this.userSubscribable = this.mirroredBackend.getUser())
+      this.userSubscribableMap[user] ||
+      (this.userSubscribableMap[user] = this.mirroredBackend.getUser(user))
     );
   }
 
