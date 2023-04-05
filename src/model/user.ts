@@ -41,5 +41,5 @@ export interface NewUserMetadata {
   email: string;
   name: string;
   nickname?: string;
-  profilePicture: string;
+  profilePicture?: string;
 }

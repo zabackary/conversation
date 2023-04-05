@@ -108,7 +108,7 @@ export default function LoginRegisterRoute() {
             data.get("lastName") as string
           }`,
           nickname: data.get("nickname") as string,
-          profilePicture: pfp === "" ? null : pfp,
+          profilePicture: pfp === "" ? undefined : pfp,
         },
         data.get("password") as string
       )
