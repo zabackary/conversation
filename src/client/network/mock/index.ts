@@ -48,6 +48,7 @@ export default class MockBackend implements NetworkBackend {
     await wait();
     if (
       validatePassword(password) !== null ||
+      !newUser.name ||
       validateText(newUser.name) !== null ||
       !newUser.nickname ||
       validateText(newUser.nickname) !== null ||

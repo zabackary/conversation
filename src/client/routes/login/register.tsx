@@ -11,10 +11,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  FormControlLabel,
   IconButton,
   InputAdornment,
-  Popover,
   Stack,
   Tooltip,
   useTheme,
@@ -24,14 +22,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import {
-  FormEvent,
-  MouseEventHandler,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useEffect, useId, useRef, useState } from "react";
 import {
   Link as RouterLink,
   useLocation,
@@ -40,7 +31,6 @@ import {
 } from "react-router-dom";
 import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
-import ImagePicker from "../../components/ImagePicker";
 import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
 
@@ -74,9 +64,6 @@ export default function LoginRegisterRoute() {
   };
   const passwordId = useId();
   const emailId = useId();
-  const firstNameId = useId();
-  const lastNameId = useId();
-  const nicknameId = useId();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -86,29 +73,14 @@ export default function LoginRegisterRoute() {
   };
   const theme = useTheme();
   const location = useLocation();
-  const [imagePickerAnchor, setImagePickerAnchor] =
-    useState<HTMLButtonElement | null>(null);
-  const handleImagePickerOpen: MouseEventHandler<HTMLButtonElement> = (e) => {
-    setImagePickerAnchor(e.currentTarget);
-  };
-  const handleImagePickerClose = () => {
-    setImagePickerAnchor(null);
-  };
-  const [avatarUrl, setAvatarUrl] = useState<string>();
   const handleFinalSubmission = () => {
     setLoading(true);
     const data = formData.current;
     if (!data) throw new Error("Cannot get form data!");
-    const pfp = data.get("profilePicture") as string;
     backend
       .authCreateAccount(
         {
           email: `${data.get("email") as string}@stu.his.ac.jp`,
-          name: `${data.get("firstName") as string} ${
-            data.get("lastName") as string
-          }`,
-          nickname: data.get("nickname") as string,
-          profilePicture: pfp === "" ? undefined : pfp,
         },
         data.get("password") as string
       )
@@ -241,78 +213,7 @@ export default function LoginRegisterRoute() {
             ),
           }}
         />
-        <Header index={2} title="Decide how others see you" />
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              autoComplete="given-name"
-              name="firstName"
-              required
-              fullWidth
-              id={firstNameId}
-              label="First Name"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              required
-              fullWidth
-              id={lastNameId}
-              label="Last Name"
-              name="lastName"
-              autoComplete="family-name"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              fullWidth
-              id={nicknameId}
-              label="Nickname"
-              name="nickname"
-              autoComplete="nickname"
-              helperText="This is how your name will display on messages"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <input type="hidden" name="profilePicture" value={avatarUrl} />
-            <FormControlLabel
-              control={
-                <IconButton onClick={handleImagePickerOpen}>
-                  <Avatar src={avatarUrl} />
-                </IconButton>
-              }
-              label="Profile picture"
-            />
-            <Popover
-              id={undefined}
-              open={!!imagePickerAnchor}
-              anchorEl={imagePickerAnchor}
-              onClose={handleImagePickerClose}
-              anchorOrigin={{
-                horizontal: "left",
-                vertical: "top",
-              }}
-              transformOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              PaperProps={{
-                sx: {
-                  width: "100%",
-                  maxWidth: "600px",
-                },
-              }}
-            >
-              <ImagePicker
-                onImageSelected={(url) =>
-                  setAvatarUrl(url === "" ? undefined : url)
-                }
-                allowFiles={false}
-              />
-            </Popover>
-          </Grid>
-        </Grid>
+
         <Grid container>
           <Grid item xs>
             <Button

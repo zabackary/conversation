@@ -39,7 +39,7 @@ export default User;
 
 export interface NewUserMetadata {
   email: string;
-  name: string;
+  name?: string;
   nickname?: string;
   profilePicture?: string;
 }
