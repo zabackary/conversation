@@ -10,11 +10,12 @@ export const updatedHash = new Promise<void>((resolve) => {
 export const isGASWebApp = "google" in window && "script" in window.google;
 
 let changeHandlerSet = false;
+let hasFetchedLocation = false;
 export default function useRouteForward() {
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
-    if (isGASWebApp) {
+    if (isGASWebApp && hasFetchedLocation) {
       google.script.history.replace(
         undefined,
         undefined,
@@ -29,6 +30,7 @@ export default function useRouteForward() {
       });
       google.script.url.getLocation((currentLocation) => {
         navigate(currentLocation.hash, { replace: true });
+        hasFetchedLocation = true;
         if (resolveUpdatedHash) resolveUpdatedHash();
       });
       changeHandlerSet = true;
