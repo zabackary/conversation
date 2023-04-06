@@ -1,4 +1,7 @@
 {
   "npm.packageManager": "pnpm",
-  "typescript.tsdk": "node_modules\\typescript\\lib"
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "javascript.preferences.autoImportFileExcludePatterns": [
+    "node_modules/@mui/icons-material/**"
+  ]
 }
