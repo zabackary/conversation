@@ -51,12 +51,10 @@ export default function useBackendFunction<T>(
     isUser,
   ]);
   if (value instanceof Error) {
-    if (
-      !(navigateToLoginOnAuthFailure && value instanceof LoggedOutException)
-    ) {
-      throw value;
+    if (value instanceof LoggedOutException) {
+      return null;
     }
-    return null;
+    throw value;
   }
   return value;
 }
