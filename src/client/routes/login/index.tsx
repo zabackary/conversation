@@ -1,8 +1,9 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Fade, Paper } from "@mui/material";
+import { Avatar, Box, Fade, Link as MuiLink, Paper } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useEffect } from "react";
 import {
+  Link,
   useMatches,
   useNavigate,
   useOutlet,
@@ -26,7 +27,21 @@ export default function LoginRootRoute() {
     }
   }, [user, searchParams, navigate]);
   return (
-    <Container component="main" maxWidth="xs" sx={{ pt: 8, pb: 8 }}>
+    <Container component="main" maxWidth="xs" sx={{ pt: 6, pb: 8 }}>
+      <MuiLink
+        sx={{
+          fontSize: 34,
+          textDecoration: "none",
+          textAlign: "center",
+          color: "tertiary.main",
+          display: "block",
+          mb: 2,
+        }}
+        component={Link}
+        to="/"
+      >
+        Conversation
+      </MuiLink>
       <Paper
         variant="outlined"
         sx={{
