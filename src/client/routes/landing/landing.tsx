@@ -78,9 +78,9 @@ export default function LandingRoute() {
                 variant="outlined"
                 sx={{ mr: 1 }}
                 component={Link}
-                to="/login/"
+                to="/app/"
               >
-                Log in
+                Launch app
               </Button>
               <Button
                 variant="filled"
@@ -132,10 +132,22 @@ export default function LandingRoute() {
               </IconButton>
             </Grid>
             <Grid item xs={12}>
-              <LargeButton variant="filled" sx={{ mr: 2 }}>
+              <LargeButton
+                variant="filled"
+                sx={{ mr: 2 }}
+                // @ts-expect-error Overridden components' types are weird with `component`
+                component={Link}
+                to="/login/new/"
+              >
                 Get started
               </LargeButton>
-              <LargeButton>Log in</LargeButton>
+              <LargeButton
+                // @ts-expect-error Overridden components' types are weird with `component`
+                component={Link}
+                to="/app/"
+              >
+                Launch app
+              </LargeButton>
             </Grid>
           </Grid>
         </Box>
