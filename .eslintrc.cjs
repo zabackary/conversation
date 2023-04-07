@@ -1,6 +1,6 @@
 // @ts-check
 
-const path = require("path");
+const path = require("node:path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
@@ -84,6 +84,7 @@ const config = {
     "@typescript-eslint/no-useless-constructor": 1,
     "@typescript-eslint/no-unnecessary-condition": 1,
     "no-void": 0,
+    "default-case": 0,
   },
 };
 
