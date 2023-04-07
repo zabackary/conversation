@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import CachedBackend from "../network/cached_backend";
+import CachedBackend from "../network/CachedBackend";
 import DefaultBackend from "../network/default_backend";
 import BackendContext from "./BackendContext";
 
