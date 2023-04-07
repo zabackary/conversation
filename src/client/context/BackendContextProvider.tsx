@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import CachedBackend from "../network/CachedBackend";
-import DefaultBackend from "../network/default_backend";
+import DefaultBackend from "../network/DefaultBackend";
 import BackendContext from "./BackendContext";
 
 export interface BackendContextProviderProps {
