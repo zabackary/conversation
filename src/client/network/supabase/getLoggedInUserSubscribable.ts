@@ -1,6 +1,6 @@
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import User, { PrivilegeLevel } from "../../../model/user";
-import { LoggedOutException } from "../network_definitions";
+import { LoggedOutException } from "../NetworkBackend";
 import { createSubscribable } from "../utils";
 import { ConversationSupabaseClient } from "./utils";
 

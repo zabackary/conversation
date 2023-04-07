@@ -6,7 +6,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   Subscribable,
-} from "./network_definitions";
+} from "./NetworkBackend";
 
 export default class CachedBackend implements NetworkBackend {
   constructor(private mirroredBackend: NetworkBackend) {}

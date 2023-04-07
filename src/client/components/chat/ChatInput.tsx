@@ -26,10 +26,7 @@ import {
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  SentMessage,
-  SentMessageEvent,
-} from "../../network/network_definitions";
+import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
 import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";

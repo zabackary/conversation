@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
-import { Subscribable } from "../network_definitions";
+import { Subscribable } from "../NetworkBackend";
 
 export function normalizeJoin<T>(value: T[] | T | null): T[] {
   const cleanedValue = value ?? [];

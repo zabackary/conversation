@@ -6,12 +6,12 @@ import Channel, {
 } from "../../../model/channel";
 import User, { NewUserMetadata, UserId } from "../../../model/user";
 import { isGASWebApp, updatedHash } from "../../hooks/useRouteForward";
-import QueuedBackend from "../QueuedBackend";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   Subscribable,
-} from "../network_definitions";
+} from "../NetworkBackend";
+import QueuedBackend from "../QueuedBackend";
 import { createSubscribable, mapSubscribable } from "../utils";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache from "./cache";

@@ -3,7 +3,7 @@ import {
   ChannelBackend,
   ChannelBackendEvent,
   SentMessageEvent,
-} from "../network_definitions";
+} from "../NetworkBackend";
 import { wait } from "../utils";
 import { loggedInUser, messages } from "./mock_data";
 

@@ -1,5 +1,5 @@
 import normalizeException from "normalize-exception";
-import { CleanSubscribable, Subscribable } from "./network_definitions";
+import { CleanSubscribable, Subscribable } from "./NetworkBackend";
 
 async function wait(): Promise<void>;
 async function wait(ms: number): Promise<void>;

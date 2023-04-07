@@ -2,7 +2,7 @@ import { Box, SxProps } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Message from "../../../model/message";
-import { SentMessageEvent } from "../../network/network_definitions";
+import { SentMessageEvent } from "../../network/NetworkBackend";
 import ChatInput from "./ChatInput";
 import ChatList from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";

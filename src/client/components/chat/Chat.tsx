@@ -19,7 +19,7 @@ import Message from "../../../model/message";
 import useBackend from "../../hooks/useBackend";
 import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
-import { ChannelBackend } from "../../network/network_definitions";
+import { ChannelBackend } from "../../network/NetworkBackend";
 import { ConversationAppBar } from "../layout";
 import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import ChatView from "./ChatView";

@@ -16,7 +16,7 @@ import NetworkBackend, {
   ChannelJoinInfo,
   LoggedOutException,
   Subscribable,
-} from "../network_definitions";
+} from "../NetworkBackend";
 import { createSubscribable, mapSubscribable, wait } from "../utils";
 import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";

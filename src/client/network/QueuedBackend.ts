@@ -6,7 +6,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
   Subscribable,
-} from "./network_definitions";
+} from "./NetworkBackend";
 import { createSubscribable } from "./utils";
 
 export default class QueuedBackend implements NetworkBackend {

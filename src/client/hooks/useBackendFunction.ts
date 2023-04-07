@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NetworkBackend, {
   LoggedOutException,
   Subscribable,
-} from "../network/network_definitions";
+} from "../network/NetworkBackend";
 import useBackend from "./useBackend";
 
 export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {

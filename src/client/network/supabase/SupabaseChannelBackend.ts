@@ -4,7 +4,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelBackendEvent,
   SentMessageEvent,
-} from "../network_definitions";
+} from "../NetworkBackend";
 import convertMessage from "./converters/convertMessage";
 import getMessages from "./getters/getMessages";
 import { ConversationSupabaseClient, promiseFromSubscribable } from "./utils";
