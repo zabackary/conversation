@@ -1,4 +1,3 @@
-import { CssBaseline } from "@mui/material";
 import {
   createBrowserRouter,
   createHashRouter,
@@ -24,7 +23,6 @@ export default function App() {
       <M3ThemeModeProvider>
         <M3ThemeSchemeProvider>
           <M3ThemeProvider>
-            <CssBaseline enableColorScheme />
             <SnackbarProvider>
               <RouterProvider router={router} />
             </SnackbarProvider>
