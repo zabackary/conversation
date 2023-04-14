@@ -25,6 +25,11 @@ export interface M3ThemeTones {
   error: M3Tone;
 }
 
+export interface M3ThemeFonts {
+  heading: string;
+  body: string;
+}
+
 export interface M3ColorTokens {
   primary: string;
   onPrimary: string;
@@ -262,9 +267,20 @@ declare module "@mui/material/Chip" {
 export const getDesignTokens = (
   mode: M3ThemeMode,
   scheme: M3ColorTokens,
-  tones?: M3ThemeTones
+  tones?: M3ThemeTones,
+  typography?: M3ThemeFonts
 ) => {
   return {
+    typography: {
+      fontFamily: typography?.body,
+      body1: { fontFamily: typography?.body },
+      body2: { fontFamily: typography?.body },
+      h1: { fontFamily: typography?.heading },
+      h2: { fontFamily: typography?.heading },
+      h3: { fontFamily: typography?.heading },
+      h4: { fontFamily: typography?.heading },
+      h5: { fontFamily: typography?.heading },
+    },
     palette: {
       mode,
       primary: {

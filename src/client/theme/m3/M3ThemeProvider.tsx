@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from "react";
 
-import { CssBaseline } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { CssBaseline, responsiveFontSizes } from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { deepmerge } from "@mui/utils";
 import { ThemeModeContext } from "../context/ThemeModeContext";
 import { ThemeSchemeContext } from "../context/ThemeSchemeContext";
@@ -19,10 +19,15 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
     const designTokens = getDesignTokens(
       themeMode,
       themeScheme[themeMode],
-      themeScheme.tones
+      themeScheme.tones,
+      {
+        body: ['"Roboto Flex"', "Roboto", "Arial", "sans-serif"].join(","),
+        heading: ['"Roboto Flex"', "Roboto", "Arial", "sans-serif"].join(","),
+      }
     );
     let newM3Theme = createTheme(designTokens);
     newM3Theme = deepmerge(newM3Theme, getThemedComponents(newM3Theme));
+    newM3Theme = responsiveFontSizes(newM3Theme);
 
     document
       .querySelector('meta[name="theme-color"]')
