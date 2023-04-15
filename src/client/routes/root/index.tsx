@@ -1,4 +1,12 @@
-import { Box, Fade, Stack, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Fade,
+  List,
+  Paper,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMatches, useOutlet } from "react-router-dom";
@@ -7,15 +15,32 @@ import {
   ConversationNavigationRail,
   navigationRailWidth,
 } from "../../components/layout";
+import { drawerWidth } from "../../components/layout/ConversationNavigationDrawer";
+import LinkListItem from "../../components/main/LinkListItem";
 import useSnackbar from "../../components/useSnackbar";
 import useBackend from "../../hooks/useBackend";
-import useRequireLogin from "../../hooks/useRequireLogin";
 import useRouteForward from "../../hooks/useRouteForward";
+
+function LoadingGlimmer() {
+  return (
+    <Stack direction="row" height="100%">
+      <Paper elevation={3} sx={{ height: "100%", width: "88px" }} />
+      <List sx={{ width: drawerWidth, mt: 24 }}>
+        <>
+          {Array<undefined>(3)
+            .fill(undefined)
+            .map((_, index) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <LinkListItem loading key={index} />
+            ))}
+        </>
+      </List>
+    </Stack>
+  );
+}
 
 export default function RootRoute() {
   useRouteForward();
-
-  useRequireLogin();
   const match = useMatches()[1] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const theme = useTheme();
@@ -62,6 +87,6 @@ export default function RootRoute() {
       </SwitchTransition>
     </Stack>
   ) : (
-    <>Loading...</>
+    <LoadingGlimmer />
   );
 }
