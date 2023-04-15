@@ -1,11 +1,13 @@
 import { Box, Fade, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import {
   ConversationNavigationRail,
   navigationRailWidth,
 } from "../../components/layout";
+import useSnackbar from "../../components/useSnackbar";
 import useBackend from "../../hooks/useBackend";
 import useRequireLogin from "../../hooks/useRequireLogin";
 import useRouteForward from "../../hooks/useRouteForward";
@@ -20,14 +22,19 @@ export default function RootRoute() {
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   const backend = useBackend();
   const [isReady, setIsReady] = useState(false);
+  const { showSnackbar } = useSnackbar();
+  const { t } = useTranslation();
   useEffect(() => {
     if (backend.isReady) {
       backend.isReady
         .then(() => {
           setIsReady(true);
         })
-        .catch(() => {
-          console.error("Backend failed to initialize.");
+        .catch((err) => {
+          console.error("Backend failed to initialize.", err);
+          showSnackbar(t("error"), {
+            autoHide: false,
+          });
         });
     } else {
       console.log(backend);
