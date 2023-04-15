@@ -28,7 +28,7 @@ export default function ChannelListRoute() {
             to="join/"
           >
             <AddIcon sx={{ mr: 1 }} />
-            {t("join")}
+            {t("joinButton")}
           </Fab>
           <ChannelList channels={channels} />
         </List>

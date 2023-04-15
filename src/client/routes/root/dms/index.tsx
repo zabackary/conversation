@@ -37,7 +37,7 @@ export default function DmListRoute() {
             }}
           >
             <AddIcon sx={{ mr: 1 }} />
-            {t("joinDm")}
+            {t("joinDmButton")}
           </Fab>
           <ChannelList channels={dms} />
         </List>
