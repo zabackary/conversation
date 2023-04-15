@@ -181,7 +181,7 @@
       "footer": {
         "forgot": "Forgot password",
         "help": "Help",
-        "apperance": "Appearance preferences"
+        "appearance": "Appearance preferences"
       },
       "forgot": {
         "description": "To reset your password, we'll send you an email with a link letting you log in. After that, we'll change your password.",
@@ -420,7 +420,7 @@
       "footer": {
         "forgot": "Forgot password",
         "help": "Help",
-        "apperance": "Appearance preferences"
+        "appearance": "Appearance preferences"
       },
       "forgot": {
         "description": "To reset your password, we'll send you an email with a link letting you log in. After that, we'll change your password.",
@@ -635,13 +635,13 @@
           "description": "メールアドレスとパスワードが基準を満たしているかどうかを確認してください。 問題が解決しない場合は、開発者にお問い合わせください。"
         }
       },
-      "email": "Eメール",
+      "email": "メールアドレス",
       "password": "パスワード",
       "newAccount": "新しいアカウント",
       "signIn": "ログイン",
       "emailStep": {
         "header": "メールアドレスを入力",
-        "warning": "メールごとに 1 つのアカウントしか作成できません。"
+        "warning": "メールアドレスごとに 1 つのアカウントしか作成できません。"
       },
       "passwordStep": {
         "header": "パスワードを決めて下さい",
@@ -650,7 +650,7 @@
         "warning": "パスワードを秘密にしてください。 このパスワードは、使用する他のパスワードと同じであってはなりません。"
       },
       "ssoInfo": "アカウントを作成したら、アカウント設定からシングル サインオン プロバイダーを追加できます。",
-      "next": "次",
+      "next": "次へ",
       "notices": {
         "header": "特記事項",
         "cancel": "キャンセル",
@@ -659,7 +659,7 @@
       "footer": {
         "forgot": "パスワードをお忘れですか",
         "help": "ヘルプ",
-        "apperance": "外観の設定"
+        "appearance": "外観の設定"
       },
       "forgot": {
         "description": "パスワードをリセットするには、ログイン用のリンクが記載されたメールをお送りします。その後、パスワードが変更されます。",
@@ -898,7 +898,7 @@
       "footer": {
         "forgot": "비밀번호를 잊으 셨나요",
         "help": "돕다",
-        "apperance": "외모 기본 설정"
+        "appearance": "외모 기본 설정"
       },
       "forgot": {
         "description": "비밀번호를 재설정하기 위해 로그인할 수 있는 링크가 포함된 이메일을 보내드립니다. 그런 다음 비밀번호를 변경해 드립니다.",
@@ -1137,7 +1137,7 @@
       "footer": {
         "forgot": "忘记密码",
         "help": "帮助",
-        "apperance": "外观偏好"
+        "appearance": "外观偏好"
       },
       "forgot": {
         "description": "要重置您的密码，我们会向您发送一封电子邮件，其中包含一个让您登录的链接。之后，我们将更改您的密码。",
@@ -1376,7 +1376,7 @@
       "footer": {
         "forgot": "忘記密碼",
         "help": "幫助",
-        "apperance": "外觀偏好"
+        "appearance": "外觀偏好"
       },
       "forgot": {
         "description": "要重置您的密碼，我們會向您發送一封電子郵件，其中包含一個讓您登錄的鏈接。之後，我們將更改您的密碼。",
