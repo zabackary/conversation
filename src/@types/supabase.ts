@@ -11,6 +11,7 @@ export interface Database {
     Tables: {
       channels: {
         Row: {
+          auto_join: boolean
           created_at: string | null
           description: string | null
           id: number
@@ -21,6 +22,7 @@ export interface Database {
           privacy_level: number
         }
         Insert: {
+          auto_join?: boolean
           created_at?: string | null
           description?: string | null
           id?: number
@@ -31,6 +33,7 @@ export interface Database {
           privacy_level: number
         }
         Update: {
+          auto_join?: boolean
           created_at?: string | null
           description?: string | null
           id?: number
