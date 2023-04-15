@@ -4,6 +4,7 @@ import {
   BadgeProps,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   styled,
   Typography,
@@ -67,40 +68,44 @@ export default function ChatItem({ message, showAvatar }: Props) {
     return message.markdown;
   }, [message.markdown, t]);
   const active = useUserActivity(message.user.id);
-  if (showAvatar) {
-    return (
-      <ListItem alignItems="flex-start" disablePadding>
-        <ListItemAvatar>
-          <ContrastBadge
-            color="success"
-            variant="dot"
-            sx={{ marginRight: "8px" }}
-            overlap="circular"
-            invisible={!active}
-          >
-            <Avatar
-              src={message.user.profilePicture ?? undefined}
-              alt={message.user.name}
+  return (
+    <ListItem alignItems="flex-start" disablePadding disableGutters>
+      <ListItemButton sx={{ p: "0 !important" }}>
+        {showAvatar ? (
+          <ListItemAvatar>
+            <ContrastBadge
+              color="success"
+              variant="dot"
+              sx={{ marginRight: "8px" }}
+              overlap="circular"
+              invisible={!active}
             >
-              {(message.user.nickname ?? message.user.name)[0]}
-            </Avatar>
-          </ContrastBadge>
-        </ListItemAvatar>
+              <Avatar
+                src={message.user.profilePicture ?? undefined}
+                alt={message.user.name}
+              >
+                {(message.user.nickname ?? message.user.name)[0]}
+              </Avatar>
+            </ContrastBadge>
+          </ListItemAvatar>
+        ) : null}
         <ListItemText
           primary={
-            <>
-              {message.isService ? message.user.name : message.user.nickname}{" "}
-              {message.isService ? (
-                <InlineBadge color="primary" badgeContent="bot" />
-              ) : null}{" "}
-              <Typography
-                variant="body2"
-                component="span"
-                sx={{ opacity: 0.5 }}
-              >
-                <TimeAgo date={message.sent} />
-              </Typography>
-            </>
+            showAvatar ? (
+              <>
+                {message.isService ? message.user.name : message.user.nickname}{" "}
+                {message.isService ? (
+                  <InlineBadge color="primary" badgeContent="bot" />
+                ) : null}{" "}
+                <Typography
+                  variant="body2"
+                  component="span"
+                  sx={{ opacity: 0.5 }}
+                >
+                  <TimeAgo date={message.sent} />
+                </Typography>
+              </>
+            ) : null
           }
           secondary={
             <NoPaddingReactMarkdown>
@@ -111,22 +116,9 @@ export default function ChatItem({ message, showAvatar }: Props) {
             component: "div",
             sx: { wordBreak: "break-word" },
           }}
+          inset={!showAvatar}
         />
-      </ListItem>
-    );
-  }
-  return (
-    <ListItem alignItems="flex-start" disablePadding>
-      <ListItemText
-        secondary={
-          <NoPaddingReactMarkdown>{translatedMarkdown}</NoPaddingReactMarkdown>
-        }
-        secondaryTypographyProps={{
-          component: "div",
-          sx: { wordBreak: "break-word" },
-        }}
-        inset
-      />
+      </ListItemButton>
     </ListItem>
   );
 }
