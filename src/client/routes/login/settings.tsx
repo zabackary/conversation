@@ -10,7 +10,7 @@ export default function LoginSettingsRoute() {
   return (
     <>
       <Typography component="h1" variant="h5" mb="8px">
-        {t("footer.apperance")}
+        {t("footer.appearance")}
       </Typography>
       <AppearanceSettingsRoute noAppBar />
       <Grid container width="100%">

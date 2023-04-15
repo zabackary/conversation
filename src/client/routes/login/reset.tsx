@@ -12,8 +12,8 @@ export default function LoginResetRoute() {
         {t("footer.forgot")}
       </Typography>
       <Typography>
-        [untranslated] I&apo;m working on a reset password page. Until then, ask
-        me; I can do it for you.
+        [untranslated] I&apos;m working on a reset password page. Until then,
+        ask me; I can do it for you.
       </Typography>
       <Grid container width="100%">
         <Grid item xs>
