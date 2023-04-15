@@ -54,7 +54,7 @@ export default function LoginRootRoute() {
       <Container component="main" maxWidth="xs" sx={{ pt: 6, pb: 8 }}>
         <IconButton
           onClick={handleLanguagePickerOpen}
-          sx={{ position: "absolute", bottom: 12, left: 12 }}
+          sx={{ position: "fixed", bottom: 12, left: 12 }}
           size="large"
         >
           <TranslateIcon />
