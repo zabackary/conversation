@@ -55,8 +55,8 @@ export default function ChatView({
           messages={messages}
           sx={{
             pb: {
-              xs: "104px",
-              sm: "24px",
+              xs: "112px",
+              sm: "32px",
             },
           }}
         />
@@ -64,8 +64,8 @@ export default function ChatView({
         <ChatListSkeleton
           sx={{
             pb: {
-              xs: "104px",
-              sm: "24px",
+              xs: "112px",
+              sm: "32px",
             },
           }}
         />
