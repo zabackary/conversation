@@ -1114,6 +1114,13 @@ export const getThemedComponents = (
           },
         },
       },
+      MuiTouchRipple: {
+        styleOverrides: {
+          rippleVisible: {
+            animationDuration: "120ms",
+          },
+        },
+      },
     },
   };
 };
