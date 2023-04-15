@@ -41,7 +41,7 @@ const routes: RouteObject[] = [
     errorElement: <ErrorRoute />,
     children: [
       {
-        path: "app",
+        index: true,
         element: <DashboardRoute />,
       },
       {

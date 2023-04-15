@@ -42,7 +42,7 @@ interface Route {
 const routes = [
   {
     label: "home" as const,
-    href: "/app",
+    href: "/app/",
     icon: <HomeOutlinedIcon />,
     filledIcon: <HomeIcon />,
     id: 0,
