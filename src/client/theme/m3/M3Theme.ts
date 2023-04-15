@@ -804,6 +804,11 @@ export const getThemedComponents = (
       },
       MuiDrawer: {
         styleOverrides: {
+          root: {
+            "& .MuiListItemButton-root": {
+              borderRadius: 50,
+            },
+          },
           paperAnchorLeft: {
             borderTopRightRadius: 16,
             borderBottomRightRadius: 16,
@@ -851,7 +856,8 @@ export const getThemedComponents = (
       MuiListItemButton: {
         styleOverrides: {
           root: {
-            borderRadius: 50,
+            // border radius moved to MuiDrawer since it doesn't apply to all
+            // selectable lists. Used to be 50
             "&.Mui-selected": {
               color: theme.palette.onSecondaryContainer.main,
               background: theme.palette.secondaryContainer.main,
