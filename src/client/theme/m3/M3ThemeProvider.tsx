@@ -21,8 +21,20 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
       themeScheme[themeMode],
       themeScheme.tones,
       {
-        body: ['"Roboto Flex"', "Roboto", "Arial", "sans-serif"].join(","),
-        heading: ['"Roboto Flex"', "Roboto", "Arial", "sans-serif"].join(","),
+        body: [
+          '"Roboto Flex"',
+          "Roboto",
+          "Arial",
+          '"Noto Color Emoji"',
+          "sans-serif",
+        ].join(","),
+        heading: [
+          '"Roboto Flex"',
+          "Roboto",
+          "Arial",
+          '"Noto Color Emoji"',
+          "sans-serif",
+        ].join(","),
       }
     );
     let newM3Theme = createTheme(designTokens);
