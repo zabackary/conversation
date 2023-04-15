@@ -4,7 +4,9 @@ import PaletteIcon from "@mui/icons-material/Palette";
 import ShapeLineIcon from "@mui/icons-material/ShapeLine";
 import ShieldIcon from "@mui/icons-material/Shield";
 import { Button } from "@mui/material";
+import { TFunction } from "i18next";
 import { ReactNode } from "react";
+import { UseTranslationResponse } from "react-i18next";
 import { Link } from "react-router-dom";
 
 const endButtonMoveStyles = {
@@ -25,11 +27,12 @@ export interface Feature {
   action?: ReactNode;
 }
 
-const features: Feature[] = [
+const features: (t: TFunction<"landing">) => Feature[] = (
+  t: TFunction<"landing">
+) => [
   {
-    name: "Simple",
-    description:
-      "Anytime, anywhere. Even on a school chromebook. Conversation utilizes Google Scripts for uncensorable communication.",
+    name: t("why.simple.header"),
+    description: t("why.simple.description"),
     icon: ShapeLineIcon,
     action: (
       <Button
@@ -39,14 +42,13 @@ const features: Feature[] = [
         endIcon={<ArrowForwardIcon />}
         sx={endButtonMoveStyles}
       >
-        Create account
+        {t("why.simple.callToAction")}
       </Button>
     ),
   },
   {
-    name: "Safe",
-    description:
-      "Built to be moderated, from the ground up. State-of-the-art automated filtering combined with real humans can catch everything.",
+    name: t("why.safe.header"),
+    description: t("why.safe.description"),
     icon: ShieldIcon,
     action: (
       <Button
@@ -56,15 +58,13 @@ const features: Feature[] = [
         endIcon={<ArrowForwardIcon />}
         sx={endButtonMoveStyles}
       >
-        Let&apos;s go
+        {t("why.safe.callToAction")}
       </Button>
     ),
   },
   {
-    name: "Beautiful",
-    // Translation note: "pretty pretty" is an English-specific joke. Replace with something else or remove.
-    description:
-      "Wonderfully designed using Google's latest styles. Pretty pretty, if you know what I mean.",
+    name: t("why.beautiful.header"),
+    description: t("why.beautiful.description"),
     icon: PaletteIcon,
     action: (
       <Button
@@ -74,14 +74,13 @@ const features: Feature[] = [
         endIcon={<ArrowForwardIcon />}
         sx={endButtonMoveStyles}
       >
-        Try it out
+        {t("why.beautiful.callToAction")}
       </Button>
     ),
   },
   {
-    name: "Powerful",
-    description:
-      "Easily invite members and chat using not just text but images, bots, and more.",
+    name: t("why.powerful.title"),
+    description: t("why.powerful.description"),
     icon: BoltIcon,
     action: (
       <Button
@@ -91,7 +90,7 @@ const features: Feature[] = [
         endIcon={<ArrowForwardIcon />}
         sx={endButtonMoveStyles}
       >
-        Experiment
+        {t("why.powerful.callToAction")}
       </Button>
     ),
   },
