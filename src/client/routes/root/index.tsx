@@ -1,10 +1,12 @@
 import { Box, Fade, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import {
   ConversationNavigationRail,
   navigationRailWidth,
 } from "../../components/layout";
+import useBackend from "../../hooks/useBackend";
 import useRequireLogin from "../../hooks/useRequireLogin";
 import useRouteForward from "../../hooks/useRouteForward";
 
@@ -16,7 +18,24 @@ export default function RootRoute() {
   const currentOutlet = useOutlet();
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
-  return (
+  const backend = useBackend();
+  const [isReady, setIsReady] = useState(false);
+  useEffect(() => {
+    if (backend.isReady) {
+      backend.isReady
+        .then(() => {
+          setIsReady(true);
+        })
+        .catch(() => {
+          console.error("Backend failed to initialize.");
+        });
+    } else {
+      console.log(backend);
+      setIsReady(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- This is a fire-and-forget effect.
+  }, []);
+  return isReady ? (
     <Stack direction={isMobile ? "column" : "row"} height="100%">
       <Box width={navigationRailWidth}>
         <ConversationNavigationRail mobile={isMobile} />
@@ -35,5 +54,7 @@ export default function RootRoute() {
         </Fade>
       </SwitchTransition>
     </Stack>
+  ) : (
+    <>Loading...</>
   );
 }
