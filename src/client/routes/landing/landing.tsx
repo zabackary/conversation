@@ -160,7 +160,8 @@ export default function LandingRoute() {
               <LargeButton
                 variant="filled"
                 sx={{
-                  mx: user ? 2 : 0,
+                  ml: user ? 2 : 0,
+                  mr: 2,
                   "&:hover, &:focus": {
                     "& .MuiButton-endIcon": {
                       transform: "scale(1.4)",
