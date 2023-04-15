@@ -21,6 +21,7 @@ import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
+import { promiseFromSubscribable } from "./utils";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
@@ -42,6 +43,7 @@ class SupabaseBackend implements NetworkBackend {
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
+        .then(() => promiseFromSubscribable(this.getUser()))
         .then(() => resolve())
         .catch(reject);
     });
