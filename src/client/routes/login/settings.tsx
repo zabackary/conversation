@@ -1,14 +1,16 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import AppearanceSettingsRoute from "../root/settings/appearance";
 
 export default function LoginSettingsRoute() {
   const navigate = useNavigate();
+  const { t } = useTranslation("login");
   return (
     <>
       <Typography component="h1" variant="h5" mb="8px">
-        Appearance settings
+        {t("footer.apperance")}
       </Typography>
       <AppearanceSettingsRoute noAppBar />
       <Grid container width="100%">
@@ -19,7 +21,7 @@ export default function LoginSettingsRoute() {
             sx={{ mt: 3, mb: 2 }}
             startIcon={<ArrowBackIcon />}
           >
-            Back
+            {t("back")}
           </Button>
         </Grid>
       </Grid>

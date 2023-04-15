@@ -29,6 +29,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
 import LoadingButton from "../../components/LoadingButton";
@@ -103,17 +104,16 @@ export default function LoginRegisterRoute() {
         behavior: "smooth",
       });
   }, [invalid]);
-
+  const { t } = useTranslation("login");
   return (
     <>
       <Typography component="h1" variant="h5" mb="8px">
-        Create account
+        {t("newAccount")}
       </Typography>
       <Collapse in={invalid}>
         <Alert severity="error" sx={{ m: 1 }}>
-          <AlertTitle>Something went wrong.</AlertTitle>
-          Check if your email and password meet the criteria. If the issue
-          persists, contact the developer.
+          <AlertTitle>{t("alert.createError.header")}</AlertTitle>
+          {t("alert.createError.description")}
         </Alert>
       </Collapse>
       <Box
@@ -122,26 +122,26 @@ export default function LoginRegisterRoute() {
         noValidate
         sx={{ mt: 1, maxWidth: "100%" }}
       >
-        <Header index={0} title="Enter your email" />
+        <Header index={0} title={t("emailStep.header")} />
         <TextField
           margin="normal"
           required
           fullWidth
           id={emailId}
-          label="Email"
+          label={t("email")}
           name="email"
           autoComplete="email"
           autoFocus
-          helperText="You can only create one account per email."
+          helperText={t("emailStep.warning")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">@stu.his.ac.jp</InputAdornment>
             ),
           }}
         />
-        <Header index={1} title="Choose a password" />
+        <Header index={1} title={t("passwordStep.header")} />
         <Stack>
-          <Tooltip title="Open comic in new tab">
+          <Tooltip title={t("passwordStep.comicClick")}>
             <Button
               sx={{
                 borderRadius: 3,
@@ -177,7 +177,7 @@ export default function LoginRegisterRoute() {
               >
                 <img
                   src="https://imgs.xkcd.com/comics/password_strength.png"
-                  alt="An XKCD comic showing how to choose a strong password."
+                  alt={t("passwordStep.comicLabel")}
                   width={740 / 2}
                   height={601 / 2}
                 />
@@ -185,7 +185,7 @@ export default function LoginRegisterRoute() {
             </Button>
           </Tooltip>
           <Typography variant="caption">
-            Comic about choosing a password: click to expand
+            {t("passwordStep.comicLabel")}
           </Typography>
         </Stack>
         <TextField
@@ -193,16 +193,16 @@ export default function LoginRegisterRoute() {
           required
           fullWidth
           name="password"
-          label="Password"
+          label={t("password")}
           type={showPassword ? "text" : "password"}
           id={passwordId}
           autoComplete="current-password"
-          helperText="Keep your password secret."
+          helperText={t("passwordStep.warning")}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
-                  aria-label="toggle password visibility"
+                  aria-label="toggle password visibility" // untranslated
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
@@ -223,12 +223,12 @@ export default function LoginRegisterRoute() {
               sx={{ mt: 3, mb: 2 }}
               startIcon={<ArrowBackIcon />}
             >
-              Log in
+              {t("signIn")}
             </Button>
           </Grid>
           <Grid item>
             <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
-              Next
+              {t("next")}
             </Button>
           </Grid>
         </Grid>
@@ -237,7 +237,7 @@ export default function LoginRegisterRoute() {
           onClose={() => setIsTermsDialogOpen(false)}
           scroll="paper"
         >
-          <DialogTitle>Notices</DialogTitle>
+          <DialogTitle>{t("notices.header")}</DialogTitle>
           <DialogContent dividers>
             <Typography variant="h5">Terms of use</Typography>
             <DialogContentText component="div">
@@ -249,13 +249,15 @@ export default function LoginRegisterRoute() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setIsTermsDialogOpen(false)}>Cancel</Button>
+            <Button onClick={() => setIsTermsDialogOpen(false)}>
+              {t("notices.cancel")}
+            </Button>
             <LoadingButton
               onClick={handleFinalSubmission}
               loading={loading}
               autoFocus
             >
-              Accept and continue
+              {t("notices.continue")}
             </LoadingButton>
           </DialogActions>
         </Dialog>

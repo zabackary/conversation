@@ -20,6 +20,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
 import Footer from "./Footer";
@@ -60,23 +61,22 @@ export default function LoginRoute() {
     event.preventDefault();
   };
   const location = useLocation();
-
+  const {t} = useTranslation("login");
   return (
     <>
       <Typography component="h1" variant="h5" mb="8px">
-        Sign in
+        {t("signIn")}
       </Typography>
       <Stack>
         <Collapse in={!!next}>
           <Alert severity="warning" sx={{ m: 1 }}>
-            You must be logged in to use Conversation.
+            {t("alert.redirect")}
           </Alert>
         </Collapse>
         <Collapse in={invalid}>
           <Alert severity="error" sx={{ m: 1 }}>
-            <AlertTitle>Something went wrong.</AlertTitle>
-            Check your email and password for typos. If the issue persists,
-            contact the developer.
+            <AlertTitle>{t("alert.error.header")}</AlertTitle>
+            {t("alert.error.description")}
           </Alert>
         </Collapse>
       </Stack>
@@ -86,7 +86,7 @@ export default function LoginRoute() {
           required
           fullWidth
           id={emailId}
-          label="Email"
+          label={t("email")}
           name="email"
           autoComplete="email"
           autoFocus
@@ -101,7 +101,7 @@ export default function LoginRoute() {
           required
           fullWidth
           name="password"
-          label="Password"
+          label={t("password")}
           type={showPassword ? "text" : "password"}
           id={passwordId}
           autoComplete="current-password"
@@ -128,7 +128,7 @@ export default function LoginRoute() {
               variant="tonal"
               sx={{ mt: 3, mb: 2 }}
             >
-              New Account
+              {t("newAccount")}
             </Button>
           </Grid>
           <Grid item>
@@ -138,7 +138,7 @@ export default function LoginRoute() {
               sx={{ mt: 3, mb: 2 }}
               loading={loading}
             >
-              Sign In
+              {t("signIn")}
             </LoadingButton>
           </Grid>
         </Grid>

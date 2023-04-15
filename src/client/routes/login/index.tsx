@@ -97,7 +97,7 @@ export default function LoginRootRoute() {
                 }}
               >
                 {user !== null ? (
-                  <>You&apos;re already logged in.</>
+                  <>[untranslated] You&apos;re already logged in.</>
                 ) : (
                   currentOutlet
                 )}

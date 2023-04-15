@@ -1,15 +1,17 @@
 import { Box, Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation("login");
   return (
-    <Box>
+    <Box textAlign="left">
       <Link
         component={RouterLink}
         to={`/login/passwordreset/${window.location.search}`}
         variant="body2"
       >
-        Forgot password?
+        {t("footer.forgot")}
       </Link>{" "}
       -{" "}
       <Link
@@ -17,7 +19,7 @@ export default function Footer() {
         to={`/login/help/${window.location.search}`}
         variant="body2"
       >
-        Help
+        {t("footer.help")}
       </Link>{" "}
       -{" "}
       <Link
@@ -25,7 +27,7 @@ export default function Footer() {
         to={`/login/settings/${window.location.search}`}
         variant="body2"
       >
-        Appearance preferences
+        {t("footer.appearance")}
       </Link>
     </Box>
   );
