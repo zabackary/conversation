@@ -1,5 +1,6 @@
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SendIcon from "@mui/icons-material/Send";
 import {
   AppBar,
@@ -21,6 +22,7 @@ import { MouseEventHandler, useContext } from "react";
 import { Link } from "react-router-dom";
 import FeatureListItem from "../../components/landing/FeatureListItem";
 import useSnackbar from "../../components/useSnackbar";
+import useUser from "../../hooks/useUser";
 import { ThemeModeContext } from "../../theme";
 import features from "./features";
 
@@ -61,6 +63,7 @@ export default function LandingRoute() {
     showSnackbar("Nice job finding an easter egg!", { urgent: true });
   };
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
+  const user = useUser(false);
   return (
     <>
       <AppBar
@@ -92,6 +95,7 @@ export default function LandingRoute() {
               </Button>
             </Box>
           </Fade>
+          {user ? <>Logged in as {user.nickname}</> : null}
           <IconButton onClick={toggleThemeMode}>
             {theme.palette.mode === "dark" ? (
               <DarkModeIcon />
@@ -132,22 +136,37 @@ export default function LandingRoute() {
               </IconButton>
             </Grid>
             <Grid item xs={12}>
+              {user ? "You're logged in." : null}
               <LargeButton
                 variant="filled"
-                sx={{ mr: 2 }}
+                sx={{
+                  mx: 2,
+                  "&:hover, &:focus": {
+                    "& .MuiButton-endIcon": {
+                      transform: "scale(1.4)",
+                    },
+                  },
+                  "& .MuiButton-endIcon": {
+                    transition: "transform 500ms",
+                    transformOrigin: "bottom left",
+                  },
+                }}
                 // @ts-expect-error Overridden components' types are weird with `component`
                 component={Link}
-                to="/login/new/"
+                to={user ? "/app/" : "/login/new/"}
+                endIcon={user ? <RocketLaunchIcon /> : null}
               >
-                Get started
+                {user ? "Launch Conversation" : "Get started"}
               </LargeButton>
-              <LargeButton
-                // @ts-expect-error Overridden components' types are weird with `component`
-                component={Link}
-                to="/app/"
-              >
-                Launch app
-              </LargeButton>
+              {user ? null : (
+                <LargeButton
+                  // @ts-expect-error Overridden components' types are weird with `component`
+                  component={Link}
+                  to="/login/"
+                >
+                  Log in
+                </LargeButton>
+              )}
             </Grid>
           </Grid>
         </Box>
