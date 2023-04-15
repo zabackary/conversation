@@ -9,7 +9,11 @@ import NetworkBackend, {
 } from "./NetworkBackend";
 
 export default class CachedBackend implements NetworkBackend {
-  constructor(private mirroredBackend: NetworkBackend) {}
+  isReady?: Promise<void>;
+
+  constructor(private mirroredBackend: NetworkBackend) {
+    this.isReady = mirroredBackend.isReady;
+  }
 
   authLogIn(username: string, password: string): Promise<void> {
     return this.mirroredBackend.authLogIn(username, password);

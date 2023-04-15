@@ -16,6 +16,8 @@ export default class QueuedBackend implements NetworkBackend {
 
   routeTo: (route: NetworkBackend) => void;
 
+  isReady: Promise<void>;
+
   constructor() {
     let resolveRouteFound: undefined | ((route: NetworkBackend) => void);
     this.routeFound = new Promise((resolve) => {
@@ -25,6 +27,37 @@ export default class QueuedBackend implements NetworkBackend {
       this.currentRoute = route;
       if (resolveRouteFound) resolveRouteFound(route);
     };
+    this.isReady = new Promise((resolve) => {
+      this.routeFound
+        .then((route) => {
+          if (route.isReady) {
+            route.isReady
+              .then(() => {
+                resolve();
+              })
+              .catch(() => {
+                console.error("QueuedBackend redirection failed to start");
+              });
+          } else {
+            resolve();
+          }
+        })
+        .catch(() => {
+          console.error("Failed to start QueuedBackend");
+        });
+    });
+  }
+
+  private deferredSubscribable<T>(
+    factory: (backend: NetworkBackend) => Subscribable<T>
+  ) {
+    return createSubscribable<T>(async (next) => {
+      const backend = await this.routeFound;
+      const subscribable = factory(backend);
+      const snapshot = subscribable.getSnapshot();
+      if (snapshot !== null) next(snapshot);
+      subscribable.subscribe(next);
+    });
   }
 
   async authLogIn(username: string, password: string): Promise<void> {
@@ -46,31 +79,21 @@ export default class QueuedBackend implements NetworkBackend {
   }
 
   getUser(id?: UserId): Subscribable<User | null> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getUser(id).subscribe(next);
-    });
+    return this.deferredSubscribable((backend) => backend.getUser(id));
   }
 
   getUserActivity(user: UserId): Subscribable<boolean | null> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getUserActivity(user).subscribe(next);
-    });
+    return this.deferredSubscribable((backend) =>
+      backend.getUserActivity(user)
+    );
   }
 
   getDMs(): Subscribable<DmChannel[]> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getDMs().subscribe(next);
-    });
+    return this.deferredSubscribable((backend) => backend.getDMs());
   }
 
   getPublicChannels(): Subscribable<PublicChannelListing[]> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getPublicChannels().subscribe(next);
-    });
+    return this.deferredSubscribable((backend) => backend.getPublicChannels());
   }
 
   async joinChannel<JoinInfo extends ChannelJoinInfo>(
@@ -81,10 +104,7 @@ export default class QueuedBackend implements NetworkBackend {
   }
 
   getChannels(): Subscribable<Channel[]> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getChannels().subscribe(next);
-    });
+    return this.deferredSubscribable((backend) => backend.getChannels());
   }
 
   async clearCache(): Promise<void> {
@@ -98,9 +118,6 @@ export default class QueuedBackend implements NetworkBackend {
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
-    return createSubscribable(async (next) => {
-      const backend = await this.routeFound;
-      backend.getChannel(id).subscribe(next);
-    });
+    return this.deferredSubscribable((backend) => backend.getChannel(id));
   }
 }
