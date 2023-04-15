@@ -87,7 +87,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
 
   async listMessages(): Promise<Message[]> {
     return Promise.all(
-      (await getMessages(this.client, this.id)).map((message) =>
+      (await getMessages(this.client, this.id, 30)).map((message) =>
         convertMessage(message, (id) =>
           promiseFromSubscribable(this.backend.getUser(id))
         )
