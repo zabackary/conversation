@@ -2,8 +2,8 @@
   "en-US": {
     "channel": {
       "notFound": "Can't find the channel you're looking for. Check the logged in user and try again.",
-      "join": "Join channel",
-      "joinDm": "New DM",
+      "joinButton": "Join channel",
+      "joinDmButton": "New DM",
       "prompt": "Message {{ channelOrUsername }} as {{ currentUser }}...",
       "email": "Email {{ username }}",
       "block": "Block",
@@ -42,6 +42,22 @@
         "add": {
           "action": "Add members",
           "search": "Search users..."
+        }
+      },
+      "join": {
+        "title": "Join Channel",
+        "invite": {
+          "label": "Join by invite"
+        },
+        "passphrase": {
+          "label": "Join by passphrase",
+          "hint": "To join a hidden channel without an invite, ask the owner for the channel number and its passphrase.",
+          "id": "ID",
+          "password": "Passphrase"
+        },
+        "joinButton": "Join",
+        "public": {
+          "label": "Join a public channel"
         }
       },
       "locked": "This channel is locked. Members cannot edit channel details or add or remove others."
@@ -220,8 +236,8 @@
   "en-GB": {
     "channel": {
       "notFound": "Can't find the channel you're looking for. Check the logged in user and try again.",
-      "join": "Join channel",
-      "joinDm": "New DM",
+      "joinButton": "Join channel",
+      "joinDmButton": "New DM",
       "prompt": "Message {{ channelOrUsername }} as {{ currentUser }}...",
       "email": "Email {{ username }}",
       "block": "Block",
@@ -260,6 +276,22 @@
         "add": {
           "action": "Add members",
           "search": "Search users..."
+        }
+      },
+      "join": {
+        "title": "",
+        "invite": {
+          "label": ""
+        },
+        "passphrase": {
+          "label": "",
+          "hint": "",
+          "id": "",
+          "password": ""
+        },
+        "joinButton": "",
+        "public": {
+          "label": ""
         }
       },
       "locked": "This channel is locked. Members cannot edit channel details or add or remove others."
@@ -438,8 +470,8 @@
   "ja": {
     "channel": {
       "notFound": "お探しのチャンネルが見つかりませんでした。 ログインしているユーザーを確認し、再試行してください。",
-      "join": "チャンネルに参加",
-      "joinDm": "新しいDM",
+      "joinButton": "チャンネルに参加",
+      "joinDmButton": "新しいDM",
       "prompt": "メッセージ {{ channelOrUsername }} を {{ currentUser }} として...",
       "email": "{{ username }} にメールをする",
       "block": "ブロック",
@@ -478,6 +510,22 @@
         "add": {
           "action": "メンバーを追加",
           "search": "ユーザーを検索..."
+        }
+      },
+      "join": {
+        "title": "チャンネルに参加",
+        "invite": {
+          "label": "招待による参加"
+        },
+        "passphrase": {
+          "label": "パスフレーズで参加",
+          "hint": "招待なしで非表示のチャンネルに参加するには、所有者にチャンネル番号とそのパスフレーズを尋ねてください。",
+          "id": "ID",
+          "password": "パスフレーズ"
+        },
+        "joinButton": "加入",
+        "public": {
+          "label": "公開チャンネルに参加する"
         }
       },
       "locked": "このチャンネルはロックされています。 メンバーはチャンネルの詳細を編集したり、他のメンバーを追加または削除したりすることはできません。"
@@ -656,8 +704,8 @@
   "ko": {
     "channel": {
       "notFound": "원하는 채널을 찾을 수 없습니다. 로그인한 사용자를 확인하고 다시 시도하십시오.",
-      "join": "채널 가입",
-      "joinDm": "새 DM",
+      "joinButton": "채널 가입",
+      "joinDmButton": "새 DM",
       "prompt": "{{ channelOrUsername }}에게 메시지...",
       "email": "이메일 {{ username }}",
       "block": "차단",
@@ -696,6 +744,22 @@
         "add": {
           "action": "구성원 추가",
           "search": "사용자 검색..."
+        }
+      },
+      "join": {
+        "title": "채널 가입",
+        "invite": {
+          "label": "초대로 참여"
+        },
+        "passphrase": {
+          "label": "암호로 가입",
+          "hint": "초대 없이 숨겨진 채널에 참여하려면 소유자에게 채널 번호와 암호를 요청하세요.",
+          "id": "ID",
+          "password": "패스워드"
+        },
+        "joinButton": "참여하기",
+        "public": {
+          "label": "공개 채널에 참여하기"
         }
       },
       "locked": "이 채널은 잠겨 있습니다. 구성원은 채널 세부 정보를 편집하거나 다른 사람을 추가 또는 제거할 수 없습니다."
@@ -874,8 +938,8 @@
   "zh-Hans": {
     "channel": {
       "notFound": "找不到您要查找的频道。 请检查登录用户再重试。",
-      "join": "加入频道",
-      "joinDm": "新私信",
+      "joinButton": "加入频道",
+      "joinDmButton": "新私信",
       "prompt": "消息 {{ channelOrUsername }} 作为 {{ currentUser }}...",
       "email": "电子邮件 {{ username }}",
       "block": "屏蔽",
@@ -914,6 +978,22 @@
         "add": {
           "action": "添加成员",
           "search": "搜索用户..."
+        }
+      },
+      "join": {
+        "title": "加入频道",
+        "invite": {
+          "label": "受邀加入"
+        },
+        "passphrase": {
+          "label": "通过群密码加入",
+          "hint": "要是在想要没有邀请的情况下加入隐藏频道，请向频道所有者询问频道号及其密码。",
+          "id": "ID",
+          "password": "密码"
+        },
+        "joinButton": "加入",
+        "public": {
+          "label": "加入公共频道"
         }
       },
       "locked": "此频道已锁定。 会员不能编辑频道详情或添加或删除其他人。"
@@ -1092,8 +1172,8 @@
   "zh-Hant": {
     "channel": {
       "notFound": "找不到您要查找的頻道。 檢查登錄用戶並重試。",
-      "join": "加入頻道",
-      "joinDm": "新私信",
+      "joinButton": "加入頻道",
+      "joinDmButton": "新私信",
       "prompt": "消息 {{ channelOrUsername }} 作為 {{ currentUser }}...",
       "email": "電子郵件 {{ username }}",
       "block": "堵塞",
@@ -1132,6 +1212,22 @@
         "add": {
           "action": "添加成員",
           "search": "搜索用戶..."
+        }
+      },
+      "join": {
+        "title": "加入頻道",
+        "invite": {
+          "label": "受邀加入"
+        },
+        "passphrase": {
+          "label": "通過密碼加入",
+          "hint": "要在沒有邀請的情況下加入隱藏頻道，請向頻道所有者詢問頻道號及其密碼。",
+          "id": "ID",
+          "password": "密碼"
+        },
+        "joinButton": "加入",
+        "public": {
+          "label": "加入公共頻道"
         }
       },
       "locked": "此頻道已鎖定。 會員不能編輯頻道詳情或添加或刪除其他人。"
