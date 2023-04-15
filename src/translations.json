@@ -165,7 +165,12 @@
         "header": "Enter your email",
         "warning": "You can only create one account per email."
       },
-      "passwordStep": "Choose a password",
+      "passwordStep": {
+        "header": "Choose a password",
+        "comicLabel": "Comic about choosing a password: click to expand",
+        "comicClick": "Open comic in new tab",
+        "warning": "Keep your password secret. This password should not be the same as any other password you use."
+      },
       "ssoInfo": "Once you create your account, you can add single sign on providers via account settings.",
       "next": "Next",
       "notices": {
@@ -399,7 +404,12 @@
         "header": "Enter your email",
         "warning": "You can only create one account per email."
       },
-      "passwordStep": "Choose a password",
+      "passwordStep": {
+        "header": "Choose a password",
+        "comicLabel": "Comic about choosing a password: click to expand",
+        "comicClick": "Open comic in new tab",
+        "warning": "Keep your password secret. This password should not be the same as any other password you use."
+      },
       "ssoInfo": "Once you create your account, you can add single sign on providers via account settings.",
       "next": "Next",
       "notices": {
@@ -633,7 +643,12 @@
         "header": "メールアドレスを入力",
         "warning": "メールごとに 1 つのアカウントしか作成できません。"
       },
-      "passwordStep": "パスワードを決めて下さい",
+      "passwordStep": {
+        "header": "パスワードを決めて下さい",
+        "comicLabel": "パスワードの選択に関するコミック: クリックして展開",
+        "comicClick": "コミックを新しいタブで開く",
+        "warning": "パスワードを秘密にしてください。 このパスワードは、使用する他のパスワードと同じであってはなりません。"
+      },
       "ssoInfo": "アカウントを作成したら、アカウント設定からシングル サインオン プロバイダーを追加できます。",
       "next": "次",
       "notices": {
@@ -867,7 +882,12 @@
         "header": "이메일을 입력하세요",
         "warning": "이메일당 하나의 계정만 만들 수 있습니다."
       },
-      "passwordStep": "비밀번호를 선택하세요",
+      "passwordStep": {
+        "header": "비밀번호를 선택하세요",
+        "comicLabel": "암호 선택에 대한 만화: 확장하려면 클릭",
+        "comicClick": "새 탭에서 만화 열기",
+        "warning": "암호를 비밀로 유지하십시오. 이 암호는 사용하는 다른 암호와 달라야 합니다."
+      },
       "ssoInfo": "계정을 만든 후에는 계정 설정을 통해 단일 사인온 공급자를 추가할 수 있습니다.",
       "next": "다음",
       "notices": {
@@ -1101,7 +1121,12 @@
         "header": "输入你的电子邮箱",
         "warning": "每封电子邮件只能创建一个帐户。"
       },
-      "passwordStep": "选择密码",
+      "passwordStep": {
+        "header": "选择密码",
+        "comicLabel": "关于选择密码的漫画：点击展开",
+        "comicClick": "在新标签页中打开漫画",
+        "warning": "保密您的密码。 此密码不应与您使用的任何其他密码相同。"
+      },
       "ssoInfo": "创建帐户后，您可以通过帐户设置添加单点登录提供商。",
       "next": "下一个",
       "notices": {
@@ -1335,7 +1360,12 @@
         "header": "輸入你的電子郵箱",
         "warning": "每封電子郵件只能創建一個帳戶。"
       },
-      "passwordStep": "選擇密碼",
+      "passwordStep": {
+        "header": "選擇密碼",
+        "comicLabel": "關於選擇密碼的漫畫：點擊展開",
+        "comicClick": "在新標籤頁中打開漫畫",
+        "warning": "保密您的密碼。 此密碼不應與您使用的任何其他密碼相同。"
+      },
       "ssoInfo": "創建帳戶後，您可以通過帳戶設置添加單點登錄提供商。",
       "next": "下一個",
       "notices": {
