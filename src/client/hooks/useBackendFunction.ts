@@ -15,7 +15,7 @@ export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
   );
   useEffect(() => {
     const unsubscribe = subscribable.subscribe((newValue) => {
-      if (!(newValue instanceof Error)) setValue(newValue);
+      setValue(newValue);
     });
     return () => {
       unsubscribe();
