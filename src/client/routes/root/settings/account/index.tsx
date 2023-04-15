@@ -1,5 +1,5 @@
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, List } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { ConversationAppBar } from "../../../../components/layout";
@@ -28,7 +28,7 @@ export default function AccountSettingsRoute() {
   return (
     <>
       <ConversationAppBar title="Account" />
-      <Grid container spacing={2}>
+      <List>
         <BaseItem
           label={user.name}
           description={user.email ?? user.nickname ?? String(user.id)}
@@ -42,7 +42,7 @@ export default function AccountSettingsRoute() {
             </Button>
           }
         />
-      </Grid>
+      </List>
     </>
   );
 }

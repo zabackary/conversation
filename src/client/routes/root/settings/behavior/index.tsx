@@ -1,5 +1,5 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Chip, Grid, Stack } from "@mui/material";
+import { Chip, Grid, List, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ConversationAppBar } from "../../../../components/layout";
 import { SwitchItem } from "../../../../components/settings";
@@ -9,7 +9,7 @@ export default function BehaviorSettingsRoute() {
   return (
     <>
       <ConversationAppBar title={t("behavior.title")} />
-      <Grid container spacing={2}>
+      <List>
         <SwitchItem
           value
           onChange={async (_newValue) => {
@@ -48,7 +48,7 @@ export default function BehaviorSettingsRoute() {
             />
           </Stack>
         </SwitchItem>
-      </Grid>
+      </List>
     </>
   );
 }

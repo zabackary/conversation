@@ -1,4 +1,10 @@
-import { Grid, Typography } from "@mui/material";
+import {
+  Grid,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Typography,
+} from "@mui/material";
 import { ReactNode } from "react";
 
 export interface BaseItemProps {
@@ -16,15 +22,14 @@ export default function BaseItem({
 }: BaseItemProps) {
   return (
     <>
-      <Grid item xs>
-        <Typography variant="h6">{label}</Typography>
-        <Typography variant="body1">{description}</Typography>
-      </Grid>
-      <Grid item>{control}</Grid>
+      <ListItem disablePadding sx={{ mb: children ? 0 : 2 }}>
+        <ListItemText primary={label} secondary={description} />
+        {control}
+      </ListItem>
       {children ? (
-        <Grid item xs={12}>
+        <ListItem disablePadding sx={{ mb: 2 }}>
           {children}
-        </Grid>
+        </ListItem>
       ) : null}
     </>
   );

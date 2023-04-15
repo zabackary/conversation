@@ -1,5 +1,5 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { Chip, Grid, MenuItem, Select } from "@mui/material";
+import { Chip, Grid, List, MenuItem, Select } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConversationAppBar } from "../../../../components/layout";
@@ -29,7 +29,7 @@ export default function GeneralSettingsRoute() {
   return (
     <>
       <ConversationAppBar title={t("general.title")} />
-      <Grid container spacing={2}>
+      <List>
         <BaseItem
           label={t("general.language.label")}
           description={t("general.language.description")}
@@ -48,7 +48,7 @@ export default function GeneralSettingsRoute() {
             variant="outlined"
           />
         </BaseItem>
-      </Grid>
+      </List>
       <LanguagePickerDialog open={languagePickerOpen} onClose={handleClose} />
     </>
   );

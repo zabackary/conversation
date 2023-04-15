@@ -1,6 +1,6 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
-import { Chip, Grid, Stack } from "@mui/material";
+import { Chip, Grid, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useDebouncedCallback } from "use-debounce";
@@ -41,7 +41,7 @@ export default function AppearanceSettingsRoute({
   return (
     <>
       {!noAppBar ? <ConversationAppBar title={t("appearance.title")} /> : null}
-      <Grid container spacing={2}>
+      <List>
         <SwitchItem
           value={themeMode === "dark"}
           onChange={handleThemeChange}
@@ -84,7 +84,7 @@ export default function AppearanceSettingsRoute({
             />
           </Stack>
         </ColorItem>
-      </Grid>
+      </List>
     </>
   );
 }
