@@ -9,6 +9,7 @@ import { isGASWebApp, updatedHash } from "../../hooks/useRouteForward";
 import NetworkBackend, {
   ChannelBackend,
   ChannelJoinInfo,
+  LoggedOutException,
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
@@ -44,6 +45,9 @@ class SupabaseBackend implements NetworkBackend {
       this.client.auth
         .initialize()
         .then(() => promiseFromSubscribable(this.getUser()))
+        .catch((reason) => {
+          if (!(reason instanceof LoggedOutException)) throw reason;
+        })
         .then(() => resolve())
         .catch(reject);
     });
