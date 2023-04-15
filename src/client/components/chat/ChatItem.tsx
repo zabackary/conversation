@@ -70,7 +70,7 @@ export default function ChatItem({ message, showAvatar }: Props) {
   const active = useUserActivity(message.user.id);
   return (
     <ListItem alignItems="flex-start" disablePadding disableGutters>
-      <ListItemButton sx={{ p: "0 !important" }}>
+      <ListItemButton sx={{ p: "0 24px !important" }}>
         {showAvatar ? (
           <ListItemAvatar>
             <ContrastBadge

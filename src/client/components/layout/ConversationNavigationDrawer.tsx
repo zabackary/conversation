@@ -101,13 +101,7 @@ export default function ResponsiveDrawer({
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        display="flex"
-        flexDirection="column"
-        flexGrow={1}
-        p={3}
-      >
+      <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
         <Toolbar />
         <toolbarButtonContext.Provider value={toolbarButton}>
           {children}

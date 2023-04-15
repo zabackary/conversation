@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import { Fab, Fade, List } from "@mui/material";
+import { Box, Fab, Fade, List } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Link, useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
@@ -36,7 +36,7 @@ export default function ChannelListRoute() {
     >
       <SwitchTransition>
         <Fade key={match?.pathname} timeout={200} unmountOnExit>
-          <div>{currentOutlet}</div>
+          <Box>{currentOutlet}</Box>
         </Fade>
       </SwitchTransition>
     </ConversationNavigationDrawer>

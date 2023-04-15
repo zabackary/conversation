@@ -7,6 +7,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Avatar,
+  Box,
   Grid,
   MenuItem,
   Stack,
@@ -33,82 +34,88 @@ export default function ChannelJoinScreen() {
   const { t } = useTranslation("channel");
   return (
     <>
-      <ConversationAppBar
-        title={t("join.title")}
-      />
-      <Accordion expanded={tab === 0} onChange={handleTabChange(0)}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={`${ids[0]}-content`}
-          id={`${ids[0]}-content`}
-        >
-          <Stack direction="row" alignItems="center">
-            <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-              <RecentActorsIcon />
-            </Avatar>
-            <Typography>{t("join.invite.label")}</Typography>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>[untranslated]This feature is in development.</Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={tab === 1} onChange={handleTabChange(1)}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={`${ids[1]}-content`}
-          id={`${ids[1]}-content`}
-        >
-          <Stack direction="row" alignItems="center">
-            <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-              <PasswordIcon />
-            </Avatar>
-            <Typography>{t("join.passphrase.label")}</Typography>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <form onSubmit={handlePassphraseSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Typography>{t("join.passphrase.hint")}</Typography>
+      <ConversationAppBar title={t("join.title")} />
+      <Box m={3}>
+        <Accordion expanded={tab === 0} onChange={handleTabChange(0)}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${ids[0]}-content`}
+            id={`${ids[0]}-content`}
+          >
+            <Stack direction="row" alignItems="center">
+              <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
+                <RecentActorsIcon />
+              </Avatar>
+              <Typography>{t("join.invite.label")}</Typography>
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [untranslated]This feature is in development.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={tab === 1} onChange={handleTabChange(1)}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${ids[1]}-content`}
+            id={`${ids[1]}-content`}
+          >
+            <Stack direction="row" alignItems="center">
+              <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
+                <PasswordIcon />
+              </Avatar>
+              <Typography>{t("join.passphrase.label")}</Typography>
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails>
+            <form onSubmit={handlePassphraseSubmit}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography>{t("join.passphrase.hint")}</Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    label={t("join.passphrase.id")}
+                  />
+                </Grid>
+                <Grid item xs>
+                  <TextField fullWidth label={t("join.passphrase.password")} />
+                </Grid>
+                <Grid item xs={12}>
+                  <LoadingButton
+                    variant="filled"
+                    type="submit"
+                    loading={loading}
+                  >
+                    {t("join.joinButton")}
+                  </LoadingButton>
+                </Grid>
               </Grid>
-              <Grid item>
-                <TextField
-                  inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                  label={t("join.passphrase.id")}
-                />
-              </Grid>
-              <Grid item xs>
-                <TextField fullWidth label={t("join.passphrase.password")} />
-              </Grid>
-              <Grid item xs={12}>
-                <LoadingButton variant="filled" type="submit" loading={loading}>
-                  {t("join.joinButton")}
-                </LoadingButton>
-              </Grid>
-            </Grid>
-          </form>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion expanded={tab === 2} onChange={handleTabChange(2)}>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls={`${ids[2]}-content`}
-          id={`${ids[2]}-content`}
-        >
-          <Stack direction="row" alignItems="center">
-            <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-              <PublicIcon />
-            </Avatar>
-            <Typography>{t("join.public.label")}</Typography>
-          </Stack>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            [untranslated] This feature is in development.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+            </form>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion expanded={tab === 2} onChange={handleTabChange(2)}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${ids[2]}-content`}
+            id={`${ids[2]}-content`}
+          >
+            <Stack direction="row" alignItems="center">
+              <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
+                <PublicIcon />
+              </Avatar>
+              <Typography>{t("join.public.label")}</Typography>
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>
+              [untranslated] This feature is in development.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      </Box>
     </>
   );
 }
