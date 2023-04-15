@@ -1,7 +1,16 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { Avatar, Box, Fade, Link as MuiLink, Paper } from "@mui/material";
+import TranslateIcon from "@mui/icons-material/Translate";
+import {
+  Avatar,
+  Box,
+  Fade,
+  IconButton,
+  Link as MuiLink,
+  Paper,
+} from "@mui/material";
 import Container from "@mui/material/Container";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Link,
   useMatches,
@@ -10,6 +19,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
 
@@ -26,54 +36,76 @@ export default function LoginRootRoute() {
       navigate(searchParams.get("next") ?? "/", { replace: true });
     }
   }, [user, searchParams, navigate]);
+  const { i18n } = useTranslation();
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
+  const handleLanguagePickerClose = (language: string | undefined) => {
+    setLanguagePickerOpen(false);
+    if (language) void i18n.changeLanguage(language);
+  };
+  const handleLanguagePickerOpen = () => {
+    setLanguagePickerOpen(true);
+  };
   return (
-    <Container component="main" maxWidth="xs" sx={{ pt: 6, pb: 8 }}>
-      <MuiLink
-        sx={{
-          fontSize: 34,
-          textDecoration: "none",
-          textAlign: "center",
-          color: "tertiary.main",
-          display: "block",
-          mb: 2,
-        }}
-        component={Link}
-        to="/"
-      >
-        Conversation
-      </MuiLink>
-      <Paper
-        variant="outlined"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          p: { xs: 2, md: 3 },
-          borderRadius: 3,
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <SwitchTransition>
-          <Fade key={match.pathname} timeout={200} unmountOnExit>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
-              {user !== null ? (
-                <>You&apos;re already logged in.</>
-              ) : (
-                currentOutlet
-              )}
-            </Box>
-          </Fade>
-        </SwitchTransition>
-      </Paper>
-    </Container>
+    <>
+      <LanguagePickerDialog
+        open={languagePickerOpen}
+        onClose={handleLanguagePickerClose}
+      />
+      <Container component="main" maxWidth="xs" sx={{ pt: 6, pb: 8 }}>
+        <IconButton
+          onClick={handleLanguagePickerOpen}
+          sx={{ position: "absolute", bottom: 12, left: 12 }}
+          size="large"
+        >
+          <TranslateIcon />
+        </IconButton>
+        <MuiLink
+          sx={{
+            fontSize: 34,
+            textDecoration: "none",
+            textAlign: "center",
+            color: "tertiary.main",
+            display: "block",
+            mb: 2,
+          }}
+          component={Link}
+          to="/"
+        >
+          Conversation
+        </MuiLink>
+        <Paper
+          variant="outlined"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: { xs: 2, md: 3 },
+            borderRadius: 3,
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <SwitchTransition>
+            <Fade key={match.pathname} timeout={200} unmountOnExit>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                {user !== null ? (
+                  <>You&apos;re already logged in.</>
+                ) : (
+                  currentOutlet
+                )}
+              </Box>
+            </Fade>
+          </SwitchTransition>
+        </Paper>
+      </Container>
+    </>
   );
 }

@@ -2,6 +2,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import SendIcon from "@mui/icons-material/Send";
+import TranslateIcon from "@mui/icons-material/Translate";
 import {
   AppBar,
   Box,
@@ -18,9 +19,11 @@ import {
   useTheme,
 } from "@mui/material";
 import confetti from "canvas-confetti";
-import { MouseEventHandler, useContext } from "react";
+import { MouseEventHandler, useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import FeatureListItem from "../../components/landing/FeatureListItem";
+import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useSnackbar from "../../components/useSnackbar";
 import useUser from "../../hooks/useUser";
 import { ThemeModeContext } from "../../theme";
@@ -60,12 +63,26 @@ export default function LandingRoute() {
       startVelocity: 30,
       spread: 90,
     });
+    // UNTRANSLATED
     showSnackbar("Nice job finding an easter egg!", { urgent: true });
   };
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   const user = useUser(false);
+  const { i18n } = useTranslation();
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
+  const handleLanguagePickerClose = (language: string | undefined) => {
+    setLanguagePickerOpen(false);
+    if (language) void i18n.changeLanguage(language);
+  };
+  const handleLanguagePickerOpen = () => {
+    setLanguagePickerOpen(true);
+  };
   return (
     <>
+      <LanguagePickerDialog
+        open={languagePickerOpen}
+        onClose={handleLanguagePickerClose}
+      />
       <AppBar
         position="fixed"
         elevation={trigger ? 4 : 0}
@@ -102,6 +119,9 @@ export default function LandingRoute() {
             ) : (
               <LightModeIcon />
             )}
+          </IconButton>
+          <IconButton onClick={handleLanguagePickerOpen}>
+            <TranslateIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
