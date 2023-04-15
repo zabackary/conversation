@@ -38,7 +38,10 @@ export default function useBackendFunction<T>(
       navigate(
         `/login/?next=${encodeURIComponent(
           location.pathname + location.hash + location.search
-        )}`
+        )}`,
+        {
+          replace: true,
+        }
       );
     }
   }, [
