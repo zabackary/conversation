@@ -52,7 +52,6 @@ export function ChannelListItem({ channel }: ChannelListItemProps) {
       secondaryText={lastMessage?.isService ? undefined : lastMessage?.markdown}
       to={`/app/channels/${channel.id}`}
       icon={<ChatIcon />}
-      badge={500}
     />
   );
 }
