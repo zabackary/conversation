@@ -45,4 +45,23 @@ export default class SupabaseCache {
   ) {
     return this.channels[id] ?? (this.channels[id] = await fallback());
   }
+
+  messages: Record<number, SupabaseMessage> = {};
+
+  putMessage(...messages: SupabaseMessage[]) {
+    for (const message of messages) {
+      this.messages[message.id] = message;
+    }
+  }
+
+  getMessage(id: number) {
+    return this.messages[id] ?? null;
+  }
+
+  async getMessageOrFallback(
+    id: number,
+    fallback: () => Promise<SupabaseMessage>
+  ) {
+    return this.messages[id] ?? (this.messages[id] = await fallback());
+  }
 }
