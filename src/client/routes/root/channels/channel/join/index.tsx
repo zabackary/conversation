@@ -61,7 +61,11 @@ export default function ChannelJoinScreen() {
         >
           <Create onClose={() => setCreateOpen(false)} />
         </Dialog>
-        <Accordion expanded={tab === 0} onChange={handleTabChange(0)}>
+        <Accordion
+          expanded={tab === 0}
+          onChange={handleTabChange(0)}
+          variant="filled"
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`${ids[0]}-content`}
@@ -80,7 +84,11 @@ export default function ChannelJoinScreen() {
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded={tab === 1} onChange={handleTabChange(1)}>
+        <Accordion
+          expanded={tab === 1}
+          onChange={handleTabChange(1)}
+          variant="filled"
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`${ids[1]}-content`}
@@ -121,7 +129,11 @@ export default function ChannelJoinScreen() {
             </form>
           </AccordionDetails>
         </Accordion>
-        <Accordion expanded={tab === 2} onChange={handleTabChange(2)}>
+        <Accordion
+          expanded={tab === 2}
+          onChange={handleTabChange(2)}
+          variant="filled"
+        >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`${ids[2]}-content`}
