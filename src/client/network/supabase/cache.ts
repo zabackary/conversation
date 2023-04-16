@@ -11,7 +11,7 @@ export type SupabaseChannel = Awaited<ReturnType<typeof getChannel>>;
 export type SupabaseMessage = Awaited<ReturnType<typeof getMessage>>;
 
 export default class SupabaseCache {
-  users: Record<string, SupabaseUser> = {};
+  users: Record<string, SupabaseUser | Promise<SupabaseUser>> = {};
 
   putUser(...users: SupabaseUser[]) {
     for (const user of users) {
@@ -19,15 +19,11 @@ export default class SupabaseCache {
     }
   }
 
-  getUser(id: string) {
-    return this.users[id] ?? null;
-  }
-
   async getUserOrFallback(id: string, fallback: () => Promise<SupabaseUser>) {
-    return this.users[id] ?? (this.users[id] = await fallback());
+    return this.users[id] ?? (this.users[id] = fallback());
   }
 
-  channels: Record<number, SupabaseChannel> = {};
+  channels: Record<number, SupabaseChannel | Promise<SupabaseChannel>> = {};
 
   putChannel(...channels: SupabaseChannel[]) {
     for (const channel of channels) {
@@ -35,27 +31,19 @@ export default class SupabaseCache {
     }
   }
 
-  getChannel(id: number) {
-    return this.channels[id] ?? null;
-  }
-
   async getChannelOrFallback(
     id: number,
     fallback: () => Promise<SupabaseChannel>
   ) {
-    return this.channels[id] ?? (this.channels[id] = await fallback());
+    return this.channels[id] ?? (this.channels[id] = fallback());
   }
 
-  messages: Record<number, SupabaseMessage> = {};
+  messages: Record<number, SupabaseMessage | Promise<SupabaseMessage>> = {};
 
   putMessage(...messages: SupabaseMessage[]) {
     for (const message of messages) {
       this.messages[message.id] = message;
     }
-  }
-
-  getMessage(id: number) {
-    return this.messages[id] ?? null;
   }
 
   async getMessageOrFallback(

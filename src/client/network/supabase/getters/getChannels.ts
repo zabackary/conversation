@@ -1,8 +1,8 @@
 import { ConversationSupabaseClient, normalizeJoin } from "../utils";
-import getUser from "./getUser";
 
 export default async function getChannels(
   client: ConversationSupabaseClient,
+  userId: string,
   dms = false
 ) {
   const { data: members, error } = await client
@@ -10,7 +10,7 @@ export default async function getChannels(
     .select("channels ( *, users!members ( * ) )")
     .is("channels.is_dm", dms)
     .is("accepted", true)
-    .eq("user_id", (await getUser(client)).id);
+    .eq("user_id", userId);
   if (error) throw error;
   return members
     .flatMap((member) => normalizeJoin(member.channels))

@@ -3,9 +3,12 @@ import User, { PrivilegeLevel } from "../../../model/user";
 import { LoggedOutException } from "../NetworkBackend";
 import { createSubscribable } from "../utils";
 import { ConversationSupabaseClient } from "./utils";
+import SupabaseCache from "./cache";
+import getUser from "./getters/getUser";
 
 export default function getLoggedInUserSubscribable(
-  client: ConversationSupabaseClient
+  client: ConversationSupabaseClient,
+  cache: SupabaseCache
 ) {
   return createSubscribable<User>(async (next) => {
     let userId: string | undefined;
@@ -21,12 +24,15 @@ export default function getLoggedInUserSubscribable(
         case "SIGNED_IN": {
           if (!newSession) throw new Error("Signed in w/o session");
           if (userId === newSession.user.id) return;
-          const { data: userMetadatas } = await client
-            .from("users")
-            .select()
-            .eq("id", newSession.user.id)
-            .limit(1);
-          const userMetadata = userMetadatas?.[0];
+          userId = newSession.user.id;
+          let userMetadata;
+          try {
+            userMetadata = await cache.getUserOrFallback(userId, () =>
+              getUser(client, userId)
+            );
+          } catch (e) {
+            // Noop
+          }
           if (!userMetadata) {
             // TODO: Make this good UI
             // eslint-disable-next-line no-restricted-globals
@@ -70,7 +76,6 @@ export default function getLoggedInUserSubscribable(
               isBot: false,
             });
           }
-          userId = newSession.user.id;
           break;
         }
         case "USER_DELETED":

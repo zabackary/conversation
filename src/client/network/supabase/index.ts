@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
 import Channel, {
   DmChannel,
@@ -13,9 +13,13 @@ import NetworkBackend, {
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
-import { createSubscribable, mapSubscribable } from "../utils";
+import {
+  createDispatchableSubscribable,
+  createSubscribable,
+  mapSubscribable,
+} from "../utils";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
-import SupabaseCache from "./cache";
+import SupabaseCache, { SupabaseMessage } from "./cache";
 import convertChannel from "./converters/convertChannel";
 import convertUser from "./converters/convertUser";
 import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
@@ -23,11 +27,14 @@ import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
 import { promiseFromSubscribable } from "./utils";
+import Message from "../../../model/message";
+import getMessage from "./getters/getMessage";
+import convertMessage from "./converters/convertMessage";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
 
-class SupabaseBackend implements NetworkBackend {
+class SupabaseBackendImpl implements NetworkBackend {
   client = createClient<Database>(
     "https://pcenneuseahncajmkcoe.supabase.co/",
     SUPABASE_ANON_KEY
@@ -39,8 +46,15 @@ class SupabaseBackend implements NetworkBackend {
 
   isReady: Promise<void>;
 
+  realtimeChannel: RealtimeChannel;
+
+  messageSubscribable: Subscribable<Message>;
+
   constructor() {
-    this.loggedInUserSubscribable = getLoggedInUserSubscribable(this.client);
+    this.loggedInUserSubscribable = getLoggedInUserSubscribable(
+      this.client,
+      this.cache
+    );
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
@@ -50,6 +64,42 @@ class SupabaseBackend implements NetworkBackend {
         })
         .then(() => resolve())
         .catch(reject);
+    });
+    this.realtimeChannel = this.client.channel("default");
+    const dispatchableMessageSubscribable =
+      createDispatchableSubscribable<Message>();
+    this.messageSubscribable = dispatchableMessageSubscribable.value;
+    this.realtimeChannel.on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "messages",
+      },
+      (payload) => {
+        void (async () => {
+          const replyingTo = payload.new.replying_to as number | null;
+          const message = {
+            ...payload.new,
+            replying_to:
+              replyingTo !== null
+                ? await this.cache.getMessageOrFallback(replyingTo, () =>
+                    getMessage(this.client, replyingTo)
+                  )
+                : null,
+          } as SupabaseMessage;
+          this.cache.putMessage(message);
+          const convertedMessage = await convertMessage(message, (id) =>
+            promiseFromSubscribable(this.getUser(id))
+          );
+          dispatchableMessageSubscribable.dispatch(convertedMessage);
+        })();
+      }
+    );
+    this.realtimeChannel.subscribe((status) => {
+      if (status !== "SUBSCRIBED") {
+        console.error("Failed to open the Realtime channel:", status);
+      }
     });
   }
 
@@ -82,7 +132,11 @@ class SupabaseBackend implements NetworkBackend {
       return this.loggedInUserSubscribable;
     }
     return createSubscribable(async (next) => {
-      next(convertUser(await getUser(this.client, id)));
+      next(
+        convertUser(
+          await this.cache.getUserOrFallback(id, () => getUser(this.client, id))
+        )
+      );
     });
   }
 
@@ -97,7 +151,11 @@ class SupabaseBackend implements NetworkBackend {
       if (value instanceof Error) {
         return value;
       }
-      const channels = await getChannels(this.client, false);
+      const channels = await getChannels(
+        this.client,
+        value.id as string,
+        false
+      );
       this.cache.putChannel(...channels);
       return channels
         .map(convertChannel)
@@ -120,7 +178,7 @@ class SupabaseBackend implements NetworkBackend {
       if (value instanceof Error) {
         return value;
       }
-      const channels = await getChannels(this.client);
+      const channels = await getChannels(this.client, value.id as string);
       this.cache.putChannel(...channels);
       return channels.map(convertChannel);
     });
@@ -137,9 +195,9 @@ class SupabaseBackend implements NetworkBackend {
         reject(new Error("Not logged in; can't start channel."));
         return;
       }
-      const currentId = user.id;
-      if (typeof currentId === "number") throw new Error("Id is number");
-      resolve(new SupabaseChannelBackend(id, currentId, this, this.client));
+      const currentUserId = user.id;
+      if (typeof currentUserId === "number") throw new Error("Id is number");
+      resolve(new SupabaseChannelBackend(id, currentUserId, this));
     });
   }
 
@@ -156,17 +214,19 @@ class SupabaseBackend implements NetworkBackend {
   }
 }
 
+export type SupabaseBackend = SupabaseBackendImpl;
+
 function SupabaseBackendConstructor() {
   const queuedBackend = new QueuedBackend();
   if (isGASWebApp) {
     void updatedHash.then(() => {
-      const supabaseBackend = new SupabaseBackend();
+      const supabaseBackend = new SupabaseBackendImpl();
       void supabaseBackend.isReady.then(() => {
         queuedBackend.routeTo(supabaseBackend);
       });
     });
   } else {
-    const supabaseBackend = new SupabaseBackend();
+    const supabaseBackend = new SupabaseBackendImpl();
     void supabaseBackend.isReady.then(() => {
       queuedBackend.routeTo(supabaseBackend);
     });

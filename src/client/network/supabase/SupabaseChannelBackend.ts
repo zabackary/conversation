@@ -1,93 +1,58 @@
-import { RealtimeChannel } from "@supabase/supabase-js";
 import Message from "../../../model/message";
-import NetworkBackend, {
+import {
   ChannelBackend,
   ChannelBackendEvent,
   SentMessageEvent,
 } from "../NetworkBackend";
 import convertMessage from "./converters/convertMessage";
 import getMessages from "./getters/getMessages";
-import { ConversationSupabaseClient, promiseFromSubscribable } from "./utils";
+import { promiseFromSubscribable } from "./utils";
+import { SupabaseBackend } from ".";
 
 // TODO: Make this global so we can listen to updates when ex. the tab is
 // minimized.
 
 export default class SupabaseChannelBackend implements ChannelBackend {
-  private channel: RealtimeChannel;
-
   constructor(
     private id: number,
     private userId: string,
-    private backend: NetworkBackend,
-    private client: ConversationSupabaseClient
-  ) {
-    this.channel = this.client.channel("table-db-changes");
-  }
+    private backend: SupabaseBackend
+  ) {}
 
   connected = false;
 
+  private cancelSubscription: (() => void) | undefined;
+
   connect(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      this.channel
-        .on(
-          "postgres_changes",
-          { event: "INSERT", schema: "public", table: "messages" },
-          ({ new: message }) => {
-            void (async () => {
-              if (message.channel_id === this.id) {
-                const user = await promiseFromSubscribable(
-                  this.backend.getUser(message.user_id as string)
-                );
-                const newMessage = {
-                  user,
-                  parent: this.id,
-                  sent: new Date(message.sent_at as string),
-                  isService: false, // TODO: this is an assumption
-                  id: message.id as number,
-                  markdown: message.markdown as string,
-                  attachments: [],
-                  images: [],
-                  replied: undefined, // TODO: use message.replying_to
-                } satisfies Message;
-                for (const listener of this.listeners) {
-                  listener({
-                    type: "message",
-                    newMessage,
-                  });
-                }
-              }
-            })();
+    return new Promise((resolve) => {
+      this.cancelSubscription = this.backend.messageSubscribable.subscribe(
+        (newMessage) => {
+          if (newMessage instanceof Error) {
+            console.error(newMessage);
+          } else {
+            for (const listener of this.listeners) {
+              listener({
+                type: "message",
+                newMessage,
+              });
+            }
           }
-        )
-        .subscribe((status, err) => {
-          switch (status) {
-            case "CHANNEL_ERROR":
-            case "TIMED_OUT":
-              reject(err);
-              break;
-            case "SUBSCRIBED":
-              this.connected = true;
-              resolve();
-              break;
-            case "CLOSED":
-            default:
-              console.log("Closed");
-              break;
-          }
-        });
+        }
+      );
+
+      resolve();
     });
   }
 
-  async disconnect(): Promise<void> {
-    const status = await this.channel.unsubscribe();
-    if (status !== "ok") {
-      throw status;
-    }
+  disconnect(): Promise<void> {
+    return new Promise<void>(() => {
+      this.cancelSubscription?.call(this);
+    });
   }
 
   async listMessages(): Promise<Message[]> {
     return Promise.all(
-      (await getMessages(this.client, this.id, 30)).map((message) =>
+      (await getMessages(this.backend.client, this.id, 30)).map((message) =>
         convertMessage(message, (id) =>
           promiseFromSubscribable(this.backend.getUser(id))
         )
@@ -106,7 +71,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
 
   async send(message: SentMessageEvent): Promise<void> {
     if ("action" in message) throw new Error("Actions are not supported yet.");
-    await this.client.from("messages").insert({
+    await this.backend.client.from("messages").insert({
       channel_id: this.id,
       markdown: message.markdown,
       user_id: this.userId,
