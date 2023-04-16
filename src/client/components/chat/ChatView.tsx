@@ -35,7 +35,7 @@ export default function ChatView({
     const observer = new IntersectionObserver(
       ([e]) => setIsSticky(e.intersectionRatio < 1),
       {
-        rootMargin: "0px 0px -1px 0px",
+        rootMargin: "0px 0px -25px 0px",
         threshold: 1,
         root: containerRef.current,
       }
@@ -47,6 +47,27 @@ export default function ChatView({
       observer.unobserve(cachedRef);
     };
   }, [inputRef, containerRef]);
+
+  const oldStickyState = useRef<number | undefined>(messages?.length);
+  useEffect(() => {
+    if (messages?.length !== oldStickyState.current && isSticky) {
+      oldStickyState.current = messages?.length;
+      let height = containerRef.current?.offsetHeight;
+      let hasChanged = false;
+      const scrollBottom = () => {
+        window.scrollBy(0, Number.MAX_SAFE_INTEGER);
+        const heightChanged = height !== containerRef.current?.offsetHeight;
+        if (!hasChanged || heightChanged) {
+          window.requestAnimationFrame(scrollBottom);
+          height = containerRef.current?.offsetHeight;
+          if (heightChanged) hasChanged = true;
+        } else {
+          setTimeout(() => window.scrollBy(0, Number.MAX_SAFE_INTEGER), 10);
+        }
+      };
+      scrollBottom();
+    }
+  }, [oldStickyState, containerRef, isSticky, messages?.length]);
 
   return (
     <Box sx={sx} ref={containerRef}>
