@@ -2,6 +2,7 @@ import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
 import Channel, {
   DmChannel,
+  PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
 import User, { NewUserMetadata, UserId } from "../../../model/user";
@@ -101,6 +102,46 @@ class SupabaseBackendImpl implements NetworkBackend {
         console.error("Failed to open the Realtime channel:", status);
       }
     });
+  }
+
+  async createChannel(
+    name: string,
+    description: string,
+    privacyLevel: PrivacyLevel,
+    password?: string | undefined
+  ): Promise<Channel> {
+    const user = this.loggedInUserSubscribable.getSnapshot();
+    if (user === null || user instanceof Error)
+      throw new Error("Loading or signing in.");
+    const userId = user.id as string;
+    const { data, error } = await this.client
+      .from("channels")
+      .insert({
+        is_dm: false,
+        owner: userId,
+        privacy_level: privacyLevel,
+        description,
+        name,
+        password,
+      })
+      .select();
+    if (error) throw error;
+    const [dbChannel] = data;
+    await this.client.from("members").insert({
+      accepted: true,
+      channel_id: dbChannel.id,
+      user_id: userId,
+    });
+    const channel = {
+      ...dbChannel,
+      users: [
+        await this.cache.getUserOrFallback(userId, () =>
+          getUser(this.client, userId)
+        ),
+      ],
+    };
+    this.cache.putChannel(channel);
+    return convertChannel(channel);
   }
 
   async authLogIn(email: string, password: string): Promise<void> {

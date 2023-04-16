@@ -22,6 +22,17 @@ import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  isReady?: Promise<void> | undefined;
+
+  createChannel(
+    _name: string,
+    _description: string,
+    _privacyLevel: PrivacyLevel,
+    _password?: string | undefined
+  ): Promise<Channel> {
+    throw new Error("Method not implemented.");
+  }
+
   async authLogIn(email: string, password: string): Promise<void> {
     await wait();
     const name = Object.entries(users).find(

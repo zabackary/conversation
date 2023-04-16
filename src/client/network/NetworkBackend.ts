@@ -69,6 +69,7 @@ export default interface NetworkBackend {
   /**
    * Gets the logged in user or get by ID.
    *
+   * @deprecated Avoid passing in `undefined`; prefer a new method instead.
    * @returns A subscribable echoing `User`, `null` on loading, or errors on
    * logged out.
    */
@@ -110,6 +111,23 @@ export default interface NetworkBackend {
   joinChannel<JoinInfo extends ChannelJoinInfo>(
     info: JoinInfo
   ): Promise<string | null>;
+
+  /**
+   * Create a channel and join it.
+   *
+   * @param name The name of the new channel
+   * @param description The description
+   * @param privacyLevel The privacy level
+   * @param password The password, if `privacyLevel` is {@link PrivacyLevel.Unlisted `Unlisted`}
+   * @returns A promise resolving with the new channel or rejecting if something
+   * went wrong.
+   */
+  createChannel(
+    name: string,
+    description: string,
+    privacyLevel: PrivacyLevel,
+    password?: string
+  ): Promise<Channel>;
 
   /**
    * Gets the channels the user is in.

@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-return-assign */
-import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
+import Channel, {
+  DmChannel,
+  PrivacyLevel,
+  PublicChannelListing,
+} from "../../model/channel";
 import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
@@ -13,6 +17,20 @@ export default class CachedBackend implements NetworkBackend {
 
   constructor(private mirroredBackend: NetworkBackend) {
     this.isReady = mirroredBackend.isReady;
+  }
+
+  createChannel(
+    name: string,
+    description: string,
+    privacyLevel: PrivacyLevel,
+    password?: string | undefined
+  ): Promise<Channel> {
+    return this.mirroredBackend.createChannel(
+      name,
+      description,
+      privacyLevel,
+      password
+    );
   }
 
   authLogIn(username: string, password: string): Promise<void> {

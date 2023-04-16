@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-return-assign */
-import Channel, { DmChannel, PublicChannelListing } from "../../model/channel";
+import Channel, {
+  DmChannel,
+  PrivacyLevel,
+  PublicChannelListing,
+} from "../../model/channel";
 import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
@@ -58,6 +62,16 @@ export default class QueuedBackend implements NetworkBackend {
       if (snapshot !== null) next(snapshot);
       subscribable.subscribe(next);
     });
+  }
+
+  async createChannel(
+    name: string,
+    description: string,
+    privacyLevel: PrivacyLevel,
+    password?: string | undefined
+  ): Promise<Channel> {
+    const backend = await this.routeFound;
+    return backend.createChannel(name, description, privacyLevel, password);
   }
 
   async authLogIn(username: string, password: string): Promise<void> {
