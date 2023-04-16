@@ -8,19 +8,26 @@ import {
   AccordionSummary,
   Avatar,
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Grid,
-  MenuItem,
   Stack,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { FormEvent, SyntheticEvent, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { ConversationAppBar } from "../../../../../components/layout";
+import Create from "./create";
 
 export default function ChannelJoinScreen() {
-  const [tab, setTab] = useState<number | null>(0);
+  const [tab, setTab] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const handleTabChange =
     (panel: number) => (event: SyntheticEvent, isExpanded: boolean) => {
@@ -32,10 +39,28 @@ export default function ChannelJoinScreen() {
   };
   const ids = [useId(), useId(), useId()];
   const { t } = useTranslation("channel");
+  const [createOpen, setCreateOpen] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   return (
     <>
       <ConversationAppBar title={t("join.title")} />
       <Box m={3}>
+        <Button
+          sx={{ mb: 3, mx: "auto", display: "block" }}
+          variant="outlined"
+          size="large"
+          onClick={() => setCreateOpen(true)}
+        >
+          [untranslated] Create channel
+        </Button>
+        <Dialog
+          open={createOpen}
+          onClose={() => setCreateOpen(false)}
+          fullScreen={fullScreen}
+        >
+          <Create onClose={() => setCreateOpen(false)} />
+        </Dialog>
         <Accordion expanded={tab === 0} onChange={handleTabChange(0)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
@@ -51,7 +76,7 @@ export default function ChannelJoinScreen() {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              [untranslated]This feature is in development.
+              [untranslated] This feature is in development.
             </Typography>
           </AccordionDetails>
         </Accordion>
