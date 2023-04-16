@@ -197,19 +197,27 @@ class SupabaseBackendImpl implements NetworkBackend {
       }
       const currentUserId = user.id;
       if (typeof currentUserId === "number") throw new Error("Id is number");
-      resolve(new SupabaseChannelBackend(id, currentUserId, this));
+      this.getChannel(id).subscribe((value) => {
+        if (!(value instanceof Error || !value))
+          resolve(new SupabaseChannelBackend(id, currentUserId, this));
+        else resolve(null);
+      });
     });
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
     return createSubscribable(async (next) => {
-      next(
-        convertChannel(
-          await this.cache.getChannelOrFallback(id, () =>
-            getChannel(this.client, id)
+      try {
+        next(
+          convertChannel(
+            await this.cache.getChannelOrFallback(id, () =>
+              getChannel(this.client, id)
+            )
           )
-        )
-      );
+        );
+      } catch {
+        next(null);
+      }
     });
   }
 }
