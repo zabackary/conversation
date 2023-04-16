@@ -891,11 +891,17 @@ export const getThemedComponents = (
         styleOverrides: {
           root: {
             "&:before": {
-              backgroundColor: theme.palette.surfaceVariant.main,
+              display: "none",
             },
             "&.Mui-disabled": {
               backgroundColor: theme.palette.inverseOnSurface.main,
               color: theme.palette.inverseSurface.main,
+            },
+            borderRadius: "32px !important",
+            marginBottom: 8,
+            transition: theme.transitions.create(["border-radius", "margin"]),
+            "&.Mui-expanded": {
+              borderRadius: "16px !important",
             },
           },
         },
