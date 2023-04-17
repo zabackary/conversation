@@ -899,9 +899,15 @@ export const getThemedComponents = (
             },
             borderRadius: "32px !important",
             marginBottom: 8,
-            transition: theme.transitions.create(["border-radius", "margin"]),
+            transition: theme.transitions.create([
+              "border-radius",
+              "margin",
+              "background-color",
+            ]),
+            backgroundColor: alpha(theme.palette.primary.main, 0.05),
             "&.Mui-expanded": {
               borderRadius: "16px !important",
+              backgroundColor: alpha(theme.palette.primary.main, 0.1),
             },
           },
         },
