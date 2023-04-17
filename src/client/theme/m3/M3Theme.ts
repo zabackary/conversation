@@ -905,9 +905,26 @@ export const getThemedComponents = (
               "background-color",
             ]),
             backgroundColor: alpha(theme.palette.primary.main, 0.05),
+            "&:hover": {
+              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+            },
             "&.Mui-expanded": {
               borderRadius: "16px !important",
               backgroundColor: alpha(theme.palette.primary.main, 0.1),
+            },
+          },
+        },
+      },
+      MuiAccordionSummary: {
+        styleOverrides: {
+          root: {
+            borderRadius: 32,
+            transition: theme.transitions.create([
+              "border-radius",
+              "background-color",
+            ]),
+            "&.Mui-expanded": {
+              borderRadius: 16,
             },
           },
         },
