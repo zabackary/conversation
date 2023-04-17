@@ -23,11 +23,11 @@ export default function DmListRoute() {
     <ConversationNavigationDrawer
       drawerHeader={<DrawerHeader user={user} />}
       drawerItems={
-        <List>
+        <>
           <Fab
             variant="extended"
-            color="primary"
-            sx={{ m: 2 }}
+            color="surface"
+            sx={{ m: 2, mr: "auto" }}
             // component={Link}
             // to="join/"
             onClick={(e) => {
@@ -39,8 +39,10 @@ export default function DmListRoute() {
             <AddIcon sx={{ mr: 1 }} />
             {t("joinDmButton")}
           </Fab>
-          <ChannelList channels={dms} />
-        </List>
+          <List sx={{ mx: 1 }}>
+            <ChannelList channels={dms} />
+          </List>
+        </>
       }
     >
       <SwitchTransition>

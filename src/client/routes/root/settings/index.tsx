@@ -11,7 +11,7 @@ export default function SettingsRoute() {
   return (
     <ConversationNavigationDrawer
       drawerItems={
-        <List>
+        <List sx={{ m: 1 }}>
           <LinkListItem
             primaryText={t("general.label")}
             to="/app/settings/"

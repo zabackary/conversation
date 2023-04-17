@@ -1,6 +1,5 @@
 import {
   Badge,
-  Box,
   ListItem,
   ListItemAvatar,
   ListItemButton,
@@ -35,68 +34,58 @@ export default function LinkListItem({
   const isMatch = matches.find((match) => match.pathname === to);
 
   return (
-    <Box component="li" sx={{ margin: "8px" }}>
-      <ListItem
-        disablePadding
-        component={loading ? "div" : Link}
-        to={to}
-        sx={{
-          color: "inherit",
-          textDecoration: "inherit",
-        }}
-      >
-        {loading ? (
-          <ListItemButton disabled sx={{ opacity: "1 !important" }}>
-            <ListItemIcon>
-              <Skeleton variant="circular" width={24} height={24} />
-            </ListItemIcon>
+    <ListItem disablePadding sx={{ my: 0.5 }}>
+      {loading || !to ? (
+        <ListItemButton disabled sx={{ opacity: "1 !important" }}>
+          <ListItemIcon>
+            <Skeleton variant="circular" width={24} height={24} />
+          </ListItemIcon>
 
-            <ListItemText
-              primary={<Skeleton />}
-              secondary={<Skeleton />}
-              primaryTypographyProps={{
-                sx: {
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                },
-                noWrap: true,
-              }}
-              secondaryTypographyProps={{
-                variant: "caption",
-                noWrap: true,
-              }}
+          <ListItemText
+            primary={<Skeleton />}
+            secondary={<Skeleton />}
+            primaryTypographyProps={{
+              sx: {
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              },
+              noWrap: true,
+            }}
+            secondaryTypographyProps={{
+              variant: "caption",
+              noWrap: true,
+            }}
+          />
+        </ListItemButton>
+      ) : (
+        <ListItemButton selected={!!isMatch} component={Link} to={to}>
+          {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+          {avatar ? <ListItemAvatar>{avatar}</ListItemAvatar> : null}
+          <ListItemText
+            primary={primaryText}
+            secondary={secondaryText}
+            primaryTypographyProps={{
+              noWrap: true,
+            }}
+            secondaryTypographyProps={{
+              variant: "caption",
+              noWrap: true,
+            }}
+            sx={{
+              marginRight: badge ? 2 : undefined,
+            }}
+          />
+          {badge ? (
+            <Badge
+              badgeContent={badge}
+              color="primary"
+              max={99}
+              sx={{ marginRight: 1 }}
             />
-          </ListItemButton>
-        ) : (
-          <ListItemButton selected={!!isMatch}>
-            {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
-            {avatar ? <ListItemAvatar>{avatar}</ListItemAvatar> : null}
-            <ListItemText
-              primary={primaryText}
-              secondary={secondaryText}
-              primaryTypographyProps={{
-                noWrap: true,
-              }}
-              secondaryTypographyProps={{
-                variant: "caption",
-                noWrap: true,
-              }}
-              sx={{
-                marginRight: badge ? 2 : undefined,
-              }}
-            />
-            {badge ? (
-              <Badge
-                badgeContent={badge}
-                color="primary"
-                max={99}
-                sx={{ marginRight: 1 }}
-              />
-            ) : null}
-          </ListItemButton>
-        )}
-      </ListItem>
-    </Box>
+          ) : null}
+        </ListItemButton>
+      )}
+    </ListItem>
   );
 }

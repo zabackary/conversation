@@ -19,19 +19,21 @@ export default function ChannelListRoute() {
     <ConversationNavigationDrawer
       drawerHeader={<DrawerHeader user={user} />}
       drawerItems={
-        <List>
+        <>
           <Fab
             variant="extended"
-            color="primary"
-            sx={{ m: 2 }}
+            color="surface"
+            sx={{ m: 2, mr: "auto" }}
             component={Link}
             to="join/"
           >
             <AddIcon sx={{ mr: 1 }} />
             {t("joinButton")}
           </Fab>
-          <ChannelList channels={channels} />
-        </List>
+          <List sx={{ mx: 1 }}>
+            <ChannelList channels={channels} />
+          </List>
+        </>
       }
     >
       <SwitchTransition>
