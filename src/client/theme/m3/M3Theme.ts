@@ -478,6 +478,7 @@ export const getThemedComponents = (
                 duration: theme.transitions.duration.short,
               }
             ),
+            boxShadow: "none",
           },
           colorDefault: {
             background: theme.palette.surface.main,
