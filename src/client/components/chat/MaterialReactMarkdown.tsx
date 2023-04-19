@@ -1,0 +1,184 @@
+import { Box, Link, Paper, SxProps } from "@mui/material";
+import { PropsWithChildren, SyntheticEvent } from "react";
+import ReactMarkdown from "react-markdown";
+import {
+  ReactMarkdownOptions,
+  PluggableList,
+} from "react-markdown/lib/react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/hljs/vs2015";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
+import onlyText from "../onlyText";
+
+function MaterialMarkdownBlockquote({ children }: PropsWithChildren) {
+  return (
+    <Paper
+      component="blockquote"
+      elevation={3}
+      sx={{
+        borderLeft: "3px solid black",
+        borderLeftColor: "primary.main",
+        pl: 1,
+        py: 0.5,
+        ml: 0,
+      }}
+    >
+      {children}
+    </Paper>
+  );
+}
+
+function MaterialMarkdownP({ children }: PropsWithChildren) {
+  return (
+    <Box component="p" sx={{ my: 0 }}>
+      {children}
+    </Box>
+  );
+}
+
+function MaterialMarkdownOl({ children }: PropsWithChildren) {
+  return (
+    <Box component="ol" sx={{ paddingInlineStart: 3 }}>
+      {children}
+    </Box>
+  );
+}
+
+function MaterialMarkdownUl({ children }: PropsWithChildren) {
+  return (
+    <Box
+      component="ul"
+      sx={{
+        paddingInlineStart: 3,
+        "& li": {
+          paddingInlineStart: 1,
+          "&::marker": {
+            content:
+              "url(https://m3.material.io/static/assets/list-bullet-dark.svg)",
+          },
+        },
+      }}
+    >
+      {children}
+    </Box>
+  );
+}
+
+function MaterialMarkdownAnchor({
+  children,
+  href,
+}: PropsWithChildren<{ href?: string }>) {
+  const preventBubble = (e: SyntheticEvent) => {
+    e.stopPropagation();
+  };
+  return (
+    <Box component="span" onMouseDown={preventBubble} onClick={preventBubble}>
+      <Link href={href} target="_blank">
+        {children}
+      </Link>
+    </Box>
+  );
+}
+
+function MaterialMarkdownCode({ children }: PropsWithChildren) {
+  return (
+    <Box
+      sx={{
+        background: "#333",
+        color: "#eee",
+        padding: 0.3,
+        borderRadius: 2,
+      }}
+      component="code"
+    >
+      {children}
+    </Box>
+  );
+}
+
+function MaterialMarkdownPre({
+  children,
+  node,
+}: PropsWithChildren<{ node: unknown }>) {
+  let language;
+  if (
+    typeof node === "object" &&
+    node &&
+    "children" in node &&
+    Array.isArray(node.children)
+  ) {
+    const child = node.children[0] as unknown;
+    if (
+      child &&
+      typeof child === "object" &&
+      "properties" in child &&
+      typeof child.properties === "object" &&
+      child.properties &&
+      "className" in child.properties &&
+      Array.isArray(child.properties.className)
+    ) {
+      const className = child.properties.className[0] as unknown;
+      if (typeof className === "string") {
+        language = className.slice(9);
+      } else {
+        language = null;
+      }
+    } else {
+      language = null;
+    }
+  } else {
+    language = null;
+  }
+  console.log(children);
+  return (
+    <Box
+      sx={{
+        background: "#333",
+        color: "#eee",
+        padding: 0.3,
+        borderRadius: 2,
+      }}
+    >
+      <SyntaxHighlighter
+        language={language ?? "text"}
+        style={syntaxHighlightingTheme}
+      >
+        {onlyText(children)}
+      </SyntaxHighlighter>
+    </Box>
+  );
+}
+
+export interface MaterialReactMarkdownProps extends ReactMarkdownOptions {
+  inline?: boolean;
+  sx?: SxProps;
+}
+
+export default function MaterialReactMarkdown({
+  inline,
+  sx,
+  ...reactMarkdownProps
+}: MaterialReactMarkdownProps) {
+  const plugins: PluggableList = [remarkGfm].concat(
+    inline ? [remarkBreaks] : []
+  );
+  return (
+    <Box sx={sx}>
+      <ReactMarkdown
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...reactMarkdownProps}
+        components={{
+          blockquote: MaterialMarkdownBlockquote,
+          p: MaterialMarkdownP,
+          ol: MaterialMarkdownOl,
+          ul: MaterialMarkdownUl,
+          a: MaterialMarkdownAnchor,
+          code: MaterialMarkdownCode,
+          pre: MaterialMarkdownPre,
+        }}
+        remarkPlugins={plugins}
+      />
+    </Box>
+  );
+}

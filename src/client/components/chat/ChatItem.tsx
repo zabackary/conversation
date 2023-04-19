@@ -9,40 +9,23 @@ import {
   styled,
   Typography,
 } from "@mui/material";
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import ReactMarkdown from "react-markdown";
-import {
-  PluggableList,
-  ReactMarkdownOptions,
-} from "react-markdown/lib/react-markdown";
 import TimeAgo from "react-timeago";
-import remarkBreaks from "remark-breaks";
-import remarkGfm from "remark-gfm";
 import Message from "../../../model/message";
 import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "../main/DrawerHeader";
+import MaterialReactMarkdown from "./MaterialReactMarkdown";
 
 const WHITELISTED_TRANSLATIONS = [
   "dm_start",
   "chat_start",
   "chat_member_add",
   "chat_name_change",
-  "easteregg",
+  "easteregg", // hehehe
 ];
 const TRANSLATION_MARKER = "!translation:";
 
-function NoPaddingReactMarkdown(props: ReactMarkdownOptions) {
-  const plugins: PluggableList = [remarkGfm, remarkBreaks];
-  return (
-    <ReactMarkdown
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-      components={{ p: Fragment }}
-      rehypePlugins={plugins}
-    />
-  );
-}
 export const InlineBadge = styled(Badge)<BadgeProps>(() => ({
   position: "unset",
   "& .MuiBadge-badge": {
@@ -69,8 +52,8 @@ export default function ChatItem({ message, showAvatar }: Props) {
   }, [message.markdown, t]);
   const active = useUserActivity(message.user.id);
   return (
-    <ListItem alignItems="flex-start" disablePadding disableGutters>
-      <ListItemButton sx={{ p: "0 24px !important" }}>
+    <ListItem disablePadding disableGutters>
+      <ListItemButton sx={{ p: "0 24px !important" }} alignItems="flex-start">
         {showAvatar ? (
           <ListItemAvatar>
             <ContrastBadge
@@ -108,9 +91,9 @@ export default function ChatItem({ message, showAvatar }: Props) {
             ) : null
           }
           secondary={
-            <NoPaddingReactMarkdown>
+            <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
               {translatedMarkdown}
-            </NoPaddingReactMarkdown>
+            </MaterialReactMarkdown>
           }
           secondaryTypographyProps={{
             component: "div",
