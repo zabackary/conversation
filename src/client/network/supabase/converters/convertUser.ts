@@ -2,19 +2,22 @@ import User, { PrivilegeLevel } from "../../../../model/user";
 import { SupabaseUser } from "../cache";
 
 export default function convertUser(dbUser: SupabaseUser): User {
-  // TODO: Add status, banner, etc. to Supabase
+  // TODO: Add status, email to Supabase
   if (dbUser.is_bot) {
     return {
       id: dbUser.id,
       isBot: true,
       name: dbUser.name,
-      privilegeLevel: dbUser.trusted
+      // eslint-disable-next-line no-nested-ternary
+      privilegeLevel: dbUser.admin
+        ? PrivilegeLevel.Admin
+        : dbUser.verified
         ? PrivilegeLevel.Normal
         : PrivilegeLevel.Unverified,
       active: false,
       author: undefined,
-      banner: undefined,
-      email: undefined,
+      banner: dbUser.banner_url ?? undefined,
+      email: undefined, // TODO: Add user to userMetadata DB model
       profilePicture: dbUser.profile_picture_url ?? undefined,
     };
   }
@@ -23,11 +26,11 @@ export default function convertUser(dbUser: SupabaseUser): User {
     isBot: false,
     name: dbUser.name,
     nickname: dbUser.nickname,
-    privilegeLevel: dbUser.trusted
+    privilegeLevel: dbUser.verified
       ? PrivilegeLevel.Normal
       : PrivilegeLevel.Unverified,
     active: false,
-    banner: undefined,
+    banner: dbUser.banner_url ?? undefined,
     email: undefined,
     profilePicture: dbUser.profile_picture_url ?? undefined,
     status: undefined,

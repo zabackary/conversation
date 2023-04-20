@@ -5,6 +5,7 @@ import { createSubscribable } from "../utils";
 import { ConversationSupabaseClient } from "./utils";
 import SupabaseCache from "./cache";
 import getUser from "./getters/getUser";
+import convertUser from "./converters/convertUser";
 
 export default function getLoggedInUserSubscribable(
   client: ConversationSupabaseClient,
@@ -56,25 +57,13 @@ export default function getLoggedInUserSubscribable(
                 is_bot: false,
                 name,
                 nickname,
-                trusted: false,
+                verified: false,
                 banner_url: null,
                 profile_picture_url: profilePicture,
               });
             }
           } else {
-            next({
-              ...newSession.user,
-              email: newSession.user.email ?? "",
-              name: userMetadata.name,
-              nickname: userMetadata.nickname,
-              privilegeLevel: userMetadata.trusted
-                ? PrivilegeLevel.Normal
-                : PrivilegeLevel.Unverified,
-              profilePicture: userMetadata.profile_picture_url ?? undefined,
-              active: false,
-              banner: userMetadata.banner_url ?? undefined,
-              isBot: false,
-            });
+            next(convertUser(userMetadata));
           }
           break;
         }

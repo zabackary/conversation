@@ -16,6 +16,7 @@ export interface Database {
           description: string | null
           id: number
           is_dm: boolean
+          members_can_edit: boolean
           name: string | null
           owner: string
           password: string | null
@@ -27,6 +28,7 @@ export interface Database {
           description?: string | null
           id?: number
           is_dm: boolean
+          members_can_edit?: boolean
           name?: string | null
           owner: string
           password?: string | null
@@ -38,6 +40,7 @@ export interface Database {
           description?: string | null
           id?: number
           is_dm?: boolean
+          members_can_edit?: boolean
           name?: string | null
           owner?: string
           password?: string | null
@@ -75,7 +78,7 @@ export interface Database {
           replying_to: number | null
           rich: Json | null
           sent_at: string
-          user_id: string
+          user_id: string | null
         }
         Insert: {
           channel_id: number
@@ -84,7 +87,7 @@ export interface Database {
           replying_to?: number | null
           rich?: Json | null
           sent_at?: string
-          user_id: string
+          user_id?: string | null
         }
         Update: {
           channel_id?: number
@@ -93,36 +96,39 @@ export interface Database {
           replying_to?: number | null
           rich?: Json | null
           sent_at?: string
-          user_id?: string
+          user_id?: string | null
         }
       }
       users: {
         Row: {
+          admin: boolean
           banner_url: string | null
           id: string
           is_bot: boolean
           name: string
           nickname: string
           profile_picture_url: string | null
-          trusted: boolean
+          verified: boolean
         }
         Insert: {
+          admin?: boolean
           banner_url?: string | null
           id: string
           is_bot: boolean
           name: string
           nickname: string
           profile_picture_url?: string | null
-          trusted: boolean
+          verified: boolean
         }
         Update: {
+          admin?: boolean
           banner_url?: string | null
           id?: string
           is_bot?: boolean
           name?: string
           nickname?: string
           profile_picture_url?: string | null
-          trusted?: boolean
+          verified?: boolean
         }
       }
     }
