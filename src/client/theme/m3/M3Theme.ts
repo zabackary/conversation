@@ -511,7 +511,12 @@ export const getThemedComponents = (
             borderRadius: "40px",
             textTransform: "none",
             borderColor: theme.palette.outline,
+            color: theme.palette.onSurface.main,
             paddingX: "12px",
+            "&.MuiToggleButtonGroup-grouped:not(:first-of-type)": {
+              marginLeft: 0,
+              borderLeft: 0,
+            },
             "&::before": {
               content: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
                 theme.palette.onSecondaryContainer.main
@@ -522,7 +527,7 @@ export const getThemedComponents = (
               transition: theme.transitions.create([
                 "width",
                 "transform",
-                "marginRight",
+                "margin-right",
               ]),
             },
             "&.Mui-selected": {
