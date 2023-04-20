@@ -51,6 +51,10 @@ export default class QueuedBackend implements NetworkBackend {
           console.error("Failed to start QueuedBackend");
         });
     });
+    this.connectionState = this.deferredSubscribable((backend) => {
+      console.log(backend);
+      return backend.connectionState;
+    });
   }
 
   private deferredSubscribable<T>(
@@ -72,9 +76,9 @@ export default class QueuedBackend implements NetworkBackend {
     return factory(backend);
   }
 
-  connectionState = this.deferredSubscribable(
-    (backend) => backend.connectionState
-  );
+  connectionState: Subscribable<
+    "connecting" | "connected" | "reconnecting" | "error"
+  >;
 
   createChannel(
     name: string,

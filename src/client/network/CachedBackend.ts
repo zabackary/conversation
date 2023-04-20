@@ -16,11 +16,14 @@ import NetworkBackend, {
 export default class CachedBackend implements NetworkBackend {
   isReady?: Promise<void>;
 
+  connectionState: Subscribable<
+    "connecting" | "connected" | "reconnecting" | "error"
+  >;
+
   constructor(private mirroredBackend: NetworkBackend) {
     this.isReady = mirroredBackend.isReady;
+    this.connectionState = mirroredBackend.connectionState;
   }
-
-  connectionState = this.mirroredBackend.connectionState;
 
   updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
     return this.mirroredBackend.updateChannel(id, details);
