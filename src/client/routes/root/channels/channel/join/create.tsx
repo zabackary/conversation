@@ -36,7 +36,7 @@ export default function Create({ onClose }: CreateProps) {
   const { showSnackbar } = useSnackbar();
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!privacyLevel) return;
+    if (privacyLevel === null) return;
     const formData = new FormData(e.currentTarget);
     backend
       .createChannel(
