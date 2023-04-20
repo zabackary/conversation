@@ -165,6 +165,18 @@ export default interface NetworkBackend {
   getChannel(id: number): Subscribable<Channel | null>;
 
   /**
+   * Updates a channel with the given `ChannelDetails`. Throw if user has bad
+   * permissions.
+   */
+  updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void>;
+
+  /**
+   * Deletes a channel if the user is the owner. All related messages are
+   * *forever lost*.
+   */
+  deleteChannel(id: number): Promise<void>;
+
+  /**
    * Logs the user in given credentials.
    *
    * @returns A promise resolving if the login is successful, and rejecting on
@@ -290,3 +302,10 @@ export interface Action {
 }
 
 export type SentMessageEvent = SentMessage | { action: Action };
+
+export interface ChannelDetails {
+  name: string;
+  description: string;
+  privacyLevel: PrivacyLevel;
+  membersCanEdit: boolean;
+}

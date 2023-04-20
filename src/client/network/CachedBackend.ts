@@ -8,6 +8,7 @@ import Channel, {
 import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
+  ChannelDetails,
   ChannelJoinInfo,
   Subscribable,
 } from "./NetworkBackend";
@@ -17,6 +18,14 @@ export default class CachedBackend implements NetworkBackend {
 
   constructor(private mirroredBackend: NetworkBackend) {
     this.isReady = mirroredBackend.isReady;
+  }
+
+  updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
+    return this.mirroredBackend.updateChannel(id, details);
+  }
+
+  deleteChannel(id: number): Promise<void> {
+    return this.mirroredBackend.deleteChannel(id);
   }
 
   createChannel(

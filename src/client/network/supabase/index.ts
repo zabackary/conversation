@@ -9,6 +9,7 @@ import User, { NewUserMetadata, UserId } from "../../../model/user";
 import { isGASWebApp, updatedHash } from "../../hooks/useRouteForward";
 import NetworkBackend, {
   ChannelBackend,
+  ChannelDetails,
   ChannelJoinInfo,
   LoggedOutException,
   Subscribable,
@@ -102,6 +103,28 @@ class SupabaseBackendImpl implements NetworkBackend {
         console.error("Failed to open the Realtime channel:", status);
       }
     });
+  }
+
+  async updateChannel(
+    id: number,
+    details: Partial<ChannelDetails>
+  ): Promise<void> {
+    const { error } = await this.client
+      .from("channels")
+      .update({
+        members_can_edit: details.membersCanEdit,
+        description: details.description,
+        name: details.name,
+        privacy_level: details.privacyLevel,
+      })
+      .eq("id", id)
+      .single();
+    if (error) throw error;
+  }
+
+  async deleteChannel(id: number): Promise<void> {
+    const { error } = await this.client.from("channels").delete().eq("id", id);
+    if (error) throw error;
   }
 
   async createChannel(

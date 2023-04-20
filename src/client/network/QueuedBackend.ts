@@ -8,6 +8,7 @@ import Channel, {
 import User, { NewUserMetadata, UserId } from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
+  ChannelDetails,
   ChannelJoinInfo,
   Subscribable,
 } from "./NetworkBackend";
@@ -64,32 +65,38 @@ export default class QueuedBackend implements NetworkBackend {
     });
   }
 
-  async createChannel(
+  private async deferredPromise<T>(
+    factory: (backend: NetworkBackend) => Promise<T>
+  ) {
+    const backend = await this.routeFound;
+    return factory(backend);
+  }
+
+  createChannel(
     name: string,
     description: string,
     privacyLevel: PrivacyLevel,
     password?: string | undefined
   ): Promise<Channel> {
-    const backend = await this.routeFound;
-    return backend.createChannel(name, description, privacyLevel, password);
+    return this.deferredPromise((backend) =>
+      backend.createChannel(name, description, privacyLevel, password)
+    );
   }
 
-  async authLogIn(username: string, password: string): Promise<void> {
-    const backend = await this.routeFound;
-    return backend.authLogIn(username, password);
+  authLogIn(username: string, password: string): Promise<void> {
+    return this.deferredPromise((backend) =>
+      backend.authLogIn(username, password)
+    );
   }
 
-  async authLogOut(): Promise<void> {
-    const backend = await this.routeFound;
-    return backend.authLogOut();
+  authLogOut(): Promise<void> {
+    return this.deferredPromise((backend) => backend.authLogOut());
   }
 
-  async authCreateAccount(
-    newUser: NewUserMetadata,
-    password: string
-  ): Promise<void> {
-    const backend = await this.routeFound;
-    return backend.authCreateAccount(newUser, password);
+  authCreateAccount(newUser: NewUserMetadata, password: string): Promise<void> {
+    return this.deferredPromise((backend) =>
+      backend.authCreateAccount(newUser, password)
+    );
   }
 
   getUser(id?: UserId): Subscribable<User | null> {
@@ -110,28 +117,35 @@ export default class QueuedBackend implements NetworkBackend {
     return this.deferredSubscribable((backend) => backend.getPublicChannels());
   }
 
-  async joinChannel<JoinInfo extends ChannelJoinInfo>(
+  joinChannel<JoinInfo extends ChannelJoinInfo>(
     info: JoinInfo
   ): Promise<string | null> {
-    const backend = await this.routeFound;
-    return backend.joinChannel(info);
+    return this.deferredPromise((backend) => backend.joinChannel(info));
   }
 
   getChannels(): Subscribable<Channel[]> {
     return this.deferredSubscribable((backend) => backend.getChannels());
   }
 
-  async clearCache(): Promise<void> {
-    const backend = await this.routeFound;
-    return backend.clearCache();
+  clearCache(): Promise<void> {
+    return this.deferredPromise((backend) => backend.clearCache());
   }
 
-  async connectChannel(id: number): Promise<ChannelBackend | null> {
-    const backend = await this.routeFound;
-    return backend.connectChannel(id);
+  connectChannel(id: number): Promise<ChannelBackend | null> {
+    return this.deferredPromise((backend) => backend.connectChannel(id));
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
     return this.deferredSubscribable((backend) => backend.getChannel(id));
+  }
+
+  updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
+    return this.deferredPromise((backend) =>
+      backend.updateChannel(id, details)
+    );
+  }
+
+  deleteChannel(id: number): Promise<void> {
+    return this.deferredPromise((backend) => backend.deleteChannel(id));
   }
 }

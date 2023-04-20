@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-cond-assign */
 /* eslint-disable class-methods-use-this */
 import Channel, {
@@ -13,6 +14,7 @@ import {
 } from "../../../shared/validation";
 import NetworkBackend, {
   ChannelBackend,
+  ChannelDetails,
   ChannelJoinInfo,
   LoggedOutException,
   Subscribable,
@@ -22,7 +24,13 @@ import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
-  isReady?: Promise<void> | undefined;
+  updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  deleteChannel(id: number): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
 
   createChannel(
     _name: string,
