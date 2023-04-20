@@ -1,5 +1,10 @@
-import { Box, Link, Paper, SxProps } from "@mui/material";
-import { PropsWithChildren, SyntheticEvent } from "react";
+import { Box, Link, Paper, SxProps, useTheme } from "@mui/material";
+import {
+  HTMLAttributes,
+  PropsWithChildren,
+  StyleHTMLAttributes,
+  SyntheticEvent,
+} from "react";
 import ReactMarkdown from "react-markdown";
 import {
   ReactMarkdownOptions,
@@ -83,17 +88,27 @@ function MaterialMarkdownAnchor({
 
 function MaterialMarkdownCode({ children }: PropsWithChildren) {
   return (
-    <Box
+    <Paper
       sx={{
-        background: "#333",
-        color: "#eee",
-        padding: 0.3,
-        borderRadius: 2,
+        padding: "2px",
       }}
+      elevation={1}
       component="code"
     >
       {children}
-    </Box>
+    </Paper>
+  );
+}
+
+function MaterialMarkdownHighlighterPre({
+  children,
+  ...props
+}: PropsWithChildren<HTMLAttributes<HTMLPreElement>>) {
+  return (
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <Paper component="pre" {...props} elevation={3}>
+      {children}
+    </Paper>
   );
 }
 
@@ -130,23 +145,14 @@ function MaterialMarkdownPre({
   } else {
     language = null;
   }
-  console.log(children);
   return (
-    <Box
-      sx={{
-        background: "#333",
-        color: "#eee",
-        padding: 0.3,
-        borderRadius: 2,
-      }}
+    <SyntaxHighlighter
+      language={language ?? "text"}
+      style={syntaxHighlightingTheme}
+      PreTag={MaterialMarkdownHighlighterPre}
     >
-      <SyntaxHighlighter
-        language={language ?? "text"}
-        style={syntaxHighlightingTheme}
-      >
-        {onlyText(children)}
-      </SyntaxHighlighter>
-    </Box>
+      {onlyText(children)}
+    </SyntaxHighlighter>
   );
 }
 
