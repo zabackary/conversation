@@ -52,6 +52,10 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   messageSubscribable: Subscribable<Message>;
 
+  connectionState: Subscribable<
+    "connecting" | "connected" | "reconnecting" | "error"
+  >;
+
   constructor() {
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(
       this.client,
@@ -98,11 +102,19 @@ class SupabaseBackendImpl implements NetworkBackend {
         })();
       }
     );
+    const dispatchableConnectionState = createDispatchableSubscribable<
+      "connecting" | "connected" | "reconnecting" | "error"
+    >("connecting");
     this.realtimeChannel.subscribe((status) => {
-      if (status !== "SUBSCRIBED") {
-        console.error("Failed to open the Realtime channel:", status);
+      if (status === "CLOSED") {
+        dispatchableConnectionState.dispatch("error");
+      } else if (status === "TIMED_OUT" || status === "CHANNEL_ERROR") {
+        dispatchableConnectionState.dispatch("reconnecting");
+      } else {
+        dispatchableConnectionState.dispatch("connected");
       }
     });
+    this.connectionState = dispatchableConnectionState.value;
   }
 
   async updateChannel(

@@ -67,6 +67,13 @@ export default interface NetworkBackend {
   isReady?: Promise<void>;
 
   /**
+   * A subscribable echoing the current state of the connection.
+   */
+  connectionState: Subscribable<
+    "connecting" | "connected" | "reconnecting" | "error"
+  >;
+
+  /**
    * Gets the logged in user or get by ID.
    *
    * @deprecated Avoid passing in `undefined`; prefer a new method instead.

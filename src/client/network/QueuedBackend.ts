@@ -72,6 +72,10 @@ export default class QueuedBackend implements NetworkBackend {
     return factory(backend);
   }
 
+  connectionState = this.deferredSubscribable(
+    (backend) => backend.connectionState
+  );
+
   createChannel(
     name: string,
     description: string,

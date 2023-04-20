@@ -24,6 +24,10 @@ import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  connectionState = createSubscribable(() => {
+    // Noop
+  }, "connected" as const);
+
   updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
     throw new Error("Method not implemented.");
   }

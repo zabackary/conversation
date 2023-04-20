@@ -20,6 +20,8 @@ export default class CachedBackend implements NetworkBackend {
     this.isReady = mirroredBackend.isReady;
   }
 
+  connectionState = this.mirroredBackend.connectionState;
+
   updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
     return this.mirroredBackend.updateChannel(id, details);
   }
