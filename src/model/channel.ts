@@ -31,6 +31,7 @@ interface BaseChannel {
 
 export interface GroupChannel extends BaseChannel {
   dm: false;
+  membersCanEdit: boolean;
 }
 
 export interface DmChannel extends BaseChannel {

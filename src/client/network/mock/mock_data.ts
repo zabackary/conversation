@@ -304,6 +304,7 @@ export const channels = {
     history: 10,
     dm: false,
     lastMessage: messages[5].at(-1),
+    membersCanEdit: false,
   },
   3: {
     name: "Mock",
@@ -314,6 +315,7 @@ export const channels = {
     history: 10,
     dm: false,
     lastMessage: messages[3].at(-1),
+    membersCanEdit: false,
   },
   4: {
     name: "Hello World",
@@ -323,6 +325,7 @@ export const channels = {
     privacyLevel: PrivacyLevel.Public,
     history: 10,
     dm: false,
+    membersCanEdit: true,
   },
   18: {
     name: "Bye World",
@@ -333,6 +336,7 @@ export const channels = {
     privacyLevel: PrivacyLevel.Public,
     history: 10,
     dm: false,
+    membersCanEdit: true,
   },
   19: {
     name: "",
