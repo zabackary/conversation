@@ -90,9 +90,11 @@ export interface SnackbarProviderProps {
   children: ReactNode;
 }
 
+const defaultDefaultSnackbarOptions = {};
+
 export function SnackbarProvider({
   children,
-  defaultSnackbarOptions = {},
+  defaultSnackbarOptions = defaultDefaultSnackbarOptions,
 }: SnackbarProviderProps) {
   const [queue, setQueue] = useState<readonly SnackbarQueueItem[]>([]);
   const [open, setOpen] = useState(false);
