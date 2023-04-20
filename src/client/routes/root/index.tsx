@@ -20,6 +20,7 @@ import LinkListItem from "../../components/main/LinkListItem";
 import useSnackbar from "../../components/useSnackbar";
 import useBackend from "../../hooks/useBackend";
 import useRouteForward from "../../hooks/useRouteForward";
+import { useSubscribable } from "../../hooks/useBackendFunction";
 
 function LoadingGlimmer() {
   return (
@@ -67,6 +68,35 @@ export default function RootRoute() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- This is a fire-and-forget effect.
   }, []);
+  const connectionState = useSubscribable(() => backend.connectionState);
+  useEffect(() => {
+    if (connectionState instanceof Error) {
+      return;
+    }
+    let message: string | null;
+    switch (connectionState) {
+      case "connected":
+      case null:
+        message = "Connected.";
+        break;
+      case "connecting":
+        message = "Connecting...";
+        break;
+      case "error":
+        message = "Connection error. Reload to try again.";
+        break;
+      case "reconnecting":
+        message = "Disconnected. Reconnecting...";
+        break;
+    }
+    if (message) {
+      showSnackbar(message, {
+        autoHide: connectionState === "connected",
+        urgent: true,
+        autoHideDuration: 1000,
+      });
+    }
+  }, [connectionState, showSnackbar]);
   return isReady ? (
     <Stack direction={isMobile ? "column" : "row"} height="100%">
       <Box width={navigationRailWidth}>
