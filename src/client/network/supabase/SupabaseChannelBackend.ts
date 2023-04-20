@@ -29,7 +29,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
         (newMessage) => {
           if (newMessage instanceof Error) {
             console.error(newMessage);
-          } else {
+          } else if (newMessage.parent === this.id) {
             for (const listener of this.listeners) {
               listener({
                 type: "message",
