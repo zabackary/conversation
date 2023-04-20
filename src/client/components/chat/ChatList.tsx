@@ -17,6 +17,7 @@ export default function ChatList({ messages, sx }: Props) {
         return (
           <ChatItem
             message={message}
+            key={message.id}
             showAvatar={
               index === 0 || lastMessage.isService || message.isService
                 ? true

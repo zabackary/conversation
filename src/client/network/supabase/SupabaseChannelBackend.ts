@@ -46,6 +46,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
 
   disconnect(): Promise<void> {
     return new Promise<void>(() => {
+      this.connected = false;
       this.cancelSubscription?.call(this);
     });
   }
