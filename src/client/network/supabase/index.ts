@@ -106,6 +106,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       "connecting" | "connected" | "reconnecting" | "error"
     >("connecting");
     this.realtimeChannel.subscribe((status) => {
+      console.error(status);
       if (status === "CLOSED") {
         dispatchableConnectionState.dispatch("error");
       } else if (status === "TIMED_OUT" || status === "CHANNEL_ERROR") {
