@@ -51,10 +51,9 @@ export default class QueuedBackend implements NetworkBackend {
           console.error("Failed to start QueuedBackend");
         });
     });
-    this.connectionState = this.deferredSubscribable((backend) => {
-      console.log(backend);
-      return backend.connectionState;
-    });
+    this.connectionState = this.deferredSubscribable(
+      (backend) => backend.connectionState
+    );
   }
 
   private deferredSubscribable<T>(
