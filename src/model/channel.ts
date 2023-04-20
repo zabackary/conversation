@@ -1,5 +1,5 @@
 import Message from "./message";
-import User from "./user";
+import User, { UserId } from "./user";
 
 export enum PrivacyLevel {
   Public,
@@ -32,6 +32,7 @@ interface BaseChannel {
 export interface GroupChannel extends BaseChannel {
   dm: false;
   membersCanEdit: boolean;
+  owner: UserId;
 }
 
 export interface DmChannel extends BaseChannel {

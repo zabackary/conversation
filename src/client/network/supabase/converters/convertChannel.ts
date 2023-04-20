@@ -27,5 +27,6 @@ export default function convertChannel(dbChannel: SupabaseChannel): Channel {
         dm: false,
         membersCanEdit: dbChannel.members_can_edit,
         passphrase: dbChannel.password ?? undefined,
+        owner: dbChannel.owner,
       };
 }

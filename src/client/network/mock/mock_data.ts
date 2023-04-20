@@ -305,6 +305,7 @@ export const channels = {
     dm: false,
     lastMessage: messages[5].at(-1),
     membersCanEdit: false,
+    owner: users.alice.value.getSnapshot().id,
   },
   3: {
     name: "Mock",
@@ -316,6 +317,7 @@ export const channels = {
     dm: false,
     lastMessage: messages[3].at(-1),
     membersCanEdit: false,
+    owner: users.bob.value.getSnapshot().id,
   },
   4: {
     name: "Hello World",
@@ -326,6 +328,7 @@ export const channels = {
     history: 10,
     dm: false,
     membersCanEdit: true,
+    owner: users.alice.value.getSnapshot().id,
   },
   18: {
     name: "Bye World",
@@ -337,6 +340,7 @@ export const channels = {
     history: 10,
     dm: false,
     membersCanEdit: true,
+    owner: users.alice.value.getSnapshot().id,
   },
   19: {
     name: "",
