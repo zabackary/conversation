@@ -15,7 +15,6 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
-  LoggedOutException,
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
