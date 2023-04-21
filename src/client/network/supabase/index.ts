@@ -258,6 +258,9 @@ class SupabaseBackendImpl implements NetworkBackend {
         if (!value) return null;
         const channels = await getChannels(this.client, value.id as string);
         this.cache.putChannel(...channels);
+        channels.forEach((channel) => {
+          this.cache.putUser(...channel.users);
+        });
         return channels.map(convertChannel);
       },
       []
