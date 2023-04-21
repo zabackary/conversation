@@ -1,7 +1,6 @@
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
-import User, { PrivilegeLevel } from "../../../model/user";
-import { LoggedOutException } from "../NetworkBackend";
-import { createSubscribable } from "../utils";
+import { PrivilegeLevel, RegisteredUser } from "../../../model/user";
+import { Subscribable } from "../NetworkBackend";
 import { ConversationSupabaseClient } from "./utils";
 import SupabaseCache from "./cache";
 import getUser from "./getters/getUser";
@@ -11,7 +10,7 @@ export default function getLoggedInUserSubscribable(
   client: ConversationSupabaseClient,
   cache: SupabaseCache
 ) {
-  return createSubscribable<User>(async (next) => {
+  return new Subscribable<RegisteredUser | null>(async (next) => {
     let userId: string | undefined;
     await new Promise((resolve) => {
       setTimeout(resolve, 1);
@@ -63,14 +62,14 @@ export default function getLoggedInUserSubscribable(
               });
             }
           } else {
-            next(convertUser(userMetadata));
+            next(convertUser(userMetadata) as RegisteredUser);
           }
           break;
         }
         case "USER_DELETED":
         case "SIGNED_OUT": {
           userId = undefined;
-          next(new LoggedOutException());
+          next(null);
           break;
         }
         default:
@@ -87,5 +86,5 @@ export default function getLoggedInUserSubscribable(
     client.auth.onAuthStateChange((...args) => {
       void handleAuthChanged(...args);
     });
-  });
+  }, null);
 }

@@ -2,7 +2,7 @@ import useBackendFunction from "./useBackendFunction";
 
 export default function useUser(navigateToLoginOnAuthFailure = true) {
   return useBackendFunction(
-    (backend) => backend.getUser(),
+    (backend) => backend.getCurrentSession(),
     navigateToLoginOnAuthFailure,
     true
   );

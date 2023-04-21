@@ -10,18 +10,21 @@ export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
   const subscribable = useMemo(getSubscribable, [getSubscribable]);
   // TODO: Figure out how to use `useSyncExternalStore`; it doesn't work and I don't know why
   // Possiblely I need to use `structuredClone` or something and caching?
-  const [value, setValue] = useState<T | Error | null>(
+  const [current, setCurrent] = useState<T | Error | null>(
     subscribable.getSnapshot()
   );
   useEffect(() => {
-    const unsubscribe = subscribable.subscribe((newValue) => {
-      setValue(newValue);
+    const unsubscribe = subscribable.subscribe(({ value, error }) => {
+      if (error) {
+        throw error;
+      }
+      setCurrent(value);
     });
     return () => {
       unsubscribe();
     };
   }, [subscribable]);
-  return value;
+  return current;
 }
 
 export default function useBackendFunction<T>(

@@ -5,14 +5,17 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
-import User, { NewUserMetadata, UserId } from "../../model/user";
+import User, {
+  NewUserMetadata,
+  RegisteredUser,
+  UserId,
+} from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
   Subscribable,
 } from "./NetworkBackend";
-import { createSubscribable } from "./utils";
 
 export default class QueuedBackend implements NetworkBackend {
   currentRoute: NetworkBackend | undefined;
@@ -53,19 +56,22 @@ export default class QueuedBackend implements NetworkBackend {
     });
     this.connectionState = this.deferredSubscribable(
       (backend) => backend.connectionState
-    );
+    ).map((value) => Promise.resolve(value || "connecting"), "connecting");
   }
 
   private deferredSubscribable<T>(
     factory: (backend: NetworkBackend) => Subscribable<T>
   ) {
-    return createSubscribable<T>(async (next) => {
+    return new Subscribable<T | null>(async (next, nextError) => {
       const backend = await this.routeFound;
       const subscribable = factory(backend);
       const snapshot = subscribable.getSnapshot();
       if (snapshot !== null) next(snapshot);
-      subscribable.subscribe(next);
-    });
+      subscribable.subscribe(({ value, error }) => {
+        if (!error) next(value);
+        else nextError(error);
+      });
+    }, null);
   }
 
   private async deferredPromise<T>(
@@ -106,7 +112,11 @@ export default class QueuedBackend implements NetworkBackend {
     );
   }
 
-  getUser(id?: UserId): Subscribable<User | null> {
+  getCurrentSession(): Subscribable<RegisteredUser | null> {
+    return this.deferredSubscribable((backend) => backend.getCurrentSession());
+  }
+
+  getUser(id: UserId): Subscribable<User | null> {
     return this.deferredSubscribable((backend) => backend.getUser(id));
   }
 
@@ -116,11 +126,11 @@ export default class QueuedBackend implements NetworkBackend {
     );
   }
 
-  getDMs(): Subscribable<DmChannel[]> {
+  getDMs(): Subscribable<DmChannel[] | null> {
     return this.deferredSubscribable((backend) => backend.getDMs());
   }
 
-  getPublicChannels(): Subscribable<PublicChannelListing[]> {
+  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
     return this.deferredSubscribable((backend) => backend.getPublicChannels());
   }
 
@@ -130,7 +140,7 @@ export default class QueuedBackend implements NetworkBackend {
     return this.deferredPromise((backend) => backend.joinChannel(info));
   }
 
-  getChannels(): Subscribable<Channel[]> {
+  getChannels(): Subscribable<Channel[] | null> {
     return this.deferredSubscribable((backend) => backend.getChannels());
   }
 

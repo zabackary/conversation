@@ -21,7 +21,7 @@ export default class MockChannelBackend implements ChannelBackend {
       console.warn("message.action is not handled by the mock.");
       return;
     }
-    const user = loggedInUser.value.getSnapshot();
+    const user = loggedInUser.getSnapshot();
     if (!user) {
       console.warn("Tried to send a message while signed out");
       return;

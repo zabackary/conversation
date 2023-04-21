@@ -26,14 +26,14 @@ export default class SupabaseChannelBackend implements ChannelBackend {
   connect(): Promise<void> {
     return new Promise((resolve) => {
       this.cancelSubscription = this.backend.messageSubscribable.subscribe(
-        (newMessage) => {
-          if (newMessage instanceof Error) {
-            console.error(newMessage);
-          } else if (newMessage.parent === this.id) {
+        ({ value, error }) => {
+          if (error) {
+            console.error(error);
+          } else if (value?.parent === this.id) {
             for (const listener of this.listeners) {
               listener({
                 type: "message",
-                newMessage,
+                newMessage: value,
               });
             }
           }

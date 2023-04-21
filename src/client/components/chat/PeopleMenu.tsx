@@ -18,7 +18,6 @@ import {
 import { SyntheticEvent, useState } from "react";
 import Channel from "../../../model/channel";
 import User from "../../../model/user";
-import { users } from "../../network/mock/mock_data";
 
 export interface PeopleMenuListItemProps {
   user: User;
@@ -57,9 +56,7 @@ export interface PeopleMenuProps {
 }
 
 export default function PeopleMenu({ channel, sx }: PeopleMenuProps) {
-  const options: User[] = Object.values(users).map((user) =>
-    user.value.getSnapshot()
-  );
+  const options: User[] = [];
   const [inviteValue, setInviteValue] = useState<User[]>([]);
   const handleInviteChange = (_event: SyntheticEvent, newValue: User[]) => {
     setInviteValue(newValue);

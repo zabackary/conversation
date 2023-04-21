@@ -5,7 +5,11 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUserMetadata, UserId } from "../../../model/user";
+import User, {
+  NewUserMetadata,
+  RegisteredUser,
+  UserId,
+} from "../../../model/user";
 import { isGASWebApp, updatedHash } from "../../hooks/useRouteForward";
 import NetworkBackend, {
   ChannelBackend,
@@ -15,11 +19,6 @@ import NetworkBackend, {
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
-import {
-  createDispatchableSubscribable,
-  createSubscribable,
-  mapSubscribable,
-} from "../utils";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache, { SupabaseMessage } from "./cache";
 import convertChannel from "./converters/convertChannel";
@@ -28,10 +27,14 @@ import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
-import { promiseFromSubscribable } from "./utils";
+import {
+  nullablePromiseFromSubscribable,
+  promiseFromSubscribable,
+} from "./utils";
 import Message from "../../../model/message";
 import getMessage from "./getters/getMessage";
 import convertMessage from "./converters/convertMessage";
+import { DispatchableSubscribable } from "../Subscribable";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
@@ -44,13 +47,13 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   cache = new SupabaseCache();
 
-  loggedInUserSubscribable: Subscribable<User>;
+  loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
 
   isReady: Promise<void>;
 
   realtimeChannel: RealtimeChannel;
 
-  messageSubscribable: Subscribable<Message>;
+  messageSubscribable: Subscribable<Message | null>;
 
   connectionState: Subscribable<
     "connecting" | "connected" | "reconnecting" | "error"
@@ -64,17 +67,14 @@ class SupabaseBackendImpl implements NetworkBackend {
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
-        .then(() => promiseFromSubscribable(this.getUser()))
-        .catch((reason) => {
-          if (!(reason instanceof LoggedOutException)) throw reason;
-        })
+        .then(() => nullablePromiseFromSubscribable(this.getCurrentSession()))
         .then(() => resolve())
         .catch(reject);
     });
     this.realtimeChannel = this.client.channel("default");
     const dispatchableMessageSubscribable =
-      createDispatchableSubscribable<Message>();
-    this.messageSubscribable = dispatchableMessageSubscribable.value;
+      new DispatchableSubscribable<Message | null>(null);
+    this.messageSubscribable = dispatchableMessageSubscribable.downgrade();
     this.realtimeChannel.on(
       "postgres_changes",
       {
@@ -102,7 +102,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         })();
       }
     );
-    const dispatchableConnectionState = createDispatchableSubscribable<
+    const dispatchableConnectionState = new DispatchableSubscribable<
       "connecting" | "connected" | "reconnecting" | "error"
     >("connecting");
     this.realtimeChannel.subscribe((status) => {
@@ -116,7 +116,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         dispatchableConnectionState.dispatch("connected");
       }
     });
-    this.connectionState = dispatchableConnectionState.value;
+    this.connectionState = dispatchableConnectionState.downgrade();
   }
 
   async updateChannel(
@@ -205,43 +205,45 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (error) throw error;
   }
 
-  getUser(id?: string): Subscribable<User> {
-    if (id === undefined) {
-      return this.loggedInUserSubscribable;
-    }
-    return createSubscribable(async (next) => {
+  getCurrentSession() {
+    return this.loggedInUserSubscribable;
+  }
+
+  getUser(id: string): Subscribable<User | null> {
+    return new Subscribable<User | null>(async (next) => {
       next(
         convertUser(
           await this.cache.getUserOrFallback(id, () => getUser(this.client, id))
         )
       );
-    });
+    }, null);
   }
 
   getUserActivity(_user: UserId): Subscribable<boolean | null> {
-    return createSubscribable((_next) => {
-      // TODO: Implement
-    });
+    return new Subscribable<boolean | null>((_next, _nextError) => {
+      // TODO: Implement using the channel.
+    }, false);
   }
 
-  getDMs(): Subscribable<DmChannel[]> {
-    return mapSubscribable(this.loggedInUserSubscribable, async (value) => {
-      if (value instanceof Error) {
-        return value;
-      }
-      const channels = await getChannels(
-        this.client,
-        value.id as string,
-        false
-      );
-      this.cache.putChannel(...channels);
-      return channels
-        .map(convertChannel)
-        .filter((channel) => channel.dm) as DmChannel[];
-    });
+  getDMs(): Subscribable<DmChannel[] | null> {
+    return this.loggedInUserSubscribable.map<DmChannel[] | null>(
+      async (value) => {
+        if (!value) return null;
+        const channels = await getChannels(
+          this.client,
+          value.id as string,
+          false
+        );
+        this.cache.putChannel(...channels);
+        return channels
+          .map(convertChannel)
+          .filter((channel) => channel.dm) as DmChannel[];
+      },
+      null
+    );
   }
 
-  getPublicChannels(): Subscribable<PublicChannelListing[]> {
+  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
     throw new Error("Method not implemented.");
   }
 
@@ -251,15 +253,16 @@ class SupabaseBackendImpl implements NetworkBackend {
     throw new Error("Method not implemented.");
   }
 
-  getChannels(): Subscribable<Channel[]> {
-    return mapSubscribable(this.loggedInUserSubscribable, async (value) => {
-      if (value instanceof Error) {
-        return value;
-      }
-      const channels = await getChannels(this.client, value.id as string);
-      this.cache.putChannel(...channels);
-      return channels.map(convertChannel);
-    });
+  getChannels(): Subscribable<Channel[] | null> {
+    return this.loggedInUserSubscribable.map<Channel[] | null>(
+      async (value) => {
+        if (!value) return null;
+        const channels = await getChannels(this.client, value.id as string);
+        this.cache.putChannel(...channels);
+        return channels.map(convertChannel);
+      },
+      []
+    );
   }
 
   clearCache(): Promise<void> {
@@ -268,23 +271,24 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   connectChannel(id: number): Promise<ChannelBackend | null> {
     return new Promise((resolve, reject) => {
-      const user = this.getUser().getSnapshot();
+      const user = this.getCurrentSession().getSnapshot();
       if (user instanceof Error || user === null) {
         reject(new Error("Not logged in; can't start channel."));
         return;
       }
       const currentUserId = user.id;
       if (typeof currentUserId === "number") throw new Error("Id is number");
-      this.getChannel(id).subscribe((value) => {
-        if (!(value instanceof Error || !value))
-          resolve(new SupabaseChannelBackend(id, currentUserId, this));
-        else resolve(null);
+      const unsubscribe = this.getChannel(id).subscribe(({ value, error }) => {
+        if (!error && value) {
+          resolve(new SupabaseChannelBackend(value.id, currentUserId, this));
+          unsubscribe();
+        } else resolve(null);
       });
     });
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
-    return createSubscribable(async (next) => {
+    return new Subscribable<Channel | null>(async (next) => {
       try {
         next(
           convertChannel(
@@ -296,7 +300,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       } catch {
         next(null);
       }
-    });
+    }, null);
   }
 }
 

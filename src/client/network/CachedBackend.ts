@@ -5,7 +5,11 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
-import User, { NewUserMetadata, UserId } from "../../model/user";
+import User, {
+  NewUserMetadata,
+  RegisteredUser,
+  UserId,
+} from "../../model/user";
 import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
@@ -59,17 +63,19 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.authCreateAccount(newUser, password);
   }
 
-  userSubscribable: Subscribable<User | null> | undefined;
+  currentSessionSubscribable: Subscribable<RegisteredUser | null> | undefined;
+
+  getCurrentSession(): Subscribable<RegisteredUser | null> {
+    return (
+      this.currentSessionSubscribable ||
+      (this.currentSessionSubscribable =
+        this.mirroredBackend.getCurrentSession())
+    );
+  }
 
   userSubscribableMap: Record<string, Subscribable<User | null>> = {};
 
-  getUser(user?: UserId): Subscribable<User | null> {
-    if (!user) {
-      return (
-        this.userSubscribable ||
-        (this.userSubscribable = this.mirroredBackend.getUser())
-      );
-    }
+  getUser(user: UserId): Subscribable<User | null> {
     return (
       this.userSubscribableMap[user] ||
       (this.userSubscribableMap[user] = this.mirroredBackend.getUser(user))
@@ -86,18 +92,20 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  dmsSubscribable: Subscribable<DmChannel[]> | undefined;
+  dmsSubscribable: Subscribable<DmChannel[] | null> | undefined;
 
-  getDMs(): Subscribable<DmChannel[]> {
+  getDMs(): Subscribable<DmChannel[] | null> {
     return (
       this.dmsSubscribable ||
       (this.dmsSubscribable = this.mirroredBackend.getDMs())
     );
   }
 
-  publicChannelsSubscribable: Subscribable<PublicChannelListing[]> | undefined;
+  publicChannelsSubscribable:
+    | Subscribable<PublicChannelListing[] | null>
+    | undefined;
 
-  getPublicChannels(): Subscribable<PublicChannelListing[]> {
+  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
     return (
       this.publicChannelsSubscribable ||
       (this.publicChannelsSubscribable =
@@ -111,9 +119,9 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.joinChannel(info);
   }
 
-  channelsSubscribable: Subscribable<Channel[]> | undefined;
+  channelsSubscribable: Subscribable<Channel[] | null> | undefined;
 
-  getChannels(): Subscribable<Channel[]> {
+  getChannels(): Subscribable<Channel[] | null> {
     return (
       this.channelsSubscribable ||
       (this.channelsSubscribable = this.mirroredBackend.getChannels())

@@ -4,12 +4,25 @@ import Channel, {
   PublicChannelListing,
 } from "../../model/channel";
 import Message from "../../model/message";
-import User, { NewUserMetadata, UserId } from "../../model/user";
+import User, {
+  NewUserMetadata,
+  RegisteredUser,
+  UserId,
+} from "../../model/user";
 import type _QueuedBackend from "./QueuedBackend";
+import Subscribable from "./Subscribable";
 
+// Re-export `Subscribable` for compat reasons
+export { Subscribable };
+
+/**
+ * @deprecated prefer {@link LOGGED_OUT}
+ */
 export class LoggedOutException extends Error {
   name = "LoggedOutException";
 }
+
+export const LOGGED_OUT = Symbol("logged out");
 
 export interface ChannelJoinInfo {
   type: PrivacyLevel;
@@ -30,34 +43,6 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
   id: number;
 }
 
-export interface Subscribable<T> {
-  /**
-   * Subscribe to any changes in the data source using the callback.
-   *
-   * @param {call} callback The function to call upon an event.
-   *
-   * @returns A function you can use to cancel the subscription.
-   */
-  subscribe(callback: (value: T | Error) => void): () => void;
-
-  /**
-   * Get the current snapshot/state of the data source.
-   *
-   * @returns the current state of the subscribable or `null` if no data has
-   * been loaded.
-   */
-  getSnapshot(): T | null | Error;
-}
-
-export interface CleanSubscribable<T> extends Subscribable<T> {
-  /**
-   * Get the current snapshot/state of the data source.
-   *
-   * @returns the current state of the subscribable or throws on invalid.
-   */
-  getSnapshot(): T;
-}
-
 export default interface NetworkBackend {
   /**
    * A promise resolving when the backend is finished initializing. If not,
@@ -74,13 +59,17 @@ export default interface NetworkBackend {
   >;
 
   /**
+   * Gets the current user session. Replaces `getUser(undefined)`.
+   */
+  getCurrentSession(): Subscribable<RegisteredUser | null>;
+
+  /**
    * Gets the logged in user or get by ID.
    *
-   * @deprecated Avoid passing in `undefined`; prefer a new method instead.
    * @returns A subscribable echoing `User`, `null` on loading, or errors on
    * logged out.
    */
-  getUser(id?: UserId): Subscribable<User | null>;
+  getUser(id: UserId): Subscribable<User | null>;
 
   /**
    * Gets the status of a user.
@@ -98,7 +87,7 @@ export default interface NetworkBackend {
    * @throws {LoggedOutException} if the user is logged out
    * @returns A subscribable echoing `DmChannel`s.
    */
-  getDMs(): Subscribable<DmChannel[]>;
+  getDMs(): Subscribable<DmChannel[] | null>;
 
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
@@ -106,7 +95,7 @@ export default interface NetworkBackend {
    * @returns A subscribable representing a list of public `Channel`s that are
    * not currently joined by the user.
    */
-  getPublicChannels(): Subscribable<PublicChannelListing[]>;
+  getPublicChannels(): Subscribable<PublicChannelListing[] | null>;
 
   /**
    * Joins a channel, given a `ChannelJoinInfo`. Returns the name of the
@@ -142,7 +131,7 @@ export default interface NetworkBackend {
    * @throws {LoggedOutException}
    * @returns A subscribable with a list of `Channel`s.
    */
-  getChannels(): Subscribable<Channel[]>;
+  getChannels(): Subscribable<Channel[] | null>;
 
   /**
    * Clears the cache. The cache only persists on one session locally, so this
@@ -208,8 +197,7 @@ export default interface NetworkBackend {
   authCreateAccount(newUser: NewUserMetadata, password: string): Promise<void>;
 }
 
-export interface ChannelBackend
-  extends Pick<Subscribable<ChannelBackendEvent>, "subscribe"> {
+export interface ChannelBackend {
   /**
    * Whether the backend is hooked up. If `false`, `connect()` can be called to
    * connect.

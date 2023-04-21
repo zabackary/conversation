@@ -11,10 +11,25 @@ export type ConversationSupabaseClient = SupabaseClient<Database>;
 
 export function promiseFromSubscribable<T>(subscribable: Subscribable<T>) {
   return new Promise<NonNullable<T>>((resolve, reject) => {
-    const unsubscribe = subscribable.subscribe((value) => {
-      if (value instanceof Error) {
-        reject(value);
+    const unsubscribe = subscribable.subscribe(({ value, error }) => {
+      if (error) {
+        reject(error);
       } else if (value !== null && value !== undefined) {
+        resolve(value);
+      }
+      unsubscribe();
+    });
+  });
+}
+
+export function nullablePromiseFromSubscribable<T>(
+  subscribable: Subscribable<T>
+) {
+  return new Promise<T>((resolve, reject) => {
+    const unsubscribe = subscribable.subscribe(({ value, error }) => {
+      if (error) {
+        reject(error);
+      } else {
         resolve(value);
       }
       unsubscribe();
