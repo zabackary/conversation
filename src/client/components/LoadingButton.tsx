@@ -12,10 +12,10 @@ const LoadingButton: ForwardRefExoticComponent<LoadingButtonProps> = forwardRef<
   return (
     <Button
       sx={{ position: "relative", ...sx }}
-      disabled={loading}
       ref={ref}
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
+      disabled={props.disabled || loading}
     >
       {loading ? (
         <CircularProgress
