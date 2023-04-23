@@ -50,6 +50,7 @@ export interface Database {
       members: {
         Row: {
           accepted: boolean
+          actor: string | null
           channel_id: number
           invite_message: string | null
           last_view: string | null
@@ -57,6 +58,7 @@ export interface Database {
         }
         Insert: {
           accepted: boolean
+          actor?: string | null
           channel_id: number
           invite_message?: string | null
           last_view?: string | null
@@ -64,6 +66,7 @@ export interface Database {
         }
         Update: {
           accepted?: boolean
+          actor?: string | null
           channel_id?: number
           invite_message?: string | null
           last_view?: string | null
@@ -103,6 +106,7 @@ export interface Database {
         Row: {
           admin: boolean
           banner_url: string | null
+          email: string | null
           id: string
           is_bot: boolean
           name: string
@@ -113,6 +117,7 @@ export interface Database {
         Insert: {
           admin?: boolean
           banner_url?: string | null
+          email?: string | null
           id: string
           is_bot: boolean
           name: string
@@ -123,6 +128,7 @@ export interface Database {
         Update: {
           admin?: boolean
           banner_url?: string | null
+          email?: string | null
           id?: string
           is_bot?: boolean
           name?: string
