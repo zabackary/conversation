@@ -413,6 +413,33 @@ class SupabaseBackendImpl implements NetworkBackend {
       }
     }, null);
   }
+
+  /**
+   * Search users.
+   *
+   * > *⚠ WARNING*
+   * >
+   * > This function is **EXPENSIVE** to call and should be debounced at least
+   * > one second!
+   *
+   * @param query The query.
+   */
+  async searchUsers(query: string): Promise<User[]> {
+    const { data, error } = await this.client
+      .from("users")
+      .select("*")
+      .or(
+        `name.ilike.*${encodeURIComponent(
+          query
+        )}*,nickname.ilike.*${encodeURIComponent(
+          query
+        )}*,email.ilike.*${encodeURIComponent(query)}*`
+      )
+      .limit(5);
+    if (error) throw error;
+    this.cache.putUser(...data);
+    return data.map(convertUser);
+  }
 }
 
 export type SupabaseBackend = SupabaseBackendImpl;

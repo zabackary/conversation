@@ -200,4 +200,8 @@ export default class QueuedBackend implements NetworkBackend {
   deleteChannel(id: number): Promise<void> {
     return this.deferredPromise((backend) => backend.deleteChannel(id));
   }
+
+  searchUsers(query: string): Promise<User[]> {
+    return this.deferredPromise((backend) => backend.searchUsers(query));
+  }
 }

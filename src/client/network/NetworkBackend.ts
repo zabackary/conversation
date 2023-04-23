@@ -113,6 +113,11 @@ export default interface NetworkBackend {
   ): Promise<InvitedChannelListing[]>;
 
   /**
+   * Searches users matching the given search term by email, name, etc.
+   */
+  searchUsers(query: string): Promise<User[]>;
+
+  /**
    * Joins a channel, given a `ChannelJoinInfo`. Returns the name of the
    * channel or `null` on error.
    *

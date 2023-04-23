@@ -217,4 +217,8 @@ export default class MockBackend implements NetworkBackend {
       resolve();
     });
   }
+
+  searchUsers(query: string): Promise<User[]> {
+    throw new Error("Not implemented yet");
+  }
 }

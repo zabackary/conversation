@@ -164,4 +164,14 @@ export default class CachedBackend implements NetworkBackend {
       (this.channelSubscribableMap[id] = this.mirroredBackend.getChannel(id))
     );
   }
+
+  searchMap: Record<string, Promise<User[]>> = {};
+
+  searchUsers(query: string): Promise<User[]> {
+    return (
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.searchMap[query] ||
+      (this.searchMap[query] = this.mirroredBackend.searchUsers(query))
+    );
+  }
 }
