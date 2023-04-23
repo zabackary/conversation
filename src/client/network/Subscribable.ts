@@ -1,7 +1,9 @@
 // TODO move to directory
 /* eslint-disable max-classes-per-file */
 
-export default class Subscribable<T> implements SubscribableLike<T> {
+export default class Subscribable<T>
+  implements SubscribableLike<T>, AsyncIterable<T>
+{
   private value: T;
 
   private lastError: Error | undefined;
@@ -18,6 +20,22 @@ export default class Subscribable<T> implements SubscribableLike<T> {
     this.value = initialValue;
     this.callbacks = [];
     void generator(this.handleValue.bind(this), this.handleError.bind(this));
+  }
+
+  [Symbol.asyncIterator](): AsyncIterator<T, never, undefined> {
+    throw new Error(
+      "Async iteratable support is planned but not yet implemented."
+    );
+  }
+
+  next() {
+    return new Promise<T>((resolve, reject) => {
+      const unsubscribe = this.subscribe(({ value, error }) => {
+        unsubscribe();
+        if (error) reject(error);
+        else resolve(value);
+      });
+    });
   }
 
   protected handleValue(value: T) {
