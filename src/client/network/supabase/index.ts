@@ -62,7 +62,10 @@ class SupabaseBackendImpl implements NetworkBackend {
   >;
 
   constructor() {
-    if (process.env.NODE_ENV === "development") {
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NODE_ENV === "local"
+    ) {
       console.log(
         "Supabase client started initialization. Client is available at window.supabaseClient for debugging since NODE_ENV=development."
       );
