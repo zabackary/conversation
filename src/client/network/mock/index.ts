@@ -3,10 +3,16 @@
 /* eslint-disable class-methods-use-this */
 import Channel, {
   DmChannel,
+  GroupChannel,
+  InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import User, { NewUserMetadata, RegisteredUser } from "../../../model/user";
+import User, {
+  NewUserMetadata,
+  RegisteredUser,
+  UserId,
+} from "../../../model/user";
 import {
   validatePassword,
   validateText,
@@ -24,6 +30,35 @@ import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  isReady?: Promise<void> | undefined;
+
+  getInvitedChannels(
+    offset: number,
+    limit: number
+  ): Promise<InvitedChannelListing[]> {
+    throw new Error("Method not implemented.");
+  }
+
+  addMembers(
+    channel: number,
+    userIds: UserId[],
+    invitation: string
+  ): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  removeMembers(
+    channel: number,
+    useIds: UserId[],
+    canRejoin?: boolean | undefined
+  ): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  generateLink(id: number): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+
   connectionState = new Subscribable<
     "error" | "connected" | "connecting" | "reconnecting"
   >(() => {
@@ -146,16 +181,16 @@ export default class MockBackend implements NetworkBackend {
     return new MockChannelBackend(id);
   }
 
-  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
-    return loggedInUser.map<PublicChannelListing[] | null>(async (user) => {
-      await wait();
-      if (user === null) return null;
-      return Object.values(channels).filter(
-        (channel) =>
-          !channel.members.map((member) => member.id).includes(user.id) &&
-          channel.privacyLevel === PrivacyLevel.Public
-      );
-    }, null);
+  async getPublicChannels(): Promise<PublicChannelListing[]> {
+    await wait();
+    const user = await this.getCurrentSession().next();
+    if (user === null) throw new Error("Not logged in.");
+    return Object.values(channels).filter(
+      (channel) =>
+        !channel.members.map((member) => member.id).includes(user.id) &&
+        !channel.dm &&
+        channel.privacyLevel === PrivacyLevel.Public
+    ) as GroupChannel[];
   }
 
   async joinChannel<JoinInfo extends ChannelJoinInfo>(_info: JoinInfo) {

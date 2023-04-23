@@ -2,6 +2,7 @@
 /* eslint-disable no-return-assign */
 import Channel, {
   DmChannel,
+  InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
@@ -27,6 +28,29 @@ export default class CachedBackend implements NetworkBackend {
   constructor(private mirroredBackend: NetworkBackend) {
     this.isReady = mirroredBackend.isReady;
     this.connectionState = mirroredBackend.connectionState;
+  }
+
+  getInvitedChannels(
+    offset: number,
+    limit: number
+  ): Promise<InvitedChannelListing[]> {
+    return this.mirroredBackend.getInvitedChannels(offset, limit);
+  }
+
+  addMembers(id: number, userIds: UserId[], invitation: string): Promise<void> {
+    return this.mirroredBackend.addMembers(id, userIds, invitation);
+  }
+
+  removeMembers(
+    id: number,
+    userIds: UserId[],
+    canRejoin?: boolean | undefined
+  ): Promise<void> {
+    return this.mirroredBackend.removeMembers(id, userIds, canRejoin);
+  }
+
+  generateLink(id: number): Promise<string> {
+    return this.mirroredBackend.generateLink(id);
   }
 
   updateChannel(id: number, details: Partial<ChannelDetails>): Promise<void> {
@@ -101,16 +125,11 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  publicChannelsSubscribable:
-    | Subscribable<PublicChannelListing[] | null>
-    | undefined;
-
-  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
-    return (
-      this.publicChannelsSubscribable ||
-      (this.publicChannelsSubscribable =
-        this.mirroredBackend.getPublicChannels())
-    );
+  getPublicChannels(
+    offset: number,
+    limit: number
+  ): Promise<PublicChannelListing[]> {
+    return this.mirroredBackend.getPublicChannels(offset, limit);
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(

@@ -2,6 +2,7 @@ import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
 import Channel, {
   DmChannel,
+  InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
@@ -27,6 +28,7 @@ import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getUser from "./getters/getUser";
 import {
+  normalizeJoin,
   nullablePromiseFromSubscribable,
   promiseFromSubscribable,
 } from "./utils";
@@ -34,6 +36,7 @@ import Message from "../../../model/message";
 import getMessage from "./getters/getMessage";
 import convertMessage from "./converters/convertMessage";
 import { DispatchableSubscribable } from "../Subscribable";
+import deletedUser from "./deletedUser";
 
 const SUPABASE_ANON_KEY =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
@@ -59,6 +62,13 @@ class SupabaseBackendImpl implements NetworkBackend {
   >;
 
   constructor() {
+    if (process.env.NODE_ENV === "development") {
+      console.log(
+        "Supabase client started initialization. Client is available at window.supabaseClient for debugging since NODE_ENV=development."
+      );
+      // @ts-ignore This property is write-only and I don't really care about types.
+      window.supabaseClient = this.client;
+    }
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(
       this.client,
       this.cache
@@ -116,6 +126,106 @@ class SupabaseBackendImpl implements NetworkBackend {
       }
     });
     this.connectionState = dispatchableConnectionState.downgrade();
+  }
+
+  async getInvitedChannels(
+    offset: number,
+    limit: number
+  ): Promise<InvitedChannelListing[]> {
+    const user = this.getCurrentSession().getSnapshot();
+    if (!user) throw new Error("Must be logged in to get public channels.");
+    const { data, error } = await this.client
+      .from("members")
+      .select(
+        "invite_message, actor, channels!channel_id(description, id, name, owner)"
+      )
+      .eq("accepted", false)
+      .eq("user_id", user.id as string)
+      .range(offset, offset + limit - 1);
+    if (error) throw error;
+    return data.map((dbMember) => {
+      const channel = normalizeJoin(dbMember.channels)[0];
+      return {
+        actor: dbMember.actor ?? deletedUser.id,
+        description: channel.description ?? "",
+        id: channel.id,
+        inviteMessage: dbMember.invite_message ?? "",
+        name: channel.name ?? "",
+        owner: channel.owner,
+      };
+    });
+  }
+
+  async getPublicChannels(
+    offset: number,
+    limit: number
+  ): Promise<PublicChannelListing[]> {
+    const user = this.getCurrentSession().getSnapshot();
+    if (!user) throw new Error("Must be logged in to get public channels.");
+    const { data, error } = await this.client
+      .from("channels")
+      .select("id, created_at, name, description, owner, members(*)")
+      .neq("members.user_id", user.id)
+      .range(offset, offset + limit - 1);
+    if (error) throw error;
+    return data.map((dbChannel) => ({
+      description: dbChannel.description ?? "",
+      id: dbChannel.id,
+      name: dbChannel.name ?? "",
+      owner: dbChannel.owner,
+    }));
+  }
+
+  async addMembers(
+    id: number,
+    userIds: UserId[],
+    invitation: string
+  ): Promise<void> {
+    const { data, error } = await this.client
+      .from("members")
+      .insert(
+        userIds.map((userId) => ({
+          accepted: false,
+          channel_id: id,
+          user_id: userId as string,
+          invite_message: invitation,
+        }))
+      )
+      .select("users!user_id ( * )");
+    if (error) throw error;
+    data.forEach(({ users }) => {
+      this.cache.putUser(...normalizeJoin(users));
+    });
+    // TODO: Find some way to update the `channel`'s members
+  }
+
+  async removeMembers(
+    id: number,
+    userIds: UserId[],
+    canRejoin?: boolean | undefined
+  ): Promise<void> {
+    if (canRejoin) {
+      // "Unaccept" the invite by which the members joined by.
+      const { error } = await this.client
+        .from("members")
+        .update({
+          accepted: false,
+          invite_message: null,
+        })
+        .eq("user_id", userIds as string[]);
+      if (error) throw error;
+    } else {
+      // Delete the members, permanently.
+      const { error } = await this.client
+        .from("members")
+        .delete()
+        .eq("user_id", userIds);
+      if (error) throw error;
+    }
+  }
+
+  generateLink(id: number): Promise<string> {
+    throw new Error(`Cannot generate link for ${id}: method not implemented.`);
   }
 
   async updateChannel(
@@ -240,10 +350,6 @@ class SupabaseBackendImpl implements NetworkBackend {
       },
       null
     );
-  }
-
-  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
-    throw new Error("Method not implemented.");
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(

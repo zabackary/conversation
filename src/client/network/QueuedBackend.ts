@@ -2,6 +2,7 @@
 /* eslint-disable no-return-assign */
 import Channel, {
   DmChannel,
+  InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
@@ -85,6 +86,35 @@ export default class QueuedBackend implements NetworkBackend {
     "connecting" | "connected" | "reconnecting" | "error"
   >;
 
+  getInvitedChannels(
+    offset: number,
+    limit: number
+  ): Promise<InvitedChannelListing[]> {
+    return this.deferredPromise((backend) =>
+      backend.getInvitedChannels(offset, limit)
+    );
+  }
+
+  addMembers(id: number, userIds: UserId[], invitation: string): Promise<void> {
+    return this.deferredPromise((backend) =>
+      backend.addMembers(id, userIds, invitation)
+    );
+  }
+
+  removeMembers(
+    id: number,
+    userIds: UserId[],
+    canRejoin?: boolean | undefined
+  ): Promise<void> {
+    return this.deferredPromise((backend) =>
+      backend.removeMembers(id, userIds, canRejoin)
+    );
+  }
+
+  generateLink(id: number): Promise<string> {
+    return this.deferredPromise((backend) => backend.generateLink(id));
+  }
+
   createChannel(
     name: string,
     description: string,
@@ -130,8 +160,13 @@ export default class QueuedBackend implements NetworkBackend {
     return this.deferredSubscribable((backend) => backend.getDMs());
   }
 
-  getPublicChannels(): Subscribable<PublicChannelListing[] | null> {
-    return this.deferredSubscribable((backend) => backend.getPublicChannels());
+  getPublicChannels(
+    offset: number,
+    limit: number
+  ): Promise<PublicChannelListing[]> {
+    return this.deferredPromise((backend) =>
+      backend.getPublicChannels(offset, limit)
+    );
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(

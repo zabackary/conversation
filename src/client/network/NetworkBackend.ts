@@ -1,5 +1,6 @@
 import Channel, {
   DmChannel,
+  InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
@@ -92,10 +93,24 @@ export default interface NetworkBackend {
   /**
    * Gets all channels with privacy "public" that can be joined without invite.
    *
-   * @returns A subscribable representing a list of public `Channel`s that are
+   * @returns A promise resolving with a list of public `Channel`s that are
    * not currently joined by the user.
    */
-  getPublicChannels(): Subscribable<PublicChannelListing[] | null>;
+  getPublicChannels(
+    offset: number,
+    limit: number
+  ): Promise<PublicChannelListing[]>;
+
+  /**
+   * Gets all channels with privacy "private" that the user is invited to.
+   *
+   * @returns A promise resolving with a list of private `Channel`s that
+   * can be joined and are not currently joined by the user.
+   */
+  getInvitedChannels(
+    offset: number,
+    limit: number
+  ): Promise<InvitedChannelListing[]>;
 
   /**
    * Joins a channel, given a `ChannelJoinInfo`. Returns the name of the
@@ -170,7 +185,35 @@ export default interface NetworkBackend {
    * Deletes a channel if the user is the owner. All related messages are
    * *forever lost*.
    */
-  deleteChannel(id: number): Promise<void>;
+  deleteChannel(id: UserId): Promise<void>;
+
+  /**
+   * Adds a member to a channel.
+   */
+  addMembers(id: number, userIds: UserId[], invitation: string): Promise<void>;
+
+  /**
+   * Removes a member from the channel, if `membersCanEdit` or the user is the
+   * owner.
+   *
+   * @argument id The ID of the user to remove.
+   * @argument canRejoin Whether the user can still rejoin the channel. Only
+   * owners can use this flag. If `false`, basically banning.
+   */
+  removeMembers(
+    id: number,
+    userIds: UserId[],
+    canRejoin?: boolean
+  ): Promise<void>;
+
+  /**
+   * Generates and returns a link that users can use to join the given channel.
+   *
+   * @argument maxUsers Optional; the maximum amount of users that can use this
+   * link. If unset and channel is unlisted, backends SHOULD encode the passcode
+   * to join the channel.
+   */
+  generateLink(id: number): Promise<string>;
 
   /**
    * Logs the user in given credentials.

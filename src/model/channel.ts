@@ -52,6 +52,14 @@ export interface UnlistedChannel extends BaseChannel {
 }
 
 export type PublicChannelListing = Pick<
-  BaseChannel,
-  "name" | "description" | "id"
+  GroupChannel,
+  "name" | "description" | "id" | "owner"
 >;
+
+export type InvitedChannelListing = Pick<
+  GroupChannel,
+  "name" | "description" | "id" | "owner"
+> & {
+  actor: UserId;
+  inviteMessage: string;
+};
