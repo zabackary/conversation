@@ -21,6 +21,7 @@ import useSnackbar from "../../components/useSnackbar";
 import useBackend from "../../hooks/useBackend";
 import useRouteForward from "../../hooks/useRouteForward";
 import { useSubscribable } from "../../hooks/useBackendFunction";
+import useRequireLogin from "../../hooks/useRequireLogin";
 
 function LoadingGlimmer() {
   return (
@@ -42,6 +43,7 @@ function LoadingGlimmer() {
 
 export default function RootRoute() {
   useRouteForward();
+  useRequireLogin();
   const match = useMatches()[1] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const theme = useTheme();
