@@ -26,7 +26,10 @@ export default function convertUser(dbUser: SupabaseUser): User {
     isBot: false,
     name: dbUser.name,
     nickname: dbUser.nickname,
-    privilegeLevel: dbUser.verified
+    // eslint-disable-next-line no-nested-ternary
+    privilegeLevel: dbUser.admin
+      ? PrivilegeLevel.Admin
+      : dbUser.verified
       ? PrivilegeLevel.Normal
       : PrivilegeLevel.Unverified,
     active: false,
