@@ -128,7 +128,7 @@ export default function ConversationAppBar({
         <DialogTitle id={aboutHeaderId}>{t("aboutDialog.title")}</DialogTitle>
         <DialogContent>
           <div id={aboutDescriptionId}>
-            <Stack alignItems="center">
+            <Stack alignItems="center" textAlign="center">
               <Avatar
                 sx={{ bgcolor: "secondary.main", width: 72, height: 72 }}
                 sizes="large"
@@ -139,6 +139,12 @@ export default function ConversationAppBar({
                 {t("aboutDialog.header")}
               </Typography>
               <Typography>{t("aboutDialog.copyright")}</Typography>
+              <Typography>
+                {t("aboutDialog.timestamp", {
+                  version: "4.0.0-beta",
+                  date: new Date(__BUILD_TIMESTAMP__),
+                })}
+              </Typography>
             </Stack>
           </div>
         </DialogContent>
