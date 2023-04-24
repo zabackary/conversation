@@ -18,8 +18,12 @@ import {
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
 import LanguagePickerDialog from "./LanguagePickerDialog";
+import useUser from "../../hooks/useUser";
+import { PrivilegeLevel } from "../../../model/user";
 
 const LanguageSwitcherIconButton = styled(IconButton, {
   shouldForwardProp(propName) {
@@ -37,6 +41,7 @@ interface Route {
   icon: ReactNode;
   filledIcon: ReactNode;
   id: number;
+  admin?: boolean;
 }
 
 const routes = [
@@ -68,6 +73,14 @@ const routes = [
     filledIcon: <SettingsIcon />,
     id: 3,
   },
+  {
+    label: "adminPanel" as const,
+    href: "/app/admin",
+    icon: <AdminPanelSettingsOutlinedIcon />,
+    filledIcon: <AdminPanelSettingsIcon />,
+    id: 4,
+    admin: true,
+  },
 ] satisfies Route[];
 
 type ArrayElement<ArrayType extends readonly unknown[]> =
@@ -88,6 +101,8 @@ function ConversationNavigationRailAction({
 }: ConversationNavigationRailActionProps) {
   const handleClick = useLinkClickHandler(route.href);
   const { t } = useTranslation();
+  const user = useUser(false);
+  if (route.admin && user?.privilegeLevel !== PrivilegeLevel.Admin) return null;
   return rail ? (
     <NavigationRailAction
       label={t(route.label)}
