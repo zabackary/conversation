@@ -1,14 +1,16 @@
-import MenuIcon from "@mui/icons-material/Menu";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
-import * as React from "react";
 import { createContext, ReactNode, useCallback, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const drawerWidth = 240;
 
 export const toolbarButtonContext = createContext<ReactNode | null>(null);
+
+const LISTS = ["/app/channels", "/app/dms", "/app/settings"];
 
 interface Props {
   /**
@@ -24,12 +26,6 @@ export default function ResponsiveDrawer({
   drawerHeader,
   drawerItems,
 }: Props) {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const handleDrawerToggle = useCallback(() => {
-    setMobileOpen(!mobileOpen);
-  }, [mobileOpen]);
-
   const drawer = (
     <>
       {drawerHeader}
@@ -37,19 +33,34 @@ export default function ResponsiveDrawer({
     </>
   );
 
+  const navigate = useNavigate();
+  const handleBackClick = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+  const location = useLocation();
   const toolbarButton = useMemo(
     () => (
       <IconButton
         color="inherit"
-        aria-label="open drawer"
+        aria-label="back" // TODO: translate
         edge="start"
-        onClick={handleDrawerToggle}
-        sx={{ mr: 2, display: { sm: "none" } }}
+        onClick={handleBackClick}
+        sx={{
+          mr: 1,
+          display: !LISTS.includes(
+            location.pathname.slice(
+              0,
+              location.pathname.endsWith("/") ? -1 : undefined
+            )
+          )
+            ? { sm: "none" }
+            : "none",
+        }}
       >
-        <MenuIcon />
+        <ArrowBackIcon />
       </IconButton>
     ),
-    [handleDrawerToggle]
+    [handleBackClick, location.pathname]
   );
 
   return (
@@ -62,25 +73,6 @@ export default function ResponsiveDrawer({
           display: "flex",
         }}
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          PaperProps={{
-            sx: {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-          }}
-        >
-          {drawer}
-        </Drawer>
         <Drawer
           variant="permanent"
           PaperProps={{
