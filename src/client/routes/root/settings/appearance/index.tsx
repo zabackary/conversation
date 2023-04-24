@@ -3,7 +3,7 @@ import ShuffleIcon from "@mui/icons-material/Shuffle";
 import { Chip, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useDebouncedCallback } from "use-debounce";
+import { useThrottledCallback } from "use-debounce";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
 import useSnackbar from "../../../../components/useSnackbar";
@@ -25,15 +25,11 @@ export default function AppearanceSettingsRoute({
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
-  const handleColorChange = useDebouncedCallback(
-    (color: string) => {
-      generateThemeScheme(color).catch(() => {
-        snackbar.showSnackbar(t("appearance.theme.error"));
-      });
-    },
-    200,
-    { maxWait: 500 }
-  );
+  const handleColorChange = useThrottledCallback((color: string) => {
+    generateThemeScheme(color).catch(() => {
+      snackbar.showSnackbar(t("appearance.theme.error"));
+    });
+  }, 200);
 
   const handleThemeChange = useCallback(
     (newTheme: boolean) => {
