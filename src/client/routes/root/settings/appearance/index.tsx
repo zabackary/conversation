@@ -1,6 +1,6 @@
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
-import { Chip, Grid, List, Stack } from "@mui/material";
+import { Chip, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useDebouncedCallback } from "use-debounce";
@@ -25,11 +25,15 @@ export default function AppearanceSettingsRoute({
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
-  const handleColorChange = useDebouncedCallback((color: string) => {
-    generateThemeScheme(color).catch(() => {
-      snackbar.showSnackbar(t("appearance.theme.error"));
-    });
-  }, 200);
+  const handleColorChange = useDebouncedCallback(
+    (color: string) => {
+      generateThemeScheme(color).catch(() => {
+        snackbar.showSnackbar(t("appearance.theme.error"));
+      });
+    },
+    200,
+    { maxWait: 500 }
+  );
 
   const handleThemeChange = useCallback(
     (newTheme: boolean) => {
