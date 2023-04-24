@@ -4,6 +4,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PeopleIcon from "@mui/icons-material/People";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import {
+  Box,
   CircularProgress,
   Drawer,
   IconButton,
@@ -28,7 +29,7 @@ import PeopleMenu from "./PeopleMenu";
 
 const sideSheetWidth = 300;
 
-const SideSheetToolbar = styled(Toolbar)(({ theme }) => ({
+export const SideSheetToolbar = styled(Toolbar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
@@ -183,18 +184,26 @@ export default function Chat({ channelId }: ChatProps) {
               }
         }
       >
-        <SideSheetToolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {t("channelInfo.title")}
-          </Typography>
-          <IconButton onClick={() => setActiveSidebar(null)}>
-            <CloseIcon />
-          </IconButton>
-        </SideSheetToolbar>
         {channel ? (
-          <InfoMenu channel={channel} sx={{ p: 2 }} />
+          <InfoMenu
+            channel={channel}
+            sx={{ p: 2 }}
+            handleSidebarClose={() => setActiveSidebar(null)}
+          />
         ) : (
-          <CircularProgress />
+          <>
+            <SideSheetToolbar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                {t("channelInfo.title")}
+              </Typography>
+              <IconButton onClick={() => setActiveSidebar(null)} edge="end">
+                <CloseIcon />
+              </IconButton>
+            </SideSheetToolbar>
+            <Box display="flex" justifyContent="center" my={3}>
+              <CircularProgress />
+            </Box>
+          </>
         )}
       </Drawer>
       <Drawer
@@ -218,18 +227,26 @@ export default function Chat({ channelId }: ChatProps) {
               }
         }
       >
-        <SideSheetToolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {t("people.title")}
-          </Typography>
-          <IconButton onClick={() => setActiveSidebar(null)}>
-            <CloseIcon />
-          </IconButton>
-        </SideSheetToolbar>
         {channel ? (
-          <PeopleMenu channel={channel} sx={{ p: 2 }} />
+          <PeopleMenu
+            channel={channel}
+            sx={{ p: 2 }}
+            handleSidebarClose={() => setActiveSidebar(null)}
+          />
         ) : (
-          <CircularProgress />
+          <>
+            <SideSheetToolbar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                {t("people.title")}
+              </Typography>
+              <IconButton onClick={() => setActiveSidebar(null)} edge="end">
+                <CloseIcon />
+              </IconButton>
+            </SideSheetToolbar>
+            <Box display="flex" justifyContent="center" my={3}>
+              <CircularProgress />
+            </Box>
+          </>
         )}
       </Drawer>
     </>
