@@ -222,6 +222,7 @@ declare module "@mui/material/styles/createTheme" {
     tones?: M3ThemeTones;
   }
 }
+
 declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     elevated: true;
@@ -229,6 +230,18 @@ declare module "@mui/material/Button" {
     tonal: true;
   }
   interface ButtonPropsColorOverrides {
+    tertiary: true;
+    surface: true;
+  }
+}
+
+declare module "@mui/material/ButtonGroup" {
+  interface ButtonGroupPropsVariantOverrides {
+    elevated: true;
+    filled: true;
+    tonal: true;
+  }
+  interface ButtonGroupColorOverrides {
     tertiary: true;
     surface: true;
   }
