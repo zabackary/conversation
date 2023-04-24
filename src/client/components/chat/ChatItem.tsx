@@ -7,6 +7,7 @@ import {
   ListItemButton,
   ListItemText,
   styled,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useMemo } from "react";
@@ -16,6 +17,8 @@ import Message from "../../../model/message";
 import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "../main/DrawerHeader";
 import MaterialReactMarkdown from "./MaterialReactMarkdown";
+import UserTooltip from "../UserTooltip";
+import { PrivilegeLevel } from "../../../model/user";
 
 const WHITELISTED_TRANSLATIONS = [
   "dm_start",
@@ -63,12 +66,17 @@ export default function ChatItem({ message, showAvatar }: Props) {
               overlap="circular"
               invisible={!active}
             >
-              <Avatar
-                src={message.user.profilePicture ?? undefined}
-                alt={message.user.name}
+              <Tooltip
+                title={<UserTooltip user={message.user} />}
+                placement="left"
               >
-                {(message.user.nickname ?? message.user.name)[0]}
-              </Avatar>
+                <Avatar
+                  src={message.user.profilePicture ?? undefined}
+                  alt={message.user.name}
+                >
+                  {(message.user.nickname ?? message.user.name)[0]}
+                </Avatar>
+              </Tooltip>
             </ContrastBadge>
           </ListItemAvatar>
         ) : null}
@@ -79,6 +87,12 @@ export default function ChatItem({ message, showAvatar }: Props) {
                 {message.isService ? message.user.name : message.user.nickname}{" "}
                 {message.isService ? (
                   <InlineBadge color="primary" badgeContent="bot" />
+                ) : null}
+                {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
+                  <InlineBadge color="secondary" badgeContent="Admin" />
+                ) : null}
+                {message.user.privilegeLevel === PrivilegeLevel.Unverified ? (
+                  <InlineBadge color="warning" badgeContent="Unverified" />
                 ) : null}{" "}
                 <Typography
                   variant="body2"

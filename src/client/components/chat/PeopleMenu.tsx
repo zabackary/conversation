@@ -57,14 +57,16 @@ export function PeopleMenuListItem({ user }: PeopleMenuListItemProps) {
         </IconButton>
       }
     >
-      <ListItemButton>
-        <ListItemAvatar>
-          <Avatar src={user.profilePicture} alt={user.name}>
-            {(user.nickname ?? user.name)[0]}
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={user.name} secondary={user.nickname} />
-      </ListItemButton>
+      <Tooltip title={<UserTooltip user={user} />} placement="left">
+        <ListItemButton>
+          <ListItemAvatar>
+            <Avatar src={user.profilePicture} alt={user.name}>
+              {(user.nickname ?? user.name)[0]}
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={user.name} secondary={user.nickname} />
+        </ListItemButton>
+      </Tooltip>
     </ListItem>
   );
 }
