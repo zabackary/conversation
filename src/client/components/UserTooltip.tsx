@@ -8,7 +8,7 @@ export interface UserTooltipProps {
 
 export default function UserTooltip({ user }: UserTooltipProps) {
   return (
-    <Stack spacing={1} p={1}>
+    <Stack spacing={1} p={1} width={340}>
       <Stack direction="row" spacing={1}>
         <Avatar
           src={user.profilePicture}
@@ -23,7 +23,7 @@ export default function UserTooltip({ user }: UserTooltipProps) {
             {user.nickname} {user.email ? <>&middot; {user.email}</> : null}
           </Typography>
           {user.privilegeLevel === PrivilegeLevel.Admin ? (
-            <InlineBadge badgeContent="Admin" />
+            <InlineBadge color="secondary" badgeContent="Admin" />
           ) : null}
           {user.privilegeLevel === PrivilegeLevel.Unverified ? (
             <InlineBadge color="warning" badgeContent="Unverified" />
