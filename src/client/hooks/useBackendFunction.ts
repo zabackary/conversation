@@ -37,7 +37,10 @@ export default function useBackendFunction<T>(
   const navigate = useNavigate();
   const location = useLocation();
   useEffect(() => {
-    if (navigateToLoginOnAuthFailure && value instanceof LoggedOutException) {
+    if (
+      navigateToLoginOnAuthFailure &&
+      (value instanceof LoggedOutException || (isUser && value === null))
+    ) {
       navigate(
         `/login/?next=${encodeURIComponent(
           location.pathname + location.hash + location.search
