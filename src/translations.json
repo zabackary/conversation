@@ -104,10 +104,12 @@
       "aboutDialog": {
         "title": "About Conversation",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation contributors. All rights reserved."
+        "copyright": "©2020-2023 Conversation contributors. All rights reserved.",
+        "timestamp": "Version {{ version }}, built on {{ date }}"
       },
       "error": "Something went wrong. Try again later.",
-      "languageSelect": "Select language"
+      "languageSelect": "Select language",
+      "adminPanel": "Admin Panel"
     },
     "landing": {
       "header": {
@@ -284,19 +286,19 @@
         }
       },
       "join": {
-        "title": "",
+        "title": "Join Channel",
         "invite": {
-          "label": ""
+          "label": "Join by invite"
         },
         "passphrase": {
-          "label": "",
-          "hint": "",
-          "id": "",
-          "password": ""
+          "label": "Join by passphrase",
+          "hint": "To join a hidden channel without an invite, ask the owner for the channel number and its passphrase.",
+          "id": "ID",
+          "password": "Passphrase"
         },
-        "joinButton": "",
+        "joinButton": "Join",
         "public": {
-          "label": ""
+          "label": "Join a public channel"
         }
       },
       "locked": "This channel is locked. Members cannot edit channel details or add or remove others."
@@ -343,7 +345,8 @@
       "aboutDialog": {
         "title": "About Conversation",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation contributors. All rights reserved."
+        "copyright": "©2020-2023 Conversation contributors. All rights reserved.",
+        "timestamp": ""
       },
       "error": "Something went wrong. Try again later.",
       "languageSelect": "Select language"
@@ -374,7 +377,7 @@
         "beautiful": {
           "header": "Beautiful",
           "description": "Wonderfully designed using Google's latest styles. Pretty pretty, if you know what I mean.",
-          "callToAction": "Change the colors"
+          "callToAction": "Change the colours"
         },
         "powerful": {
           "title": "Powerful",
@@ -485,7 +488,7 @@
       "prompt": "メッセージ {{ channelOrUsername }} を {{ currentUser }} として...",
       "email": "{{ username }} にメールをする",
       "block": "ブロック",
-      "overflowTooltip": "より多くのオプション",
+      "overflowTooltip": "追加のオプション",
       "upload": {
         "title": "ファイルをアップロードする",
         "hint": "🔼をダブルクリックすることもできます"
@@ -498,24 +501,24 @@
         "title": "アクションを実行",
         "hint": "または、/ を入力してください"
       },
-      "emoji": "絵文字を挿入",
+      "emoji": "絵文字",
       "send": "メッセージを送る",
       "sendDisabled": "送信（無効）",
       "channelInfo": {
         "title": "チャンネルの情報",
         "name": "名前",
-        "description": "説明",
+        "description": "詳細",
         "private": "プライベート",
-        "unlisted": "未公開",
-        "public": "公共",
+        "unlisted": "限定公開",
+        "public": "公開",
         "save": "保存",
-        "pendingChanges": "保留中の変更"
+        "pendingChanges": "未保存の変更"
       },
       "people": {
         "title": "メンバー",
         "leave": {
-          "action": "チャンネルを離れる",
-          "confirm": "退会してもよろしいですか？ 誰かがあなたを削除しない限り、招待画面を使用して再度参加することができます。"
+          "action": "チャンネルから脱退する",
+          "confirm": "このチャンネルから脱退してもよろしいでしょうか？ 誰かがあなたを強制退会しない限り、\"チャンネルに参加\"のところから再度同じチャンネルに参加することができます。"
         },
         "add": {
           "action": "メンバーを追加",
@@ -528,17 +531,17 @@
           "label": "招待による参加"
         },
         "passphrase": {
-          "label": "パスフレーズで参加",
-          "hint": "招待なしで非表示のチャンネルに参加するには、所有者にチャンネル番号とそのパスフレーズを尋ねてください。",
+          "label": "パスワードで参加",
+          "hint": "招待なしで非公開のチャンネルに参加するには、所有者にチャンネルのIDとそのパスワードを尋ねてください。",
           "id": "ID",
-          "password": "パスフレーズ"
+          "password": "パスワード"
         },
-        "joinButton": "加入",
+        "joinButton": "参加",
         "public": {
           "label": "公開チャンネルに参加する"
         }
       },
-      "locked": "このチャンネルはロックされています。 メンバーはチャンネルの詳細を編集したり、他のメンバーを追加または削除したりすることはできません。"
+      "locked": "このチャンネルはロックされています。 メンバーはチャンネルの設定を編集したり、他のメンバーを追加または退会させたりすることはできません。"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -582,10 +585,11 @@
       "aboutDialog": {
         "title": "Conversationについて",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation コントリビューター。 全著作権所有。"
+        "copyright": "©2020-2023 Conversation 協力者。 全著作権所有。",
+        "timestamp": "バージョン {{ version }}, {{ date }} に建設された"
       },
       "error": "エラーが発生しました。 あとでもう一度試してみてください。",
-      "languageSelect": "言語"
+      "languageSelect": "言語を選択してください"
     },
     "landing": {
       "header": {
@@ -594,12 +598,12 @@
         "buttons": {
           "createAcc": "始めましょう",
           "login": "ログイン",
-          "launch": "会話を開始"
+          "launch": "Conversationを開始"
         },
         "alreadyLoggedIn": "あなたはすでにログインしています。"
       },
       "why": {
-        "header": "なぜ会話？",
+        "header": "なぜConversation？",
         "simple": {
           "header": "単純",
           "description": "いつでもどこでも。 学校のChromebookでも。 会話は、検閲のないコミュニケーションのために Google Scripts を利用します。",
@@ -612,7 +616,7 @@
         },
         "beautiful": {
           "header": "美しい",
-          "description": "Google の最新スタイルを使用して見事に設計されています。 あなたが私が何を意味するか知っていれば、かなりきれいです。",
+          "description": "Google の最新スタイルを使用して見事に設計されています。 綺麗だね…",
           "callToAction": "色を変更する"
         },
         "powerful": {
@@ -668,7 +672,7 @@
       "help": {
         "description": "ログインするには、ログイン ページに移動し、メール アドレスを入力します。@stu.his.ac.jp の部分は既に入力ボックスに入力されているため、入力しないでください。 アカウントを作成するには、一番下までスクロールして [アカウントの作成] を押し、新しいユーザー名とパスワードを入力します。 メールを確認する必要があります。"
       },
-      "back": "戻る"
+      "back": "前へ"
     },
     "message": {
       "dm_start": "これがこのDMの始まりです。 チャットを始めましょう！",
@@ -744,17 +748,17 @@
         "title": "채널 정보",
         "name": "이름",
         "description": "설명",
-        "private": "사적인",
+        "private": "개인",
         "unlisted": "미등록",
-        "public": "공공의",
-        "save": "구하다",
+        "public": "공공",
+        "save": "저장",
         "pendingChanges": "대기 중인 변경사항"
       },
       "people": {
         "title": "사람들",
         "leave": {
           "action": "채널 나가기",
-          "confirm": "정말 떠나시겠습니까? 다른 사람이 귀하를 제거하지 않는 한 초대 화면을 사용하여 다시 가입할 수 있습니다."
+          "confirm": "정말 떠나시겠습니까? 다른 사람이 귀하를 제거하지 않는 한 초대 화면을 사용하여 다시 입장할 수 있습니다."
         },
         "add": {
           "action": "구성원 추가",
@@ -821,7 +825,8 @@
       "aboutDialog": {
         "title": "대화에 대한 정보",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation 기여자. 판권 소유."
+        "copyright": "©2020-2023 Conversation 기여자. 판권 소유.",
+        "timestamp": ""
       },
       "error": "문제가 발생했습니다. 나중에 다시 시도하십시오.",
       "languageSelect": "언어 선택"
@@ -864,7 +869,7 @@
     },
     "login": {
       "alert": {
-        "redirect": "대화를 사용하려면 로그인해야 합니다.",
+        "redirect": "대화하려면 로그인해야 합니다.",
         "error": {
           "header": "문제가 발생했습니다.",
           "description": "오타가 있는지 이메일과 비밀번호를 확인하세요. 문제가 지속되면 개발자에게 문의하십시오."
@@ -896,8 +901,8 @@
         "continue": "수락 및 계속"
       },
       "footer": {
-        "forgot": "비밀번호를 잊으 셨나요",
-        "help": "돕다",
+        "forgot": "비밀번호를 잊으셨나요?",
+        "help": "도움말",
         "appearance": "외모 기본 설정"
       },
       "forgot": {
@@ -1060,7 +1065,8 @@
       "aboutDialog": {
         "title": "关于 Conversation",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation 贡献者。 版权所有。"
+        "copyright": "©2020-2023 Conversation 贡献者。 版权所有。",
+        "timestamp": ""
       },
       "error": "发现问题，稍后再试。",
       "languageSelect": "选择语言"
@@ -1299,7 +1305,8 @@
       "aboutDialog": {
         "title": "關於 Conversation",
         "header": "Conversation 4",
-        "copyright": "©2020-2023 Conversation 貢獻者。 版權所有。"
+        "copyright": "©2020-2023 Conversation 貢獻者。 版權所有。",
+        "timestamp": ""
       },
       "error": "出了些問題。 稍後再試。",
       "languageSelect": "選擇語言"
