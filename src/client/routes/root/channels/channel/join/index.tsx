@@ -10,9 +10,6 @@ import {
   Box,
   Button,
   Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Grid,
   Stack,
   TextField,
@@ -80,7 +77,8 @@ export default function ChannelJoinScreen() {
           </AccordionSummary>
           <AccordionDetails>
             <Typography>
-              [untranslated] This feature is in development.
+              [untranslated] This feature is in development, but I&apos;m almost
+              done. It should be done by 4/28 at the latest.
             </Typography>
           </AccordionDetails>
         </Accordion>
