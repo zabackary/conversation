@@ -276,11 +276,12 @@ class SupabaseBackendImpl implements NetworkBackend {
       .select();
     if (error) throw error;
     const [dbChannel] = data;
-    await this.client.from("members").insert({
+    const { error: memberError } = await this.client.from("members").insert({
       accepted: true,
       channel_id: dbChannel.id,
       user_id: userId,
     });
+    if (memberError) throw memberError;
     const channel = {
       ...dbChannel,
       users: [
