@@ -31,7 +31,10 @@
         "unlisted": "Unlisted",
         "public": "Public",
         "save": "Save",
-        "pendingChanges": "Pending changes"
+        "pendingChanges": "Pending changes",
+        "unlistedHint": "The channel will not be shown on the explore screen, but users knowing the ID and password or holding an invite can still join without an formal invite.",
+        "publicHint": "The channel will be shown on the explore screen, and any user can join the channel without explicit consent.",
+        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel."
       },
       "people": {
         "title": "People",
@@ -40,9 +43,19 @@
           "confirm": "Are you sure you want to leave? Unless someone removes you, you'll still be able to rejoin using the invites screen."
         },
         "add": {
-          "action": "Add members",
-          "search": "Search users..."
-        }
+          "action": "Invite members",
+          "search": "Search by email, name, or nickname..."
+        },
+        "filter": "Filter members",
+        "memberCount_one": "Invite",
+        "memberCount_other": "{{ count }} members",
+        "addMembers": "Add members",
+        "searchUsers": "Search users...",
+        "noUsersFound": "No users found.",
+        "inviteMessage": "Invite message",
+        "cancel": "Cancel",
+        "inviteFinished_one": "Invite {{ count }} member",
+        "inviteFinished_other": "Invite {{ count }} members"
       },
       "join": {
         "title": "Join Channel",
@@ -60,7 +73,10 @@
           "label": "Join a public channel"
         }
       },
-      "locked": "This channel is locked. Members cannot edit channel details or add or remove others."
+      "locked": "This channel is locked. Members cannot edit channel details or add or remove others.",
+      "createChannel": "Create channel",
+      "createChannelCancel": "Cancel",
+      "createChannelContinue": "Create"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -109,7 +125,14 @@
       },
       "error": "Something went wrong. Try again later.",
       "languageSelect": "Select language",
-      "adminPanel": "Admin Panel"
+      "adminPanel": "Admin Panel",
+      "unverified": "Unverified",
+      "admin": "Admin",
+      "peopleCard": {
+        "goToDm": "Go to DM",
+        "viewProfile": "View profile"
+      },
+      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking."
     },
     "landing": {
       "header": {
@@ -195,10 +218,10 @@
       "back": "Back"
     },
     "message": {
-      "dm_start": "This is the start of this DM. Let's start chatting!",
-      "chat_start": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
-      "chat_member_add": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
-      "chat_name_change": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
+      "dmStart": "This is the start of this DM. Let's start chatting!",
+      "chatStart": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
+      "chatMemberAdd": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
+      "chatNameChange": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
       "easteregg": "Someone found an easter egg! 🤩"
     },
     "settings": {
@@ -272,7 +295,10 @@
         "unlisted": "Unlisted",
         "public": "Public",
         "save": "Save",
-        "pendingChanges": "Pending changes"
+        "pendingChanges": "Pending changes",
+        "unlistedHint": "The channel will not be shown on the explore screen, but users knowing the ID and password or holding an invite can still join without an formal invite.",
+        "publicHint": "The channel will be shown on the explore screen, and any user can join the channel without explicit consent.",
+        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel."
       },
       "people": {
         "title": "People",
@@ -281,9 +307,18 @@
           "confirm": "Are you sure you want to leave? Unless someone removes you, you'll still be able to rejoin using the invites screen."
         },
         "add": {
-          "action": "Add members",
-          "search": "Search users..."
-        }
+          "action": "Invite members",
+          "search": "Search by email, name, or nickname..."
+        },
+        "filter": "Filter members",
+        "memberCount": "{{ count }} member",
+        "addMembers": "Add members",
+        "searchUsers": "Search users...",
+        "noUsersFound": "No users found.",
+        "inviteMessage": "Invite message",
+        "cancel": "Cancel",
+        "inviteFinished_one": "Invite {{ count }} member",
+        "inviteFinished_other": "Invite {{ count }} members"
       },
       "join": {
         "title": "Join Channel",
@@ -301,7 +336,10 @@
           "label": "Join a public channel"
         }
       },
-      "locked": "This channel is locked. Members cannot edit channel details or add or remove others."
+      "locked": "This channel is locked. Members cannot edit channel details or add or remove others.",
+      "createChannel": "Create channel",
+      "createChannelCancel": "Cancel",
+      "createChannelContinue": "Create"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -346,10 +384,18 @@
         "title": "About Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation contributors. All rights reserved.",
-        "timestamp": ""
+        "timestamp": "Version {{ version}}, built on {{ date, datetime }}"
       },
       "error": "Something went wrong. Try again later.",
-      "languageSelect": "Select language"
+      "languageSelect": "Select language",
+      "adminPanel": "Admin Panel",
+      "unverified": "Unverified",
+      "admin": "Admin",
+      "peopleCard": {
+        "goToDm": "Go to DM",
+        "viewProfile": "View profile"
+      },
+      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking."
     },
     "landing": {
       "header": {
@@ -435,10 +481,10 @@
       "back": "Back"
     },
     "message": {
-      "dm_start": "This is the start of this DM. Let's start chatting!",
-      "chat_start": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
-      "chat_member_add": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
-      "chat_name_change": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
+      "dmStart": "This is the start of this DM. Let's start chatting!",
+      "chatStart": "This is the start of \"{{ 0 }}\". Be the first one to say something!",
+      "chatMemberAdd": "{{ 0 }} added {{ 1 }} to this channel! 🎉",
+      "chatNameChange": "{{ 0 }} changed the name of this channel to \"{{ 1 }}\"",
       "easteregg": "Someone found an easter egg! 🤩"
     },
     "settings": {
@@ -512,7 +558,10 @@
         "unlisted": "限定公開",
         "public": "公開",
         "save": "保存",
-        "pendingChanges": "未保存の変更"
+        "pendingChanges": "未保存の変更",
+        "unlistedHint": "チャンネルは探索画面には表示されませんが、ID とパスワードを知っているか、招待されているユーザーは、正式な招待なしで参加できます。",
+        "publicHint": "チャンネルは探索画面に表示され、ユーザーは明示的な同意なしにチャンネルに参加できます。",
+        "privateHint": "チャンネルは探索画面に表示されません。 チャンネル メンバーによって招待されたユーザーのみがチャンネルに参加できます。"
       },
       "people": {
         "title": "メンバー",
@@ -523,7 +572,15 @@
         "add": {
           "action": "メンバーを追加",
           "search": "ユーザーを検索..."
-        }
+        },
+        "filter": "メンバーのフィルタ",
+        "memberCount": "{{ count }}人のメンバー",
+        "addMembers": "メンバーを追加",
+        "searchUsers": "ユーザーを検索...",
+        "noUsersFound": "ユーザが見つかりませんでした。",
+        "inviteMessage": "招待メッセージ",
+        "cancel": "キャンセル",
+        "inviteFinished": "{{ count }}人のメンバーを招待"
       },
       "join": {
         "title": "チャンネルに参加",
@@ -541,7 +598,10 @@
           "label": "公開チャンネルに参加する"
         }
       },
-      "locked": "このチャンネルはロックされています。 メンバーはチャンネルの設定を編集したり、他のメンバーを追加または退会させたりすることはできません。"
+      "locked": "このチャンネルはロックされています。 メンバーはチャンネルの設定を編集したり、他のメンバーを追加または退会させたりすることはできません。",
+      "createChannel": "チャンネルを作成",
+      "createChannelCancel": "キャンセル",
+      "createChannelContinue": "作成"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -589,7 +649,15 @@
         "timestamp": "バージョン {{ version }}, {{ date }} に建設された"
       },
       "error": "エラーが発生しました。 あとでもう一度試してみてください。",
-      "languageSelect": "言語を選択してください"
+      "languageSelect": "言語を選択してください",
+      "adminPanel": "管理パネル",
+      "unverified": "未確認",
+      "admin": "管理者",
+      "peopleCard": {
+        "goToDm": "DMに行く",
+        "viewProfile": "プロフィールを見る"
+      },
+      "adminTranslationNotice": "管理パネルは翻訳されていません。 おそらく決して翻訳されることはないので、尋ねようともしないでください。"
     },
     "landing": {
       "header": {
@@ -675,10 +743,10 @@
       "back": "前へ"
     },
     "message": {
-      "dm_start": "これがこのDMの始まりです。 チャットを始めましょう！",
-      "chat_start": "これが「{{ 0 }}」の始まりです。 何かを言う最初の人になりましょう！",
-      "chat_member_add": "{{ 0 }} が {{ 1 }} をこのチャンネルに追加しました! 🎉",
-      "chat_name_change": "{{ 0 }} がこのチャンネルの名前を「{{ 1 }}」に変更しました",
+      "dmStart": "これがこのDMの始まりです。 チャットを始めましょう！",
+      "chatStart": "これが「{{ 0 }}」の始まりです。 何かを言う最初の人になりましょう！",
+      "chatMemberAdd": "{{ 0 }} が {{ 1 }} をこのチャンネルに追加しました! 🎉",
+      "chatNameChange": "{{ 0 }} がこのチャンネルの名前を「{{ 1 }}」に変更しました",
       "easteregg": "誰かがイースターエッグを見つけた！ 🤩"
     },
     "settings": {
@@ -748,11 +816,14 @@
         "title": "채널 정보",
         "name": "이름",
         "description": "설명",
-        "private": "개인",
+        "private": "개인채널",
         "unlisted": "미등록",
-        "public": "공공",
+        "public": "공공채널",
         "save": "저장",
-        "pendingChanges": "대기 중인 변경사항"
+        "pendingChanges": "대기 중인 변경사항",
+        "unlistedHint": "해당 채널은 탐색 화면에 표시되지 않지만, 아이디와 비밀번호를 알고 있거나 초대장을 소지한 사용자는 정식 초대 없이도 가입할 수 있습니다.",
+        "publicHint": "채널은 탐색 화면에 표시되며 모든 사용자는 명시적인 동의 없이 채널에 가입할 수 있습니다.",
+        "privateHint": "탐색 화면에 채널이 표시되지 않습니다. 채널 구성원이 초대한 사용자만 채널에 가입할 수 있습니다.\r"
       },
       "people": {
         "title": "사람들",
@@ -763,7 +834,15 @@
         "add": {
           "action": "구성원 추가",
           "search": "사용자 검색..."
-        }
+        },
+        "filter": "회원 필터링",
+        "memberCount": "{{ count }} 회원",
+        "addMembers": "멤버 추가",
+        "searchUsers": "사용자 검색",
+        "noUsersFound": "해당하는 사용자 없음",
+        "inviteMessage": "초대 문구",
+        "cancel": "취소",
+        "inviteFinished": "{{ count }}명 초대"
       },
       "join": {
         "title": "채널 가입",
@@ -781,7 +860,10 @@
           "label": "공개 채널에 참여하기"
         }
       },
-      "locked": "이 채널은 잠겨 있습니다. 구성원은 채널 세부 정보를 편집하거나 다른 사람을 추가 또는 제거할 수 없습니다."
+      "locked": "이 채널은 잠겨 있습니다. 구성원은 채널 세부 정보를 편집하거나 다른 사람을 추가 또는 제거할 수 없습니다.",
+      "createChannel": "채널 만들기",
+      "createChannelCancel": "취소",
+      "createChannelContinue": "만들기"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -826,24 +908,32 @@
         "title": "대화에 대한 정보",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 기여자. 판권 소유.",
-        "timestamp": ""
+        "timestamp": "{{ date, datetime }}에 빌드된 버전 {{ version}}"
       },
       "error": "문제가 발생했습니다. 나중에 다시 시도하십시오.",
-      "languageSelect": "언어 선택"
+      "languageSelect": "언어 선택",
+      "adminPanel": "관리자 패널",
+      "unverified": "미확인",
+      "admin": "관리자",
+      "peopleCard": {
+        "goToDm": "DM으로 이동",
+        "viewProfile": "프로필보기"
+      },
+      "adminTranslationNotice": "관리자 패널은 번역되지 않습니다. 번역되지 않을 가능성이 높으므로 묻지 마십시오."
     },
     "landing": {
       "header": {
-        "title": "반대.",
+        "title": "대화하기.",
         "subtitle": "필수 학업 프로젝트에 대해 쉽게 의사소통할 수 있습니다.",
         "buttons": {
-          "createAcc": "시작하다",
+          "createAcc": "시작",
           "login": "로그인",
           "launch": "대화 시작"
         },
         "alreadyLoggedIn": "이미 로그인되어 있습니다."
       },
       "why": {
-        "header": "왜 대화인가?",
+        "header": "대화를 사용하는 이유는?",
         "simple": {
           "header": "단순한",
           "description": "언제나 어디서나. 학교 크롬북에서도 가능합니다. 대화는 무검열 커뮤니케이션을 위해 Google 스크립트를 사용합니다.",
@@ -851,18 +941,18 @@
         },
         "safe": {
           "header": "안전한",
-          "description": "처음부터 조정되도록 제작되었습니다. 실제 인간과 결합된 최첨단 자동 필터링은 모든 것을 잡을 수 있습니다.",
-          "callToAction": "해보자"
+          "description": "실제 인간과 결합된 최첨단 자동 필터링은 모든 것을 잡을 수 있습니다.",
+          "callToAction": "체험해 보기"
         },
         "beautiful": {
           "header": "아름다운",
-          "description": "Google의 최신 스타일을 사용하여 멋지게 디자인되었습니다. 꽤 예쁘다. 무슨 말인지 안다면.",
+          "description": "Google의 최신 스타일을 사용하여 멋지게 디자인되었습니다.",
           "callToAction": "색상 변경"
         },
         "powerful": {
-          "title": "강한",
+          "title": "보안이 강한",
           "description": "텍스트뿐만 아니라 이미지, 봇 등을 사용하여 쉽게 구성원을 초대하고 채팅할 수 있습니다.",
-          "callToAction": "그것으로 실험"
+          "callToAction": "체험해 보기"
         }
       },
       "footer": "2023년에 Zachary가 설계했습니다. 문제를 신고하거나 기능을 요청하거나 연락하려면 연락하세요."
@@ -912,13 +1002,13 @@
       "help": {
         "description": "로그인하려면 로그인 페이지로 이동하여 이메일을 입력하십시오. @stu.his.ac.jp 부분은 이미 입력 상자에 있으므로 입력하지 마십시오. 계정을 만들려면 아래로 스크롤하여 \"계정 만들기\"를 누르고 새 사용자 이름과 암호를 입력하십시오. 이메일을 확인해야 합니다."
       },
-      "back": "뒤쪽에"
+      "back": "돌아가기"
     },
     "message": {
-      "dm_start": "DM이 시작했습니다. 채팅을 시작해보세요!",
-      "chat_start": "\"{{ 0 }}\"이 시작했습니다. 가장 먼저 말하십시오!",
-      "chat_member_add": "{{ 0 }}님이 {{ 1 }}님을 이 채널에 추가했습니다! 🎉",
-      "chat_name_change": "{{ 0 }}님이 이 채널의 이름을 \"{{ 1 }}\"(으)로 변경했습니다.",
+      "dmStart": "DM이 시작했습니다. 채팅을 시작해보세요!",
+      "chatStart": "\"{{ 0 }}\"이 시작했습니다. 가장 먼저 말하십시오!",
+      "chatMemberAdd": "{{ 0 }}님이 {{ 1 }}님을 이 채널에 추가했습니다! 🎉",
+      "chatNameChange": "{{ 0 }}님이 이 채널의 이름을 \"{{ 1 }}\"(으)로 변경했습니다.",
       "easteregg": "누군가 이스터에그를 찾았어요! 🤩"
     },
     "settings": {
@@ -992,7 +1082,10 @@
         "unlisted": "未上市",
         "public": "民众",
         "save": "节省",
-        "pendingChanges": "待定更改"
+        "pendingChanges": "待定更改",
+        "unlistedHint": "该频道不会显示在探索屏幕上，但知道 ID 和密码或持有邀请的用户仍然可以在没有正式邀请的情况下加入。",
+        "publicHint": "该频道将显示在探索屏幕上，任何用户都可以在未经明确同意的情况下加入该频道。",
+        "privateHint": "该频道不会显示在探索屏幕上。 只有频道成员邀请的用户才能加入频道。"
       },
       "people": {
         "title": "群成员",
@@ -1003,7 +1096,15 @@
         "add": {
           "action": "添加成员",
           "search": "搜索用户..."
-        }
+        },
+        "filter": "筛选成员",
+        "memberCount": "{{ 数 }} 名成员",
+        "addMembers": "添加成员",
+        "searchUsers": "搜索用户...",
+        "noUsersFound": "未找到相应的用户。",
+        "inviteMessage": "邀请留言",
+        "cancel": "取消",
+        "inviteFinished": "邀请 {{ count }} 位会员"
       },
       "join": {
         "title": "加入频道",
@@ -1021,7 +1122,10 @@
           "label": "加入公共频道"
         }
       },
-      "locked": "此频道已锁定。 会员不能编辑频道详情或添加或删除其他人。"
+      "locked": "此频道已锁定。 会员不能编辑频道详情或添加或删除其他人。",
+      "createChannel": "创建频道",
+      "createChannelCancel": "取消",
+      "createChannelContinue": "创造"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -1066,10 +1170,18 @@
         "title": "关于 Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 贡献者。 版权所有。",
-        "timestamp": ""
+        "timestamp": "版本 {{ version}}，基于 {{ date, datetime }}"
       },
       "error": "发现问题，稍后再试。",
-      "languageSelect": "选择语言"
+      "languageSelect": "选择语言",
+      "adminPanel": "管理面板",
+      "unverified": "未验证",
+      "admin": "行政",
+      "peopleCard": {
+        "goToDm": "去私信",
+        "viewProfile": "查看资料"
+      },
+      "adminTranslationNotice": "管理面板未翻译。 它可能永远不会被翻译，所以甚至不要尝试询问。"
     },
     "landing": {
       "header": {
@@ -1155,10 +1267,10 @@
       "back": "后退"
     },
     "message": {
-      "dm_start": "这是DM的开头。 让我们开始聊天吧！",
-      "chat_start": "这是“{{ 0 }}”的开头。 成为第一个说些什么的人",
-      "chat_member_add": "{{ 0 }} 添加了 {{ 1 }} 到这个频道！ 🎉",
-      "chat_name_change": "{{ 0 }} 将此频道的名称更改为“{{ 1 }}”",
+      "dmStart": "这是DM的开头。 让我们开始聊天吧！",
+      "chatStart": "这是“{{ 0 }}”的开头。 成为第一个说些什么的人",
+      "chatMemberAdd": "{{ 0 }} 添加了 {{ 1 }} 到这个频道！ 🎉",
+      "chatNameChange": "{{ 0 }} 将此频道的名称更改为“{{ 1 }}”",
       "easteregg": "有人发现了彩蛋！ 🤗"
     },
     "settings": {
@@ -1232,7 +1344,10 @@
         "unlisted": "未上市",
         "public": "民眾",
         "save": "節省",
-        "pendingChanges": "待定更改"
+        "pendingChanges": "待定更改",
+        "unlistedHint": "該頻道不會顯示在探索屏幕上，但知道 ID 和密碼或持有邀請的用戶仍然可以在沒有正式邀請的情況下加入。",
+        "publicHint": "該頻道將顯示在探索屏幕上，任何用戶都可以在未經明確同意的情況下加入該頻道。",
+        "privateHint": "該頻道不會顯示在探索屏幕上。 只有頻道成員邀請的用戶才能加入頻道。"
       },
       "people": {
         "title": "人們",
@@ -1243,7 +1358,15 @@
         "add": {
           "action": "添加成員",
           "search": "搜索用戶..."
-        }
+        },
+        "filter": "篩選成員",
+        "memberCount": "{{ 數 }} 名成員",
+        "addMembers": "添加成員",
+        "searchUsers": "搜索用戶...",
+        "noUsersFound": "未找到相應的用戶。",
+        "inviteMessage": "邀請留言",
+        "cancel": "取消",
+        "inviteFinished": "邀請 {{ count }} 位會員"
       },
       "join": {
         "title": "加入頻道",
@@ -1261,7 +1384,10 @@
           "label": "加入公共頻道"
         }
       },
-      "locked": "此頻道已鎖定。 會員不能編輯頻道詳情或添加或刪除其他人。"
+      "locked": "此頻道已鎖定。 會員不能編輯頻道詳情或添加或刪除其他人。",
+      "createChannel": "創建頻道",
+      "createChannelCancel": "取消",
+      "createChannelContinue": "創造"
     },
     "emojiPicker": {
       "emojiMart": {
@@ -1306,10 +1432,18 @@
         "title": "關於 Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 貢獻者。 版權所有。",
-        "timestamp": ""
+        "timestamp": "版本 {{ version}}，基於 {{ date, datetime }}"
       },
       "error": "出了些問題。 稍後再試。",
-      "languageSelect": "選擇語言"
+      "languageSelect": "選擇語言",
+      "adminPanel": "管理面板",
+      "unverified": "未驗證",
+      "admin": "行政",
+      "peopleCard": {
+        "goToDm": "去私信",
+        "viewProfile": "查看資料"
+      },
+      "adminTranslationNotice": "管理面板未翻譯。 它可能永遠不會被翻譯，所以甚至不要嘗試詢問。"
     },
     "landing": {
       "header": {
@@ -1395,10 +1529,10 @@
       "back": "後退"
     },
     "message": {
-      "dm_start": "這是這個DM的開始。 讓我們開始聊天吧！",
-      "chat_start": "這是“{{ 0 }}”的開始。 成為第一個說些什麼的人！",
-      "chat_member_add": "{{ 0 }} 添加了 {{ 1 }} 到這個頻道！ 🎉",
-      "chat_name_change": "{{ 0 }} 將此頻道的名稱更改為“{{ 1 }}”",
+      "dmStart": "這是這個DM的開始。 讓我們開始聊天吧！",
+      "chatStart": "這是“{{ 0 }}”的開始。 成為第一個說些什麼的人！",
+      "chatMemberAdd": "{{ 0 }} 添加了 {{ 1 }} 到這個頻道！ 🎉",
+      "chatNameChange": "{{ 0 }} 將此頻道的名稱更改為“{{ 1 }}”",
       "easteregg": "有人發現了彩蛋！ 🤗"
     },
     "settings": {
