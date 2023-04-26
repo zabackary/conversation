@@ -1,6 +1,7 @@
-import { Avatar, Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import User, { PrivilegeLevel } from "../../model/user";
 import { InlineBadge } from "./chat/ChatItem";
+import ProfilePicture from "./ProfilePicture";
 
 export interface UserTooltipProps {
   user: User;
@@ -10,13 +11,7 @@ export default function UserTooltip({ user }: UserTooltipProps) {
   return (
     <Stack spacing={1} p={1} width={340}>
       <Stack direction="row" spacing={1}>
-        <Avatar
-          src={user.profilePicture}
-          alt={user.name}
-          sx={{ width: 48, height: 48 }}
-        >
-          {(user.nickname ?? user.name)[0]}
-        </Avatar>
+        <ProfilePicture user={user} sx={{ width: 48, height: 48 }} />
         <Stack>
           <Typography variant="body1">{user.name}</Typography>
           <Typography variant="body2" mb={1}>

@@ -37,6 +37,7 @@ import LoadingButton from "../LoadingButton";
 import useBackend from "../../hooks/useBackend";
 import useSnackbar from "../useSnackbar";
 import UserTooltip from "../UserTooltip";
+import ProfilePicture from "../ProfilePicture";
 
 export interface PeopleMenuListItemProps {
   user: User;
@@ -60,9 +61,7 @@ export function PeopleMenuListItem({ user }: PeopleMenuListItemProps) {
       <Tooltip title={<UserTooltip user={user} />} placement="left">
         <ListItemButton>
           <ListItemAvatar>
-            <Avatar src={user.profilePicture} alt={user.name}>
-              {(user.nickname ?? user.name)[0]}
-            </Avatar>
+            <ProfilePicture user={user} />
           </ListItemAvatar>
           <ListItemText primary={user.name} secondary={user.nickname} />
         </ListItemButton>
@@ -81,11 +80,7 @@ function renderAutocompleteTags(
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getTagProps({ index })}
         variant="outlined"
-        avatar={
-          <Avatar src={user.profilePicture} alt={user.name}>
-            {(user.nickname ?? user.name)[0]}
-          </Avatar>
-        }
+        avatar={<ProfilePicture user={user} />}
         label={user.nickname}
         sx={{ my: "6px !important" }}
       />
@@ -293,7 +288,7 @@ export default function PeopleMenu({
                       <CheckIcon />
                     </Avatar>
                   ) : (
-                    <Avatar src={user.profilePicture} alt={user.name} />
+                    <ProfilePicture user={user} />
                   )}
                 </ListItemAvatar>
                 <ListItemText primary={user.name} secondary={user.nickname} />

@@ -1,11 +1,12 @@
 import ChatIcon from "@mui/icons-material/Chat";
-import { Avatar, Collapse } from "@mui/material";
+import { Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../model/channel";
 import useUser from "../../hooks/useUser";
 import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "./DrawerHeader";
 import LinkListItem from "./LinkListItem";
+import ProfilePicture from "../ProfilePicture";
 
 export interface DmChannelListItemProps {
   channel: Channel;
@@ -28,9 +29,7 @@ export function DmChannelListItem({ channel }: ChannelListItemProps) {
           overlap="circular"
           invisible={!active}
         >
-          <Avatar src={person.profilePicture ?? undefined} alt={person.name}>
-            {(person.nickname ?? person.name)[0]}
-          </Avatar>
+          {user && <ProfilePicture user={user} />}
         </ContrastBadge>
       }
       badge={500}

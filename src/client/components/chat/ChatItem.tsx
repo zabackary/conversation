@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Badge,
   BadgeProps,
   ListItem,
@@ -19,6 +18,7 @@ import { ContrastBadge } from "../main/DrawerHeader";
 import MaterialReactMarkdown from "./MaterialReactMarkdown";
 import UserTooltip from "../UserTooltip";
 import { PrivilegeLevel } from "../../../model/user";
+import ProfilePicture from "../ProfilePicture";
 
 const WHITELISTED_TRANSLATIONS = [
   "dm_start",
@@ -70,12 +70,7 @@ export default function ChatItem({ message, showAvatar }: Props) {
                 title={<UserTooltip user={message.user} />}
                 placement="left"
               >
-                <Avatar
-                  src={message.user.profilePicture ?? undefined}
-                  alt={message.user.name}
-                >
-                  {(message.user.nickname ?? message.user.name)[0]}
-                </Avatar>
+                <ProfilePicture user={message.user} />
               </Tooltip>
             </ContrastBadge>
           </ListItemAvatar>
