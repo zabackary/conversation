@@ -439,6 +439,11 @@ export const getThemedComponents = (
           enableColorScheme: true,
         },
       },
+      MuiSkeleton: {
+        defaultProps: {
+          animation: "wave",
+        },
+      },
       MuiDivider: {
         styleOverrides: {
           root: {
