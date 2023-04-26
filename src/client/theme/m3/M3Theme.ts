@@ -750,7 +750,7 @@ export const getThemedComponents = (
         styleOverrides: {
           root: {
             borderRadius: "20px",
-            padding: "10px 8px",
+            // padding: "10px 8px",
           },
         },
         variants: [
@@ -759,7 +759,7 @@ export const getThemedComponents = (
             style: {
               boxShadow: theme.shadows[1],
               backgroundColor: alpha(theme.palette.primary.main, 0.05),
-              transition: theme.transitions.create(
+              /* transition: theme.transitions.create(
                 ["background-color", "box-shadow", "border-color", "color"],
                 {
                   duration: theme.transitions.duration.short,
@@ -768,14 +768,14 @@ export const getThemedComponents = (
               "&:hover": {
                 boxShadow: theme.shadows[2],
                 background: alpha(theme.palette.primary.main, 0.08),
-              },
+              }, */
             },
           },
           {
             props: { variant: "filled" },
             style: {
               backgroundColor: theme.palette.surfaceVariant.main,
-              transition: theme.transitions.create(
+              /* transition: theme.transitions.create(
                 ["background-color", "box-shadow", "border-color", "color"],
                 {
                   duration: theme.transitions.duration.short,
@@ -784,7 +784,7 @@ export const getThemedComponents = (
               "&:hover": {
                 boxShadow: theme.shadows[1],
                 background: alpha(theme.palette.surfaceVariant.main, 0.8),
-              },
+              }, */
             },
           },
           {
@@ -792,7 +792,7 @@ export const getThemedComponents = (
             style: {
               backgroundColor: theme.palette.surface.main,
               borderColor: theme.palette.outline,
-              transition: theme.transitions.create(
+              /* transition: theme.transitions.create(
                 ["background-color", "box-shadow", "border-color", "color"],
                 {
                   duration: theme.transitions.duration.short,
@@ -801,7 +801,7 @@ export const getThemedComponents = (
               "&:hover": {
                 boxShadow: theme.shadows[1],
                 background: alpha(theme.palette.onSurface.main, 0.05),
-              },
+              }, */
             },
           },
         ],
