@@ -30,6 +30,14 @@ import MockChannelBackend from "./mock_channel";
 import { channels, loggedInUser, users, usersAuth } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  acceptInvite(id: number): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
+  deleteInvite(id: number): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+
   isReady?: Promise<void> | undefined;
 
   getInvitedChannels(

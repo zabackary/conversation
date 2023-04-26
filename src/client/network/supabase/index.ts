@@ -131,6 +131,30 @@ class SupabaseBackendImpl implements NetworkBackend {
     this.connectionState = dispatchableConnectionState.downgrade();
   }
 
+  async acceptInvite(id: number): Promise<void> {
+    const userId = this.getCurrentSession().getSnapshot()?.id;
+    if (!userId) throw new Error("Must be logged in to accept invites");
+    const { error } = await this.client
+      .from("members")
+      .update({ accepted: true, actor: null, invite_message: null })
+      .eq("channel_id", id)
+      .eq("user_id", userId)
+      .eq("accepted", false);
+    if (error) throw error;
+  }
+
+  async deleteInvite(id: number): Promise<void> {
+    const userId = this.getCurrentSession().getSnapshot()?.id;
+    if (!userId) throw new Error("Must be logged in to delete invites");
+    const { error } = await this.client
+      .from("members")
+      .delete()
+      .eq("channel_id", id)
+      .eq("user_id", userId)
+      .eq("accepted", false);
+    if (error) throw error;
+  }
+
   async getInvitedChannels(
     offset: number,
     limit: number

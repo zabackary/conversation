@@ -53,12 +53,8 @@ export default function ChannelJoinScreen() {
     [backend]
   );
   const publicChannels = usePromise(getPublicChannels); // TODO: Add paging
-  const handleAccept = async () => {
-    // Use the backend to accept.
-  };
-  const handleReject = async () => {
-    // Use the backend to reject.
-  };
+  const handleAccept = (id: number) => backend.acceptInvite(id);
+  const handleReject = (id: number) => backend.deleteInvite(id);
   return (
     <>
       <ConversationAppBar title={t("join.title")} />

@@ -174,4 +174,12 @@ export default class CachedBackend implements NetworkBackend {
       (this.searchMap[query] = this.mirroredBackend.searchUsers(query))
     );
   }
+
+  acceptInvite(id: number): Promise<void> {
+    return this.mirroredBackend.acceptInvite(id);
+  }
+
+  deleteInvite(id: number): Promise<void> {
+    return this.mirroredBackend.deleteInvite(id);
+  }
 }

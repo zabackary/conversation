@@ -129,6 +129,20 @@ export default interface NetworkBackend {
   ): Promise<string | null>;
 
   /**
+   * Adds the user as a member of the channel, after having an invite.
+   *
+   * @param id The ID of the channel the invite is corallated to.
+   */
+  acceptInvite(id: number): Promise<void>;
+
+  /**
+   * Deletes an invite.
+   *
+   * @param id The ID of the channel of the invite to be deleted.
+   */
+  deleteInvite(id: number): Promise<void>;
+
+  /**
    * Create a channel and join it.
    *
    * @param name The name of the new channel

@@ -204,4 +204,12 @@ export default class QueuedBackend implements NetworkBackend {
   searchUsers(query: string): Promise<User[]> {
     return this.deferredPromise((backend) => backend.searchUsers(query));
   }
+
+  acceptInvite(id: number): Promise<void> {
+    return this.deferredPromise((backend) => backend.acceptInvite(id));
+  }
+
+  deleteInvite(id: number): Promise<void> {
+    return this.deferredPromise((backend) => backend.deleteInvite(id));
+  }
 }
