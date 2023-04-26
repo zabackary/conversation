@@ -1,4 +1,5 @@
 import { Avatar, AvatarProps } from "@mui/material";
+import { forwardRef } from "react";
 
 interface UserLike {
   profilePicture?: string;
@@ -16,14 +17,20 @@ export interface ProfilePictureProps extends AvatarProps {
  * nickname (if it exists) or name.
  * @param props The props of the component.
  */
-export default function ProfilePicture({
-  user,
-  ...avatarProps
-}: ProfilePictureProps) {
-  return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Avatar src={user.profilePicture} alt={user.name} {...avatarProps}>
-      {(user.nickname ?? user.name)[0]}
-    </Avatar>
-  );
-}
+const ProfilePicture = forwardRef<HTMLDivElement, ProfilePictureProps>(
+  ({ user, ...avatarProps }, ref) => {
+    return (
+      <Avatar
+        src={user.profilePicture}
+        alt={user.name}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...avatarProps}
+        ref={ref}
+      >
+        {(user.nickname ?? user.name)[0]}
+      </Avatar>
+    );
+  }
+);
+
+export default ProfilePicture;
