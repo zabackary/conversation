@@ -1,10 +1,5 @@
-import { Box, Link, Paper, SxProps, useTheme } from "@mui/material";
-import {
-  HTMLAttributes,
-  PropsWithChildren,
-  StyleHTMLAttributes,
-  SyntheticEvent,
-} from "react";
+import { Box, Link, Paper, SxProps } from "@mui/material";
+import { HTMLAttributes, PropsWithChildren, SyntheticEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import {
   ReactMarkdownOptions,
