@@ -75,7 +75,7 @@ function renderAutocompleteTags(
   getTagProps: AutocompleteRenderGetTagProps
 ) {
   return value.map((user, index) => (
-    <Tooltip title={<UserTooltip user={user} />}>
+    <Tooltip title={<UserTooltip user={user} />} key={user.id}>
       <Chip
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...getTagProps({ index })}
