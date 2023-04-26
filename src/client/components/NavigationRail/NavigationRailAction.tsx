@@ -14,4 +14,8 @@ const NavigationRailAction = styled(BottomNavigationAction)(() => ({
   },
 }));
 
+NavigationRailAction.defaultProps = {
+  centerRipple: true,
+};
+
 export default NavigationRailAction;
