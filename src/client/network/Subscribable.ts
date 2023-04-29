@@ -71,7 +71,47 @@ export default class Subscribable<T>
       mapper(this.getSnapshot()).then(next).catch(nextError);
     }, initial);
   }
+
+  static all<T extends Subscribable<unknown>[]>(
+    subscribables: T
+  ): Subscribable<UnwrapSubscribableArray<T>> {
+    let currentState: SubscribableCallbackValue<UnwrapSubscribableArray<T>> = {
+      value: subscribables.map((subscribable) =>
+        subscribable.getSnapshot()
+      ) as UnwrapSubscribableArray<T>,
+      error: undefined,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    const output = new DispatchableSubscribable(currentState.value);
+    subscribables.forEach((subscribable, subscribableIndex) => {
+      subscribable.subscribe(({ value, error }) => {
+        if (error) {
+          currentState = {
+            error,
+            value: undefined,
+          };
+          output.dispatchError(currentState.error);
+        } else if (currentState.value) {
+          currentState = {
+            error: undefined,
+            value: currentState.value.map((oldValue, index) =>
+              index === subscribableIndex ? value : oldValue
+            ) as UnwrapSubscribableArray<T>,
+          };
+          output.dispatch(currentState.value);
+        }
+      });
+    });
+    return output.downgrade();
+  }
 }
+
+export type UnwrapSubscribable<T extends Subscribable<unknown>> =
+  T extends Subscribable<infer U> ? U : never;
+
+type UnwrapSubscribableArray<T extends Subscribable<unknown>[]> = {
+  [K in keyof T]: UnwrapSubscribable<T[K]>;
+};
 
 export class DispatchableSubscribable<T> extends Subscribable<T> {
   constructor(initialValue: T);
