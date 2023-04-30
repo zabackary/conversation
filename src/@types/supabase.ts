@@ -53,7 +53,7 @@ export interface Database {
           actor: string | null
           channel_id: number
           invite_message: string | null
-          last_view: string | null
+          last_view: string
           user_id: string
         }
         Insert: {
@@ -61,7 +61,7 @@ export interface Database {
           actor?: string | null
           channel_id: number
           invite_message?: string | null
-          last_view?: string | null
+          last_view?: string
           user_id: string
         }
         Update: {
@@ -69,7 +69,7 @@ export interface Database {
           actor?: string | null
           channel_id?: number
           invite_message?: string | null
-          last_view?: string | null
+          last_view?: string
           user_id?: string
         }
       }
@@ -106,6 +106,8 @@ export interface Database {
         Row: {
           admin: boolean
           banner_url: string | null
+          bot_webhook: string | null
+          disabled: boolean
           email: string | null
           id: string
           is_bot: boolean
@@ -117,6 +119,8 @@ export interface Database {
         Insert: {
           admin?: boolean
           banner_url?: string | null
+          bot_webhook?: string | null
+          disabled?: boolean
           email?: string | null
           id: string
           is_bot: boolean
@@ -128,6 +132,8 @@ export interface Database {
         Update: {
           admin?: boolean
           banner_url?: string | null
+          bot_webhook?: string | null
+          disabled?: boolean
           email?: string | null
           id?: string
           is_bot?: boolean
