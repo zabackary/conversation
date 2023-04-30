@@ -74,6 +74,7 @@ export default function InfoMenu({
       pendingChange.membersCanEdit !== channel.membersCanEdit);
   const backend = useBackend();
   const { showSnackbar } = useSnackbar();
+  // TODO: Translate below snackbars
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     backend
@@ -114,7 +115,8 @@ export default function InfoMenu({
       </SideSheetToolbar>
       <Stack sx={sx} spacing={2} component="form" onSubmit={handleSubmit}>
         <Dialog open={deletionOpen} onClose={() => setDeletionOpen(false)}>
-          <DialogTitle>Delete channel?</DialogTitle>
+          {/* TODO: Translate */}
+          <DialogTitle>[untranslated] Delete channel?</DialogTitle>
           <DialogContent>
             <DialogContentText>
               Are you sure you want to delete this channel? This action{" "}
@@ -128,7 +130,7 @@ export default function InfoMenu({
           </DialogActions>
         </Dialog>
         <TextField
-          label="Name"
+          label={t("channelInfo.name")}
           value={pendingChange.name}
           onChange={handleChange("name")}
           InputProps={{
@@ -136,7 +138,7 @@ export default function InfoMenu({
           }}
         />
         <TextField
-          label="Description"
+          label={t("channelInfo.description")}
           value={pendingChange.description}
           onChange={handleChange("description")}
           multiline
@@ -151,16 +153,22 @@ export default function InfoMenu({
           fullWidth
           disabled={!canEdit}
         >
-          <ToggleButton value={PrivacyLevel.Private}>Private</ToggleButton>
-          <ToggleButton value={PrivacyLevel.Unlisted}>Unlisted</ToggleButton>
-          <ToggleButton value={PrivacyLevel.Public}>Public</ToggleButton>
+          <ToggleButton value={PrivacyLevel.Private}>
+            {t("channelInfo.private")}
+          </ToggleButton>
+          <ToggleButton value={PrivacyLevel.Unlisted}>
+            {t("channelInfo.unlisted")}
+          </ToggleButton>
+          <ToggleButton value={PrivacyLevel.Public}>
+            {t("channelInfo.public")}
+          </ToggleButton>
         </ToggleButtonGroup>
         <Collapse
           in={pendingChange.privacyLevel === PrivacyLevel.Unlisted}
           sx={{ width: "100%" }}
         >
           <TextField
-            label="Passphrase"
+            label={t("join.passphrase.password")}
             value={pendingChange.passphrase ?? ""}
             onChange={handleChange("passphrase")}
             fullWidth
@@ -174,13 +182,14 @@ export default function InfoMenu({
               variant="filled"
               type="submit"
             >
-              Save
+              {t("channelInfo.save")}
             </LoadingButton>{" "}
             {isPendingChanges ? (
               <Typography variant="caption" fontStyle="italic">
-                Pending changes
+                {t("channelInfo.pendingChanges")}
               </Typography>
             ) : (
+              // TODO: Translate
               <Button variant="tonal" onClick={() => setDeletionOpen(true)}>
                 Delete channel
               </Button>
