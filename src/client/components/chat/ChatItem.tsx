@@ -5,6 +5,7 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Stack,
   styled,
   Tooltip,
   Typography,
@@ -79,16 +80,27 @@ export default function ChatItem({ message, showAvatar }: Props) {
           primary={
             showAvatar ? (
               <>
-                {message.isService ? message.user.name : message.user.nickname}{" "}
-                {message.isService ? (
-                  <InlineBadge color="primary" badgeContent="bot" />
-                ) : null}
-                {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
-                  <InlineBadge color="secondary" badgeContent="Admin" />
-                ) : null}
-                {message.user.privilegeLevel === PrivilegeLevel.Unverified ? (
-                  <InlineBadge color="warning" badgeContent="Unverified" />
-                ) : null}{" "}
+                {message.isService ? message.user.name : message.user.nickname}
+                <Stack
+                  spacing={0.5}
+                  mx={0.5}
+                  direction="row"
+                  component="span"
+                  display="inline-flex"
+                >
+                  {message.isService ? (
+                    <InlineBadge color="primary" badgeContent="bot" />
+                  ) : null}
+                  {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
+                    <InlineBadge color="secondary" badgeContent="Admin" />
+                  ) : null}
+                  {message.user.privilegeLevel === PrivilegeLevel.Unverified ? (
+                    <InlineBadge color="warning" badgeContent="Unverified" />
+                  ) : null}
+                  {message.user.disabled ? (
+                    <InlineBadge color="error" badgeContent="Disabled" />
+                  ) : null}
+                </Stack>
                 <Typography
                   variant="body2"
                   component="span"

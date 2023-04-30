@@ -17,14 +17,24 @@ export default function UserTooltip({ user }: UserTooltipProps) {
           <Typography variant="body2" mb={1}>
             {user.nickname} {user.email ? <>&middot; {user.email}</> : null}
           </Typography>
-          {user.privilegeLevel === PrivilegeLevel.Admin ? (
-            <InlineBadge color="secondary" badgeContent="Admin" />
-          ) : null}
-          {user.privilegeLevel === PrivilegeLevel.Unverified ? (
-            <InlineBadge color="warning" badgeContent="Unverified" />
-          ) : null}
+          <Stack spacing={0.5} direction="row">
+            {user.privilegeLevel === PrivilegeLevel.Admin ? (
+              <InlineBadge color="secondary" badgeContent="Admin" />
+            ) : null}
+            {user.privilegeLevel === PrivilegeLevel.Unverified ? (
+              <InlineBadge color="warning" badgeContent="Unverified" />
+            ) : null}
+            {user.disabled ? (
+              <InlineBadge color="error" badgeContent="Disabled" />
+            ) : null}
+          </Stack>
         </Stack>
       </Stack>
+      {user.disabled ? (
+        <Typography variant="body2">
+          This user has been disabled due to misconduct.
+        </Typography>
+      ) : null}
       <Box>
         <Button size="small">Go to DM</Button>{" "}
         <Button size="small">View profile</Button>
