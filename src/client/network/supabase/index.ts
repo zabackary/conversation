@@ -2,6 +2,7 @@ import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
 import Channel, {
   DmChannel,
+  GroupChannel,
   InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
@@ -47,13 +48,13 @@ class SupabaseBackendImpl implements NetworkBackend {
     SUPABASE_ANON_KEY
   );
 
-  cache = new SupabaseCache();
+  private cache = new SupabaseCache();
 
-  loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
+  private loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
 
   isReady: Promise<void>;
 
-  realtimeChannel: RealtimeChannel;
+  private realtimeChannel: RealtimeChannel;
 
   messageSubscribable: Subscribable<Message | null>;
 
@@ -141,6 +142,20 @@ class SupabaseBackendImpl implements NetworkBackend {
       .eq("user_id", userId)
       .eq("accepted", false);
     if (error) throw error;
+    const currentChannelList = await this.cache.getChannelListOrFallback(() =>
+      getChannels(this.client, userId as string)
+    );
+    this.cache.putChannelList(
+      currentChannelList
+        .getSnapshot()
+        .concat([
+          (
+            await this.cache.getChannelOrFallback(id, () =>
+              getChannel(this.client, id)
+            )
+          ).getSnapshot(),
+        ])
+    );
   }
 
   async deleteInvite(id: number): Promise<void> {
@@ -273,8 +288,17 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   async deleteChannel(id: number): Promise<void> {
+    const user = this.loggedInUserSubscribable.getSnapshot();
+    if (user === null || user instanceof Error)
+      throw new Error("Loading or signing in.");
     const { error } = await this.client.from("channels").delete().eq("id", id);
     if (error) throw error;
+    const currentChannelList = await this.cache.getChannelListOrFallback(() =>
+      getChannels(this.client, user.id as string)
+    );
+    this.cache.putChannelList(
+      currentChannelList.getSnapshot().filter((channel) => channel.id !== id)
+    );
   }
 
   async createChannel(
@@ -309,12 +333,20 @@ class SupabaseBackendImpl implements NetworkBackend {
     const channel = {
       ...dbChannel,
       users: [
-        await this.cache.getUserOrFallback(userId, () =>
-          getUser(this.client, userId)
-        ),
+        (
+          await this.cache.getUserOrFallback(userId, () =>
+            getUser(this.client, userId)
+          )
+        ).getSnapshot(),
       ],
     };
     this.cache.putChannel(channel);
+    const currentChannelList = await this.cache.getChannelListOrFallback(() =>
+      getChannels(this.client, user.id as string)
+    );
+    this.cache.putChannelList(
+      currentChannelList.getSnapshot().concat([channel])
+    );
     return convertChannel(channel);
   }
 
@@ -329,6 +361,7 @@ class SupabaseBackendImpl implements NetworkBackend {
   async authLogOut(): Promise<void> {
     const { error } = await this.client.auth.signOut();
     if (error) throw error;
+    this.cache.clearUserDependentState();
   }
 
   async authCreateAccount(
@@ -347,12 +380,13 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getUser(id: string): Subscribable<User | null> {
-    return new Subscribable<User | null>(async (next) => {
-      next(
-        convertUser(
-          await this.cache.getUserOrFallback(id, () => getUser(this.client, id))
-        )
-      );
+    return new Subscribable<User | null>(async (next, nextError) => {
+      (await this.cache.getUserOrFallback(id, () => getUser(this.client, id)))
+        .map<User | null>((user) => Promise.resolve(convertUser(user)), null)
+        .subscribe(({ value, error }) => {
+          if (error) nextError(error);
+          else next(value);
+        });
     }, null);
   }
 
@@ -363,21 +397,31 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getDMs(): Subscribable<DmChannel[] | null> {
-    return this.loggedInUserSubscribable.map<DmChannel[] | null>(
-      async (value) => {
-        if (!value) return null;
-        const channels = await getChannels(
-          this.client,
-          value.id as string,
-          false
-        );
-        this.cache.putChannel(...channels);
-        return channels
-          .map(convertChannel)
-          .filter((channel) => channel.dm) as DmChannel[];
-      },
-      null
-    );
+    return new Subscribable<DmChannel[] | null>(async (next, nextError) => {
+      (
+        await this.cache.getChannelListOrFallback(() => {
+          const id = this.getCurrentSession().getSnapshot()?.id;
+          return id
+            ? getChannels(this.client, id as string)
+            : Promise.resolve([]);
+        })
+      )
+        .map<DmChannel[] | null>(
+          (channels) =>
+            Promise.resolve(
+              channels
+                .map((channel) => convertChannel(channel))
+                .filter<DmChannel>(
+                  (channel): channel is DmChannel => channel.dm
+                )
+            ),
+          null
+        )
+        .subscribe(({ value, error }) => {
+          if (error) nextError(error);
+          else next(value);
+        });
+    }, null);
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(
@@ -387,18 +431,32 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getChannels(): Subscribable<Channel[] | null> {
-    return this.loggedInUserSubscribable.map<Channel[] | null>(
-      async (value) => {
-        if (!value) return null;
-        const channels = await getChannels(this.client, value.id as string);
-        this.cache.putChannel(...channels);
-        channels.forEach((channel) => {
-          this.cache.putUser(...channel.users);
+    return new Subscribable<Channel[] | null>(async (next, nextError) => {
+      (
+        await this.cache.getChannelListOrFallback(() => {
+          const id = this.getCurrentSession().getSnapshot()?.id;
+          return id
+            ? getChannels(this.client, id as string)
+            : Promise.resolve([]);
+        })
+      )
+        .map<GroupChannel[] | null>(
+          (channels) =>
+            Promise.resolve(
+              channels
+                .map((channel) => convertChannel(channel))
+                .filter<GroupChannel>(
+                  (channel): channel is GroupChannel => !channel.dm
+                )
+            ),
+          null
+        )
+        .subscribe(({ value, error }) => {
+          console.log(value, error);
+          if (error) nextError(error);
+          else next(value);
         });
-        return channels.map(convertChannel);
-      },
-      []
-    );
+    }, null);
   }
 
   clearCache(): Promise<void> {
@@ -424,18 +482,20 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
-    return new Subscribable<Channel | null>(async (next) => {
-      try {
-        next(
-          convertChannel(
-            await this.cache.getChannelOrFallback(id, () =>
-              getChannel(this.client, id)
-            )
-          )
-        );
-      } catch {
-        next(null);
-      }
+    return new Subscribable<Channel | null>(async (next, nextError) => {
+      (
+        await this.cache.getChannelOrFallback(id, () =>
+          getChannel(this.client, id)
+        )
+      )
+        .map<Channel | null>(
+          (user) => Promise.resolve(convertChannel(user)),
+          null
+        )
+        .subscribe(({ value, error }) => {
+          if (error) nextError(error);
+          else next(value);
+        });
     }, null);
   }
 
