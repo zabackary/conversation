@@ -19,7 +19,7 @@ function ListItemSkeleton({ header, image, width }: ListItemSkeletonProps) {
     <ListItem
       alignItems="flex-start"
       disablePadding
-      sx={{ overflow: "hidden" }}
+      sx={{ overflow: "hidden", px: 3 }}
     >
       <ListItemAvatar>
         <Skeleton width={40} height={40} variant="circular" />
