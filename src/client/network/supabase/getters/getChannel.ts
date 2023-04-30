@@ -8,8 +8,9 @@ export default async function getChannel(
     .from("channels")
     .select("*, users!members ( * )")
     .eq("id", channelId)
-    .single();
+    .maybeSingle();
   if (error) throw error;
+  if (!channel) throw new Error("Couldn't find matching channel");
   return {
     ...channel,
     users: normalizeJoin(channel.users),
