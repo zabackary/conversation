@@ -1,7 +1,6 @@
 import CheckIcon from "@mui/icons-material/Check";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
-  Alert,
   Autocomplete,
   AutocompleteRenderGetTagProps,
   Avatar,
@@ -13,7 +12,6 @@ import {
   CircularProgress,
   Collapse,
   IconButton,
-  Link,
   List,
   ListItem,
   ListItemAvatar,
@@ -151,6 +149,7 @@ export default function PeopleMenu({
           ]);
         })
         .catch(() => {
+          // TODO: Translate
           showSnackbar("Failed to fetch users.");
         });
     } else {
@@ -179,10 +178,12 @@ export default function PeopleMenu({
       .then(() => {
         setInvitePending(false);
         setIsInviting(false);
+        // TODO: Translate
         showSnackbar("Invite sent.");
       })
       .catch(() => {
         setInvitePending(false);
+        // TODO: Translate
         showSnackbar("Failed to send invite.");
       });
   };
@@ -200,24 +201,19 @@ export default function PeopleMenu({
           </IconButton>
         </Collapse>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          {!isInviting ? t("channelInfo.title") : "Invite users"}
+          {!isInviting ? t("people.title") : t("people.add.action")}
         </Typography>
         <IconButton onClick={handleSidebarClose} edge="end">
           <CloseIcon />
         </IconButton>
       </SideSheetToolbar>
       <Stack sx={sx} spacing={isInviting ? 1 : 2}>
-        <Alert severity="warning">
-          Apologies that I haven&apos;t translated this section yet. Check out{" "}
-          <Link href="https://docs.google.com/spreadsheets/d/1vw35q2Ps8Qb1onNiaVHhAmyc4_6VR2Cl2ECSt0B2ZqM/edit">
-            the translation spreadsheet
-          </Link>{" "}
-          if you&apos;re interested in helping.
-        </Alert>
         <Collapse in={!isInviting}>
           <Stack spacing={2}>
             <Stack spacing={1} direction="row" alignItems="center">
-              <Box>{channel.members.length} members</Box>
+              <Box>
+                {t("people.memberCount", { count: channel.members.length })}
+              </Box>
               <AvatarGroup max={4}>
                 {channel.members.map((member) => (
                   <Avatar
@@ -232,9 +228,9 @@ export default function PeopleMenu({
               variant="outlined"
               sx={{ "& .MuiButtonGroup-grouped": { flexGrow: 1 } }}
             >
-              <Button>Leave channel</Button>
+              <Button>{t("people.leave.action")}</Button>
               <Button onClick={() => setIsInviting(true)}>
-                Invite members
+                {t("people.add.action")}
               </Button>
             </ButtonGroup>
           </Stack>
@@ -250,20 +246,20 @@ export default function PeopleMenu({
                 // eslint-disable-next-line react/jsx-props-no-spreading
                 {...props}
                 variant="filled"
-                label="Add members"
-                placeholder="Search users..."
+                label={t("people.addMembers")}
+                placeholder={t("people.searchUsers")}
               />
             )}
             noOptionsText={
               // eslint-disable-next-line no-nested-ternary
               autocompleteInputValue === "" ? (
-                "Type to start searching."
+                "Type to start searching." // TODO: Translate
               ) : options[0] !== autocompleteInputValue ? (
                 <Box display="flex" justifyContent="center">
                   <CircularProgress />
                 </Box>
               ) : (
-                "No users found."
+                t("people.noUsersFound")
               )
             }
             filterOptions={(x) => x}
@@ -302,8 +298,8 @@ export default function PeopleMenu({
         ) : (
           <TextField
             variant="filled"
-            label="Filter members"
-            placeholder="Search by email, name..."
+            label={t("people.filter")}
+            placeholder={t("people.add.search")}
             value={searchText}
             onChange={(e) => setSearchText(e.currentTarget.value)}
           />
@@ -318,7 +314,7 @@ export default function PeopleMenu({
         <Collapse in={isInviting}>
           <TextField
             variant="outlined"
-            label="Invite message"
+            label={t("people.inviteMessage")}
             multiline
             fullWidth
             minRows={3}
@@ -327,14 +323,16 @@ export default function PeopleMenu({
             onChange={(event) => setInviteMessage(event.currentTarget.value)}
           />
           <Stack spacing={1} direction="row" justifyContent="right" mt={1}>
-            <Button onClick={() => setIsInviting(false)}>Cancel</Button>
+            <Button onClick={() => setIsInviting(false)}>
+              {t("people.cancel")}
+            </Button>
             <LoadingButton
               variant="filled"
               disabled={inviteValue.length < 1}
               loading={invitePending}
               onClick={handleSendInvite}
             >
-              Invite {inviteValue.length} members
+              {t("people.inviteFinished", { count: inviteValue.length })}
             </LoadingButton>
           </Stack>
         </Collapse>
