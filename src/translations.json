@@ -34,7 +34,8 @@
         "pendingChanges": "Pending changes",
         "unlistedHint": "The channel will not be shown on the explore screen, but users knowing the ID and password or holding an invite can still join without an formal invite.",
         "publicHint": "The channel will be shown on the explore screen, and any user can join the channel without explicit consent.",
-        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel."
+        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel.",
+        "privacyLevel": "Privacy Level"
       },
       "people": {
         "title": "People",
@@ -55,7 +56,11 @@
         "inviteMessage": "Invite message",
         "cancel": "Cancel",
         "inviteFinished_one": "Invite {{ count }} member",
-        "inviteFinished_other": "Invite {{ count }} members"
+        "inviteFinished_other": "Invite {{ count }} members",
+        "invitePrompt": "Type to start searching.",
+        "autocompleteError": "Failed to fetch users.",
+        "inviteSuccess": "Invite sent.",
+        "inviteFailed": "Failed to send invite. Try reloading and see if the problem persists"
       },
       "join": {
         "title": "Join Channel",
@@ -76,7 +81,11 @@
       "locked": "This channel is locked. Members cannot edit channel details or add or remove others.",
       "createChannel": "Create channel",
       "createChannelCancel": "Cancel",
-      "createChannelContinue": "Create"
+      "createChannelContinue": "Create",
+      "snackbar": {
+        "createChannelSuccess": "Created the channel \"{{ channelName }}\"",
+        "createChannelFailed": "Failed to create the channel. Try reloading and see if the problem persists."
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -132,7 +141,17 @@
         "goToDm": "Go to DM",
         "viewProfile": "View profile"
       },
-      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking."
+      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking.",
+      "tags": {
+        "admin": "Admin",
+        "disabled": "Disabled",
+        "unverified": "Unverified"
+      },
+      "reportProblem": {
+        "title": "Send feedback",
+        "subject": "Feedback regarding Conversation 4",
+        "body": "Dear Conversation Team,\r\n\r\nI have some feedback for Conversation development.\r\n\r\n--> FOR BUGS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# Description\r\n\r\n> Describe, in detail, the problem that you found in Conversation.\r\n\r\n👉 \r\n\r\n# Reproduction steps\r\n\r\n> Explain how to make your bug happen again specifically. If I cannot reproduce\r\n> the bug, no further steps will be taken.\r\n\r\n👉 \r\n\r\n--> FOR FEATURE REQUESTS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# What's missing?\r\n\r\n> Describe the feature that you think Conversation is missing.\r\n\r\n👉 \r\n\r\n# How can I fix the gap?\r\n\r\n> Describe what would help fill on the feature gap.\r\n\r\n👉 "
+      }
     },
     "landing": {
       "header": {
@@ -260,6 +279,28 @@
           "description": "Customize the interface's Material You primary accent color to your liking.",
           "error": "Failed to set the theme color."
         }
+      },
+      "account": {
+        "label": "Account",
+        "title": "Account Settings",
+        "profilePicture": {
+          "title": "Profile picture",
+          "description": "This profile picture will be visible accross all your chats."
+        },
+        "nickname": {
+          "title": "Nickname"
+        },
+        "name": {
+          "title": "Name"
+        },
+        "email": {
+          "title": "Email address",
+          "action": "Change email"
+        },
+        "logout": {
+          "title": "Logged in",
+          "action": "Log out"
+        }
       }
     }
   },
@@ -298,7 +339,8 @@
         "pendingChanges": "Pending changes",
         "unlistedHint": "The channel will not be shown on the explore screen, but users knowing the ID and password or holding an invite can still join without an formal invite.",
         "publicHint": "The channel will be shown on the explore screen, and any user can join the channel without explicit consent.",
-        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel."
+        "privateHint": "The channel will not be shown on the explore screen. Only users invited by a channel member can join the channel.",
+        "privacyLevel": "Privacy Level"
       },
       "people": {
         "title": "People",
@@ -318,7 +360,11 @@
         "inviteMessage": "Invite message",
         "cancel": "Cancel",
         "inviteFinished_one": "Invite {{ count }} member",
-        "inviteFinished_other": "Invite {{ count }} members"
+        "inviteFinished_other": "Invite {{ count }} members",
+        "invitePrompt": "Type to start searching.",
+        "autocompleteError": "Failed to fetch users.",
+        "inviteSuccess": "Invite sent.",
+        "inviteFailed": "Failed to send invite. Try reloading and see if the problem persists"
       },
       "join": {
         "title": "Join Channel",
@@ -339,7 +385,11 @@
       "locked": "This channel is locked. Members cannot edit channel details or add or remove others.",
       "createChannel": "Create channel",
       "createChannelCancel": "Cancel",
-      "createChannelContinue": "Create"
+      "createChannelContinue": "Create",
+      "snackbar": {
+        "createChannelSuccess": "Created the channel \"{{ channelName }}\"",
+        "createChannelFailed": "Failed to create the channel. Try reloading and see if the problem persists."
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -395,7 +445,17 @@
         "goToDm": "Go to DM",
         "viewProfile": "View profile"
       },
-      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking."
+      "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking.",
+      "tags": {
+        "admin": "Admin",
+        "disabled": "Disabled",
+        "unverified": "Unverified"
+      },
+      "reportProblem": {
+        "title": "Send feedback",
+        "subject": "Feedback regarding Conversation 4",
+        "body": "Dear Conversation Team,\r\n\r\nI have some feedback for Conversation development.\r\n\r\n--> FOR BUGS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# Description\r\n\r\n> Describe, in detail, the problem that you found in Conversation.\r\n\r\n👉 \r\n\r\n# Reproduction steps\r\n\r\n> Explain how to make your bug happen again specifically. If I cannot reproduce\r\n> the bug, no further steps will be taken.\r\n\r\n👉 \r\n\r\n--> FOR FEATURE REQUESTS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# What's missing?\r\n\r\n> Describe the feature that you think Conversation is missing.\r\n\r\n👉 \r\n\r\n# How can I fix the gap?\r\n\r\n> Describe what would help fill on the feature gap.\r\n\r\n👉 "
+      }
     },
     "landing": {
       "header": {
@@ -523,6 +583,28 @@
           "description": "Customize the interface's Material You primary accent colour to your liking.",
           "error": "Failed to set the theme colour."
         }
+      },
+      "account": {
+        "label": "Account",
+        "title": "Account Settings",
+        "profilePicture": {
+          "title": "Profile picture",
+          "description": "This profile picture will be visible accross all your chats."
+        },
+        "nickname": {
+          "title": "Nickname"
+        },
+        "name": {
+          "title": "Name"
+        },
+        "email": {
+          "title": "Email address",
+          "action": "Change email"
+        },
+        "logout": {
+          "title": "Logged in",
+          "action": "Log out"
+        }
       }
     }
   },
@@ -561,7 +643,8 @@
         "pendingChanges": "未保存の変更",
         "unlistedHint": "チャンネルは探索画面には表示されませんが、ID とパスワードを知っているか、招待されているユーザーは、正式な招待なしで参加できます。",
         "publicHint": "チャンネルは探索画面に表示され、ユーザーは明示的な同意なしにチャンネルに参加できます。",
-        "privateHint": "チャンネルは探索画面に表示されません。 チャンネル メンバーによって招待されたユーザーのみがチャンネルに参加できます。"
+        "privateHint": "チャンネルは探索画面に表示されません。 チャンネル メンバーによって招待されたユーザーのみがチャンネルに参加できます。",
+        "privacyLevel": "プライバシー レベル"
       },
       "people": {
         "title": "メンバー",
@@ -580,7 +663,11 @@
         "noUsersFound": "ユーザが見つかりませんでした。",
         "inviteMessage": "招待メッセージ",
         "cancel": "キャンセル",
-        "inviteFinished": "{{ count }}人のメンバーを招待"
+        "inviteFinished": "{{ count }}人のメンバーを招待",
+        "invitePrompt": "入力して検索を開始します。",
+        "autocompleteError": "ユーザーを取得できませんでした。",
+        "inviteSuccess": "招待状を送信しました。",
+        "inviteFailed": "招待状を送信できませんでした。 リロードしてみて、問題が解決しないかどうかを確認してください"
       },
       "join": {
         "title": "チャンネルに参加",
@@ -601,7 +688,11 @@
       "locked": "このチャンネルはロックされています。 メンバーはチャンネルの設定を編集したり、他のメンバーを追加または退会させたりすることはできません。",
       "createChannel": "チャンネルを作成",
       "createChannelCancel": "キャンセル",
-      "createChannelContinue": "作成"
+      "createChannelContinue": "作成",
+      "snackbar": {
+        "createChannelSuccess": "チャンネル「{{ channelName }}」を作成しました",
+        "createChannelFailed": "チャネルの作成に失敗しました。 リロードしてみて、問題が解決しないかどうかを確認してください。"
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -646,10 +737,10 @@
         "title": "Conversationについて",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 協力者。 全著作権所有。",
-        "timestamp": "バージョン {{ version }}, {{ date }} に建設された"
+        "timestamp": "バージョン {{ version }}, {{ date, datetime }} に建設された"
       },
       "error": "エラーが発生しました。 あとでもう一度試してみてください。",
-      "languageSelect": "言語を選択してください",
+      "languageSelect": "言語",
       "adminPanel": "管理パネル",
       "unverified": "未確認",
       "admin": "管理者",
@@ -657,7 +748,17 @@
         "goToDm": "DMに行く",
         "viewProfile": "プロフィールを見る"
       },
-      "adminTranslationNotice": "管理パネルは翻訳されていません。 おそらく決して翻訳されることはないので、尋ねようともしないでください。"
+      "adminTranslationNotice": "管理パネルは翻訳されていません。 おそらく決して翻訳されることはないので、尋ねようともしないでください。",
+      "tags": {
+        "admin": "管理者",
+        "disabled": "無効",
+        "unverified": "未確認"
+      },
+      "reportProblem": {
+        "title": "フィードバックを送信",
+        "subject": "Conversation 4 に関するフィードバック",
+        "body": "親愛なる対話チームへ\n\n会話の開発についていくつかのフィードバックがあります。\n\n--> バグについては、次のテンプレートに記入してください\n\n＃ 説明\n\n> 会話で見つけた問題を詳しく説明してください。\n\n👉\n\n# 再現手順\n\n> バグを再発させる方法を具体的に説明してください。 再現できない場合\n> バグが発生したため、これ以上の手順は実行されません。\n\n👉\n\n--> 機能のリクエストについては、次のテンプレートに記入してください\n\n＃何が足りない？\n\n> 会話に欠けていると思う特徴を説明してください。\n\n👉\n\n＃ギャップを修正するにはどうすればよいですか？\n\n> 機能のギャップを埋めるのに何が役立つかを説明してください。\n\n👉"
+      }
     },
     "landing": {
       "header": {
@@ -785,6 +886,28 @@
           "description": "インターフェイスの Material You テーマの色を好みに合わせてカスタマイズします。",
           "error": "テーマの色を設定できませんでした。"
         }
+      },
+      "account": {
+        "label": "アカウント",
+        "title": "アカウント設定",
+        "profilePicture": {
+          "title": "プロフィールの写真",
+          "description": "このプロフィール写真は、すべてのチャットで表示されます。"
+        },
+        "nickname": {
+          "title": "ニックネーム"
+        },
+        "name": {
+          "title": "名前"
+        },
+        "email": {
+          "title": "電子メールアドレス",
+          "action": "メールアドレスを変更"
+        },
+        "logout": {
+          "title": "ログインしました",
+          "action": "ログアウト"
+        }
       }
     }
   },
@@ -822,8 +945,9 @@
         "save": "저장",
         "pendingChanges": "대기 중인 변경사항",
         "unlistedHint": "해당 채널은 탐색 화면에 표시되지 않지만, 아이디와 비밀번호를 알고 있거나 초대장을 소지한 사용자는 정식 초대 없이도 가입할 수 있습니다.",
-        "publicHint": "채널은 탐색 화면에 표시되며 모든 사용자는 명시적인 동의 없이 채널에 가입할 수 있습니다.",
-        "privateHint": "탐색 화면에 채널이 표시되지 않습니다. 채널 구성원이 초대한 사용자만 채널에 가입할 수 있습니다.\r"
+        "publicHint": "채널은 탐색 화면에 표시되며 모든 사용자는 채널에 가입할 수 있습니다.",
+        "privateHint": "탐색 화면에 채널이 표시되지 않습니다. 채널 구성원이 초대한 사용자만 채널에 가입할 수 있습니다.\r",
+        "privacyLevel": "프라이버시 수준"
       },
       "people": {
         "title": "사람들",
@@ -842,7 +966,11 @@
         "noUsersFound": "해당하는 사용자 없음",
         "inviteMessage": "초대 문구",
         "cancel": "취소",
-        "inviteFinished": "{{ count }}명 초대"
+        "inviteFinished": "{{ count }}명 초대",
+        "invitePrompt": "검색을 시작하려면 입력하세요.",
+        "autocompleteError": "사용자를 가져오지 못했습니다.",
+        "inviteSuccess": "초대장을 보냈습니다.",
+        "inviteFailed": "초대장을 보내지 못했습니다. 새로고침하고 문제가 지속되는지 확인하세요."
       },
       "join": {
         "title": "채널 가입",
@@ -863,7 +991,11 @@
       "locked": "이 채널은 잠겨 있습니다. 구성원은 채널 세부 정보를 편집하거나 다른 사람을 추가 또는 제거할 수 없습니다.",
       "createChannel": "채널 만들기",
       "createChannelCancel": "취소",
-      "createChannelContinue": "만들기"
+      "createChannelContinue": "만들기",
+      "snackbar": {
+        "createChannelSuccess": "{{ channelName }} 채널을 만들었습니다.",
+        "createChannelFailed": "채널을 만들지 못했습니다. 새로고침하고 문제가 지속되는지 확인하세요."
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -919,7 +1051,17 @@
         "goToDm": "DM으로 이동",
         "viewProfile": "프로필보기"
       },
-      "adminTranslationNotice": "관리자 패널은 번역되지 않습니다. 번역되지 않을 가능성이 높으므로 묻지 마십시오."
+      "adminTranslationNotice": "관리자 패널은 번역되지 않습니다. 번역되지 않을 가능성이 높으므로 묻지 마십시오.",
+      "tags": {
+        "admin": "관리자",
+        "disabled": "장애가 있는",
+        "unverified": "미확인"
+      },
+      "reportProblem": {
+        "title": "피드백 보내기",
+        "subject": "대화 4에 대한 피드백",
+        "body": "친애하는 대화 팀,\n\n대화 개발에 대한 몇 가지 피드백이 있습니다.\n\n--> 버그의 경우 다음 템플릿을 작성하십시오.\n\n# 설명\n\n> Conversation에서 발견한 문제점을 자세히 기술하십시오.\n\n👉\n\n# 재생산 단계\n\n> 버그를 다시 발생시키는 방법을 구체적으로 설명하십시오. 내가 번식할 수 없다면\n> 버그인 경우 추가 조치가 취해지지 않습니다.\n\n👉\n\n--> 기능 요청의 경우 다음 템플릿을 작성하십시오.\n\n# 무엇이 빠졌나요?\n\n> Conversation에 없다고 생각하는 기능을 기술하십시오.\n\n👉\n\n# 공백은 어떻게 고칠 수 있나요?\n\n> 기능 격차를 메우는 데 무엇이 도움이 되는지 설명하십시오.\n\n👉 "
+      }
     },
     "landing": {
       "header": {
@@ -1015,7 +1157,7 @@
       "reset": "초기화",
       "random": "무작위화",
       "general": {
-        "label": "일반 설정",
+        "label": "일반",
         "title": "일반 설정",
         "placeholder": "아직 아무것도 없습니다. 새로운 설정을 찾아보세요!",
         "language": {
@@ -1046,6 +1188,28 @@
           "title": "테마 색상",
           "description": "인터페이스의 기본 색상을 원하는 대로 설정할 수 있습니다.",
           "error": "테마 색상을 설정하지 못했습니다."
+        }
+      },
+      "account": {
+        "label": "계정",
+        "title": "계정 설정",
+        "profilePicture": {
+          "title": "프로필 사진",
+          "description": "이 프로필 사진은 모든 채팅에서 볼 수 있습니다."
+        },
+        "nickname": {
+          "title": "별명"
+        },
+        "name": {
+          "title": "이름"
+        },
+        "email": {
+          "title": "이메일 주소",
+          "action": "이메일을 바꾸다"
+        },
+        "logout": {
+          "title": "로그인",
+          "action": "로그 아웃"
         }
       }
     }
@@ -1085,7 +1249,8 @@
         "pendingChanges": "待定更改",
         "unlistedHint": "该频道不会显示在探索屏幕上，但知道 ID 和密码或持有邀请的用户仍然可以在没有正式邀请的情况下加入。",
         "publicHint": "该频道将显示在探索屏幕上，任何用户都可以在未经明确同意的情况下加入该频道。",
-        "privateHint": "该频道不会显示在探索屏幕上。 只有频道成员邀请的用户才能加入频道。"
+        "privateHint": "该频道不会显示在探索屏幕上。 只有频道成员邀请的用户才能加入频道。",
+        "privacyLevel": "隐私级别"
       },
       "people": {
         "title": "群成员",
@@ -1104,7 +1269,11 @@
         "noUsersFound": "未找到相应的用户。",
         "inviteMessage": "邀请留言",
         "cancel": "取消",
-        "inviteFinished": "邀请 {{ count }} 位会员"
+        "inviteFinished": "邀请 {{ count }} 位会员",
+        "invitePrompt": "键入以开始搜索。",
+        "autocompleteError": "无法获取用户。",
+        "inviteSuccess": "邀请已发送。",
+        "inviteFailed": "发送邀请失败。 尝试重新加载并查看问题是否仍然存在"
       },
       "join": {
         "title": "加入频道",
@@ -1125,7 +1294,11 @@
       "locked": "此频道已锁定。 会员不能编辑频道详情或添加或删除其他人。",
       "createChannel": "创建频道",
       "createChannelCancel": "取消",
-      "createChannelContinue": "创造"
+      "createChannelContinue": "创造",
+      "snackbar": {
+        "createChannelSuccess": "创建频道“{{ channelName }}”",
+        "createChannelFailed": "创建频道失败。 尝试重新加载并查看问题是否仍然存在。"
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -1181,7 +1354,17 @@
         "goToDm": "去私信",
         "viewProfile": "查看资料"
       },
-      "adminTranslationNotice": "管理面板未翻译。 它可能永远不会被翻译，所以甚至不要尝试询问。"
+      "adminTranslationNotice": "管理面板未翻译。 它可能永远不会被翻译，所以甚至不要尝试询问。",
+      "tags": {
+        "admin": "行政",
+        "disabled": "残疾人",
+        "unverified": "未验证"
+      },
+      "reportProblem": {
+        "title": "发送反馈",
+        "subject": "关于对话 4 的反馈",
+        "body": "亲爱的对话团队，\n\n我对 Conversation 开发有一些反馈。\n\n--> 对于错误，请填写以下模板\n\n＃ 描述\n\n> 详细描述您在对话中发现的问题。\n\n👉\n\n# 复制步骤\n\n> 具体解释如何让你的错误再次发生。 如果我不能重现\n> 错误，将不会采取进一步的措施。\n\n👉\n\n--> 对于功能请求，请填写以下模板\n\n＃ 少了什么东西？\n\n> 描述您认为 Conversation 缺少的功能。\n\n👉\n\n# 我怎样才能弥补差距？\n\n> 描述什么有助于填补功能缺口。\n\n👉"
+      }
     },
     "landing": {
       "header": {
@@ -1309,6 +1492,28 @@
           "description": "根据您的喜好自定义界面的 Material You 主要强调色。",
           "error": "设置主题颜色失败。"
         }
+      },
+      "account": {
+        "label": "帐户",
+        "title": "帐号设定",
+        "profilePicture": {
+          "title": "头像",
+          "description": "此个人资料图片将在您的所有聊天中可见。"
+        },
+        "nickname": {
+          "title": "昵称"
+        },
+        "name": {
+          "title": "姓名"
+        },
+        "email": {
+          "title": "电子邮件地址",
+          "action": "更改电子邮件"
+        },
+        "logout": {
+          "title": "登录",
+          "action": "登出"
+        }
       }
     }
   },
@@ -1347,7 +1552,8 @@
         "pendingChanges": "待定更改",
         "unlistedHint": "該頻道不會顯示在探索屏幕上，但知道 ID 和密碼或持有邀請的用戶仍然可以在沒有正式邀請的情況下加入。",
         "publicHint": "該頻道將顯示在探索屏幕上，任何用戶都可以在未經明確同意的情況下加入該頻道。",
-        "privateHint": "該頻道不會顯示在探索屏幕上。 只有頻道成員邀請的用戶才能加入頻道。"
+        "privateHint": "該頻道不會顯示在探索屏幕上。 只有頻道成員邀請的用戶才能加入頻道。",
+        "privacyLevel": "隱私級別"
       },
       "people": {
         "title": "人們",
@@ -1366,7 +1572,11 @@
         "noUsersFound": "未找到相應的用戶。",
         "inviteMessage": "邀請留言",
         "cancel": "取消",
-        "inviteFinished": "邀請 {{ count }} 位會員"
+        "inviteFinished": "邀請 {{ count }} 位會員",
+        "invitePrompt": "鍵入以開始搜索。",
+        "autocompleteError": "無法獲取用戶。",
+        "inviteSuccess": "邀請已發送。",
+        "inviteFailed": "發送邀請失敗。 嘗試重新加載並查看問題是否仍然存在"
       },
       "join": {
         "title": "加入頻道",
@@ -1387,7 +1597,11 @@
       "locked": "此頻道已鎖定。 會員不能編輯頻道詳情或添加或刪除其他人。",
       "createChannel": "創建頻道",
       "createChannelCancel": "取消",
-      "createChannelContinue": "創造"
+      "createChannelContinue": "創造",
+      "snackbar": {
+        "createChannelSuccess": "創建頻道“{{ channelName }}”",
+        "createChannelFailed": "創建頻道失敗。 嘗試重新加載並查看問題是否仍然存在。"
+      }
     },
     "emojiPicker": {
       "emojiMart": {
@@ -1443,7 +1657,17 @@
         "goToDm": "去私信",
         "viewProfile": "查看資料"
       },
-      "adminTranslationNotice": "管理面板未翻譯。 它可能永遠不會被翻譯，所以甚至不要嘗試詢問。"
+      "adminTranslationNotice": "管理面板未翻譯。 它可能永遠不會被翻譯，所以甚至不要嘗試詢問。",
+      "tags": {
+        "admin": "行政",
+        "disabled": "殘疾人",
+        "unverified": "未驗證"
+      },
+      "reportProblem": {
+        "title": "發送反饋",
+        "subject": "關於對話 4 的反饋",
+        "body": "親愛的對話團隊，\n\n我對 Conversation 開發有一些反饋。\n\n--> 對於錯誤，請填寫以下模板\n\n＃ 描述\n\n> 詳細描述您在對話中發現的問題。\n\n👉\n\n# 複製步驟\n\n> 具體解釋如何讓你的錯誤再次發生。 如果我不能重現\n> 錯誤，將不會採取進一步的措施。\n\n👉\n\n--> 對於功能請求，請填寫以下模板\n\n＃ 少了什麼東西？\n\n> 描述您認為 Conversation 缺少的功能。\n\n👉\n\n# 我怎樣才能彌補差距？\n\n> 描述什麼有助於填補功能缺口。\n\n👉"
+      }
     },
     "landing": {
       "header": {
@@ -1570,6 +1794,28 @@
           "title": "主題色",
           "description": "根據您的喜好自定義界面的 Material You 主要強調色。",
           "error": "設置主題顏色失敗。"
+        }
+      },
+      "account": {
+        "label": "帳戶",
+        "title": "帳號設定",
+        "profilePicture": {
+          "title": "頭像",
+          "description": "此個人資料圖片將在您的所有聊天中可見。"
+        },
+        "nickname": {
+          "title": "暱稱"
+        },
+        "name": {
+          "title": "姓名"
+        },
+        "email": {
+          "title": "電子郵件地址",
+          "action": "更改電子郵件"
+        },
+        "logout": {
+          "title": "登錄",
+          "action": "登出"
         }
       }
     }
