@@ -48,13 +48,13 @@ class SupabaseBackendImpl implements NetworkBackend {
     SUPABASE_ANON_KEY
   );
 
-  cache = new SupabaseCache();
+  private cache = new SupabaseCache();
 
-  loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
+  private loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
 
   isReady: Promise<void>;
 
-  realtimeChannel: RealtimeChannel;
+  private realtimeChannel: RealtimeChannel;
 
   messageSubscribable: Subscribable<Message | null>;
 
@@ -142,6 +142,20 @@ class SupabaseBackendImpl implements NetworkBackend {
       .eq("user_id", userId)
       .eq("accepted", false);
     if (error) throw error;
+    const currentChannelList = await this.cache.getChannelListOrFallback(() =>
+      getChannels(this.client, userId as string)
+    );
+    this.cache.putChannelList(
+      currentChannelList
+        .getSnapshot()
+        .concat([
+          (
+            await this.cache.getChannelOrFallback(id, () =>
+              getChannel(this.client, id)
+            )
+          ).getSnapshot(),
+        ])
+    );
   }
 
   async deleteInvite(id: number): Promise<void> {
@@ -347,6 +361,7 @@ class SupabaseBackendImpl implements NetworkBackend {
   async authLogOut(): Promise<void> {
     const { error } = await this.client.auth.signOut();
     if (error) throw error;
+    this.cache.clearUserDependentState();
   }
 
   async authCreateAccount(
