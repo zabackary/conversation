@@ -60,7 +60,7 @@ export default class Subscribable<T>
   }
 
   map<U>(mapper: (value: T) => Promise<U>, initial: U) {
-    return new Subscribable((next, nextError) => {
+    return new Subscribable<U>((next, nextError) => {
       this.subscribe(({ value, error }) => {
         if (error) {
           nextError(error);
@@ -69,6 +69,20 @@ export default class Subscribable<T>
         mapper(value).then(next).catch(nextError);
       });
       mapper(this.getSnapshot()).then(next).catch(nextError);
+    }, initial);
+  }
+
+  filter<U extends T>(predicate: (value: T) => value is U, initial: U) {
+    return new Subscribable<U>((next, nextError) => {
+      this.subscribe(({ value, error }) => {
+        if (error) {
+          nextError(error);
+          return;
+        }
+        if (predicate(value)) next(value);
+      });
+      const snapshot = this.getSnapshot();
+      if (predicate(snapshot)) next(snapshot);
     }, initial);
   }
 
