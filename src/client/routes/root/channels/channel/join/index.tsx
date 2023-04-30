@@ -65,7 +65,7 @@ export default function ChannelJoinScreen() {
           size="large"
           onClick={() => setCreateOpen(true)}
         >
-          [untranslated] Create channel
+          {t("createChannel")}
         </Button>
         <Dialog
           open={createOpen}

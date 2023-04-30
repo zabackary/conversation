@@ -1,5 +1,4 @@
 import {
-  Alert,
   AppBar,
   Button,
   Collapse,
@@ -9,6 +8,7 @@ import {
   FormControl,
   IconButton,
   InputLabel,
+  ListItemText,
   MenuItem,
   Select,
   Stack,
@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 import { PrivacyLevel } from "../../../../../../model/channel";
 import useBackend from "../../../../../hooks/useBackend";
 import useSnackbar from "../../../../../components/useSnackbar";
@@ -48,14 +49,19 @@ export default function Create({ onClose }: CreateProps) {
           : undefined
       )
       .then((channel) => {
-        showSnackbar(`Successfully created the channel "${channel.name}".`);
+        showSnackbar(
+          t("snackbar.createChannelSuccess", { channelName: channel.name })
+        );
         onClose();
       })
       .catch((err) => {
         console.error(err);
-        showSnackbar("Failed to create channel.");
+        showSnackbar(t("snackbar.createChannelFailed"));
+        // To prevent annoying people from autoclicking...
+        onClose();
       });
   };
+  const { t } = useTranslation("channel");
   return (
     <form onSubmit={handleSubmit}>
       {fullScreen ? (
@@ -66,30 +72,30 @@ export default function Create({ onClose }: CreateProps) {
                 <CloseIcon />
               </IconButton>
               <Typography variant="h5" component="h2" ml={2} flex={1}>
-                Create channel
+                {t("createChannel")}
               </Typography>
               <Button color="inherit" type="submit">
-                Create
+                {t("createChannelContinue")}
               </Button>
             </Toolbar>
           </AppBar>
           <Toolbar />
         </>
       ) : (
-        <DialogTitle>[untranslated] Create channel</DialogTitle>
+        <DialogTitle>{t("createChannel")}</DialogTitle>
       )}
       <DialogContent>
-        <Stack spacing={2}>
-          <Alert severity="info">
-            Currently, this section is <b>untranslated</b>. We apologize for the
-            inconvenience.
-          </Alert>
-          <TextField label="Channel name" name="name" />
-          <TextField label="Description" multiline name="description" />
+        <Stack spacing={2} minWidth={300}>
+          <TextField label={t("channelInfo.name")} name="name" sx={{ mt: 1 }} />
+          <TextField
+            label={t("channelInfo.description")}
+            multiline
+            name="description"
+          />
           <FormControl fullWidth>
-            <InputLabel>Privacy level</InputLabel>
+            <InputLabel>{t("channelInfo.privacyLevel")}</InputLabel>
             <Select
-              label="Privacy level"
+              label={t("channelInfo.privacyLevel")}
               value={privacyLevel ?? ""}
               name="privacyLevel"
               onChange={(e) =>
@@ -97,24 +103,62 @@ export default function Create({ onClose }: CreateProps) {
                   typeof e.target.value === "string" ? null : e.target.value
                 )
               }
+              renderValue={(value) => {
+                if (value === PrivacyLevel.Private) {
+                  return t("channelInfo.private");
+                }
+                if (value === PrivacyLevel.Unlisted) {
+                  return t("channelInfo.unlisted");
+                }
+                return t("channelInfo.public");
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    maxWidth: 400,
+                  },
+                },
+              }}
             >
-              <MenuItem value={PrivacyLevel.Private}>Private</MenuItem>
-              <MenuItem value={PrivacyLevel.Unlisted}>Unlisted</MenuItem>
-              <MenuItem value={PrivacyLevel.Public}>Public</MenuItem>
+              <MenuItem value={PrivacyLevel.Private}>
+                <ListItemText
+                  primary={t("channelInfo.private")}
+                  secondary={t("channelInfo.privateHint")}
+                  secondaryTypographyProps={{ whiteSpace: "normal" }}
+                />
+              </MenuItem>
+              <MenuItem value={PrivacyLevel.Unlisted}>
+                <ListItemText
+                  primary={t("channelInfo.unlisted")}
+                  secondary={t("channelInfo.unlistedHint")}
+                  secondaryTypographyProps={{ whiteSpace: "normal" }}
+                />
+              </MenuItem>
+              <MenuItem value={PrivacyLevel.Public}>
+                <ListItemText
+                  primary={t("channelInfo.public")}
+                  secondary={t("channelInfo.publicHint")}
+                  secondaryTypographyProps={{ whiteSpace: "normal" }}
+                />
+              </MenuItem>
             </Select>
           </FormControl>
           <Collapse
             in={privacyLevel === PrivacyLevel.Unlisted}
             sx={{ width: "100%" }}
           >
-            <TextField label="Passphrase" name="password" fullWidth />
+            <TextField
+              label={t("join.passphrase.password")}
+              name="password"
+              fullWidth
+            />
           </Collapse>
         </Stack>
       </DialogContent>
       {fullScreen ? null : (
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button onClick={onClose}>{t("createChannelCancel")}</Button>
+          <Button type="submit">{t("createChannelContinue")}</Button>
         </DialogActions>
       )}
     </form>
