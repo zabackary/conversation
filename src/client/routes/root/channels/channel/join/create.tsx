@@ -35,6 +35,7 @@ export default function Create({ onClose }: CreateProps) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const backend = useBackend();
   const { showSnackbar } = useSnackbar();
+  const { t } = useTranslation("channel");
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (privacyLevel === null) return;
@@ -61,7 +62,6 @@ export default function Create({ onClose }: CreateProps) {
         onClose();
       });
   };
-  const { t } = useTranslation("channel");
   return (
     <form onSubmit={handleSubmit}>
       {fullScreen ? (

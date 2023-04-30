@@ -149,8 +149,7 @@ export default function PeopleMenu({
           ]);
         })
         .catch(() => {
-          // TODO: Translate
-          showSnackbar("Failed to fetch users.");
+          showSnackbar(t("people.autocompleteError"));
         });
     } else {
       // Input is blank
@@ -178,13 +177,11 @@ export default function PeopleMenu({
       .then(() => {
         setInvitePending(false);
         setIsInviting(false);
-        // TODO: Translate
-        showSnackbar("Invite sent.");
+        showSnackbar(t("people.inviteSuccess"));
       })
       .catch(() => {
         setInvitePending(false);
-        // TODO: Translate
-        showSnackbar("Failed to send invite.");
+        showSnackbar(t("people.inviteFailed"));
       });
   };
   return (
@@ -253,7 +250,7 @@ export default function PeopleMenu({
             noOptionsText={
               // eslint-disable-next-line no-nested-ternary
               autocompleteInputValue === "" ? (
-                "Type to start searching." // TODO: Translate
+                t("people.invitePrompt")
               ) : options[0] !== autocompleteInputValue ? (
                 <Box display="flex" justifyContent="center">
                   <CircularProgress />
