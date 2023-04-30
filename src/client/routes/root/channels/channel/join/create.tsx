@@ -48,9 +48,7 @@ export default function Create({ onClose }: CreateProps) {
           : undefined
       )
       .then((channel) => {
-        showSnackbar(
-          `Successfully created the channel "${channel.name}". Reload to start chatting!`
-        );
+        showSnackbar(`Successfully created the channel "${channel.name}".`);
         onClose();
       })
       .catch((err) => {

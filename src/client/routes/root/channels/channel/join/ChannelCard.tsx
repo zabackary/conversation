@@ -53,7 +53,7 @@ function InviteChannelCard({
     handleAccept(invite.id)
       .then(() => {
         setAcceptLoading(false);
-        showSnackbar("Accepted invite. Reload to start chatting!");
+        showSnackbar("Accepted invite.");
       })
       .catch(() => {
         showSnackbar("Failed to accept invite.");
@@ -170,7 +170,7 @@ function PublicChannelCard({
     handleAccept(invite.id)
       .then(() => {
         setAcceptLoading(false);
-        showSnackbar("Accepted invite. Reload to start chatting!");
+        showSnackbar("Accepted invite.");
       })
       .catch(() => {
         showSnackbar("Failed to accept invite.");
