@@ -15,7 +15,12 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMatches, useOutlet, Link as RouterLink } from "react-router-dom";
+import {
+  useMatches,
+  useOutlet,
+  Link as RouterLink,
+  useNavigate,
+} from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
@@ -106,6 +111,17 @@ export default function RootRoute() {
       });
     }
   }, [connectionState, showSnackbar]);
+  const navigate = useNavigate();
+  const handleSwitchAccount = () => {
+    backend
+      .authLogOut()
+      .then(() => {
+        navigate("/login/");
+      })
+      .catch(() => {
+        showSnackbar("Failed to log out");
+      });
+  };
   if (user?.disabled)
     return (
       <Container component="main" maxWidth="xs" sx={{ pt: 6, pb: 8 }}>
@@ -164,11 +180,20 @@ export default function RootRoute() {
               <Button
                 component={RouterLink}
                 to="/"
-                variant="tonal"
+                variant="filled"
                 sx={{ mt: 3, mb: 2 }}
                 startIcon={<ArrowBackIcon />}
               >
                 Back
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="tonal"
+                sx={{ mt: 3, mb: 2 }}
+                onClick={handleSwitchAccount}
+              >
+                Switch account
               </Button>
             </Grid>
           </Grid>
