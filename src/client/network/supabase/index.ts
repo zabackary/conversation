@@ -274,7 +274,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     id: number,
     details: Partial<ChannelDetails>
   ): Promise<void> {
-    const { error } = await this.client
+    const { data, error } = await this.client
       .from("channels")
       .update({
         members_can_edit: details.membersCanEdit,
@@ -283,8 +283,13 @@ class SupabaseBackendImpl implements NetworkBackend {
         privacy_level: details.privacyLevel,
       })
       .eq("id", id)
+      .select("*, users!members ( * )")
       .single();
     if (error) throw error;
+    this.cache.putChannel({
+      ...data,
+      users: normalizeJoin(data.users),
+    });
   }
 
   async deleteChannel(id: number): Promise<void> {

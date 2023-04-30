@@ -15,8 +15,7 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import { FormEvent, useMemo, useState } from "react";
-import { shallowEqualObjects } from "shallow-equal";
+import { FormEvent, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import Channel, { PrivacyLevel } from "../../../model/channel";
@@ -66,10 +65,13 @@ export default function InfoMenu({
       handleChange("privacyLevel")({ target: { value: newPrivacyLevel } });
     }
   };
-  const isPendingChanges = useMemo(
-    () => !shallowEqualObjects(pendingChange, channel),
-    [pendingChange, channel]
-  );
+  const isPendingChanges =
+    pendingChange.name !== channel.name ||
+    pendingChange.description !== channel.description ||
+    pendingChange.privacyLevel !== channel.privacyLevel ||
+    (!pendingChange.dm &&
+      !channel.dm &&
+      pendingChange.membersCanEdit !== channel.membersCanEdit);
   const backend = useBackend();
   const { showSnackbar } = useSnackbar();
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
