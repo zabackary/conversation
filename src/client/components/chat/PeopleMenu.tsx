@@ -155,7 +155,7 @@ export default function PeopleMenu({
       // Input is blank
       setOptions(["", []]);
     }
-  }, [debouncedAutocompleteInputValue, backend, showSnackbar, memberIds]);
+  }, [debouncedAutocompleteInputValue, backend, showSnackbar, memberIds, t]);
   useEffect(() => {
     if (
       autocompleteInputValue === "" ||
