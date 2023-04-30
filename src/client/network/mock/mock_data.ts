@@ -12,6 +12,7 @@ export const services = {
     id: 98219,
     isBot: true,
     privilegeLevel: PrivilegeLevel.Normal,
+    disabled: false,
   },
 } satisfies Record<string, User>;
 
@@ -26,6 +27,7 @@ export const users = {
     privilegeLevel: PrivilegeLevel.Normal,
     active: true,
     isBot: false,
+    disabled: false,
   }),
   alice: new DispatchableSubscribable<User>({
     name: "Alice Surname",
@@ -36,6 +38,7 @@ export const users = {
     privilegeLevel: PrivilegeLevel.Normal,
     active: false,
     isBot: false,
+    disabled: false,
   }),
   eve: new DispatchableSubscribable<User>({
     name: "Eve Familyname",
@@ -46,6 +49,7 @@ export const users = {
     privilegeLevel: PrivilegeLevel.Normal,
     active: true,
     isBot: false,
+    disabled: false,
   }),
 } satisfies Record<string, DispatchableSubscribable<User>>;
 

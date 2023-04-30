@@ -21,6 +21,7 @@ export interface BaseUser {
   privilegeLevel: PrivilegeLevel;
   isBot: boolean;
   status?: string;
+  disabled: boolean;
 }
 
 export interface RegisteredUser extends BaseUser {

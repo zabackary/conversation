@@ -52,6 +52,7 @@ export default function getLoggedInUserSubscribable(
                 active: false,
                 banner: undefined,
                 isBot: false,
+                disabled: false,
               });
               await client.from("users").insert({
                 id: newSession.user.id,

@@ -5,6 +5,7 @@ const deletedUser: User = {
   isBot: false,
   name: "!translation:deleted_user",
   privilegeLevel: PrivilegeLevel.Unverified,
+  disabled: false,
 };
 
 export default deletedUser;
