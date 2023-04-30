@@ -132,6 +132,9 @@ export default class SupabaseCache {
   }
 
   clearUserDependentState() {
-    this.channelList = undefined;
+    if (this.channelList && !("then" in this.channelList)) {
+      this.channelList.dispatch([]);
+      this.channelList = undefined;
+    }
   }
 }
