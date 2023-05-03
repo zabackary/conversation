@@ -1,7 +1,32 @@
 # Conversation 4
 
-Welcome to the source code for Conversation! I'll write something helpful here
-later, but I don't have time now.
+Conversation is a chat app built from the ground up to be safe for students to
+use for communicating with peers about projects, life, and more.
+
+## Features
+
+### _Simple_
+
+Anytime, anywhere. Even on a school chromebook. Conversation utilizes Google Scripts for uncensorable communication.
+
+### _Safe_
+
+Built to be moderated, from the ground up. State-of-the-art automated filtering combined with real humans can catch everything.
+
+### _Beautiful_
+
+Wonderfully designed using Google's latest styles. Pretty pretty, if you know what I mean.
+
+### _Powerful_
+
+Easily invite members and chat using not just text but images, bots, and more.
+
+## Deployment
+
+Simply run `pnpm run deploy` to first build the app from source then upload it
+to Google Apps Script as a web app. You can then deploy it from the web UI or
+preview it from the `/dev` URL.
+[Learn more at the official documentation](https://developers.google.com/apps-script/guides/web).
 
 ## Installation
 
@@ -10,9 +35,10 @@ later, but I don't have time now.
 
 - Run `pnpm install` to install dependencies.
 
-- Set up files
+- Set up `.gitignore`'d files
 
-  - _`.clasp.json`: [Clasp](https://github.com/google/clasp) config file_
+  - [`.clasp.json`](/.clasp.json): [Clasp](https://github.com/google/clasp)
+    config file
 
     Should be set up as follows:
 
@@ -23,4 +49,17 @@ later, but I don't have time now.
     }
     ```
 
-    [Install Clasp](https://github.com/google/clasp#install) and [log in](https://github.com/google/clasp#login) before running `pnpm run upload`
+    [Log in](https://github.com/google/clasp#login) to your Google Account via
+    `pnpm clasp login` before running `pnpm run upload`
+
+  - [`.env.local`](/.env.local): [.env](https://www.npmjs.com/package/dotenv)
+    file containing Supabase keys
+
+    Should be set up as follows:
+
+    ```env
+    CLIENT_SUPABASE_URL=https://{{ Supabase project ID }}.supabase.co/
+    CLIENT_SUPABASE_ANON_KEY={{ Supabase anon key (not service role!) }}
+    ```
+
+- You're all set to start developing. Run `pnpm serve` to start the dev server.
