@@ -154,6 +154,7 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
         <StyledPaper
           sx={{
             borderRadius: "28px",
+            zIndex: 1,
             ...sx,
           }}
           ref={ref}
