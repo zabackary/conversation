@@ -41,7 +41,7 @@ export default function ChatView({
     const observer = new IntersectionObserver(
       ([e]) => setIsSticky(e.intersectionRatio < 1),
       {
-        rootMargin: "0px 0px -25px 0px",
+        rootMargin: "0px 0px -1px 0px",
         threshold: 1,
         root: containerRef.current,
       }
@@ -137,20 +137,14 @@ export default function ChatView({
         <ChatList
           messages={messages}
           sx={{
-            pb: {
-              xs: "112px",
-              sm: "32px",
-            },
+            pb: 2,
           }}
           onContextMenu={handleContextMenu}
         />
       ) : (
         <ChatListSkeleton
           sx={{
-            pb: {
-              xs: "112px",
-              sm: "32px",
-            },
+            pb: 2,
           }}
         />
       )}
@@ -161,10 +155,9 @@ export default function ChatView({
         sx={{
           position: "sticky",
           bottom: {
-            xs: "104px",
-            sm: "24px",
+            xs: "80px",
+            sm: 0,
           },
-          marginBottom: afterInput ? "12px" : "0px",
         }}
         placeholder={
           channelName && username
@@ -177,7 +170,17 @@ export default function ChatView({
         elevate={!isSticky}
         ref={inputRef}
       />
-      {afterInput}
+      <Box
+        sx={{
+          marginBottom: {
+            xs: 12,
+            sm: 0,
+          },
+          mx: 1,
+        }}
+      >
+        {afterInput}
+      </Box>
     </Box>
   );
 }

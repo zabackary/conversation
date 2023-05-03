@@ -3,6 +3,7 @@ import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import SendIcon from "@mui/icons-material/Send";
 import {
+  Box,
   IconButton,
   IconButtonProps,
   InputAdornment,
@@ -151,64 +152,82 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
     const isOptionsMenuOpen = !!optionsMenuAnchor;
     return (
       <>
-        <StyledPaper
+        <Box
           sx={{
-            borderRadius: "28px",
             zIndex: 1,
+            pb: 2,
+            px: 1,
+            position: "relative",
+            "&::before": {
+              content: elevate ? '""' : undefined,
+              bgcolor: "background.default",
+              position: "absolute",
+              inset: 0,
+              top: 28,
+              zIndex: 0,
+            },
             ...sx,
           }}
           ref={ref}
-          elevation={elevate ? 1 : 0}
-          className={elevate ? "" : "flat"}
         >
-          <OutlinedInput
-            fullWidth
-            sx={{ borderRadius: "28px" }}
-            value={message.markdown}
-            onChange={handleChange}
-            placeholder={placeholder}
-            onKeyDown={handleKeyDown}
-            multiline
-            maxRows={4}
-            startAdornment={
-              <InputAdornment position="start">
-                <Tooltip title={t("overflowTooltip")}>
-                  <ExpandMore
-                    expand={isOptionsMenuOpen}
-                    onClick={handleOptionsMenuClick}
-                    id={`${optionsMenuId}-anchor`}
-                  >
-                    <ExpandCircleDownIcon />
-                  </ExpandMore>
-                </Tooltip>
-              </InputAdornment>
-            }
-            endAdornment={
-              <InputAdornment position="end">
-                <Tooltip title={t("emoji")}>
-                  <IconButton onClick={handleEmojiClick}>
-                    <InsertEmoticonIcon />
-                  </IconButton>
-                </Tooltip>
-                {cannotSendMessage ? (
-                  <IconButton
-                    onClick={handleSendClick}
-                    disabled
-                    aria-label={t("sendDisabled")}
-                  >
-                    <SendIcon />
-                  </IconButton>
-                ) : (
-                  <Tooltip title={t("send")}>
-                    <IconButton onClick={handleSendClick}>
-                      <SendIcon />
+          <StyledPaper
+            sx={{
+              borderRadius: "28px",
+              position: "relative",
+              zIndex: 1,
+            }}
+            elevation={elevate ? 1 : 0}
+            className={elevate ? "" : "flat"}
+          >
+            <OutlinedInput
+              fullWidth
+              sx={{ borderRadius: "28px" }}
+              value={message.markdown}
+              onChange={handleChange}
+              placeholder={placeholder}
+              onKeyDown={handleKeyDown}
+              multiline
+              maxRows={4}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Tooltip title={t("overflowTooltip")}>
+                    <ExpandMore
+                      expand={isOptionsMenuOpen}
+                      onClick={handleOptionsMenuClick}
+                      id={`${optionsMenuId}-anchor`}
+                    >
+                      <ExpandCircleDownIcon />
+                    </ExpandMore>
+                  </Tooltip>
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <Tooltip title={t("emoji")}>
+                    <IconButton onClick={handleEmojiClick}>
+                      <InsertEmoticonIcon />
                     </IconButton>
                   </Tooltip>
-                )}
-              </InputAdornment>
-            }
-          />
-        </StyledPaper>
+                  {cannotSendMessage ? (
+                    <IconButton
+                      onClick={handleSendClick}
+                      disabled
+                      aria-label={t("sendDisabled")}
+                    >
+                      <SendIcon />
+                    </IconButton>
+                  ) : (
+                    <Tooltip title={t("send")}>
+                      <IconButton onClick={handleSendClick}>
+                        <SendIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </InputAdornment>
+              }
+            />
+          </StyledPaper>
+        </Box>
         <Popover
           id={emojiPickerPopoverId}
           open={isEmojiPickerOpen}
