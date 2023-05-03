@@ -41,9 +41,14 @@ export const InlineBadge = styled(Badge)<BadgeProps>(() => ({
 interface Props {
   message: Message;
   showAvatar?: boolean;
+  onContextMenu?: (x: number, y: number, message: Message) => void;
 }
 
-export default function ChatItem({ message, showAvatar }: Props) {
+export default function ChatItem({
+  message,
+  showAvatar,
+  onContextMenu,
+}: Props) {
   const { t } = useTranslation("message");
   const translatedMarkdown = useMemo(() => {
     if (!message.markdown.startsWith(TRANSLATION_MARKER))
@@ -56,7 +61,15 @@ export default function ChatItem({ message, showAvatar }: Props) {
   }, [message.markdown, t]);
   const active = useUserActivity(message.user.id);
   return (
-    <ListItem disablePadding disableGutters>
+    <ListItem
+      disablePadding
+      disableGutters
+      onContextMenu={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onContextMenu?.call(undefined, e.clientX, e.clientY, message);
+      }}
+    >
       <ListItemButton sx={{ p: "0 24px !important" }} alignItems="flex-start">
         {showAvatar ? (
           <ListItemAvatar>

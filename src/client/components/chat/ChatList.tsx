@@ -7,9 +7,10 @@ const COMBINE_MESSAGES_THRESHOLD = 60000;
 interface Props {
   messages: Message[];
   sx?: SxProps;
+  onContextMenu?: (x: number, y: number, message: Message) => void;
 }
 
-export default function ChatList({ messages, sx }: Props) {
+export default function ChatList({ messages, sx, onContextMenu }: Props) {
   return (
     <List sx={sx}>
       {messages.map((message, index) => {
@@ -25,6 +26,7 @@ export default function ChatList({ messages, sx }: Props) {
                   message.sent.getTime() - lastMessage.sent.getTime() >
                     COMBINE_MESSAGES_THRESHOLD
             }
+            onContextMenu={onContextMenu}
           />
         );
       })}

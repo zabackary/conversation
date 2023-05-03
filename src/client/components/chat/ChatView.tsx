@@ -1,11 +1,17 @@
-import { Box, SxProps } from "@mui/material";
+import { Box, ListItemIcon, Menu, MenuItem, SxProps } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Message from "../../../model/message";
-import { SentMessageEvent } from "../../network/NetworkBackend";
-import ChatInput from "./ChatInput";
-import ChatList from "./ChatList";
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
+import ReplyIcon from "@mui/icons-material/Reply";
+import EditIcon from "@mui/icons-material/Edit";
+import PushPinIcon from "@mui/icons-material/PushPin";
+import LinkIcon from "@mui/icons-material/Link";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ChatListSkeleton from "./ChatListSkeleton";
+import ChatList from "./ChatList";
+import ChatInput from "./ChatInput";
+import { SentMessageEvent } from "../../network/NetworkBackend";
+import Message from "../../../model/message";
 
 export interface ChatViewProps {
   messages?: Message[];
@@ -48,8 +54,85 @@ export default function ChatView({
     };
   }, [inputRef, containerRef]);
 
+  const [contextMenu, setContextMenu] = useState<{
+    mouseX: number;
+    mouseY: number;
+  } | null>(null);
+
+  const handleContextMenu = (x: number, y: number, _message: Message) => {
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: x + 2,
+            mouseY: y - 6,
+          }
+        : null
+    );
+  };
+
+  const handleClose = (e?: unknown) => {
+    setContextMenu(null);
+    if (
+      typeof e === "object" &&
+      e &&
+      "preventDefault" in e &&
+      typeof e.preventDefault === "function"
+    )
+      e.preventDefault();
+  };
+
   return (
-    <Box sx={sx} ref={containerRef}>
+    <Box sx={sx} ref={containerRef} onContextMenu={handleClose}>
+      <Menu
+        open={contextMenu !== null}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={
+          contextMenu !== null
+            ? {
+                top: contextMenu.mouseY,
+                left: contextMenu.mouseX,
+              }
+            : undefined
+        }
+      >
+        <MenuItem>
+          <ListItemIcon>
+            <FingerprintIcon fontSize="small" />
+          </ListItemIcon>
+          Copy message ID
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <ReplyIcon fontSize="small" />
+          </ListItemIcon>
+          Reply
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <EditIcon fontSize="small" />
+          </ListItemIcon>
+          Edit message
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <PushPinIcon fontSize="small" />
+          </ListItemIcon>
+          Set as pinned message
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <LinkIcon fontSize="small" />
+          </ListItemIcon>
+          Copy link to message
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <DeleteIcon fontSize="small" />
+          </ListItemIcon>
+          Delete message
+        </MenuItem>
+      </Menu>
       {messages ? (
         <ChatList
           messages={messages}
@@ -59,6 +142,7 @@ export default function ChatView({
               sm: "32px",
             },
           }}
+          onContextMenu={handleContextMenu}
         />
       ) : (
         <ChatListSkeleton
