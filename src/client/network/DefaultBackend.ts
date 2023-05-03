@@ -4,11 +4,22 @@ import NetworkBackend from "./NetworkBackend";
 import MockBackend from "./mock";
 import SupabaseBackend from "./supabase";
 
-const USE_SUPABASE_IN_DEVELOPMENT = true as boolean;
-
-const DefaultBackend: new () => NetworkBackend =
-  process.env.NODE_ENV === "production" || USE_SUPABASE_IN_DEVELOPMENT
-    ? SupabaseBackend
-    : MockBackend;
+const DefaultBackend: new () => NetworkBackend = (() => {
+  if (import.meta.env.BACKEND_MODE === "supabase") {
+    return SupabaseBackend;
+  }
+  if (import.meta.env.BACKEND_MODE === "mock") {
+    return MockBackend;
+  }
+  if (import.meta.env.BACKEND_MODE === "gas") {
+    throw new Error(
+      "The Google Apps Script backend has been replaced by Supabase."
+    );
+  } else {
+    throw new Error(
+      `Cannot find backend mode "${import.meta.env.BACKEND_MODE}"`
+    );
+  }
+})();
 
 export default DefaultBackend;

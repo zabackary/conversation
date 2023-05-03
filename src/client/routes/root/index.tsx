@@ -166,7 +166,7 @@ export default function RootRoute() {
           <Typography variant="body2">
             Conversation utilizes automatic spam-prevention technologies to
             avoid spam. Your account may have been disabled in error by
-            automated proccesses to avoid{" "}
+            automated processes to avoid{" "}
             <Link
               href="https://www.cloudflare.com/learning/ddos/what-is-a-ddos-attack/"
               target="_blank"

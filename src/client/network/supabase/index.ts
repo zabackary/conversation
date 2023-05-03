@@ -39,13 +39,10 @@ import convertMessage from "./converters/convertMessage";
 import { DispatchableSubscribable } from "../Subscribable";
 import deletedUser from "./deletedUser";
 
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZW5uZXVzZWFobmNham1rY29lIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzkwNDUyMzksImV4cCI6MTk5NDYyMTIzOX0.HPV_5uNAtMRSosgccOpLzrviqehiS99N7Mf8GGRJHB8";
-
 class SupabaseBackendImpl implements NetworkBackend {
   client = createClient<Database>(
-    "https://pcenneuseahncajmkcoe.supabase.co/",
-    SUPABASE_ANON_KEY
+    import.meta.env.SUPABASE_URL ?? "",
+    import.meta.env.SUPABASE_ANON_KEY ?? ""
   );
 
   private cache = new SupabaseCache();
