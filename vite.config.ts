@@ -14,6 +14,7 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
     define: {
       __BUILD_TIMESTAMP__: `"${new Date().toISOString()}"`,
     },
+    envPrefix: "CLIENT_",
     build: {
       // Relative to the root
       outDir: "dist",

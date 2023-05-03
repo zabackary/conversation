@@ -1,11 +1,11 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly FILE_UPLOAD_LIMIT: string;
-  readonly IMAGE_ANY_URL: string;
-  readonly BACKEND_MODE: string;
-  readonly SUPABASE_URL?: string;
-  readonly SUPABASE_ANON_KEY?: string;
+  readonly CLIENT_FILE_UPLOAD_LIMIT: string;
+  readonly CLIENT_IMAGE_ANY_URL: string;
+  readonly CLIENT_BACKEND_MODE: string;
+  readonly CLIENT_SUPABASE_URL?: string;
+  readonly CLIENT_SUPABASE_ANON_KEY?: string;
 }
 
 interface ImportMeta {
