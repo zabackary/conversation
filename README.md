@@ -62,4 +62,10 @@ preview it from the `/dev` URL.
     CLIENT_SUPABASE_ANON_KEY={{ Supabase anon key (not service role!) }}
     ```
 
+- (optional) Set up Supabase emails
+
+  Using the Supabase admin panel, navigate to Authentication > Email Templates,
+  then copy and paste the corresponding email template in [`/emails`](/emails)
+  into each email template.
+
 - You're all set to start developing. Run `pnpm serve` to start the dev server.
