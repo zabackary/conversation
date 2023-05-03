@@ -24,11 +24,3 @@ later, but I don't have time now.
     ```
 
     [Install Clasp](https://github.com/google/clasp#install) and [log in](https://github.com/google/clasp#login) before running `pnpm run upload`
-
-  - _`jwt.key`: [JWT](https://www.jwt.io) private key_
-
-    Generate a secure private key using a method [like this](https://stackoverflow.com/a/52996809):
-
-    ```bash
-    node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
-    ```
