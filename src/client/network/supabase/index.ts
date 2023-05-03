@@ -457,7 +457,6 @@ class SupabaseBackendImpl implements NetworkBackend {
           null
         )
         .subscribe(({ value, error }) => {
-          console.log(value, error);
           if (error) nextError(error);
           else next(value);
         });
