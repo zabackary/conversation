@@ -42,7 +42,7 @@ export interface ChatItemProps {
   message: Message;
   showAvatar?: boolean;
   onContextMenu?: (x: number, y: number, message: Message) => void;
-  decoration?: "primary" | "secondary" | "tertiary" | undefined;
+  decoration?: "primary" | "secondary" | "tertiary";
 }
 
 export default function ChatItem({
