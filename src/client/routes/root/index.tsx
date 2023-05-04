@@ -84,9 +84,6 @@ export default function RootRoute() {
   }, []);
   const connectionState = useSubscribable(() => backend.connectionState);
   useEffect(() => {
-    if (connectionState instanceof Error) {
-      return;
-    }
     let message: string | null;
     switch (connectionState) {
       case "connected":

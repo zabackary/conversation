@@ -6,6 +6,7 @@ export default function useMessage(
 ) {
   return useBackendFunction(
     (backend) => backend.getMessage(id),
-    navigateToLoginOnAuthFailure
+    navigateToLoginOnAuthFailure,
+    undefined
   );
 }

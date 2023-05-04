@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useReducer } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import NetworkBackend, {
   LoggedOutException,
@@ -8,23 +8,19 @@ import useBackend from "./useBackend";
 
 export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
   const subscribable = useMemo(getSubscribable, [getSubscribable]);
-  // TODO: Figure out how to use `useSyncExternalStore`; it doesn't work and I don't know why
-  // Possiblely I need to use `structuredClone` or something and caching?
-  const [current, setCurrent] = useState<T | Error | null>(
-    subscribable.getSnapshot()
-  );
+  const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
   useEffect(() => {
-    const unsubscribe = subscribable.subscribe(({ value, error }) => {
+    const unsubscribe = subscribable.subscribe(({ error }) => {
       if (error) {
         throw error;
       }
-      setCurrent(value);
+      forceUpdate();
     });
     return () => {
       unsubscribe();
     };
   }, [subscribable]);
-  return current;
+  return subscribable.getSnapshot();
 }
 
 export default function useBackendFunction<T>(
