@@ -1,6 +1,6 @@
 import { List, SxProps } from "@mui/material";
 import Message from "../../../model/message";
-import ChatItem from "./ChatItem";
+import ChatItem, { ChatItemProps } from "./ChatItem";
 
 const COMBINE_MESSAGES_THRESHOLD = 60000;
 
@@ -8,9 +8,18 @@ interface Props {
   messages: Message[];
   sx?: SxProps;
   onContextMenu?: (x: number, y: number, message: Message) => void;
+  messageAccents?: {
+    accent: NonNullable<ChatItemProps["decoration"]>;
+    id: number;
+  }[];
 }
 
-export default function ChatList({ messages, sx, onContextMenu }: Props) {
+export default function ChatList({
+  messages,
+  sx,
+  onContextMenu,
+  messageAccents,
+}: Props) {
   return (
     <List sx={sx}>
       {messages.map((message, index) => {
@@ -27,6 +36,9 @@ export default function ChatList({ messages, sx, onContextMenu }: Props) {
                     COMBINE_MESSAGES_THRESHOLD
             }
             onContextMenu={onContextMenu}
+            decoration={
+              messageAccents?.find((accent) => accent.id === message.id)?.accent
+            }
           />
         );
       })}

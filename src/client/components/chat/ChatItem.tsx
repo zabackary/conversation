@@ -9,6 +9,7 @@ import {
   styled,
   Tooltip,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,10 +23,10 @@ import { PrivilegeLevel } from "../../../model/user";
 import ProfilePicture from "../ProfilePicture";
 
 const WHITELISTED_TRANSLATIONS = [
-  "dm_start",
-  "chat_start",
-  "chat_member_add",
-  "chat_name_change",
+  "dmStart",
+  "chatStart",
+  "chatMemberAdd",
+  "chatNameChange",
   "easteregg", // hehehe
 ];
 const TRANSLATION_MARKER = "!translation:";
@@ -38,17 +39,19 @@ export const InlineBadge = styled(Badge)<BadgeProps>(() => ({
   },
 }));
 
-interface Props {
+export interface ChatItemProps {
   message: Message;
   showAvatar?: boolean;
   onContextMenu?: (x: number, y: number, message: Message) => void;
+  decoration?: "primary" | "secondary" | "tertiary" | undefined;
 }
 
 export default function ChatItem({
   message,
   showAvatar,
   onContextMenu,
-}: Props) {
+  decoration,
+}: ChatItemProps) {
   const { t } = useTranslation("message");
   const translatedMarkdown = useMemo(() => {
     if (!message.markdown.startsWith(TRANSLATION_MARKER))
@@ -60,6 +63,7 @@ export default function ChatItem({
     return message.markdown;
   }, [message.markdown, t]);
   const active = useUserActivity(message.user.id);
+  console.log(useTheme());
   return (
     <ListItem
       disablePadding
@@ -70,7 +74,15 @@ export default function ChatItem({
         onContextMenu?.call(undefined, e.clientX, e.clientY, message);
       }}
     >
-      <ListItemButton sx={{ p: "0 24px !important" }} alignItems="flex-start">
+      <ListItemButton
+        sx={{
+          p: "0 24px !important",
+          bgcolor: decoration ? `${decoration}Container.main` : undefined,
+          borderLeft: decoration ? "3px solid transparent" : undefined,
+          borderLeftColor: decoration ? `${decoration}.main` : undefined,
+        }}
+        alignItems="flex-start"
+      >
         {showAvatar ? (
           <ListItemAvatar>
             <ContrastBadge
