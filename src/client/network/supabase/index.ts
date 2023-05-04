@@ -331,7 +331,17 @@ class SupabaseBackendImpl implements NetworkBackend {
       channel_id: dbChannel.id,
       user_id: userId,
     });
-    if (memberError) throw memberError;
+    if (memberError) {
+      console.warn("Attempting rollback of channel creation...");
+      const { error: rollbackError } = await this.client
+        .from("channels")
+        .delete()
+        .eq("id", dbChannel.id)
+        .single();
+      if (rollbackError)
+        console.error("Failed to rollback channel creation:", rollbackError);
+      throw memberError;
+    }
     const channel = {
       ...dbChannel,
       users: [
