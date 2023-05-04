@@ -6,6 +6,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
+import Message from "../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -162,6 +163,15 @@ export default class CachedBackend implements NetworkBackend {
     return (
       this.channelSubscribableMap[id] ||
       (this.channelSubscribableMap[id] = this.mirroredBackend.getChannel(id))
+    );
+  }
+
+  messageSubscribableMap: Record<string, Subscribable<Message | null>> = {};
+
+  getMessage(id: number): Subscribable<Message | null> {
+    return (
+      this.messageSubscribableMap[id] ||
+      (this.messageSubscribableMap[id] = this.mirroredBackend.getMessage(id))
     );
   }
 

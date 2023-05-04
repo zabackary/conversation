@@ -226,6 +226,12 @@ export default interface NetworkBackend {
   ): Promise<void>;
 
   /**
+   * Get a message's info.
+   * @param id The ID of the message to get
+   */
+  getMessage(id: number): Subscribable<Message | null>;
+
+  /**
    * Generates and returns a link that users can use to join the given channel.
    *
    * @argument maxUsers Optional; the maximum amount of users that can use this

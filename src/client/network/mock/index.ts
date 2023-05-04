@@ -8,6 +8,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
+import Message from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -27,7 +28,13 @@ import NetworkBackend, {
 } from "../NetworkBackend";
 import { wait } from "../utils";
 import MockChannelBackend from "./mock_channel";
-import { channels, loggedInUser, users, usersAuth } from "./mock_data";
+import {
+  channels,
+  loggedInUser,
+  messages,
+  users,
+  usersAuth,
+} from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
   acceptInvite(id: number): Promise<void> {
@@ -79,6 +86,17 @@ export default class MockBackend implements NetworkBackend {
 
   deleteChannel(id: number): Promise<void> {
     throw new Error("Method not implemented.");
+  }
+
+  getMessage(id: number): Subscribable<Message | null> {
+    return new Subscribable<Message | null>(async (next) => {
+      await wait();
+      next(
+        Object.values(messages)
+          .flat()
+          .find((message) => message.id === id) ?? null
+      );
+    }, null);
   }
 
   createChannel(

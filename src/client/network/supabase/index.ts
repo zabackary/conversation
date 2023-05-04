@@ -402,6 +402,29 @@ class SupabaseBackendImpl implements NetworkBackend {
     }, null);
   }
 
+  getMessage(id: number): Subscribable<Message | null> {
+    return new Subscribable<Message | null>(async (next, nextError) => {
+      (
+        await this.cache.getMessageOrFallback(id, () =>
+          getMessage(this.client, id)
+        )
+      )
+        .map<Message | null>(
+          (message) =>
+            Promise.resolve(
+              convertMessage(message, (userId) =>
+                promiseFromSubscribable(this.getUser(userId))
+              )
+            ),
+          null
+        )
+        .subscribe(({ value, error }) => {
+          if (error) nextError(error);
+          else next(value);
+        });
+    }, null);
+  }
+
   getUserActivity(_user: UserId): Subscribable<boolean | null> {
     return new Subscribable<boolean | null>((_next, _nextError) => {
       // TODO: Implement using the channel.

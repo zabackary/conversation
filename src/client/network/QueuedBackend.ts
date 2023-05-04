@@ -6,6 +6,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
+import Message from "../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -158,6 +159,10 @@ export default class QueuedBackend implements NetworkBackend {
 
   getDMs(): Subscribable<DmChannel[] | null> {
     return this.deferredSubscribable((backend) => backend.getDMs());
+  }
+
+  getMessage(id: number): Subscribable<Message | null> {
+    return this.deferredSubscribable((backend) => backend.getMessage(id));
   }
 
   getPublicChannels(
