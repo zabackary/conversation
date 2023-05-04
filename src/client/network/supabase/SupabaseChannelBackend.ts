@@ -76,6 +76,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
       channel_id: this.id,
       markdown: message.markdown,
       user_id: this.userId,
+      replying_to: message.replied,
     });
   }
 }
