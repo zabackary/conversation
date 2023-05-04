@@ -4,7 +4,7 @@ import ChatItem, { ChatItemProps } from "./ChatItem";
 
 const COMBINE_MESSAGES_THRESHOLD = 60000;
 
-interface Props {
+export interface ChatListProps {
   messages: Message[];
   sx?: SxProps;
   onContextMenu?: (x: number, y: number, message: Message) => void;
@@ -19,7 +19,7 @@ export default function ChatList({
   sx,
   onContextMenu,
   messageAccents,
-}: Props) {
+}: ChatListProps) {
   return (
     <List sx={sx}>
       {messages.map((message, index) => {

@@ -8,7 +8,7 @@ import PushPinIcon from "@mui/icons-material/PushPin";
 import LinkIcon from "@mui/icons-material/Link";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ChatListSkeleton from "./ChatListSkeleton";
-import ChatList from "./ChatList";
+import ChatList, { ChatListProps } from "./ChatList";
 import ChatInput from "./ChatInput";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import Message from "../../../model/message";
@@ -102,14 +102,16 @@ export default function ChatView({
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
+    message: Message;
   } | null>(null);
 
-  const handleContextMenu = (x: number, y: number, _message: Message) => {
+  const handleContextMenu = (x: number, y: number, message: Message) => {
     setContextMenu(
       contextMenu === null
         ? {
             mouseX: x + 2,
             mouseY: y - 6,
+            message,
           }
         : null
     );
@@ -125,6 +127,12 @@ export default function ChatView({
     )
       e.preventDefault();
   };
+
+  const messageAccents = (
+    [] as NonNullable<ChatListProps["messageAccents"]>
+  ).concat(
+    contextMenu ? [{ id: contextMenu.message.id, accent: "tertiary" }] : []
+  );
 
   return (
     <Box sx={sx} ref={containerRef}>
@@ -186,6 +194,7 @@ export default function ChatView({
               pb: 2,
             }}
             onContextMenu={handleContextMenu}
+            messageAccents={messageAccents}
           />
         ) : (
           <ChatListSkeleton
