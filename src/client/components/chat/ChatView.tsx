@@ -54,6 +54,14 @@ export default function ChatView({
     };
   }, [inputRef, containerRef]);
 
+  useEffect(() => {
+    if (messages)
+      window.scrollTo({
+        top: document.body.scrollHeight - document.body.offsetHeight,
+        left: 0,
+      });
+  }, [messages]);
+
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
     mouseY: number;
