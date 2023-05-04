@@ -9,7 +9,6 @@ import {
   styled,
   Tooltip,
   Typography,
-  useTheme,
 } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -63,7 +62,6 @@ export default function ChatItem({
     return message.markdown;
   }, [message.markdown, t]);
   const active = useUserActivity(message.user.id);
-  console.log(useTheme());
   return (
     <ListItem
       disablePadding
@@ -77,6 +75,7 @@ export default function ChatItem({
       <ListItemButton
         sx={{
           p: "0 24px !important",
+          pl: decoration ? "21px !important" : undefined,
           bgcolor: decoration ? `${decoration}Container.main` : undefined,
           borderLeft: decoration ? "3px solid transparent" : undefined,
           borderLeftColor: decoration ? `${decoration}.main` : undefined,
