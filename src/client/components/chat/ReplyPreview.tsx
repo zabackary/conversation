@@ -5,11 +5,10 @@ import useMessage from "../../hooks/useMessage";
 
 export interface ReplyPreviewProps {
   id: number;
-  onClose: () => void;
+  onClose?: () => void;
 }
 
 export default function ReplyPreview({ id, onClose }: ReplyPreviewProps) {
-  console.log(id);
   const message = useMessage(id);
   return (
     <Stack
@@ -33,16 +32,25 @@ export default function ReplyPreview({ id, onClose }: ReplyPreviewProps) {
         textOverflow="ellipsis"
       >
         {message ? (
-          <>
-            Replying to <b>{message.user.nickname}</b> <i>{message.markdown}</i>
-          </>
+          onClose ? (
+            <>
+              Replying to <b>{message.user.nickname}</b>{" "}
+              <i>{message.markdown}</i>
+            </>
+          ) : (
+            <>
+              <b>{message.user.nickname}</b> <i>{message.markdown}</i>
+            </>
+          )
         ) : (
           <Skeleton />
         )}
       </Typography>
-      <IconButton onClick={onClose} sx={{ height: 24, width: 24 }}>
-        <CloseIcon />
-      </IconButton>
+      {onClose ? (
+        <IconButton onClick={onClose} sx={{ height: 24, width: 24 }}>
+          <CloseIcon />
+        </IconButton>
+      ) : null}
     </Stack>
   );
 }

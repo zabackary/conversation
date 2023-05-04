@@ -111,18 +111,18 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
       },
       []
     );
-    const handleSendClick: MouseEventHandler<HTMLButtonElement> = useCallback(
-      (_event) => {
-        onMessageSend(message);
-        setMessage({
-          markdown: "",
-          images: [],
-          attachments: [],
-          replied: currentReply,
-        });
-      },
-      [message, onMessageSend, currentReply]
-    );
+    const handleSend = useCallback(() => {
+      onMessageSend({
+        ...message,
+        // currentReply state is managed by ChatView, so need to merge state
+        replied: currentReply,
+      });
+      setMessage({
+        markdown: "",
+        images: [],
+        attachments: [],
+      });
+    }, [message, onMessageSend, currentReply]);
     const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
       (event) => {
         setMessage({
@@ -137,15 +137,10 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
         if (!event.getModifierState("Shift") && event.code === "Enter") {
           event.preventDefault();
           if (cannotSendMessage) return;
-          onMessageSend(message);
-          setMessage({
-            markdown: "",
-            images: [],
-            attachments: [],
-          });
+          handleSend();
         }
       },
-      [cannotSendMessage, message, onMessageSend]
+      [cannotSendMessage, handleSend]
     );
     const handleEmojiSelect = useCallback(
       (emoji: Emoji, _event: PointerEvent) => {
@@ -232,16 +227,12 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
                     </IconButton>
                   </Tooltip>
                   {cannotSendMessage ? (
-                    <IconButton
-                      onClick={handleSendClick}
-                      disabled
-                      aria-label={t("sendDisabled")}
-                    >
+                    <IconButton disabled aria-label={t("sendDisabled")}>
                       <SendIcon />
                     </IconButton>
                   ) : (
                     <Tooltip title={t("send")}>
-                      <IconButton onClick={handleSendClick}>
+                      <IconButton onClick={handleSend}>
                         <SendIcon />
                       </IconButton>
                     </Tooltip>

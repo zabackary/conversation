@@ -221,6 +221,7 @@ export default function ChatView({
       </Box>
       <ChatInput
         onMessageSend={(event) => {
+          setCurrentReply(null);
           onSend(event);
         }}
         sx={{
