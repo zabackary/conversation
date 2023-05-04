@@ -8,6 +8,7 @@ import convertMessage from "./converters/convertMessage";
 import getMessages from "./getters/getMessages";
 import { promiseFromSubscribable } from "./utils";
 import { SupabaseBackend } from ".";
+import SupabaseCache from "./cache";
 
 // TODO: Make this global so we can listen to updates when ex. the tab is
 // minimized.
@@ -16,7 +17,8 @@ export default class SupabaseChannelBackend implements ChannelBackend {
   constructor(
     private id: number,
     private userId: string,
-    private backend: SupabaseBackend
+    private backend: SupabaseBackend,
+    private cache: SupabaseCache
   ) {}
 
   connected = false;
@@ -53,10 +55,14 @@ export default class SupabaseChannelBackend implements ChannelBackend {
 
   async listMessages(): Promise<Message[]> {
     return Promise.all(
-      (await getMessages(this.backend.client, this.id, 30)).map((message) =>
-        convertMessage(message, (id) =>
-          promiseFromSubscribable(this.backend.getUser(id))
-        )
+      (await getMessages(this.backend.client, this.id, 30)).map(
+        async (dbMessage) => {
+          const message = await convertMessage(dbMessage, (id) =>
+            promiseFromSubscribable(this.backend.getUser(id))
+          );
+          this.cache.putMessage(dbMessage);
+          return message;
+        }
       )
     );
   }

@@ -508,7 +508,14 @@ class SupabaseBackendImpl implements NetworkBackend {
       if (typeof currentUserId === "number") throw new Error("Id is number");
       const unsubscribe = this.getChannel(id).subscribe(({ value, error }) => {
         if (!error && value) {
-          resolve(new SupabaseChannelBackend(value.id, currentUserId, this));
+          resolve(
+            new SupabaseChannelBackend(
+              value.id,
+              currentUserId,
+              this,
+              this.cache
+            )
+          );
           unsubscribe();
         } else resolve(null);
       });
