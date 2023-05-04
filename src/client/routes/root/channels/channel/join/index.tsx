@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { FormEvent, SyntheticEvent, useCallback, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { ConversationAppBar } from "../../../../../components/layout";
 import Create from "./create";
@@ -60,7 +61,7 @@ export default function ChannelJoinScreen() {
       <ConversationAppBar title={t("join.title")} />
       <Box m={3}>
         <Button
-          sx={{ mb: 3, mx: "auto", display: "block" }}
+          sx={{ mb: 3, minWidth: "33.33%", mx: "auto", display: "block" }}
           variant="outlined"
           size="large"
           onClick={() => setCreateOpen(true)}
@@ -99,8 +100,9 @@ export default function ChannelJoinScreen() {
               flexWrap="wrap"
               gap={2}
             >
-              {invitedChannels
-                ? invitedChannels.map((invite) => (
+              {invitedChannels ? (
+                invitedChannels.length > 0 ? (
+                  invitedChannels.map((invite) => (
                     <ChannelCard
                       invite={invite}
                       key={invite.id}
@@ -108,10 +110,19 @@ export default function ChannelJoinScreen() {
                       handleReject={handleReject}
                     />
                   ))
-                : new Array(4)
-                    .fill(null)
-                    // eslint-disable-next-line react/no-array-index-key
-                    .map((_, i) => <ChannelCard key={i} />)}
+                ) : (
+                  <Stack direction="row" spacing={1}>
+                    <MusicNoteIcon />
+                    {/* TODO: translate */}
+                    <Typography>Nothing here, move along</Typography>
+                  </Stack>
+                )
+              ) : (
+                new Array(4)
+                  .fill(null)
+                  // eslint-disable-next-line react/no-array-index-key
+                  .map((_, i) => <ChannelCard key={i} />)
+              )}
             </Stack>
           </AccordionDetails>
         </Accordion>
@@ -190,18 +201,29 @@ export default function ChannelJoinScreen() {
               flexWrap="wrap"
               gap={2}
             >
-              {publicChannels
-                ? publicChannels.map((invite) => (
+              {publicChannels ? (
+                publicChannels.length > 0 ? (
+                  publicChannels.map((invite) => (
                     <ChannelCard
                       invite={invite}
                       key={invite.id}
                       handleAccept={handleAccept}
+                      handleReject={handleReject}
                     />
                   ))
-                : new Array(4)
-                    .fill(null)
-                    // eslint-disable-next-line react/no-array-index-key
-                    .map((_, i) => <ChannelCard key={i} />)}
+                ) : (
+                  <Stack direction="row" spacing={1}>
+                    <MusicNoteIcon />
+                    {/* TODO: translate */}
+                    <Typography>No new public channels for you</Typography>
+                  </Stack>
+                )
+              ) : (
+                new Array(4)
+                  .fill(null)
+                  // eslint-disable-next-line react/no-array-index-key
+                  .map((_, i) => <ChannelCard key={i} />)
+              )}
             </Stack>
           </AccordionDetails>
         </Accordion>
