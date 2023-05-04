@@ -166,7 +166,7 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  messageSubscribableMap: Record<string, Subscribable<Message | null>> = {};
+  messageSubscribableMap: Record<number, Subscribable<Message | null>> = {};
 
   getMessage(id: number): Subscribable<Message | null> {
     return (
