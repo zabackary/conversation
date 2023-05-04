@@ -128,11 +128,26 @@ export default function ChatView({
       e.preventDefault();
   };
 
+  const [currentReply, setCurrentReply] = useState<number | null>(null);
+
   const messageAccents = (
     [] as NonNullable<ChatListProps["messageAccents"]>
   ).concat(
-    contextMenu ? [{ id: contextMenu.message.id, accent: "tertiary" }] : []
+    contextMenu ? [{ id: contextMenu.message.id, accent: "tertiary" }] : [],
+    currentReply ? [{ id: currentReply, accent: "secondary" }] : []
   );
+
+  const handleReply = () => {
+    if (!contextMenu) throw new Error("Illegal state");
+    setCurrentReply(contextMenu.message.id);
+    handleClose();
+  };
+
+  const handleCopyMessageId = () => {
+    if (!contextMenu) throw new Error("Illegal state");
+    void navigator.clipboard.writeText(String(contextMenu.message.id));
+    handleClose();
+  };
 
   return (
     <Box sx={sx} ref={containerRef}>
@@ -150,13 +165,13 @@ export default function ChatView({
               : undefined
           }
         >
-          <MenuItem>
+          <MenuItem onClick={handleCopyMessageId}>
             <ListItemIcon>
               <FingerprintIcon fontSize="small" />
             </ListItemIcon>
             Copy message ID
           </MenuItem>
-          <MenuItem>
+          <MenuItem onClick={handleReply}>
             <ListItemIcon>
               <ReplyIcon fontSize="small" />
             </ListItemIcon>
@@ -225,6 +240,8 @@ export default function ChatView({
         }
         elevate={!isSticky}
         ref={inputRef}
+        currentReply={currentReply ?? undefined}
+        onReplyClear={() => setCurrentReply(null)}
       />
       <Box
         sx={{

@@ -31,6 +31,7 @@ import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
 import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";
+import ReplyPreview from "./ReplyPreview";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -50,13 +51,6 @@ const ExpandMore = styled(
   }),
 }));
 
-interface Props {
-  onMessageSend: (message: SentMessageEvent) => void;
-  sx?: SxProps;
-  placeholder: string;
-  elevate?: boolean;
-}
-
 const StyledPaper = styled(Paper)`
   ${({ theme }) => `
   transition: ${theme.transitions.create(["background-color"], {
@@ -68,8 +62,27 @@ const StyledPaper = styled(Paper)`
   `}
 `;
 
-const ChatInput = forwardRef<HTMLDivElement, Props>(
-  ({ onMessageSend, sx, placeholder, elevate = true }, ref) => {
+export interface ChatInputProps {
+  onMessageSend: (message: SentMessageEvent) => void;
+  sx?: SxProps;
+  placeholder: string;
+  elevate?: boolean;
+  currentReply?: number;
+  onReplyClear: () => void;
+}
+
+const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
+  (
+    {
+      onMessageSend,
+      sx,
+      placeholder,
+      elevate = true,
+      currentReply,
+      onReplyClear,
+    },
+    ref
+  ) => {
     const { t } = useTranslation("channel");
     const { themeMode } = useContext(ThemeModeContext);
     const [message, setMessage] = useState<SentMessage>({
@@ -105,9 +118,10 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
           markdown: "",
           images: [],
           attachments: [],
+          replied: currentReply,
         });
       },
-      [message, onMessageSend]
+      [message, onMessageSend, currentReply]
     );
     const handleChange: ChangeEventHandler<HTMLInputElement> = useCallback(
       (event) => {
@@ -172,13 +186,17 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
         >
           <StyledPaper
             sx={{
-              borderRadius: "28px",
+              borderRadius: currentReply ? "22px 22px 28px 28px" : "28px",
               position: "relative",
               zIndex: 1,
+              border: "1px solid transparent",
             }}
             elevation={elevate ? 1 : 0}
             className={elevate ? "" : "flat"}
           >
+            {currentReply ? (
+              <ReplyPreview id={currentReply} onClose={onReplyClear} />
+            ) : null}
             <OutlinedInput
               fullWidth
               value={message.markdown}
