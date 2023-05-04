@@ -90,72 +90,74 @@ export default function ChatView({
   };
 
   return (
-    <Box sx={sx} ref={containerRef} onContextMenu={handleClose}>
-      <Menu
-        open={contextMenu !== null}
-        onClose={handleClose}
-        anchorReference="anchorPosition"
-        anchorPosition={
-          contextMenu !== null
-            ? {
-                top: contextMenu.mouseY,
-                left: contextMenu.mouseX,
-              }
-            : undefined
-        }
-      >
-        <MenuItem>
-          <ListItemIcon>
-            <FingerprintIcon fontSize="small" />
-          </ListItemIcon>
-          Copy message ID
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <ReplyIcon fontSize="small" />
-          </ListItemIcon>
-          Reply
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          Edit message
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <PushPinIcon fontSize="small" />
-          </ListItemIcon>
-          Set as pinned message
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <LinkIcon fontSize="small" />
-          </ListItemIcon>
-          Copy link to message
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small" />
-          </ListItemIcon>
-          Delete message
-        </MenuItem>
-      </Menu>
-      {messages ? (
-        <ChatList
-          messages={messages}
-          sx={{
-            pb: 2,
-          }}
-          onContextMenu={handleContextMenu}
-        />
-      ) : (
-        <ChatListSkeleton
-          sx={{
-            pb: 2,
-          }}
-        />
-      )}
+    <Box sx={sx} ref={containerRef}>
+      <Box onContextMenu={handleClose}>
+        <Menu
+          open={contextMenu !== null}
+          onClose={handleClose}
+          anchorReference="anchorPosition"
+          anchorPosition={
+            contextMenu !== null
+              ? {
+                  top: contextMenu.mouseY,
+                  left: contextMenu.mouseX,
+                }
+              : undefined
+          }
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <FingerprintIcon fontSize="small" />
+            </ListItemIcon>
+            Copy message ID
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <ReplyIcon fontSize="small" />
+            </ListItemIcon>
+            Reply
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            Edit message
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <PushPinIcon fontSize="small" />
+            </ListItemIcon>
+            Set as pinned message
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <LinkIcon fontSize="small" />
+            </ListItemIcon>
+            Copy link to message
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" />
+            </ListItemIcon>
+            Delete message
+          </MenuItem>
+        </Menu>
+        {messages ? (
+          <ChatList
+            messages={messages}
+            sx={{
+              pb: 2,
+            }}
+            onContextMenu={handleContextMenu}
+          />
+        ) : (
+          <ChatListSkeleton
+            sx={{
+              pb: 2,
+            }}
+          />
+        )}
+      </Box>
       <ChatInput
         onMessageSend={(event) => {
           onSend(event);
