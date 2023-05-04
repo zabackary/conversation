@@ -54,13 +54,28 @@ export default function ChatView({
     };
   }, [inputRef, containerRef]);
 
+  const oldMessagesRef = useRef<Message[] | undefined>(undefined);
+
   useEffect(() => {
-    if (messages)
+    const oldMessages = oldMessagesRef.current;
+    if (messages && oldMessages === undefined) {
       window.scrollTo({
-        top: document.body.scrollHeight - document.body.offsetHeight,
-        left: 0,
+        top: document.body.scrollHeight - document.body.offsetHeight + 1,
+        behavior: "auto",
       });
-  }, [messages]);
+      oldMessagesRef.current = messages;
+    } else if (messages && oldMessages && isSticky) {
+      window.scrollTo({
+        top: document.body.scrollHeight - document.body.offsetHeight + 1,
+        behavior: "smooth",
+      });
+      oldMessagesRef.current = messages;
+    }
+  }, [messages, oldMessagesRef, isSticky]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
