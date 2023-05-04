@@ -85,6 +85,7 @@ const config = {
     "@typescript-eslint/no-unnecessary-condition": 1,
     "no-void": 0,
     "default-case": 0,
+    "no-nested-ternary": 0, // With proper styling, it's readable
   },
 };
 
