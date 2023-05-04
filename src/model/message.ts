@@ -21,4 +21,5 @@ export default interface Message {
 export interface MessageSnippet {
   user: User;
   markdownSnippet: string;
+  id: number;
 }
