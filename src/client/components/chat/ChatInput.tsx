@@ -181,13 +181,18 @@ const ChatInput = forwardRef<HTMLDivElement, Props>(
           >
             <OutlinedInput
               fullWidth
-              sx={{ borderRadius: "28px" }}
               value={message.markdown}
               onChange={handleChange}
               placeholder={placeholder}
               onKeyDown={handleKeyDown}
               multiline
-              maxRows={4}
+              maxRows={message.markdown === "" ? 1 : 4}
+              sx={{
+                borderRadius: "28px",
+                "& textarea, & input": {
+                  overflow: message.markdown === "" ? "hidden" : undefined,
+                },
+              }}
               startAdornment={
                 <InputAdornment position="start">
                   <Tooltip title={t("overflowTooltip")}>
