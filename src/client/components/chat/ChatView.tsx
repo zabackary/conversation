@@ -61,7 +61,7 @@ export default function ChatView({
     if (messages && oldMessages === undefined) {
       window.scrollTo({
         top: document.body.scrollHeight - document.body.offsetHeight + 1,
-        behavior: "auto",
+        behavior: "auto", // Jerky
       });
       oldMessagesRef.current = messages;
     } else if (messages && oldMessages && isSticky) {
@@ -76,6 +76,28 @@ export default function ChatView({
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
+
+  useEffect(() => {
+    const { current } = containerRef;
+    let oldEntry: undefined | ResizeObserverEntry;
+    const observer = new ResizeObserver(([entry]) => {
+      if (
+        oldEntry &&
+        isSticky &&
+        entry.contentRect.width < oldEntry.contentRect.width
+      ) {
+        window.scrollTo({
+          top: document.body.scrollHeight - document.body.offsetHeight + 1,
+          behavior: "auto", // Jerky
+        });
+      }
+      oldEntry = entry;
+    });
+    if (current) observer.observe(current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [containerRef, isSticky]);
 
   const [contextMenu, setContextMenu] = useState<{
     mouseX: number;
