@@ -72,6 +72,16 @@ export default function ConversationAppBar({
     handleClose();
   };
   const { t } = useTranslation();
+  const handleFeedback = () => {
+    window.open(
+      `mailto:${
+        import.meta.env.CLIENT_FEEDBACK_EMAIL ?? ""
+      }?subject=${encodeURIComponent(
+        t("reportProblem.title")
+      )}&body=${encodeURIComponent(t("reportProblem.body"))}`
+    );
+    handleClose();
+  };
 
   return (
     <>
@@ -117,6 +127,9 @@ export default function ConversationAppBar({
             {overflowItems ? <Divider /> : null}
             <MenuItem onClick={handleClose}>{t("help")}</MenuItem>
             <MenuItem onClick={handleAboutMenu}>{t("about")}</MenuItem>
+            <MenuItem onClick={handleFeedback}>
+              {t("reportProblem.title")}
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

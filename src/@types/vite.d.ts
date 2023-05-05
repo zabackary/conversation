@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly CLIENT_BACKEND_MODE: string;
   readonly CLIENT_SUPABASE_URL?: string;
   readonly CLIENT_SUPABASE_ANON_KEY?: string;
+  readonly CLIENT_FEEDBACK_EMAIL?: string;
 }
 
 interface ImportMeta {

@@ -60,6 +60,7 @@ preview it from the `/dev` URL.
     ```env
     CLIENT_SUPABASE_URL=https://{{ Supabase project ID }}.supabase.co/
     CLIENT_SUPABASE_ANON_KEY={{ Supabase anon key (not service role!) }}
+    CLIENT_FEEDBACK_EMAIL={{ Your email, for the 'send feedback' option }}
     ```
 
 - (optional) Set up Supabase emails
