@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import useSnackbar from "../useSnackbar";
 
-function parseColor(hexOrRgb: string) {
+export function parseColor(hexOrRgb: string) {
   const parsedHex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexOrRgb);
   const parsedRgb = /^rgb\((\d+), (\d+), (\d+)\)/.exec(hexOrRgb);
   return parsedHex
