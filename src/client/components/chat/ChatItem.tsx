@@ -73,6 +73,7 @@ export default function ChatItem({
         e.stopPropagation();
         onContextMenu?.call(undefined, e.clientX, e.clientY, message);
       }}
+      sx={{ position: "relative" }}
     >
       <ListItemButton
         sx={{
@@ -86,9 +87,11 @@ export default function ChatItem({
         alignItems="flex-start"
       >
         {message.replied ? (
-          <Box flexGrow={1}>
-            <ReplyPreview id={message.replied} />
-          </Box>
+          <ReplyPreview
+            id={message.replied}
+            inline
+            sx={{ flexGrow: 1, width: "100%", px: 1, pt: 1 }}
+          />
         ) : null}
         <Box display="flex" alignItems="flex-start">
           {showAvatar ? (
