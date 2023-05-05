@@ -93,7 +93,7 @@ export default function ChatItem({
             sx={{ flexGrow: 1, width: "100%", px: 1, pt: 1 }}
           />
         ) : null}
-        <Box display="flex" alignItems="flex-start">
+        <Box display="flex" alignItems="flex-start" width="100%">
           {showAvatar ? (
             <ListItemAvatar>
               <ContrastBadge
