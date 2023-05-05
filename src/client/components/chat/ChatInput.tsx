@@ -22,13 +22,11 @@ import {
   MouseEventHandler,
   PointerEvent,
   useCallback,
-  useContext,
   useId,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
-import { ThemeModeContext } from "../../theme";
 import ChatInputActions from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";
 import ReplyPreview from "./ReplyPreview";
@@ -84,7 +82,6 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
     ref
   ) => {
     const { t } = useTranslation("channel");
-    const { themeMode } = useContext(ThemeModeContext);
     const [message, setMessage] = useState<SentMessage>({
       markdown: "",
       images: [],
@@ -255,12 +252,10 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
             vertical: "bottom",
             horizontal: "right",
           }}
-          PaperProps={{ sx: { borderRadius: "10px" } }}
         >
           <DelayedEmojiPicker
             dataUrl="//cdn.jsdelivr.net/npm/@emoji-mart/data"
             onEmojiSelect={handleEmojiSelect}
-            theme={themeMode}
             i18n={t("emojiPicker:emojiMart", {
               returnObjects: true,
               defaultValue: "",
