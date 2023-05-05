@@ -1,26 +1,19 @@
-import { ConversationSupabaseClient, normalizeJoin } from "../utils";
+import { ConversationSupabaseClient } from "../utils";
 
 export default async function getMessages(
   client: ConversationSupabaseClient,
   channelId: number,
   limit = 10,
-  offset: number | null = null
+  offset = 0
 ) {
   const { data: messages, error } = await client
     .from("messages")
-    .select("*, messages (*)")
+    .select("*")
     .eq("channel_id", channelId)
     .order("sent_at", {
       ascending: false,
     })
-    .limit(limit);
+    .range(offset, offset + limit - 1);
   if (error) throw error;
-  return messages.reverse().map((message) => {
-    const { messages: _, ...normalizedMessage } = message;
-    const repliedTo = normalizeJoin(message.messages)[0];
-    return {
-      ...normalizedMessage,
-      replying_to: (repliedTo as typeof repliedTo | undefined) ?? null,
-    };
-  });
+  return messages.reverse();
 }

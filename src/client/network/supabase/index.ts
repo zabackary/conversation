@@ -99,9 +99,11 @@ class SupabaseBackendImpl implements NetworkBackend {
             ...payload.new,
             replying_to:
               replyingTo !== null
-                ? await this.cache.getMessageOrFallback(replyingTo, () =>
-                    getMessage(this.client, replyingTo)
-                  )
+                ? (
+                    await this.cache.getMessageOrFallback(replyingTo, () =>
+                      getMessage(this.client, replyingTo)
+                    )
+                  ).getSnapshot()
                 : null,
           } as SupabaseMessage;
           this.cache.putMessage(message);

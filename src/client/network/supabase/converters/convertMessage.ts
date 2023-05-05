@@ -20,13 +20,7 @@ export default async function convertMessage(
       markdown: dbMessage.markdown,
       attachments: [],
       images: [],
-      replied:
-        dbMessage.replying_to !== null
-          ? await convertMessage(
-              { ...dbMessage.replying_to, replying_to: null },
-              userById
-            )
-          : undefined,
+      replied: dbMessage.replying_to ?? undefined,
     };
   }
   return {
@@ -38,13 +32,7 @@ export default async function convertMessage(
     markdown: dbMessage.markdown,
     attachments: [],
     images: [],
-    replied:
-      dbMessage.replying_to !== null
-        ? await convertMessage(
-            { ...dbMessage.replying_to, replying_to: null },
-            userById
-          )
-        : undefined,
+    replied: dbMessage.replying_to ?? undefined,
   };
 }
 
