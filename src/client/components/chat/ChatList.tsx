@@ -29,11 +29,13 @@ export default function ChatList({
             message={message}
             key={message.id}
             showAvatar={
-              index === 0 || lastMessage.isService || message.isService
-                ? true
-                : lastMessage.user.id !== message.user.id ||
-                  message.sent.getTime() - lastMessage.sent.getTime() >
-                    COMBINE_MESSAGES_THRESHOLD
+              index === 0 ||
+              lastMessage.isService ||
+              message.isService ||
+              message.replied !== undefined ||
+              lastMessage.user.id !== message.user.id ||
+              message.sent.getTime() - lastMessage.sent.getTime() >
+                COMBINE_MESSAGES_THRESHOLD
             }
             onContextMenu={onContextMenu}
             decoration={

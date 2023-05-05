@@ -1,6 +1,7 @@
 import {
   Badge,
   BadgeProps,
+  Box,
   ListItem,
   ListItemAvatar,
   ListItemButton,
@@ -20,6 +21,7 @@ import MaterialReactMarkdown from "./MaterialReactMarkdown";
 import UserTooltip from "../UserTooltip";
 import { PrivilegeLevel } from "../../../model/user";
 import ProfilePicture from "../ProfilePicture";
+import ReplyPreview from "./ReplyPreview";
 
 const WHITELISTED_TRANSLATIONS = [
   "dmStart",
@@ -79,73 +81,84 @@ export default function ChatItem({
           bgcolor: decoration ? `${decoration}Container.main` : undefined,
           borderLeft: decoration ? "3px solid transparent" : undefined,
           borderLeftColor: decoration ? `${decoration}.main` : undefined,
+          flexDirection: "column",
         }}
         alignItems="flex-start"
       >
-        {showAvatar ? (
-          <ListItemAvatar>
-            <ContrastBadge
-              color="success"
-              variant="dot"
-              sx={{ marginRight: "8px" }}
-              overlap="circular"
-              invisible={!active}
-            >
-              <Tooltip
-                title={<UserTooltip user={message.user} />}
-                placement="left"
-              >
-                <ProfilePicture user={message.user} />
-              </Tooltip>
-            </ContrastBadge>
-          </ListItemAvatar>
+        {message.replied ? (
+          <Box flexGrow={1}>
+            <ReplyPreview id={message.replied} />
+          </Box>
         ) : null}
-        <ListItemText
-          primary={
-            showAvatar ? (
-              <>
-                {message.isService ? message.user.name : message.user.nickname}
-                <Stack
-                  spacing={0.5}
-                  mx={0.5}
-                  direction="row"
-                  component="span"
-                  display="inline-flex"
+        <Box display="flex" alignItems="flex-start">
+          {showAvatar ? (
+            <ListItemAvatar>
+              <ContrastBadge
+                color="success"
+                variant="dot"
+                sx={{ marginRight: "8px" }}
+                overlap="circular"
+                invisible={!active}
+              >
+                <Tooltip
+                  title={<UserTooltip user={message.user} />}
+                  placement="left"
                 >
-                  {message.isService ? (
-                    <InlineBadge color="primary" badgeContent="bot" />
-                  ) : null}
-                  {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
-                    <InlineBadge color="secondary" badgeContent="Admin" />
-                  ) : null}
-                  {message.user.privilegeLevel === PrivilegeLevel.Unverified ? (
-                    <InlineBadge color="warning" badgeContent="Unverified" />
-                  ) : null}
-                  {message.user.disabled ? (
-                    <InlineBadge color="error" badgeContent="Disabled" />
-                  ) : null}
-                </Stack>
-                <Typography
-                  variant="body2"
-                  component="span"
-                  sx={{ opacity: 0.5 }}
-                >
-                  <TimeAgo date={message.sent} />
-                </Typography>
-              </>
-            ) : null
-          }
-          secondary={
-            <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
-              {translatedMarkdown}
-            </MaterialReactMarkdown>
-          }
-          secondaryTypographyProps={{
-            component: "div",
-            sx: { wordBreak: "break-word" },
-          }}
-          inset={!showAvatar}
-        />
+                  <ProfilePicture user={message.user} />
+                </Tooltip>
+              </ContrastBadge>
+            </ListItemAvatar>
+          ) : null}
+          <ListItemText
+            primary={
+              showAvatar ? (
+                <>
+                  {message.isService
+                    ? message.user.name
+                    : message.user.nickname}
+                  <Stack
+                    spacing={0.5}
+                    mx={0.5}
+                    direction="row"
+                    component="span"
+                    display="inline-flex"
+                  >
+                    {message.isService ? (
+                      <InlineBadge color="primary" badgeContent="bot" />
+                    ) : null}
+                    {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
+                      <InlineBadge color="secondary" badgeContent="Admin" />
+                    ) : null}
+                    {message.user.privilegeLevel ===
+                    PrivilegeLevel.Unverified ? (
+                      <InlineBadge color="warning" badgeContent="Unverified" />
+                    ) : null}
+                    {message.user.disabled ? (
+                      <InlineBadge color="error" badgeContent="Disabled" />
+                    ) : null}
+                  </Stack>
+                  <Typography
+                    variant="body2"
+                    component="span"
+                    sx={{ opacity: 0.5 }}
+                  >
+                    <TimeAgo date={message.sent} />
+                  </Typography>
+                </>
+              ) : null
+            }
+            secondary={
+              <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
+                {translatedMarkdown}
+              </MaterialReactMarkdown>
+            }
+            secondaryTypographyProps={{
+              component: "div",
+              sx: { wordBreak: "break-word" },
+            }}
+            inset={!showAvatar}
+          />
+        </Box>
       </ListItemButton>
     </ListItem>
   );
