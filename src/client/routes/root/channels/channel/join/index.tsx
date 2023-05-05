@@ -189,11 +189,6 @@ export default function ChannelJoinScreen() {
             </Stack>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
-              [untranslated] The public channel joining isn&apos;t finished yet,
-              but here is a list for you to browse. You can&apos;t join any of
-              them, but I figured you wanted something here.
-            </Typography>
             <Stack
               direction="row"
               alignItems="flex-start"
@@ -208,7 +203,6 @@ export default function ChannelJoinScreen() {
                       invite={invite}
                       key={invite.id}
                       handleAccept={handleAccept}
-                      handleReject={handleReject}
                     />
                   ))
                 ) : (

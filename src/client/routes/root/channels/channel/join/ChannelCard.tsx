@@ -157,16 +157,11 @@ interface PublicChannelCardProps {
   handleAccept(id: number): Promise<void>;
 }
 
-function PublicChannelCard({
-  invite,
-  handleAccept: _handleAccept,
-}: PublicChannelCardProps) {
+function PublicChannelCard({ invite, handleAccept }: PublicChannelCardProps) {
   const { showSnackbar } = useSnackbar();
   const [acceptLoading, setAcceptLoading] = useState(false);
   const handleAcceptClick = () => {
     setAcceptLoading(true);
-    showSnackbar("You can't join public channels yet. Keep your eyes peeled!");
-    /*
     handleAccept(invite.id)
       .then(() => {
         setAcceptLoading(false);
@@ -174,7 +169,7 @@ function PublicChannelCard({
       })
       .catch(() => {
         showSnackbar("Failed to accept invite.");
-      }); */
+      });
   };
   return (
     <Card variant="filled" sx={{ width: "min(100%, 280px)" }}>

@@ -125,10 +125,15 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (!userId) throw new Error("Must be logged in to accept invites");
     const { error } = await this.client
       .from("members")
-      .update({ accepted: true, actor: null, invite_message: null })
+      .upsert({
+        user_id: userId as string,
+        channel_id: id,
+        accepted: true,
+        actor: null,
+        invite_message: null,
+      })
       .eq("channel_id", id)
-      .eq("user_id", userId)
-      .eq("accepted", false);
+      .eq("user_id", userId);
     if (error) throw error;
     const currentChannelList = await this.cache.getChannelListOrFallback(() =>
       getChannels(this.client, userId as string)
@@ -192,10 +197,19 @@ class SupabaseBackendImpl implements NetworkBackend {
   ): Promise<PublicChannelListing[]> {
     const user = this.getCurrentSession().getSnapshot();
     if (!user) throw new Error("Must be logged in to get public channels.");
+    const currentChannels = await this.getChannels().next();
+    if (!currentChannels) throw new Error("Must be logged in.");
     const { data, error } = await this.client
       .from("channels")
-      .select("id, created_at, name, description, owner, members(*)")
-      .neq("members.user_id", user.id)
+      .select("id, name, description, owner")
+      .eq("privacy_level", 0)
+      .not(
+        "id",
+        "in",
+        // TODO: According to https://github.com/orgs/supabase/discussions/2055#discussioncomment-923451
+        // there's a PostgREST-js bug, so need to do formatting myself.
+        `(${currentChannels.map((channel) => channel.id).join(", ")})`
+      )
       .range(offset, offset + limit - 1);
     if (error) throw error;
     return data.map((dbChannel) => ({
