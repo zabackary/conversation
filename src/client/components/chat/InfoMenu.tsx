@@ -14,6 +14,8 @@ import {
   ToggleButtonGroup,
   Typography,
   IconButton,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
@@ -65,6 +67,12 @@ export default function InfoMenu({
       handleChange("privacyLevel")({ target: { value: newPrivacyLevel } });
     }
   };
+  const handleMembersCanEditChange = (_event: unknown, checked: boolean) => {
+    setPendingChange((oldPendingChange) => ({
+      ...oldPendingChange,
+      membersCanEdit: checked,
+    }));
+  };
   const isPendingChanges =
     pendingChange.name !== channel.name ||
     pendingChange.description !== channel.description ||
@@ -82,6 +90,10 @@ export default function InfoMenu({
         description: pendingChange.description,
         privacyLevel: pendingChange.privacyLevel,
         name: pendingChange.name,
+        membersCanEdit:
+          "membersCanEdit" in pendingChange
+            ? pendingChange.membersCanEdit
+            : undefined,
       })
       .then(() => {
         showSnackbar("Changes saved.");
@@ -129,6 +141,14 @@ export default function InfoMenu({
             <Button onClick={handleDeleteChannel}>Confirm</Button>
           </DialogActions>
         </Dialog>
+        {!pendingChange.dm ? (
+          <FormControlLabel
+            control={<Checkbox checked={pendingChange.membersCanEdit} />}
+            onChange={handleMembersCanEditChange}
+            label="Members can edit"
+            disabled={pendingChange.owner !== user?.id}
+          />
+        ) : null}
         <TextField
           label={t("channelInfo.name")}
           value={pendingChange.name}
