@@ -94,18 +94,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       },
       (payload) => {
         void (async () => {
-          const replyingTo = payload.new.replying_to as number | null;
-          const message = {
-            ...payload.new,
-            replying_to:
-              replyingTo !== null
-                ? (
-                    await this.cache.getMessageOrFallback(replyingTo, () =>
-                      getMessage(this.client, replyingTo)
-                    )
-                  ).getSnapshot()
-                : null,
-          } as SupabaseMessage;
+          const message = payload.new as SupabaseMessage;
           this.cache.putMessage(message);
           const convertedMessage = await convertMessage(message, (id) =>
             promiseFromSubscribable(this.getUser(id))
