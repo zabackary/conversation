@@ -1,17 +1,34 @@
-import { Box, ListItemIcon, Menu, MenuItem, SxProps } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  SxProps,
+  Tooltip,
+} from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import ReplyIcon from "@mui/icons-material/Reply";
-import EditIcon from "@mui/icons-material/Edit";
+/* import EditIcon from "@mui/icons-material/Edit";
 import PushPinIcon from "@mui/icons-material/PushPin";
 import LinkIcon from "@mui/icons-material/Link";
-import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteIcon from "@mui/icons-material/Delete"; */
+import InfoIcon from "@mui/icons-material/Info";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/hljs/vs2015";
 import ChatListSkeleton from "./ChatListSkeleton";
 import ChatList, { ChatListProps } from "./ChatList";
 import ChatInput from "./ChatInput";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import Message from "../../../model/message";
+import UserTooltip from "../UserTooltip";
 
 export interface ChatViewProps {
   messages?: Message[];
@@ -149,8 +166,60 @@ export default function ChatView({
     handleClose();
   };
 
+  const [currentMessageDetail, setCurrentMessageDetail] =
+    useState<Message | null>(null);
+
+  const handleMessageDetails = () => {
+    if (!contextMenu) throw new Error("Illegal state");
+    setCurrentMessageDetail(contextMenu.message);
+    handleClose();
+  };
+
   return (
     <Box sx={sx} ref={containerRef}>
+      <Dialog
+        open={!!currentMessageDetail}
+        onClose={() => setCurrentMessageDetail(null)}
+      >
+        <DialogTitle>Message details</DialogTitle>
+        {currentMessageDetail ? (
+          <DialogContent>
+            <DialogContentText>
+              Sent at {currentMessageDetail.sent.toLocaleDateString()} by{" "}
+              <Tooltip title={<UserTooltip user={currentMessageDetail.user} />}>
+                <Box
+                  component="span"
+                  sx={{
+                    borderBottom: "1px dotted transparent",
+                    borderBottomColor: "divider",
+                  }}
+                >
+                  {currentMessageDetail.user.name}
+                </Box>
+              </Tooltip>{" "}
+              with {currentMessageDetail.attachments?.length ?? 0} attachments
+              and {currentMessageDetail.images?.length ?? 0} images.
+            </DialogContentText>
+            <DialogContentText>Message source:</DialogContentText>
+            <SyntaxHighlighter
+              style={syntaxHighlightingTheme}
+              language="markdown"
+            >
+              {currentMessageDetail.markdown}
+            </SyntaxHighlighter>
+            <DialogContentText>
+              Message #{currentMessageDetail.id} in channel #
+              {currentMessageDetail.parent}.
+              {currentMessageDetail.replied !== undefined
+                ? ` Replying to message #${currentMessageDetail.replied}.`
+                : null}
+            </DialogContentText>
+          </DialogContent>
+        ) : null}
+        <DialogActions>
+          <Button onClick={() => setCurrentMessageDetail(null)}>Done</Button>
+        </DialogActions>
+      </Dialog>
       <Box onContextMenu={handleClose}>
         <Menu
           open={contextMenu !== null}
@@ -177,6 +246,13 @@ export default function ChatView({
             </ListItemIcon>
             Reply
           </MenuItem>
+          <MenuItem onClick={handleMessageDetails}>
+            <ListItemIcon>
+              <InfoIcon fontSize="small" />
+            </ListItemIcon>
+            Message details
+          </MenuItem>
+          {/*
           <MenuItem>
             <ListItemIcon>
               <EditIcon fontSize="small" />
@@ -201,6 +277,7 @@ export default function ChatView({
             </ListItemIcon>
             Delete message
           </MenuItem>
+        */}
         </Menu>
         {messages ? (
           <ChatList
