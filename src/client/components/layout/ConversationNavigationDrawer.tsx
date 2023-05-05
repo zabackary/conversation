@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { createContext, ReactNode, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { navigationRailWidth } from "./ConversationNavigationRail";
 
 export const drawerWidth = 240;
 
@@ -81,6 +82,7 @@ export default function ResponsiveDrawer({
               width: drawerWidth,
               paddingTop: "64px",
               left: "unset",
+              zIndex: "unset",
             },
           }}
           sx={{
@@ -93,7 +95,13 @@ export default function ResponsiveDrawer({
           {drawer}
         </Drawer>
       </Box>
-      <Box component="main" display="flex" flexDirection="column" flexGrow={1}>
+      <Box
+        component="main"
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+        width={{ sm: `calc(100% - ${drawerWidth + navigationRailWidth}px)` }}
+      >
         <Toolbar />
         <toolbarButtonContext.Provider value={toolbarButton}>
           {children}

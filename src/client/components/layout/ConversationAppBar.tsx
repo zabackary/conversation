@@ -31,6 +31,7 @@ import {
   drawerWidth,
   toolbarButtonContext,
 } from "./ConversationNavigationDrawer";
+import { navigationRailWidth } from "./ConversationNavigationRail";
 
 const closeOverflowFunctionContext = createContext(() => {
   // no-op
@@ -77,8 +78,8 @@ export default function ConversationAppBar({
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth + 88}px)` },
-          ml: { sm: `${drawerWidth + 88}px` },
+          width: { sm: `calc(100% - ${drawerWidth + navigationRailWidth}px)` },
+          ml: { sm: `${drawerWidth + navigationRailWidth}px` },
           ...sx,
         }}
       >

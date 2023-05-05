@@ -21,7 +21,7 @@ import useBackend from "../../hooks/useBackend";
 import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/NetworkBackend";
-import { ConversationAppBar } from "../layout";
+import { ConversationAppBar, navigationRailWidth } from "../layout";
 import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import ChatView from "./ChatView";
 import InfoMenu from "./InfoMenu";
@@ -112,7 +112,9 @@ export default function Chat({ channelId }: ChatProps) {
           !isMobile && activeSidebar
             ? {
                 width: {
-                  sm: `calc(100% - ${drawerWidth + 88 + sideSheetWidth}px)`,
+                  sm: `calc(100% - ${
+                    drawerWidth + navigationRailWidth + sideSheetWidth
+                  }px)`,
                 },
                 mr: `${sideSheetWidth}px`,
               }
