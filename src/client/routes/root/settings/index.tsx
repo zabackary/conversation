@@ -38,7 +38,7 @@ export default function SettingsRoute() {
       <Box p={3}>
         <Outlet />
         <Typography variant="body2" textAlign="center" mt={1}>
-          v4.0.0-dev
+          v{__VERSION__}
         </Typography>
       </Box>
     </ConversationNavigationDrawer>

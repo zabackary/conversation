@@ -142,7 +142,7 @@ export default function ConversationAppBar({
               <Typography>{t("aboutDialog.copyright")}</Typography>
               <Typography>
                 {t("aboutDialog.timestamp", {
-                  version: "4.0.0-beta",
+                  version: __VERSION__,
                   date: new Date(__BUILD_TIMESTAMP__),
                 })}
               </Typography>

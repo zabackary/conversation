@@ -7,12 +7,14 @@ import gasTopLevel from "./plugins/gasTopLevel";
 import gasUpload from "./plugins/gasUpload";
 import inlineScript from "./plugins/inlineScript";
 import reactAxe from "./plugins/reactAxe";
+import packageJson from "./package.json";
 
 export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     define: {
       __BUILD_TIMESTAMP__: `"${new Date().toISOString()}"`,
+      __VERSION__: `"${packageJson.version}"`,
     },
     envPrefix: "CLIENT_",
     build: {
