@@ -3,5 +3,6 @@
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "javascript.preferences.autoImportFileExcludePatterns": [
     "node_modules/@mui/icons-material/**"
-  ]
+  ],
+  "cSpell.words": ["Dispatchable", "Supabase"]
 }
