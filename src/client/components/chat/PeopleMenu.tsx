@@ -36,6 +36,7 @@ import useBackend from "../../hooks/useBackend";
 import useSnackbar from "../useSnackbar";
 import UserTooltip from "../UserTooltip";
 import ProfilePicture from "../ProfilePicture";
+import useUser from "../../hooks/useUser";
 
 export interface PeopleMenuListItemProps {
   user: User;
@@ -184,6 +185,23 @@ export default function PeopleMenu({
         showSnackbar(t("people.inviteFailed"));
       });
   };
+  const currentUser = useUser();
+  const [leavingLoading, setLeavingLoading] = useState(false);
+  const handleLeaveChannel = () => {
+    if (!currentUser) throw new Error("Invalid state");
+    setLeavingLoading(true);
+    backend
+      .removeMembers(channel.id, [currentUser.id], true)
+      .then(() => {
+        setLeavingLoading(false);
+        // TODO: translate
+        showSnackbar("Left channel.");
+      })
+      .catch(() => {
+        // TODO: translate
+        showSnackbar("Failed to leave channel.");
+      });
+  };
   return (
     <>
       <SideSheetToolbar>
@@ -225,7 +243,12 @@ export default function PeopleMenu({
               variant="outlined"
               sx={{ "& .MuiButtonGroup-grouped": { flexGrow: 1 } }}
             >
-              <Button>{t("people.leave.action")}</Button>
+              <LoadingButton
+                loading={leavingLoading}
+                onClick={handleLeaveChannel}
+              >
+                {t("people.leave.action")}
+              </LoadingButton>
               <Button onClick={() => setIsInviting(true)}>
                 {t("people.add.action")}
               </Button>
