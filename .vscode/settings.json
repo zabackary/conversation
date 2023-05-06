@@ -4,5 +4,5 @@
   "javascript.preferences.autoImportFileExcludePatterns": [
     "node_modules/@mui/icons-material/**"
   ],
-  "cSpell.words": ["Dispatchable", "Supabase"]
+  "cSpell.words": ["Dispatchable", "ilike", "Supabase"]
 }

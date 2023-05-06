@@ -256,14 +256,16 @@ class SupabaseBackendImpl implements NetworkBackend {
           accepted: false,
           invite_message: null,
         })
-        .eq("user_id", userIds as string[]);
+        .eq("channel_id", id)
+        .in("user_id", userIds as string[]);
       if (error) throw error;
     } else {
       // Delete the members, permanently.
       const { error } = await this.client
         .from("members")
         .delete()
-        .eq("user_id", userIds);
+        .eq("channel_id", id)
+        .in("user_id", userIds as string[]);
       if (error) throw error;
     }
   }
