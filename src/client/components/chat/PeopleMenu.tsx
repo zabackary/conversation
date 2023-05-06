@@ -17,18 +17,26 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Menu,
+  MenuItem,
   Stack,
   SxProps,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { SyntheticEvent, useEffect, useMemo, useState } from "react";
+import {
+  MouseEvent,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
-import User from "../../../model/user";
+import User, { UserId } from "../../../model/user";
 import Channel from "../../../model/channel";
 import { SideSheetToolbar } from "./Chat";
 import LoadingButton from "../LoadingButton";
@@ -40,19 +48,22 @@ import useUser from "../../hooks/useUser";
 
 export interface PeopleMenuListItemProps {
   user: User;
+  onOpenMenu(anchor: HTMLElement, userId: UserId): void;
 }
 
-export function PeopleMenuListItem({ user }: PeopleMenuListItemProps) {
+export function PeopleMenuListItem({
+  user,
+  onOpenMenu,
+}: PeopleMenuListItemProps) {
   return (
     <ListItem
       disablePadding
-      sx={{
-        "&:not(:hover, :focus-within) .MuiListItemSecondaryAction-root": {
-          display: "none",
-        },
-      }}
       secondaryAction={
-        <IconButton>
+        <IconButton
+          onClick={(e: MouseEvent<HTMLButtonElement>) =>
+            onOpenMenu(e.currentTarget, user.id)
+          }
+        >
           <MoreVertIcon />
         </IconButton>
       }
@@ -202,8 +213,33 @@ export default function PeopleMenu({
         showSnackbar("Failed to leave channel.");
       });
   };
+  const [currentMenu, setCurrentMenu] = useState<{
+    anchor: HTMLElement;
+    userId: UserId;
+  } | null>(null);
+  const handleOpenMenu = (anchor: HTMLElement, userId: UserId) => {
+    setCurrentMenu({
+      anchor,
+      userId,
+    });
+  };
+  const handleCloseMenu = () => {
+    setCurrentMenu(null);
+  };
   return (
     <>
+      <Menu
+        anchorEl={currentMenu?.anchor}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        open={!!currentMenu}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem onClick={handleCloseMenu}>Remove from channel</MenuItem>
+        <MenuItem onClick={handleCloseMenu}>
+          Permanently remove from channel
+        </MenuItem>
+      </Menu>
       <SideSheetToolbar>
         <Collapse in={isInviting} orientation="horizontal">
           <IconButton
@@ -327,7 +363,11 @@ export default function PeopleMenu({
         <Collapse in={!isInviting}>
           <List>
             {filteredMembers.map((member) => (
-              <PeopleMenuListItem user={member} key={member.id} />
+              <PeopleMenuListItem
+                user={member}
+                key={member.id}
+                onOpenMenu={handleOpenMenu}
+              />
             ))}
           </List>
         </Collapse>
