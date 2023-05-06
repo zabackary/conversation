@@ -248,6 +248,8 @@ class SupabaseBackendImpl implements NetworkBackend {
     userIds: UserId[],
     canRejoin?: boolean | undefined
   ): Promise<void> {
+    const currentUser = this.getCurrentSession().getSnapshot();
+    if (!currentUser) throw new Error("Must be logged in to remove members");
     if (canRejoin) {
       // "Unaccept" the invite by which the members joined by.
       const { error } = await this.client
@@ -267,6 +269,14 @@ class SupabaseBackendImpl implements NetworkBackend {
         .eq("channel_id", id)
         .in("user_id", userIds as string[]);
       if (error) throw error;
+    }
+    if (userIds.includes(currentUser.id)) {
+      const channelList = await this.cache.getChannelListOrFallback(() =>
+        getChannels(this.client, currentUser.id as string)
+      );
+      this.cache.putChannelList(
+        channelList.getSnapshot().filter((channel) => channel.id !== id)
+      );
     }
   }
 
