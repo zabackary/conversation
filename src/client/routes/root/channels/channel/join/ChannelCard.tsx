@@ -10,7 +10,7 @@ import {
   CardActionArea,
   CardActions,
 } from "@mui/material";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import CelebrationIcon from "@mui/icons-material/Celebration";
 import {
   InvitedChannelListing,
@@ -23,29 +23,23 @@ import useChannel from "../../../../../hooks/useChannel";
 import LoadingButton from "../../../../../components/LoadingButton";
 import useSnackbar from "../../../../../components/useSnackbar";
 
-interface InviteChannelCardProps {
-  invite: InvitedChannelListing;
+interface BaseChannelCardProps {
+  invite: PublicChannelListing;
+  icon?: ReactNode;
+  subheader: ReactNode;
+  content?: ReactNode;
   handleAccept(id: number): Promise<void>;
-  handleReject(id: number): Promise<void>;
+  handleReject?(id: number): Promise<void>;
 }
 
-function InviteChannelCard({
+function BaseChannelCard({
   invite,
   handleAccept,
   handleReject,
-}: InviteChannelCardProps) {
-  const user = useUserInfo(invite.actor);
-  const channel = useChannel(invite.id);
-  let privacyLevel;
-  if (channel?.privacyLevel === PrivacyLevel.Public) {
-    privacyLevel = "Public";
-  } else if (channel?.privacyLevel === PrivacyLevel.Unlisted) {
-    privacyLevel = "Unlisted";
-  } else if (channel?.privacyLevel === PrivacyLevel.Private) {
-    privacyLevel = "Private";
-  } else {
-    privacyLevel = "";
-  }
+  content,
+  subheader,
+  icon,
+}: BaseChannelCardProps) {
   const { showSnackbar } = useSnackbar();
   const [acceptLoading, setAcceptLoading] = useState(false);
   const handleAcceptClick = () => {
@@ -61,6 +55,7 @@ function InviteChannelCard({
   };
   const [rejectLoading, setRejectLoading] = useState(false);
   const handleRejectClick = () => {
+    if (!handleReject) throw new Error("Must be rejectable to reject");
     setRejectLoading(true);
     handleReject(invite.id)
       .then(() => {
@@ -76,25 +71,74 @@ function InviteChannelCard({
       <CardActionArea onClick={handleAcceptClick}>
         <CardHeader
           avatar={
-            user ? (
-              <ProfilePicture user={user} sx={{ bgcolor: "secondary.main" }} />
-            ) : (
-              <Skeleton variant="circular">
-                <Avatar />
-              </Skeleton>
+            icon ?? (
+              <Avatar sx={{ bgcolor: "secondary.main" }}>
+                <CelebrationIcon />
+              </Avatar>
             )
           }
           title={invite.name}
-          subheader={
-            <>
-              {privacyLevel} &middot; {channel?.members.length} members
-            </>
-          }
+          subheader={subheader}
           titleTypographyProps={{ sx: { wordBreak: "break-word" } }}
           subheaderTypographyProps={{ sx: { wordBreak: "break-word" } }}
         />
         <CardContent>
           <Typography variant="body1">{invite.description}</Typography>
+          {content}
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        {handleReject ? (
+          <LoadingButton onClick={handleRejectClick} loading={rejectLoading}>
+            Reject
+          </LoadingButton>
+        ) : null}
+        <LoadingButton onClick={handleAcceptClick} loading={acceptLoading}>
+          {/* TODO: Translate */}
+          {handleReject ? "Accept" : "Join channel"}
+        </LoadingButton>
+      </CardActions>
+    </Card>
+  );
+}
+
+interface InviteChannelCardProps {
+  invite: InvitedChannelListing;
+  actor: NonNullable<InvitedChannelListing["actor"]>;
+  handleAccept(id: number): Promise<void>;
+  handleReject(id: number): Promise<void>;
+}
+
+function InviteChannelCard({
+  invite,
+  actor,
+  handleAccept,
+  handleReject,
+}: InviteChannelCardProps) {
+  const user = useUserInfo(actor);
+  const channel = useChannel(invite.id);
+  let privacyLevel;
+  if (channel?.privacyLevel === PrivacyLevel.Public) {
+    privacyLevel = "Public";
+  } else if (channel?.privacyLevel === PrivacyLevel.Unlisted) {
+    privacyLevel = "Unlisted";
+  } else if (channel?.privacyLevel === PrivacyLevel.Private) {
+    privacyLevel = "Private";
+  } else {
+    privacyLevel = "";
+  }
+  return (
+    <BaseChannelCard
+      handleAccept={handleAccept}
+      handleReject={handleReject}
+      invite={invite}
+      subheader={
+        <>
+          {privacyLevel} &middot; {channel?.members.length} members
+        </>
+      }
+      content={
+        <>
           <Stack direction="row" spacing={1} mt={2}>
             {user ? (
               <Avatar
@@ -138,63 +182,18 @@ function InviteChannelCard({
           >
             <Typography variant="body2">{invite.inviteMessage}</Typography>
           </Paper>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <LoadingButton onClick={handleRejectClick} loading={rejectLoading}>
-          Reject
-        </LoadingButton>
-        <LoadingButton onClick={handleAcceptClick} loading={acceptLoading}>
-          Accept
-        </LoadingButton>
-      </CardActions>
-    </Card>
-  );
-}
-
-interface PublicChannelCardProps {
-  invite: PublicChannelListing;
-  handleAccept(id: number): Promise<void>;
-}
-
-function PublicChannelCard({ invite, handleAccept }: PublicChannelCardProps) {
-  const { showSnackbar } = useSnackbar();
-  const [acceptLoading, setAcceptLoading] = useState(false);
-  const handleAcceptClick = () => {
-    setAcceptLoading(true);
-    handleAccept(invite.id)
-      .then(() => {
-        setAcceptLoading(false);
-        showSnackbar("Accepted invite.");
-      })
-      .catch(() => {
-        showSnackbar("Failed to accept invite.");
-      });
-  };
-  return (
-    <Card variant="filled" sx={{ width: "min(100%, 280px)" }}>
-      <CardActionArea onClick={handleAcceptClick}>
-        <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
-              <CelebrationIcon />
-            </Avatar>
-          }
-          title={invite.name}
-          subheader="Public"
-          titleTypographyProps={{ sx: { wordBreak: "break-word" } }}
-          subheaderTypographyProps={{ sx: { wordBreak: "break-word" } }}
-        />
-        <CardContent>
-          <Typography variant="body1">{invite.description}</Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <LoadingButton onClick={handleAcceptClick} loading={acceptLoading}>
-          Join channel
-        </LoadingButton>
-      </CardActions>
-    </Card>
+        </>
+      }
+      icon={
+        user ? (
+          <ProfilePicture user={user} sx={{ bgcolor: "secondary.main" }} />
+        ) : (
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
+        )
+      }
+    />
   );
 }
 
@@ -210,16 +209,33 @@ export default function ChannelCard({
   handleReject,
 }: ChannelCardProps) {
   if (invite && handleAccept && handleReject && "inviteMessage" in invite) {
+    if (invite.actor) {
+      return (
+        <InviteChannelCard
+          invite={invite}
+          handleAccept={handleAccept}
+          handleReject={handleReject}
+          actor={invite.actor}
+        />
+      );
+    }
     return (
-      <InviteChannelCard
+      <BaseChannelCard
         invite={invite}
         handleAccept={handleAccept}
         handleReject={handleReject}
+        subheader="Unknown inviter"
       />
     );
   }
   if (invite && handleAccept) {
-    return <PublicChannelCard invite={invite} handleAccept={handleAccept} />;
+    return (
+      <BaseChannelCard
+        invite={invite}
+        handleAccept={handleAccept}
+        subheader="Public"
+      />
+    );
   }
   return (
     <Card variant="filled" sx={{ width: "min(100%, 280px)" }}>

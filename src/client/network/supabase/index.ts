@@ -37,7 +37,6 @@ import Message from "../../../model/message";
 import getMessage from "./getters/getMessage";
 import convertMessage from "./converters/convertMessage";
 import { DispatchableSubscribable } from "../Subscribable";
-import deletedUser from "./deletedUser";
 
 class SupabaseBackendImpl implements NetworkBackend {
   client = createClient<Database>(
@@ -181,7 +180,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     return data.map((dbMember) => {
       const channel = normalizeJoin(dbMember.channels)[0];
       return {
-        actor: dbMember.actor ?? deletedUser.id,
+        actor: dbMember.actor ?? undefined,
         description: channel.description ?? "",
         id: channel.id,
         inviteMessage: dbMember.invite_message ?? "",

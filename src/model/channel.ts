@@ -60,6 +60,6 @@ export type InvitedChannelListing = Pick<
   GroupChannel,
   "name" | "description" | "id" | "owner"
 > & {
-  actor: UserId;
+  actor?: UserId;
   inviteMessage: string;
 };
