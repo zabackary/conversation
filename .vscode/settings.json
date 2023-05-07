@@ -1,5 +1,13 @@
 {
   "npm.packageManager": "pnpm",
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "cSpell.words": ["Dispatchable", "ilike", "Supabase"]
+  "cSpell.words": [
+    "Dispatchable",
+    "ilike",
+    "ONLYCLIENT",
+    "ONLYSERVER",
+    "SECONDPASS",
+    "Supabase",
+    "UPLOADONCOMPLETE"
+  ]
 }
