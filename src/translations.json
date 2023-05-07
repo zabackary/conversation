@@ -48,7 +48,7 @@
           "search": "Search by email, name, or nickname..."
         },
         "filter": "Filter members",
-        "memberCount_one": "Invite",
+        "memberCount_one": "{{ count }} member",
         "memberCount_other": "{{ count }} members",
         "addMembers": "Add members",
         "searchUsers": "Search users...",
