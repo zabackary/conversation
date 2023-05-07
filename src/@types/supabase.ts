@@ -9,6 +9,38 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      attachments: {
+        Row: {
+          as_image: boolean
+          created_at: string | null
+          id: number
+          last_modified: string
+          message_id: number
+          mime_type: string
+          name: string
+          upload_url: string
+        }
+        Insert: {
+          as_image?: boolean
+          created_at?: string | null
+          id?: number
+          last_modified: string
+          message_id: number
+          mime_type: string
+          name: string
+          upload_url: string
+        }
+        Update: {
+          as_image?: boolean
+          created_at?: string | null
+          id?: number
+          last_modified?: string
+          message_id?: number
+          mime_type?: string
+          name?: string
+          upload_url?: string
+        }
+      }
       channels: {
         Row: {
           auto_join: boolean
@@ -145,7 +177,17 @@ export interface Database {
       }
     }
     Views: {
-      [_ in never]: never
+      joined_channels: {
+        Row: {
+          channel_id: number | null
+        }
+        Insert: {
+          channel_id?: number | null
+        }
+        Update: {
+          channel_id?: number | null
+        }
+      }
     }
     Functions: {
       [_ in never]: never
