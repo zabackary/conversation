@@ -28,7 +28,7 @@ const MaterialSymbolIcon = forwardRef<HTMLSpanElement, MaterialSymbolIconProps>(
           transition: `font-variation-settings 300ms`,
           ...(sx || {}),
         }}
-        className={`material-symbols-outlined ${className ?? ""}`}
+        className={`material-symbols-rounded ${className ?? ""}`}
         ref={ref}
       >
         {icon}
