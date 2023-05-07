@@ -1,24 +1,23 @@
-import { Emoji } from "@emoji-mart/react";
+import { Emoji, PickerI18n } from "@emoji-mart/react";
 import {
-  alpha,
   Box,
   IconButton,
-  IconButtonProps,
   InputBase,
   Menu,
   Paper,
   Popover,
-  styled,
   SxProps,
   Tooltip,
+  alpha,
+  styled,
   useTheme,
 } from "@mui/material";
 import {
   ChangeEventHandler,
-  forwardRef,
   KeyboardEventHandler,
   MouseEventHandler,
   PointerEvent,
+  forwardRef,
   useCallback,
   useId,
   useRef,
@@ -26,10 +25,10 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import ChatInputActions from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";
 import ReplyPreview from "./ReplyPreview";
-import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const StyledPaper = styled(Paper)`
   ${({ theme }) => `
@@ -259,10 +258,12 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
           <DelayedEmojiPicker
             dataUrl="//cdn.jsdelivr.net/npm/@emoji-mart/data"
             onEmojiSelect={handleEmojiSelect}
-            i18n={t("emojiPicker:emojiMart", {
-              returnObjects: true,
-              defaultValue: "",
-            })}
+            i18n={
+              t("emojiPicker:emojiMart", {
+                returnObjects: true,
+                defaultValue: "",
+              }) as unknown as PickerI18n
+            }
           />
         </Popover>
         <Menu

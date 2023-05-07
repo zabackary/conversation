@@ -15,12 +15,12 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import TimeAgo from "react-timeago";
 import Message from "../../../model/message";
+import { PrivilegeLevel } from "../../../model/user";
 import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "../main/DrawerHeader";
-import MaterialReactMarkdown from "./MaterialReactMarkdown";
-import UserTooltip from "../UserTooltip";
-import { PrivilegeLevel } from "../../../model/user";
 import ProfilePicture from "../ProfilePicture";
+import UserTooltip from "../UserTooltip";
+import MaterialReactMarkdown from "./MaterialReactMarkdown";
 import ReplyPreview from "./ReplyPreview";
 
 const WHITELISTED_TRANSLATIONS = [
@@ -152,7 +152,7 @@ export default function ChatItem({
             }
             secondary={
               <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
-                {translatedMarkdown}
+                {translatedMarkdown as string}
               </MaterialReactMarkdown>
             }
             secondaryTypographyProps={{
