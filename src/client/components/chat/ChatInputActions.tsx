@@ -1,11 +1,9 @@
-import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export default function ChatInputActions() {
   const { t } = useTranslation("channel");
@@ -13,7 +11,7 @@ export default function ChatInputActions() {
     <>
       <MenuItem>
         <ListItemIcon>
-          <AttachFileIcon fontSize="small" />
+          <MaterialSymbolIcon icon="upload" />
         </ListItemIcon>
         <ListItemText
           primary={t("upload.title")}
@@ -22,7 +20,7 @@ export default function ChatInputActions() {
       </MenuItem>
       <MenuItem>
         <ListItemIcon>
-          <AddPhotoAlternateIcon fontSize="small" />
+          <MaterialSymbolIcon icon="add_a_photo" />
         </ListItemIcon>
         <ListItemText
           primary={t("attach.title")}
@@ -32,11 +30,11 @@ export default function ChatInputActions() {
       <Divider />
       <MenuItem>
         <ListItemIcon>
-          <PlayCircleOutlineIcon fontSize="small" />
+          <MaterialSymbolIcon icon="flag" />
         </ListItemIcon>
         <ListItemText
-          primary={t("attach.title")}
-          secondary={t("attach.hint")}
+          primary={t("action.title")}
+          secondary={t("action.hint")}
         />
       </MenuItem>
     </>

@@ -1,7 +1,3 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import PasswordIcon from "@mui/icons-material/Password";
-import PublicIcon from "@mui/icons-material/Public";
-import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import {
   Accordion,
   AccordionDetails,
@@ -19,13 +15,13 @@ import {
 } from "@mui/material";
 import { FormEvent, SyntheticEvent, useCallback, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import LoadingButton from "../../../../../components/LoadingButton";
 import { ConversationAppBar } from "../../../../../components/layout";
 import Create from "./create";
 import ChannelCard from "./ChannelCard";
 import usePromise from "../../../../../hooks/usePromise";
 import useBackend from "../../../../../hooks/useBackend";
+import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
 
 export default function ChannelJoinScreen() {
   const [tab, setTab] = useState<number | null>(null);
@@ -81,13 +77,13 @@ export default function ChannelJoinScreen() {
           variant="filled"
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<MaterialSymbolIcon icon="expand_more" />}
             aria-controls={`${ids[0]}-content`}
             id={`${ids[0]}-content`}
           >
             <Stack direction="row" alignItems="center">
               <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-                <RecentActorsIcon />
+                <MaterialSymbolIcon icon="diversity_3" />
               </Avatar>
               <Typography>{t("join.invite.label")}</Typography>
             </Stack>
@@ -112,7 +108,7 @@ export default function ChannelJoinScreen() {
                   ))
                 ) : (
                   <Stack direction="row" spacing={1}>
-                    <MusicNoteIcon />
+                    <MaterialSymbolIcon icon="music_note" />
                     {/* TODO: translate */}
                     <Typography>Nothing here, move along</Typography>
                   </Stack>
@@ -132,13 +128,13 @@ export default function ChannelJoinScreen() {
           variant="filled"
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<MaterialSymbolIcon icon="expand_more" />}
             aria-controls={`${ids[1]}-content`}
             id={`${ids[1]}-content`}
           >
             <Stack direction="row" alignItems="center">
               <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-                <PasswordIcon />
+                <MaterialSymbolIcon icon="key" />
               </Avatar>
               <Typography>{t("join.passphrase.label")}</Typography>
             </Stack>
@@ -177,13 +173,13 @@ export default function ChannelJoinScreen() {
           variant="filled"
         >
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
+            expandIcon={<MaterialSymbolIcon icon="expand_more" />}
             aria-controls={`${ids[2]}-content`}
             id={`${ids[2]}-content`}
           >
             <Stack direction="row" alignItems="center">
               <Avatar sx={{ bgcolor: "secondary.main", mr: 1 }}>
-                <PublicIcon />
+                <MaterialSymbolIcon icon="public" />
               </Avatar>
               <Typography>{t("join.public.label")}</Typography>
             </Stack>
@@ -207,7 +203,7 @@ export default function ChannelJoinScreen() {
                   ))
                 ) : (
                   <Stack direction="row" spacing={1}>
-                    <MusicNoteIcon />
+                    <MaterialSymbolIcon icon="music_note" />
                     {/* TODO: translate */}
                     <Typography>No new public channels for you</Typography>
                   </Stack>

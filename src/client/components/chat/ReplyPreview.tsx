@@ -8,11 +8,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import ReplyIcon from "@mui/icons-material/Reply";
 import ProfilePicture from "../ProfilePicture";
 import useMessage from "../../hooks/useMessage";
 import { parseColor } from "./DelayedEmojiPicker";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface ReplyPreviewProps {
   id: number;
@@ -56,7 +55,7 @@ export default function ReplyPreview({
                 )}, 0.6)`,
               }}
             >
-              <ReplyIcon sx={{ width: 18, height: 18 }} />
+              <MaterialSymbolIcon size={18} icon="reply" />
             </Avatar>
           ) : null}
         </Box>
@@ -88,7 +87,7 @@ export default function ReplyPreview({
       </Typography>
       {!inline ? (
         <IconButton onClick={onClose} sx={{ height: 24, width: 24 }}>
-          <CloseIcon />
+          <MaterialSymbolIcon icon="cancel" size={24} />
         </IconButton>
       ) : null}
     </Stack>

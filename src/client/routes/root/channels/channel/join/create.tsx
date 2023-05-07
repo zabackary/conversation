@@ -19,11 +19,11 @@ import {
   useTheme,
 } from "@mui/material";
 import { FormEvent, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import { PrivacyLevel } from "../../../../../../model/channel";
 import useBackend from "../../../../../hooks/useBackend";
 import useSnackbar from "../../../../../components/useSnackbar";
+import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
 
 export interface CreateProps {
   onClose: () => void;
@@ -69,7 +69,7 @@ export default function Create({ onClose }: CreateProps) {
           <AppBar>
             <Toolbar>
               <IconButton edge="start" color="inherit" onClick={onClose}>
-                <CloseIcon />
+                <MaterialSymbolIcon icon="close" />
               </IconButton>
               <Typography variant="h5" component="h2" ml={2} flex={1}>
                 {t("createChannel")}

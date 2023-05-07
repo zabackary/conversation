@@ -1,4 +1,3 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
@@ -6,6 +5,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { createContext, ReactNode, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { navigationRailWidth } from "./ConversationNavigationRail";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export const drawerWidth = 240;
 
@@ -58,7 +58,7 @@ export default function ResponsiveDrawer({
             : "none",
         }}
       >
-        <ArrowBackIcon />
+        <MaterialSymbolIcon icon="arrow_back" />
       </IconButton>
     ),
     [handleBackClick, location.pathname]

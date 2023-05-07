@@ -1,4 +1,3 @@
-import LyricsOutlinedIcon from "@mui/icons-material/LyricsOutlined";
 import {
   Box,
   List,
@@ -33,12 +32,9 @@ export default function NoDmSelectedRoute() {
       alignItems="center"
       flexGrow="1"
     >
-      <Stack>
-        <LyricsOutlinedIcon sx={{ fontSize: 80 }} />
-        <Typography variant="h5" component="h2" ml="20px" mt="-20px">
-          Select a user to get started.
-        </Typography>
-      </Stack>
+      <Typography variant="h5" component="h2">
+        Select a user to get started.
+      </Typography>
     </Box>
   );
 }

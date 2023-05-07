@@ -14,7 +14,7 @@ interface Props {
   primaryText?: string;
   secondaryText?: string;
   to?: string;
-  icon?: ReactNode;
+  icon?: ReactNode | ((selected: boolean) => ReactNode);
   avatar?: ReactNode;
   loading?: boolean;
   badge?: number;
@@ -24,7 +24,7 @@ export default function LinkListItem({
   primaryText,
   secondaryText,
   to,
-  icon,
+  icon: dynamicIcon,
   loading = false,
   badge,
   avatar,
@@ -32,6 +32,8 @@ export default function LinkListItem({
 }: Props) {
   const matches = useMatches().slice(exclude);
   const isMatch = matches.find((match) => match.pathname === to);
+  const icon =
+    typeof dynamicIcon === "function" ? dynamicIcon(!!isMatch) : dynamicIcon;
 
   return (
     <ListItem disablePadding sx={{ my: 0.5 }}>

@@ -1,13 +1,10 @@
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import BoltIcon from "@mui/icons-material/Bolt";
-import PaletteIcon from "@mui/icons-material/Palette";
-import ShapeLineIcon from "@mui/icons-material/ShapeLine";
-import ShieldIcon from "@mui/icons-material/Shield";
 import { Button } from "@mui/material";
 import { TFunction } from "i18next";
 import { ReactNode } from "react";
-import { UseTranslationResponse } from "react-i18next";
 import { Link } from "react-router-dom";
+import MaterialSymbolIcon, {
+  MaterialSymbolIconProps,
+} from "../../components/MaterialSymbolIcon";
 
 const endButtonMoveStyles = {
   "&:hover, &:focus": {
@@ -23,7 +20,7 @@ const endButtonMoveStyles = {
 export interface Feature {
   name: string;
   description: string;
-  icon: typeof ShapeLineIcon;
+  icon: MaterialSymbolIconProps["icon"];
   action?: ReactNode;
 }
 
@@ -33,13 +30,13 @@ const features: (t: TFunction<"landing">) => Feature[] = (
   {
     name: t("why.simple.header"),
     description: t("why.simple.description"),
-    icon: ShapeLineIcon,
+    icon: "shape_line",
     action: (
       <Button
         variant="filled"
         component={Link}
         to="/login/new/"
-        endIcon={<ArrowForwardIcon />}
+        endIcon={<MaterialSymbolIcon icon="arrow_forward" />}
         sx={endButtonMoveStyles}
       >
         {t("why.simple.callToAction")}
@@ -49,13 +46,13 @@ const features: (t: TFunction<"landing">) => Feature[] = (
   {
     name: t("why.safe.header"),
     description: t("why.safe.description"),
-    icon: ShieldIcon,
+    icon: "shield",
     action: (
       <Button
         variant="filled"
         component={Link}
         to="/login/new/"
-        endIcon={<ArrowForwardIcon />}
+        endIcon={<MaterialSymbolIcon icon="arrow_forward" />}
         sx={endButtonMoveStyles}
       >
         {t("why.safe.callToAction")}
@@ -65,13 +62,13 @@ const features: (t: TFunction<"landing">) => Feature[] = (
   {
     name: t("why.beautiful.header"),
     description: t("why.beautiful.description"),
-    icon: PaletteIcon,
+    icon: "palette",
     action: (
       <Button
         variant="filled"
         component={Link}
         to="/login/settings/"
-        endIcon={<ArrowForwardIcon />}
+        endIcon={<MaterialSymbolIcon icon="arrow_forward" />}
         sx={endButtonMoveStyles}
       >
         {t("why.beautiful.callToAction")}
@@ -81,13 +78,13 @@ const features: (t: TFunction<"landing">) => Feature[] = (
   {
     name: t("why.powerful.title"),
     description: t("why.powerful.description"),
-    icon: BoltIcon,
+    icon: "bolt",
     action: (
       <Button
         variant="filled"
         component={Link}
         to="/login/new/"
-        endIcon={<ArrowForwardIcon />}
+        endIcon={<MaterialSymbolIcon icon="arrow_forward" />}
         sx={endButtonMoveStyles}
       >
         {t("why.powerful.callToAction")}

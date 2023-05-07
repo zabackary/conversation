@@ -1,4 +1,3 @@
-import LyricsOutlinedIcon from "@mui/icons-material/LyricsOutlined";
 import {
   Box,
   List,
@@ -34,8 +33,7 @@ export default function NoChannelSelectedRoute() {
       flexGrow="1"
     >
       <Stack>
-        <LyricsOutlinedIcon sx={{ fontSize: 80 }} />
-        <Typography variant="h5" component="h2" ml="20px" mt="-20px">
+        <Typography variant="h5" component="h2">
           Select a channel to get started.
         </Typography>
       </Stack>

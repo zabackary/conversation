@@ -8,20 +8,20 @@ import {
   Typography,
 } from "@mui/material";
 import { Feature } from "../../routes/landing/features";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface FeatureListItemProps {
   feature: Feature;
 }
 
 export default function FeatureListItem({ feature }: FeatureListItemProps) {
-  const IconComponent = feature.icon;
   return (
     <Grid item sm={6}>
-      <Card>
+      <Card variant="filled">
         <CardContent>
           <Stack direction="row" spacing={2}>
             <Avatar sx={{ bgcolor: "secondary.main", height: 64, width: 64 }}>
-              <IconComponent fontSize="large" />
+              <MaterialSymbolIcon icon={feature.icon} size={48} />
             </Avatar>
             <Box>
               <Typography variant="h3">{feature.name}</Typography>

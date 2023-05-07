@@ -1,4 +1,3 @@
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   AppBar,
   Avatar,
@@ -10,6 +9,7 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  ListItemIcon,
   Menu,
   MenuItem,
   Stack,
@@ -32,6 +32,7 @@ import {
   toolbarButtonContext,
 } from "./ConversationNavigationDrawer";
 import { navigationRailWidth } from "./ConversationNavigationRail";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const closeOverflowFunctionContext = createContext(() => {
   // no-op
@@ -109,7 +110,7 @@ export default function ConversationAppBar({
             size="large"
             edge="end"
           >
-            <MoreVertIcon />
+            <MaterialSymbolIcon icon="more_vert" />
           </IconButton>
           <Menu
             id={menuId}
@@ -125,9 +126,22 @@ export default function ConversationAppBar({
               {overflowItems}
             </closeOverflowFunctionContext.Provider>
             {overflowItems ? <Divider /> : null}
-            <MenuItem onClick={handleClose}>{t("help")}</MenuItem>
-            <MenuItem onClick={handleAboutMenu}>{t("about")}</MenuItem>
+            <MenuItem onClick={handleClose}>
+              <ListItemIcon>
+                <MaterialSymbolIcon icon="help" />
+              </ListItemIcon>
+              {t("help")}
+            </MenuItem>
+            <MenuItem onClick={handleAboutMenu}>
+              <ListItemIcon>
+                <MaterialSymbolIcon icon="info" />
+              </ListItemIcon>
+              {t("about")}
+            </MenuItem>
             <MenuItem onClick={handleFeedback}>
+              <ListItemIcon>
+                <MaterialSymbolIcon icon="bug_report" />
+              </ListItemIcon>
               {t("reportProblem.title")}
             </MenuItem>
           </Menu>

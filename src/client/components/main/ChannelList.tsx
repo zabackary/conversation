@@ -1,4 +1,3 @@
-import ChatIcon from "@mui/icons-material/Chat";
 import { Collapse } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../model/channel";
@@ -7,6 +6,7 @@ import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "./DrawerHeader";
 import LinkListItem from "./LinkListItem";
 import ProfilePicture from "../ProfilePicture";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface DmChannelListItemProps {
   channel: Channel;
@@ -50,7 +50,8 @@ export function ChannelListItem({ channel }: ChannelListItemProps) {
       primaryText={channel.name}
       secondaryText={lastMessage?.isService ? undefined : lastMessage?.markdown}
       to={`/app/channels/${channel.id}`}
-      icon={<ChatIcon />}
+      // eslint-disable-next-line react/no-unstable-nested-components --- small component so it's fine
+      icon={(selected) => <MaterialSymbolIcon icon="chat" fill={selected} />}
     />
   );
 }

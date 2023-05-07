@@ -1,5 +1,3 @@
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import ShuffleIcon from "@mui/icons-material/Shuffle";
 import { Chip, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,6 +10,7 @@ import {
   ThemeModeContext,
   ThemeSchemeContext,
 } from "../../../../theme";
+import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 
 export default function AppearanceSettingsRoute({
   noAppBar,
@@ -50,7 +49,7 @@ export default function AppearanceSettingsRoute({
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<RestartAltIcon />}
+              icon={<MaterialSymbolIcon icon="restart_alt" />}
               label={t("reset")}
               onClick={() => setThemeMode(DEFAULT_THEME_MODE)}
               variant="outlined"
@@ -65,7 +64,7 @@ export default function AppearanceSettingsRoute({
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<ShuffleIcon />}
+              icon={<MaterialSymbolIcon icon="shuffle" />}
               label={t("random")}
               onClick={() =>
                 handleColorChange(
@@ -77,7 +76,7 @@ export default function AppearanceSettingsRoute({
               variant="outlined"
             />
             <Chip
-              icon={<RestartAltIcon />}
+              icon={<MaterialSymbolIcon icon="restart_alt" />}
               label={t("reset")}
               onClick={() => resetThemeScheme()}
               variant="outlined"

@@ -1,4 +1,3 @@
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Button,
   Card,
@@ -7,31 +6,12 @@ import {
   Collapse,
   Grid,
   IconButton,
-  IconButtonProps,
-  styled,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled(
-  forwardRef<HTMLButtonElement, ExpandMoreProps>((props, ref) => {
-    const { expand: _, ...other } = props;
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <IconButton {...other} ref={ref} />;
-  })
-)(({ theme, expand }) => ({
-  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 interface ErrorPageProps {
   errorText: string;
@@ -99,14 +79,14 @@ export default function ErrorPage({
             </Button>
           </Tooltip>
           <Tooltip title="Show stack trace">
-            <ExpandMore
-              expand={expanded}
+            <IconButton
               onClick={handleExpandClick}
               aria-expanded={expanded}
               aria-label="show stack trace"
+              sx={{ ml: "auto" }}
             >
-              <ExpandMoreIcon />
-            </ExpandMore>
+              <MaterialSymbolIcon icon="expand_circle_down" fill={expanded} />
+            </IconButton>
           </Tooltip>
         </CardActions>
         <Collapse in={expanded} timeout="auto">

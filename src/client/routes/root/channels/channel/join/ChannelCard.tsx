@@ -11,7 +11,6 @@ import {
   CardActions,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
-import CelebrationIcon from "@mui/icons-material/Celebration";
 import {
   InvitedChannelListing,
   PrivacyLevel,
@@ -22,6 +21,7 @@ import ProfilePicture from "../../../../../components/ProfilePicture";
 import useChannel from "../../../../../hooks/useChannel";
 import LoadingButton from "../../../../../components/LoadingButton";
 import useSnackbar from "../../../../../components/useSnackbar";
+import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
 
 interface BaseChannelCardProps {
   invite: PublicChannelListing;
@@ -73,7 +73,7 @@ function BaseChannelCard({
           avatar={
             icon ?? (
               <Avatar sx={{ bgcolor: "secondary.main" }}>
-                <CelebrationIcon />
+                <MaterialSymbolIcon icon="celebration" />
               </Avatar>
             )
           }

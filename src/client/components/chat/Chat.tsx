@@ -1,8 +1,3 @@
-import CloseIcon from "@mui/icons-material/Close";
-import InfoIcon from "@mui/icons-material/Info";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import PeopleIcon from "@mui/icons-material/People";
-import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
 import {
   Box,
   CircularProgress,
@@ -26,6 +21,7 @@ import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import ChatView from "./ChatView";
 import InfoMenu from "./InfoMenu";
 import PeopleMenu from "./PeopleMenu";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const sideSheetWidth = 300;
 
@@ -131,7 +127,11 @@ export default function Chat({ channelId }: ChatProps) {
               color={activeSidebar === "info" ? "secondary" : undefined}
               size="large"
             >
-              {activeSidebar === "info" ? <InfoIcon /> : <InfoOutlinedIcon />}
+              {activeSidebar === "info" ? (
+                <MaterialSymbolIcon icon="info" fill />
+              ) : (
+                <MaterialSymbolIcon icon="info" />
+              )}
             </IconButton>
             <IconButton
               onClick={() =>
@@ -143,9 +143,9 @@ export default function Chat({ channelId }: ChatProps) {
               size="large"
             >
               {activeSidebar === "people" ? (
-                <PeopleIcon />
+                <MaterialSymbolIcon icon="group" fill />
               ) : (
-                <PeopleOutlineIcon />
+                <MaterialSymbolIcon icon="group" />
               )}
             </IconButton>
           </>
@@ -199,7 +199,7 @@ export default function Chat({ channelId }: ChatProps) {
                 {t("channelInfo.title")}
               </Typography>
               <IconButton onClick={() => setActiveSidebar(null)} edge="end">
-                <CloseIcon />
+                <MaterialSymbolIcon icon="close" />
               </IconButton>
             </SideSheetToolbar>
             <Box display="flex" justifyContent="center" my={3}>
@@ -242,7 +242,7 @@ export default function Chat({ channelId }: ChatProps) {
                 {t("people.title")}
               </Typography>
               <IconButton onClick={() => setActiveSidebar(null)} edge="end">
-                <CloseIcon />
+                <MaterialSymbolIcon icon="close" />
               </IconButton>
             </SideSheetToolbar>
             <Box display="flex" justifyContent="center" my={3}>

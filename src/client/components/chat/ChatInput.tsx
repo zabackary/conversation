@@ -1,7 +1,4 @@
 import { Emoji } from "@emoji-mart/react";
-import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import SendIcon from "@mui/icons-material/Send";
 import {
   alpha,
   Box,
@@ -32,24 +29,7 @@ import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
 import ChatInputActions from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";
 import ReplyPreview from "./ReplyPreview";
-
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
-
-const ExpandMore = styled(
-  forwardRef<HTMLButtonElement, ExpandMoreProps>((props, ref) => {
-    const { expand: _, ...other } = props;
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    return <IconButton {...other} ref={ref} />;
-  })
-)(({ theme, expand }) => ({
-  transform: !expand ? "rotate(180deg)" : "rotate(0deg)",
-  marginLeft: "auto",
-  transition: theme.transitions.create("transform", {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const StyledPaper = styled(Paper)`
   ${({ theme }) => `
@@ -215,13 +195,15 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
               onClick={handleFocusInput}
             >
               <Tooltip title={t("overflowTooltip")}>
-                <ExpandMore
-                  expand={isOptionsMenuOpen}
+                <IconButton
                   onClick={handleOptionsMenuClick}
                   id={`${optionsMenuId}-anchor`}
                 >
-                  <ExpandCircleDownIcon />
-                </ExpandMore>
+                  <MaterialSymbolIcon
+                    icon="expand_circle_down"
+                    fill={isOptionsMenuOpen}
+                  />
+                </IconButton>
               </Tooltip>
               <InputBase
                 value={message.markdown}
@@ -243,17 +225,17 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
               />
               <Tooltip title={t("emoji")}>
                 <IconButton onClick={handleEmojiClick}>
-                  <InsertEmoticonIcon />
+                  <MaterialSymbolIcon icon="face" fill={isEmojiPickerOpen} />
                 </IconButton>
               </Tooltip>
               {cannotSendMessage ? (
                 <IconButton disabled aria-label={t("sendDisabled")}>
-                  <SendIcon />
+                  <MaterialSymbolIcon icon="send" />
                 </IconButton>
               ) : (
                 <Tooltip title={t("send")}>
                   <IconButton onClick={handleSend}>
-                    <SendIcon />
+                    <MaterialSymbolIcon icon="send" />
                   </IconButton>
                 </Tooltip>
               )}

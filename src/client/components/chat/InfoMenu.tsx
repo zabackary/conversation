@@ -18,7 +18,6 @@ import {
   Checkbox,
 } from "@mui/material";
 import { FormEvent, useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
 import { useTranslation } from "react-i18next";
 import Channel, { PrivacyLevel } from "../../../model/channel";
 import LoadingButton from "../LoadingButton";
@@ -26,6 +25,7 @@ import useBackend from "../../hooks/useBackend";
 import useSnackbar from "../useSnackbar";
 import useUser from "../../hooks/useUser";
 import { SideSheetToolbar } from "./Chat";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface InfoMenuProps {
   channel: Channel;
@@ -122,7 +122,7 @@ export default function InfoMenu({
           {t("channelInfo.title")}
         </Typography>
         <IconButton onClick={handleSidebarClose} edge="end">
-          <CloseIcon />
+          <MaterialSymbolIcon icon="close" />
         </IconButton>
       </SideSheetToolbar>
       <Stack sx={sx} spacing={2} component="form" onSubmit={handleSubmit}>

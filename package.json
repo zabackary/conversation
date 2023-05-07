@@ -79,6 +79,7 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^12.2.0",
     "react-markdown": "^8.0.4",
+    "react-material-symbols": "^4.1.1",
     "react-router-dom": "^6.4.5",
     "react-syntax-highlighter": "^15.5.0",
     "react-timeago": "^7.1.0",

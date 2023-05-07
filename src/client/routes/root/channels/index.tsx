@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Fade, List } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Link, useMatches, useOutlet } from "react-router-dom";
@@ -8,6 +7,7 @@ import ChannelList from "../../../components/main/ChannelList";
 import DrawerHeader from "../../../components/main/DrawerHeader";
 import useChannels from "../../../hooks/useChannels";
 import useUser from "../../../hooks/useUser";
+import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 
 export default function ChannelListRoute() {
   const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
@@ -27,7 +27,7 @@ export default function ChannelListRoute() {
             component={Link}
             to="join/"
           >
-            <AddIcon sx={{ mr: 1 }} />
+            <MaterialSymbolIcon icon="add" sx={{ mr: 1 }} />
             {t("joinButton")}
           </Fab>
           <List sx={{ mx: 1 }}>

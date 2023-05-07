@@ -1,6 +1,3 @@
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import DoneIcon from "@mui/icons-material/Done";
-import LinkIcon from "@mui/icons-material/Link";
 import {
   Alert,
   Card,
@@ -16,6 +13,7 @@ import {
 } from "@mui/material";
 import { ChangeEventHandler, useState } from "react";
 import { validateUrl } from "../../../shared/validation";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface ImagePickerProps {
   allowFiles?: boolean;
@@ -67,7 +65,7 @@ export default function ImagePicker({
                 disabled={isValid !== true}
                 aria-label="Done"
               >
-                <DoneIcon />
+                <MaterialSymbolIcon icon="done" />
               </IconButton>
             </InputAdornment>
           ),
@@ -84,9 +82,9 @@ export default function ImagePicker({
             <>
               <CardMedia>
                 {allowFiles ? (
-                  <CloudUploadIcon sx={{ fontSize: "48px" }} />
+                  <MaterialSymbolIcon size={48} icon="cloud_upload" />
                 ) : (
-                  <LinkIcon sx={{ fontSize: "48px" }} />
+                  <MaterialSymbolIcon size={48} icon="link" />
                 )}
               </CardMedia>
               <CardContent>

@@ -1,12 +1,3 @@
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import ForumIcon from "@mui/icons-material/Forum";
-import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
-import HomeIcon from "@mui/icons-material/Home";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import SettingsIcon from "@mui/icons-material/Settings";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import TranslateIcon from "@mui/icons-material/Translate";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -15,15 +6,16 @@ import {
   Paper,
   styled,
 } from "@mui/material";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import { NavigationRail, NavigationRailAction } from "../NavigationRail";
 import LanguagePickerDialog from "./LanguagePickerDialog";
 import useUser from "../../hooks/useUser";
 import { PrivilegeLevel } from "../../../model/user";
+import MaterialSymbolIcon, {
+  MaterialSymbolIconProps,
+} from "../MaterialSymbolIcon";
 
 const LanguageSwitcherIconButton = styled(IconButton, {
   shouldForwardProp(propName) {
@@ -38,8 +30,7 @@ export const navigationRailWidth = 88 as const;
 interface Route {
   label: string;
   href: string;
-  icon: ReactNode;
-  filledIcon: ReactNode;
+  icon: MaterialSymbolIconProps["icon"];
   id: number;
   admin?: boolean;
 }
@@ -48,36 +39,31 @@ const routes = [
   {
     label: "home" as const,
     href: "/app/",
-    icon: <HomeOutlinedIcon />,
-    filledIcon: <HomeIcon />,
+    icon: "home",
     id: 0,
   },
   {
     label: "dms" as const,
     href: "/app/dms",
-    icon: <ChatBubbleOutlineOutlinedIcon />,
-    filledIcon: <ChatBubbleIcon />,
+    icon: "chat",
     id: 1,
   },
   {
     label: "channels" as const,
     href: "/app/channels",
-    icon: <ForumOutlinedIcon />,
-    filledIcon: <ForumIcon />,
+    icon: "forum",
     id: 2,
   },
   {
     label: "settings" as const,
     href: "/app/settings",
-    icon: <SettingsOutlinedIcon />,
-    filledIcon: <SettingsIcon />,
+    icon: "settings",
     id: 3,
   },
   {
     label: "adminPanel" as const,
     href: "/app/admin",
-    icon: <AdminPanelSettingsOutlinedIcon />,
-    filledIcon: <AdminPanelSettingsIcon />,
+    icon: "admin_panel_settings",
     id: 4,
     admin: true,
   },
@@ -106,7 +92,7 @@ function ConversationNavigationRailAction({
   return rail ? (
     <NavigationRailAction
       label={t(route.label)}
-      icon={route.icon}
+      icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
       value={route.id}
       component="a"
       // @ts-ignore This really does work. It's a bug in `styled()` I think
@@ -118,9 +104,7 @@ function ConversationNavigationRailAction({
   ) : (
     <BottomNavigationAction
       label={t(route.label)}
-      // TODO: Find a way where we can have the filled/outlined icon switch and
-      // still have the up/down animation
-      icon={route.icon}
+      icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
       value={route.id}
       component="a"
       // @ts-ignore This really does work. It's a bug in `styled()` I think
@@ -177,8 +161,12 @@ export default function ConversationNavigationRail({
               rail
             />
           ))}
-          <LanguageSwitcherIconButton size="large" onClick={handleClickOpen}>
-            <TranslateIcon />
+          <LanguageSwitcherIconButton
+            size="large"
+            onClick={handleClickOpen}
+            aria-label="select language"
+          >
+            <MaterialSymbolIcon icon="translate" />
           </LanguageSwitcherIconButton>
         </NavigationRail>
       )}

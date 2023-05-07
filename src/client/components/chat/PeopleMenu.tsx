@@ -1,5 +1,3 @@
-import CheckIcon from "@mui/icons-material/Check";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import {
   Autocomplete,
   AutocompleteRenderGetTagProps,
@@ -32,8 +30,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import CloseIcon from "@mui/icons-material/Close";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
 import User, { UserId } from "../../../model/user";
@@ -45,6 +41,7 @@ import useSnackbar from "../useSnackbar";
 import UserTooltip from "../UserTooltip";
 import ProfilePicture from "../ProfilePicture";
 import useUser from "../../hooks/useUser";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface PeopleMenuListItemProps {
   user: User;
@@ -64,7 +61,7 @@ export function PeopleMenuListItem({
             onOpenMenu(e.currentTarget, user.id)
           }
         >
-          <MoreVertIcon />
+          <MaterialSymbolIcon icon="more_vert" />
         </IconButton>
       }
     >
@@ -248,14 +245,14 @@ export default function PeopleMenu({
             onClick={() => setIsInviting(false)}
             disableRipple={!isInviting}
           >
-            <ArrowBackIcon />
+            <MaterialSymbolIcon icon="arrow_back" />
           </IconButton>
         </Collapse>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {!isInviting ? t("people.title") : t("people.add.action")}
         </Typography>
         <IconButton onClick={handleSidebarClose} edge="end">
-          <CloseIcon />
+          <MaterialSymbolIcon icon="close" />
         </IconButton>
       </SideSheetToolbar>
       <Stack sx={sx} spacing={isInviting ? 1 : 2}>
@@ -337,7 +334,7 @@ export default function PeopleMenu({
                 <ListItemAvatar>
                   {state.selected ? (
                     <Avatar>
-                      <CheckIcon />
+                      <MaterialSymbolIcon icon="check_circle" />
                     </Avatar>
                   ) : (
                     <ProfilePicture user={user} />

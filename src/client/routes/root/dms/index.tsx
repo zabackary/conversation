@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Fade, List } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,6 +9,7 @@ import DrawerHeader from "../../../components/main/DrawerHeader";
 import useSnackbar from "../../../components/useSnackbar";
 import useDMs from "../../../hooks/useDMs";
 import useUser from "../../../hooks/useUser";
+import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 
 export default function DmListRoute() {
   const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
@@ -36,7 +36,7 @@ export default function DmListRoute() {
               setCount((prev) => prev + 1);
             }}
           >
-            <AddIcon sx={{ mr: 1 }} />
+            <MaterialSymbolIcon icon="add" sx={{ mr: 1 }} />
             {t("joinDmButton")}
           </Fab>
           <List sx={{ mx: 1 }}>

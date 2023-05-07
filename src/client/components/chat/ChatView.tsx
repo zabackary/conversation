@@ -14,13 +14,6 @@ import {
 } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import FingerprintIcon from "@mui/icons-material/Fingerprint";
-import ReplyIcon from "@mui/icons-material/Reply";
-/* import EditIcon from "@mui/icons-material/Edit";
-import PushPinIcon from "@mui/icons-material/PushPin";
-import LinkIcon from "@mui/icons-material/Link";
-import DeleteIcon from "@mui/icons-material/Delete"; */
-import InfoIcon from "@mui/icons-material/Info";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/hljs/vs2015";
 import ChatListSkeleton from "./ChatListSkeleton";
@@ -29,6 +22,7 @@ import ChatInput from "./ChatInput";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import Message from "../../../model/message";
 import UserTooltip from "../UserTooltip";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface ChatViewProps {
   messages?: Message[];
@@ -236,44 +230,44 @@ export default function ChatView({
         >
           <MenuItem onClick={handleCopyMessageId}>
             <ListItemIcon>
-              <FingerprintIcon fontSize="small" />
+              <MaterialSymbolIcon icon="fingerprint" />
             </ListItemIcon>
             Copy message ID
           </MenuItem>
           <MenuItem onClick={handleReply}>
             <ListItemIcon>
-              <ReplyIcon fontSize="small" />
+              <MaterialSymbolIcon icon="reply" />
             </ListItemIcon>
             Reply
           </MenuItem>
           <MenuItem onClick={handleMessageDetails}>
             <ListItemIcon>
-              <InfoIcon fontSize="small" />
+              <MaterialSymbolIcon icon="info" />
             </ListItemIcon>
             Message details
           </MenuItem>
           {/*
           <MenuItem>
             <ListItemIcon>
-              <EditIcon fontSize="small" />
+              <MaterialSymbolIcon icon="edit" />
             </ListItemIcon>
             Edit message
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
-              <PushPinIcon fontSize="small" />
+              <MaterialSymbolIcon icon="push_pin" />
             </ListItemIcon>
             Set as pinned message
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
-              <LinkIcon fontSize="small" />
+              <MaterialSymbolIcon icon="share" />
             </ListItemIcon>
             Copy link to message
           </MenuItem>
           <MenuItem>
             <ListItemIcon>
-              <DeleteIcon fontSize="small" />
+              <MaterialSymbolIcon icon="delete" />
             </ListItemIcon>
             Delete message
           </MenuItem>

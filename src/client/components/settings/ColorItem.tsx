@@ -1,8 +1,8 @@
-import PaletteIcon from "@mui/icons-material/Palette";
 import { IconButton, Popover, Tooltip } from "@mui/material";
 import { MouseEvent, ReactNode, useId, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import BaseItem from "./BaseItem";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 interface Props {
   value: string;
@@ -51,7 +51,7 @@ export default function ColorItem({
                 "&:hover": { bgcolor: "primary.main" },
               }}
             >
-              <PaletteIcon />
+              <MaterialSymbolIcon icon="palette" fill={open} />
             </IconButton>
           </Tooltip>
         }

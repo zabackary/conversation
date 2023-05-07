@@ -1,5 +1,10 @@
-import CloseIcon from "@mui/icons-material/Close";
-import { IconButton, Snackbar, SnackbarProps, styled } from "@mui/material";
+import {
+  Icon,
+  IconButton,
+  Snackbar,
+  SnackbarProps,
+  styled,
+} from "@mui/material";
 import {
   createContext,
   ReactNode,
@@ -8,6 +13,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { MaterialSymbol } from "react-material-symbols";
 
 const SurfaceIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.inverseOnSurface.main,
@@ -180,7 +186,9 @@ export function SnackbarProvider({
                 sx={{ p: 0.5 }}
                 onClick={handleClose}
               >
-                <CloseIcon />
+                <Icon>
+                  <MaterialSymbol icon="close" />
+                </Icon>
               </SurfaceIconButton>
             ) : null}
           </>

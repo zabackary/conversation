@@ -1,7 +1,7 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 export default function LoginResetRoute() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function LoginResetRoute() {
             onClick={() => navigate(-1)}
             variant="tonal"
             sx={{ mt: 3, mb: 2 }}
-            startIcon={<ArrowBackIcon />}
+            startIcon={<MaterialSymbolIcon icon="arrow_back" />}
           >
             {t("back")}
           </Button>

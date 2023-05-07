@@ -22,7 +22,6 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   ConversationNavigationRail,
   navigationRailWidth,
@@ -34,6 +33,7 @@ import useBackend from "../../hooks/useBackend";
 import useRouteForward from "../../hooks/useRouteForward";
 import { useSubscribable } from "../../hooks/useBackendFunction";
 import useUser from "../../hooks/useUser";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 function LoadingGlimmer() {
   return (
@@ -179,7 +179,7 @@ export default function RootRoute() {
                 to="/"
                 variant="filled"
                 sx={{ mt: 3, mb: 2 }}
-                startIcon={<ArrowBackIcon />}
+                startIcon={<MaterialSymbolIcon icon="arrow_back" />}
               >
                 Back
               </Button>

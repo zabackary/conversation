@@ -1,8 +1,3 @@
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-import SendIcon from "@mui/icons-material/Send";
-import TranslateIcon from "@mui/icons-material/Translate";
 import {
   AppBar,
   Box,
@@ -28,6 +23,7 @@ import useSnackbar from "../../components/useSnackbar";
 import useUser from "../../hooks/useUser";
 import { ThemeModeContext } from "../../theme";
 import getFeaturesList from "./features";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 const LargeButton = styled(Button)(({ theme }) => ({
   height: 68,
@@ -115,13 +111,13 @@ export default function LandingRoute() {
           </Fade>
           <IconButton onClick={toggleThemeMode}>
             {theme.palette.mode === "dark" ? (
-              <DarkModeIcon />
+              <MaterialSymbolIcon icon="dark_mode" />
             ) : (
-              <LightModeIcon />
+              <MaterialSymbolIcon icon="light_mode" />
             )}
           </IconButton>
           <IconButton onClick={handleLanguagePickerOpen}>
-            <TranslateIcon />
+            <MaterialSymbolIcon icon="translate" />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -130,38 +126,35 @@ export default function LandingRoute() {
         <Box
           component="header"
           p={4}
+          pb={2}
           borderRadius={8}
           bgcolor="primaryContainer.main"
           mb={4}
         >
-          <Grid container>
+          <Grid container rowSpacing={2}>
             <Grid item xs textAlign={isMobile ? "center" : "left"}>
-              <Typography variant={isMobile ? "h3" : "h1"} component="h1">
-                {t("header.title")}
-              </Typography>
-              <Typography variant={isMobile ? "h5" : "h3"} component="h2">
-                {t("header.subtitle")}
-              </Typography>
+              <Typography variant="h1">{t("header.title")}</Typography>
+              <Typography variant="h2">{t("header.subtitle")}</Typography>
             </Grid>
             <Grid item>
               <IconButton
                 disableRipple
                 onClick={handleSendIconClick}
-                sx={{ margin: "auto" }}
+                sx={{
+                  margin: "auto",
+                }}
               >
-                <SendIcon
-                  sx={{ width: "100%", height: "100%" }}
-                  color="secondary"
-                />
+                <MaterialSymbolIcon size={256} icon="send" color="secondary" />
               </IconButton>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} textAlign="center">
               {user ? t("header.alreadyLoggedIn") : null}
               <LargeButton
                 variant="filled"
                 sx={{
                   ml: user ? 2 : 0,
                   mr: 2,
+                  my: 2,
                   "&:hover, &:focus": {
                     "& .MuiButton-endIcon": {
                       transform: "scale(1.4)",
@@ -175,7 +168,9 @@ export default function LandingRoute() {
                 // @ts-expect-error Overridden components' types are weird with `component`
                 component={Link}
                 to={user ? "/app/" : "/login/new/"}
-                endIcon={user ? <RocketLaunchIcon /> : null}
+                endIcon={
+                  user ? <MaterialSymbolIcon icon="rocket_launch" /> : null
+                }
               >
                 {user
                   ? t("header.buttons.launch")
@@ -186,6 +181,9 @@ export default function LandingRoute() {
                   // @ts-expect-error Overridden components' types are weird with `component`
                   component={Link}
                   to="/login/"
+                  sx={{
+                    my: 2,
+                  }}
                 >
                   {t("header.buttons.login")}
                 </LargeButton>

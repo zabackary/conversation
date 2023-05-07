@@ -1,5 +1,3 @@
-import BlockIcon from "@mui/icons-material/Block";
-import EmailIcon from "@mui/icons-material/Email";
 import { Chip, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import Message from "../../../model/message";
@@ -9,6 +7,7 @@ import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/NetworkBackend";
 import ChatView from "../chat/ChatView";
 import { ConversationAppBar } from "../layout";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface DmChannelProps {
   channelId: number;
@@ -71,7 +70,7 @@ export default function DmChannel({ channelId }: DmChannelProps) {
           afterInput={
             <Stack direction="row" spacing={1}>
               <Chip
-                icon={<EmailIcon />}
+                icon={<MaterialSymbolIcon icon="mail" />}
                 label={`Email ${otherMember?.nickname ?? "Loading..."}`}
                 component="a"
                 href={`mailto:${otherMember?.email ?? "Loading..."}`}
@@ -80,7 +79,7 @@ export default function DmChannel({ channelId }: DmChannelProps) {
                 clickable
               />
               <Chip
-                icon={<BlockIcon />}
+                icon={<MaterialSymbolIcon icon="block" />}
                 label="Block"
                 onClick={() => {
                   // TODO: Block user

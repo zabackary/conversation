@@ -6,7 +6,7 @@ const NavigationRailAction = styled(BottomNavigationAction)(() => ({
   flexGrow: "0",
   width: "88px",
   textAlign: "center",
-  "& .MuiSvgIcon-root": {
+  "& .MuiSvgIcon-root, & .MuiIcon-root": {
     // There's custom styling oin the m3 theme to hide the ripple, but it
     // doesn't play well with the alpha since the navigation rail needs to be
     // raised (see Gmail).

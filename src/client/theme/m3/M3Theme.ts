@@ -1027,7 +1027,7 @@ export const getThemedComponents = (
             marginLeft: "8px",
             marginRight: "8px",
             overflow: "hidden",
-            "& .MuiSvgIcon-root": {
+            "& .MuiSvgIcon-root, & .MuiIcon-root": {
               height: "32px",
               width: "64px",
               borderRadius: "16px",
@@ -1037,25 +1037,26 @@ export const getThemedComponents = (
               transition: theme.transitions.create([
                 "transform",
                 "background-color",
+                "font-variation-settings",
               ]),
               boxShadow: `0px 0px 0px 1000px ${theme.palette.background.default}`,
               zIndex: 9,
             },
             "&.Mui-selected": {
-              "& .MuiSvgIcon-root": {
+              "& .MuiSvgIcon-root, & .MuiIcon-root": {
                 backgroundColor: theme.palette.secondaryContainer.main,
                 color: theme.palette.onSecondaryContainer.main,
               },
             },
             "&:hover": {
-              "& .MuiSvgIcon-root": {
+              "& .MuiSvgIcon-root, & .MuiIcon-root": {
                 backgroundColor: alpha(
                   theme.palette.onSurfaceVariant.main,
                   0.08
                 ),
               },
               "&.Mui-selected": {
-                "& .MuiSvgIcon-root": {
+                "& .MuiSvgIcon-root, & .MuiIcon-root": {
                   backgroundColor: alpha(theme.palette.onSurface.main, 0.08),
                 },
               },
@@ -1074,7 +1075,7 @@ export const getThemedComponents = (
             },
           },
           iconOnly: {
-            "& .MuiSvgIcon-root": {
+            "& .MuiSvgIcon-root, & .MuiIcon-root": {
               transform: "translateY(8px)",
             },
           },

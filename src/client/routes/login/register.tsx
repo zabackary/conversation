@@ -1,6 +1,3 @@
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
   Alert,
   AlertTitle,
@@ -34,6 +31,7 @@ import PrivacyPolicy from "../../../documents/privacyPolicy";
 import TermsOfUse from "../../../documents/termsOfUse";
 import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 function Header({ index, title }: { index: number; title: string }) {
   return (
@@ -207,7 +205,11 @@ export default function LoginRegisterRoute() {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  {showPassword ? (
+                    <MaterialSymbolIcon icon="visibility_off" />
+                  ) : (
+                    <MaterialSymbolIcon icon="visibility" />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),
@@ -221,7 +223,7 @@ export default function LoginRegisterRoute() {
               to={`/login/${location.search}`}
               variant="tonal"
               sx={{ mt: 3, mb: 2 }}
-              startIcon={<ArrowBackIcon />}
+              startIcon={<MaterialSymbolIcon icon="arrow_back" />}
             >
               {t("signIn")}
             </Button>

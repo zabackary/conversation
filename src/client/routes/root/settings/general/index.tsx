@@ -1,4 +1,3 @@
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { Chip, Grid, List, MenuItem, Select } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,6 +5,7 @@ import { ConversationAppBar } from "../../../../components/layout";
 import { BaseItem } from "../../../../components/settings";
 
 import LanguagePickerDialog from "../../../../components/layout/LanguagePickerDialog";
+import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 
 export default function GeneralSettingsRoute() {
   const { t, i18n } = useTranslation("settings");
@@ -40,7 +40,7 @@ export default function GeneralSettingsRoute() {
           }
         >
           <Chip
-            icon={<RestartAltIcon />}
+            icon={<MaterialSymbolIcon icon="restart_alt" />}
             label={t("reset")}
             onClick={() => {
               void i18n.changeLanguage("en-US");

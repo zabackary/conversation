@@ -1,5 +1,3 @@
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import {
   Alert,
   AlertTitle,
@@ -24,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import LoadingButton from "../../components/LoadingButton";
 import useBackend from "../../hooks/useBackend";
 import Footer from "./Footer";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 export default function LoginRoute() {
   const backend = useBackend();
@@ -61,7 +60,7 @@ export default function LoginRoute() {
     event.preventDefault();
   };
   const location = useLocation();
-  const {t} = useTranslation("login");
+  const { t } = useTranslation("login");
   return (
     <>
       <Typography component="h1" variant="h5" mb="8px">
@@ -114,7 +113,11 @@ export default function LoginRoute() {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  {showPassword ? (
+                    <MaterialSymbolIcon icon="visibility_off" />
+                  ) : (
+                    <MaterialSymbolIcon icon="visibility" />
+                  )}
                 </IconButton>
               </InputAdornment>
             ),

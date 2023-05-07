@@ -1,5 +1,3 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import TranslateIcon from "@mui/icons-material/Translate";
 import {
   Avatar,
   Box,
@@ -22,6 +20,7 @@ import { SwitchTransition } from "react-transition-group";
 import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 export default function LoginRootRoute() {
   useRouteForward();
@@ -57,7 +56,7 @@ export default function LoginRootRoute() {
           sx={{ position: "fixed", bottom: 12, left: 12 }}
           size="large"
         >
-          <TranslateIcon />
+          <MaterialSymbolIcon icon="translate" />
         </IconButton>
         <MuiLink
           sx={{
@@ -84,7 +83,7 @@ export default function LoginRootRoute() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <MaterialSymbolIcon icon="lock" />
           </Avatar>
           <SwitchTransition>
             <Fade key={match.pathname} timeout={200} unmountOnExit>
