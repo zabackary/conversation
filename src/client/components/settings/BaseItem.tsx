@@ -1,10 +1,4 @@
-import {
-  Grid,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+import { ListItem, ListItemText } from "@mui/material";
 import { ReactNode } from "react";
 
 export interface BaseItemProps {

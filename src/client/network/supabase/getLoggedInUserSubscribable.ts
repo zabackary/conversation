@@ -1,10 +1,10 @@
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { PrivilegeLevel, RegisteredUser } from "../../../model/user";
 import { Subscribable } from "../NetworkBackend";
-import { ConversationSupabaseClient } from "./utils";
 import SupabaseCache from "./cache";
-import getUser from "./getters/getUser";
 import convertUser from "./converters/convertUser";
+import getUser from "./getters/getUser";
+import { ConversationSupabaseClient } from "./utils";
 
 export default function getLoggedInUserSubscribable(
   client: ConversationSupabaseClient,
