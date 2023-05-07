@@ -1,11 +1,4 @@
-import {
-  Box,
-  List,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Box, List, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { ConversationAppBar } from "../../../components/layout";
 import { ChannelList } from "../../../components/main";
 import useDMs from "../../../hooks/useDMs";

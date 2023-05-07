@@ -1,4 +1,4 @@
-import { Chip, Grid, List, Stack } from "@mui/material";
+import { Chip, List, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ConversationAppBar } from "../../../../components/layout";
 import { SwitchItem } from "../../../../components/settings";
