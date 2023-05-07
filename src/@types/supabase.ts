@@ -13,32 +13,35 @@ export interface Database {
         Row: {
           as_image: boolean
           created_at: string | null
-          id: number
+          has_error: boolean
+          id: string
           last_modified: string
           message_id: number
           mime_type: string
           name: string
-          upload_url: string
+          upload_url: string | null
         }
         Insert: {
           as_image?: boolean
           created_at?: string | null
-          id?: number
+          has_error?: boolean
+          id?: string
           last_modified: string
           message_id: number
           mime_type: string
           name: string
-          upload_url: string
+          upload_url?: string | null
         }
         Update: {
           as_image?: boolean
           created_at?: string | null
-          id?: number
+          has_error?: boolean
+          id?: string
           last_modified?: string
           message_id?: number
           mime_type?: string
           name?: string
-          upload_url?: string
+          upload_url?: string | null
         }
       }
       channels: {

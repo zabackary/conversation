@@ -334,8 +334,8 @@ export interface ChannelBackendMessageEvent {
 
 export interface SentMessage {
   markdown: string;
-  images?: Blob[];
-  attachments?: Blob[];
+  images?: File[];
+  attachments?: File[];
   replied?: number;
 }
 
@@ -344,7 +344,7 @@ export type ActionPayload =
   | string
   | boolean
   | Date
-  | Blob
+  | File
   | ActionPayloadObject
   | Array<ActionPayload>;
 

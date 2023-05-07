@@ -1,17 +1,16 @@
+import { SupabaseBackend } from ".";
 import Message from "../../../model/message";
 import {
   ChannelBackend,
   ChannelBackendEvent,
   SentMessageEvent,
 } from "../NetworkBackend";
+import SupabaseCache from "./cache";
 import convertMessage from "./converters/convertMessage";
 import getMessages from "./getters/getMessages";
 import { promiseFromSubscribable } from "./utils";
-import { SupabaseBackend } from ".";
-import SupabaseCache from "./cache";
 
-// TODO: Make this global so we can listen to updates when ex. the tab is
-// minimized.
+const UPLOAD_BUCKET = "chat-uploads";
 
 export default class SupabaseChannelBackend implements ChannelBackend {
   constructor(
@@ -76,13 +75,73 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     };
   }
 
+  private async processUpload(messageId: number, file: File, asImage: boolean) {
+    // TODO: Add `attachments` table to cache
+    const { error, data } = await this.backend.client
+      .from("attachments")
+      .insert({
+        message_id: messageId,
+        last_modified: new Date(file.lastModified).toISOString(),
+        mime_type: file.type,
+        name: file.name,
+        as_image: asImage,
+        upload_url: null,
+      })
+      .select("id");
+    if (error) throw error;
+    const attachmentId = data[0].id;
+    this.backend.client.storage
+      .from(UPLOAD_BUCKET)
+      .upload(attachmentId, file)
+      .then(async ({ data: storageData, error: storageError }) => {
+        // storage returns a PromiseLike without `catch`
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        const { error: updateError } = await this.backend.client
+          .from("attachments")
+          .update(
+            storageError
+              ? {
+                  has_error: true,
+                }
+              : {
+                  upload_url: this.backend.client.storage
+                    .from(UPLOAD_BUCKET)
+                    .getPublicUrl(storageData.path).data.publicUrl,
+                }
+          )
+          .eq("id", attachmentId)
+          .single();
+        if (updateError) console.error(updateError);
+      })
+      .catch(() => {
+        // No-op: Supabase never throws. Errors are passed via `error` in `then`
+      });
+  }
+
   async send(message: SentMessageEvent): Promise<void> {
     if ("action" in message) throw new Error("Actions are not supported yet.");
-    await this.backend.client.from("messages").insert({
-      channel_id: this.id,
-      markdown: message.markdown,
-      user_id: this.userId,
-      replying_to: message.replied,
-    });
+    const { error, data } = await this.backend.client
+      .from("messages")
+      .insert({
+        channel_id: this.id,
+        markdown: message.markdown,
+        user_id: this.userId,
+        replying_to: message.replied,
+      })
+      .select("id");
+    if (error) throw error;
+    const messageId = data[0].id;
+    if (message.attachments)
+      await Promise.all(
+        message.attachments.map((attachment) => {
+          return this.processUpload(messageId, attachment, false);
+        })
+      );
+    if (message.images)
+      await Promise.all(
+        message.images.map((image) => {
+          return this.processUpload(messageId, image, true);
+        })
+      );
   }
 }
