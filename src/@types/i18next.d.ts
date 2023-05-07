@@ -1,10 +1,14 @@
 import "i18next";
-import resources from "../translations.json";
 
 declare module "i18next" {
-  // Extend CustomTypeOptions
+  // Extend CustomTypeOptions with a dummy object, effectively disabling TS
+  // checking for i18next. However, without this, ESLint doesn't work, so oh
+  // well.
+  //
+  // See https://github.com/i18next/i18next/issues/1857 and
+  // https://github.com/i18next/i18next/issues/1883
   interface CustomTypeOptions {
     defaultNS: "general";
-    resources: typeof resources["en-US"];
+    resources: Record<string, Record<string, string>>;
   }
 }
