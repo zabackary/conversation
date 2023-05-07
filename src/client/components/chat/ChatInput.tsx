@@ -3,17 +3,18 @@ import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import SendIcon from "@mui/icons-material/Send";
 import {
+  alpha,
   Box,
   IconButton,
   IconButtonProps,
-  InputAdornment,
+  InputBase,
   Menu,
-  OutlinedInput,
   Paper,
   Popover,
   styled,
   SxProps,
   Tooltip,
+  useTheme,
 } from "@mui/material";
 import {
   ChangeEventHandler,
@@ -23,6 +24,7 @@ import {
   PointerEvent,
   useCallback,
   useId,
+  useRef,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -156,6 +158,12 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
     const optionsMenuId = useId();
     const isEmojiPickerOpen = !!emojiPickerAnchor;
     const isOptionsMenuOpen = !!optionsMenuAnchor;
+    const theme = useTheme();
+    const [isFocused, setIsFocused] = useState(false);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const handleFocusInput = () => {
+      inputRef.current?.focus();
+    };
     return (
       <>
         <Box
@@ -189,54 +197,67 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
             {currentReply ? (
               <ReplyPreview id={currentReply} onClose={onReplyClear} />
             ) : null}
-            <OutlinedInput
-              fullWidth
-              value={message.markdown}
-              onChange={handleChange}
-              placeholder={placeholder}
-              onKeyDown={handleKeyDown}
-              multiline
-              maxRows={message.markdown === "" ? 1 : 4}
+            <Box
               sx={{
+                display: "flex",
                 borderRadius: "28px",
-                "& textarea, & input": {
-                  overflow: message.markdown === "" ? "hidden" : undefined,
+                "&:hover": {
+                  borderColor: isFocused ? undefined : "divider",
                 },
+                border: `${isFocused ? "2px" : "1px"} solid transparent`,
+                borderColor: isFocused
+                  ? "primary.main"
+                  : alpha(theme.palette.divider, 0.6),
+                p: isFocused ? "6px 13px" : "7px 14px",
+                flexWrap: "wrap",
+                cursor: "text",
               }}
-              startAdornment={
-                <InputAdornment position="start">
-                  <Tooltip title={t("overflowTooltip")}>
-                    <ExpandMore
-                      expand={isOptionsMenuOpen}
-                      onClick={handleOptionsMenuClick}
-                      id={`${optionsMenuId}-anchor`}
-                    >
-                      <ExpandCircleDownIcon />
-                    </ExpandMore>
-                  </Tooltip>
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <Tooltip title={t("emoji")}>
-                    <IconButton onClick={handleEmojiClick}>
-                      <InsertEmoticonIcon />
-                    </IconButton>
-                  </Tooltip>
-                  {cannotSendMessage ? (
-                    <IconButton disabled aria-label={t("sendDisabled")}>
-                      <SendIcon />
-                    </IconButton>
-                  ) : (
-                    <Tooltip title={t("send")}>
-                      <IconButton onClick={handleSend}>
-                        <SendIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </InputAdornment>
-              }
-            />
+              onClick={handleFocusInput}
+            >
+              <Tooltip title={t("overflowTooltip")}>
+                <ExpandMore
+                  expand={isOptionsMenuOpen}
+                  onClick={handleOptionsMenuClick}
+                  id={`${optionsMenuId}-anchor`}
+                >
+                  <ExpandCircleDownIcon />
+                </ExpandMore>
+              </Tooltip>
+              <InputBase
+                value={message.markdown}
+                onChange={handleChange}
+                placeholder={placeholder}
+                onKeyDown={handleKeyDown}
+                multiline
+                maxRows={message.markdown === "" ? 1 : 4}
+                sx={{
+                  "& textarea, & input": {
+                    overflow: message.markdown === "" ? "hidden" : undefined,
+                  },
+                  mx: 1,
+                  flexGrow: 1,
+                }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                inputRef={inputRef}
+              />
+              <Tooltip title={t("emoji")}>
+                <IconButton onClick={handleEmojiClick}>
+                  <InsertEmoticonIcon />
+                </IconButton>
+              </Tooltip>
+              {cannotSendMessage ? (
+                <IconButton disabled aria-label={t("sendDisabled")}>
+                  <SendIcon />
+                </IconButton>
+              ) : (
+                <Tooltip title={t("send")}>
+                  <IconButton onClick={handleSend}>
+                    <SendIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </Box>
           </StyledPaper>
         </Box>
         <Popover
