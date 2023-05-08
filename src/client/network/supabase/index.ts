@@ -7,6 +7,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
+import Message from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -20,23 +21,22 @@ import NetworkBackend, {
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
+import { DispatchableSubscribable } from "../Subscribable";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache, { SupabaseMessage } from "./cache";
 import convertChannel from "./converters/convertChannel";
+import convertMessage from "./converters/convertMessage";
 import convertUser from "./converters/convertUser";
 import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
+import getMessage from "./getters/getMessage";
 import getUser from "./getters/getUser";
 import {
   normalizeJoin,
   nullablePromiseFromSubscribable,
   promiseFromSubscribable,
 } from "./utils";
-import Message from "../../../model/message";
-import getMessage from "./getters/getMessage";
-import convertMessage from "./converters/convertMessage";
-import { DispatchableSubscribable } from "../Subscribable";
 
 class SupabaseBackendImpl implements NetworkBackend {
   client = createClient<Database>(
@@ -122,18 +122,41 @@ class SupabaseBackendImpl implements NetworkBackend {
   async acceptInvite(id: number): Promise<void> {
     const userId = this.getCurrentSession().getSnapshot()?.id;
     if (!userId) throw new Error("Must be logged in to accept invites");
-    const { error } = await this.client
-      .from("members")
-      .upsert({
+    const channel = (
+      await this.cache.getChannelOrFallback(id, () =>
+        getChannel(this.client, id)
+      )
+    ).getSnapshot();
+    let success = false;
+    if (channel.privacy_level === 0) {
+      // Insert a new row; channel is public and no invite (this may fail)
+      const { error: insertError } = await this.client.from("members").insert({
         user_id: userId as string,
         channel_id: id,
         accepted: true,
-        actor: null,
-        invite_message: null,
-      })
-      .eq("channel_id", id)
-      .eq("user_id", userId);
-    if (error) throw error;
+      });
+      if (!insertError) {
+        success = true;
+      }
+    }
+    if (!success) {
+      const { error: updateError } = await this.client
+        .from("members")
+        .update({
+          user_id: userId as string,
+          channel_id: id,
+          accepted: true,
+          actor: null,
+          invite_message: null,
+        })
+        .eq("channel_id", id)
+        .eq("user_id", userId);
+      if (updateError) {
+        throw updateError;
+      } else {
+        success = true;
+      }
+    }
     const currentChannelList = await this.cache.getChannelListOrFallback(() =>
       getChannels(this.client, userId as string)
     );
