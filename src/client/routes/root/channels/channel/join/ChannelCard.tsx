@@ -1,14 +1,14 @@
 import {
   Avatar,
   Card,
-  CardContent,
-  CardHeader,
-  Skeleton,
-  Typography,
-  Paper,
-  Stack,
   CardActionArea,
   CardActions,
+  CardContent,
+  CardHeader,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { ReactNode, useState } from "react";
 import {
@@ -16,12 +16,12 @@ import {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../../../../model/channel";
-import useUserInfo from "../../../../../hooks/useUserInfo";
-import ProfilePicture from "../../../../../components/ProfilePicture";
-import useChannel from "../../../../../hooks/useChannel";
 import LoadingButton from "../../../../../components/LoadingButton";
-import useSnackbar from "../../../../../components/useSnackbar";
 import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
+import ProfilePicture from "../../../../../components/ProfilePicture";
+import useSnackbar from "../../../../../components/useSnackbar";
+import useChannel from "../../../../../hooks/useChannel";
+import useUserInfo from "../../../../../hooks/useUserInfo";
 
 interface BaseChannelCardProps {
   invite: PublicChannelListing;
@@ -60,7 +60,7 @@ function BaseChannelCard({
     handleReject(invite.id)
       .then(() => {
         setRejectLoading(false);
-        showSnackbar("Rejected invite. It will disappear when you refresh.");
+        showSnackbar("Rejected invite.");
       })
       .catch(() => {
         showSnackbar("Failed to reject invite.");

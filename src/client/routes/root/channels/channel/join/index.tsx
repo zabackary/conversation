@@ -7,6 +7,8 @@ import {
   Button,
   Dialog,
   Grid,
+  ListItemIcon,
+  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -16,12 +18,12 @@ import {
 import { FormEvent, SyntheticEvent, useCallback, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import LoadingButton from "../../../../../components/LoadingButton";
-import { ConversationAppBar } from "../../../../../components/layout";
-import Create from "./create";
-import ChannelCard from "./ChannelCard";
-import usePromise from "../../../../../hooks/usePromise";
-import useBackend from "../../../../../hooks/useBackend";
 import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
+import { ConversationAppBar } from "../../../../../components/layout";
+import useBackend from "../../../../../hooks/useBackend";
+import usePromise from "../../../../../hooks/usePromise";
+import ChannelCard from "./ChannelCard";
+import Create from "./create";
 
 export default function ChannelJoinScreen() {
   const [tab, setTab] = useState<number | null>(null);
@@ -40,21 +42,45 @@ export default function ChannelJoinScreen() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const backend = useBackend();
+  const [refreshCount, setRefreshCount] = useState(0);
   const getInvitedChannels = useCallback(
     () => backend.getInvitedChannels(0, 20),
-    [backend]
+    // I want to run the promise every time refreshCount changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [backend, refreshCount]
   );
   const invitedChannels = usePromise(getInvitedChannels); // TODO: Add paging
   const getPublicChannels = useCallback(
     () => backend.getPublicChannels(0, 20),
-    [backend]
+    // I want to run the promise every time refreshCount changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [backend, refreshCount]
   );
   const publicChannels = usePromise(getPublicChannels); // TODO: Add paging
-  const handleAccept = (id: number) => backend.acceptInvite(id);
-  const handleReject = (id: number) => backend.deleteInvite(id);
+  const handleRefresh = () => {
+    setRefreshCount((count) => count + 1);
+  };
+  const handleAccept = async (id: number) => {
+    await backend.acceptInvite(id);
+    handleRefresh();
+  };
+  const handleReject = async (id: number) => {
+    await backend.deleteInvite(id);
+    handleRefresh();
+  };
   return (
     <>
-      <ConversationAppBar title={t("join.title")} />
+      <ConversationAppBar
+        title={t("join.title")}
+        overflowItems={
+          <MenuItem onClick={handleRefresh}>
+            <ListItemIcon>
+              <MaterialSymbolIcon icon="refresh" />
+            </ListItemIcon>
+            Refresh
+          </MenuItem>
+        }
+      />
       <Box m={3}>
         <Button
           sx={{ mb: 3, minWidth: "33.33%", mx: "auto", display: "block" }}
