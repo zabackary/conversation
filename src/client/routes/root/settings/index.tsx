@@ -1,4 +1,4 @@
-import { Box, List, Typography } from "@mui/material";
+import { List, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Outlet } from "react-router-dom";
 import { ConversationNavigationDrawer } from "../../../components/layout";
@@ -35,12 +35,10 @@ export default function SettingsRoute() {
         </List>
       }
     >
-      <Box p={3}>
-        <Outlet />
-        <Typography variant="body2" textAlign="center" mt={1}>
-          v{__VERSION__}
-        </Typography>
-      </Box>
+      <Outlet />
+      <Typography variant="body2" textAlign="center" m={1}>
+        v{__VERSION__}
+      </Typography>
     </ConversationNavigationDrawer>
   );
 }

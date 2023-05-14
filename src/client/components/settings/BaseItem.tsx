@@ -16,15 +16,11 @@ export default function BaseItem({
 }: BaseItemProps) {
   return (
     <>
-      <ListItem disablePadding sx={{ mb: children ? 0 : 2 }}>
+      <ListItem sx={{ mb: children ? 0 : 2 }}>
         <ListItemText primary={label} secondary={description} />
         {control}
       </ListItem>
-      {children ? (
-        <ListItem disablePadding sx={{ mb: 2 }}>
-          {children}
-        </ListItem>
-      ) : null}
+      {children ? <ListItem sx={{ mb: 2 }}>{children}</ListItem> : null}
     </>
   );
 }
