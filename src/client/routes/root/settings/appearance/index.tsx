@@ -1,7 +1,7 @@
 import { Chip, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useDebouncedCallback } from "use-debounce";
+import { useThrottledCallback } from "use-debounce";
 import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
@@ -24,7 +24,7 @@ export default function AppearanceSettingsRoute({
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
-  const handleColorChange = useDebouncedCallback((color: string) => {
+  const handleColorChange = useThrottledCallback((color: string) => {
     generateThemeScheme(color).catch(() => {
       snackbar.showSnackbar(t("appearance.theme.error"));
     });
