@@ -224,7 +224,7 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
               />
               <Tooltip title={t("emoji")}>
                 <IconButton onClick={handleEmojiClick}>
-                  <MaterialSymbolIcon icon="face" fill={isEmojiPickerOpen} />
+                  <MaterialSymbolIcon icon="mood" fill={isEmojiPickerOpen} />
                 </IconButton>
               </Tooltip>
               {cannotSendMessage ? (
