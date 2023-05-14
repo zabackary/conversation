@@ -1,7 +1,8 @@
 import { Chip, List, Stack } from "@mui/material";
 import { useCallback, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { useThrottledCallback } from "use-debounce";
+import { useDebouncedCallback } from "use-debounce";
+import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
 import useSnackbar from "../../../../components/useSnackbar";
@@ -10,7 +11,6 @@ import {
   ThemeModeContext,
   ThemeSchemeContext,
 } from "../../../../theme";
-import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 
 export default function AppearanceSettingsRoute({
   noAppBar,
@@ -24,11 +24,11 @@ export default function AppearanceSettingsRoute({
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
-  const handleColorChange = useThrottledCallback((color: string) => {
+  const handleColorChange = useDebouncedCallback((color: string) => {
     generateThemeScheme(color).catch(() => {
       snackbar.showSnackbar(t("appearance.theme.error"));
     });
-  }, 200);
+  }, 500);
 
   const handleThemeChange = useCallback(
     (newTheme: boolean) => {
@@ -57,7 +57,7 @@ export default function AppearanceSettingsRoute({
           </Stack>
         </SwitchItem>
         <ColorItem
-          value={themeScheme.light.primary}
+          initialValue={themeScheme.light.primary}
           onChange={handleColorChange}
           label={t("appearance.theme.title")}
           description={t("appearance.theme.description")}
