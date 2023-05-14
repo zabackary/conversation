@@ -1,8 +1,8 @@
 import { Chip, List, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 import { ConversationAppBar } from "../../../../components/layout";
 import { SwitchItem } from "../../../../components/settings";
-import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 
 export default function BehaviorSettingsRoute() {
   const { t } = useTranslation("settings");
@@ -20,7 +20,7 @@ export default function BehaviorSettingsRoute() {
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<MaterialSymbolIcon icon="restart_alt" />}
+              icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
               onClick={() => {
                 // TODO: implement
@@ -39,7 +39,7 @@ export default function BehaviorSettingsRoute() {
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<MaterialSymbolIcon icon="restart_alt" />}
+              icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
               onClick={() => {
                 // TODO: implement

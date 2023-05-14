@@ -49,7 +49,7 @@ export default function AppearanceSettingsRoute({
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<MaterialSymbolIcon icon="restart_alt" />}
+              icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
               onClick={() => setThemeMode(DEFAULT_THEME_MODE)}
               variant="outlined"
@@ -64,7 +64,7 @@ export default function AppearanceSettingsRoute({
         >
           <Stack direction="row" spacing={1}>
             <Chip
-              icon={<MaterialSymbolIcon icon="shuffle" />}
+              icon={<MaterialSymbolIcon icon="shuffle" size={18} />}
               label={t("random")}
               onClick={() =>
                 handleColorChange(
@@ -76,7 +76,7 @@ export default function AppearanceSettingsRoute({
               variant="outlined"
             />
             <Chip
-              icon={<MaterialSymbolIcon icon="restart_alt" />}
+              icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
               onClick={() => resetThemeScheme()}
               variant="outlined"

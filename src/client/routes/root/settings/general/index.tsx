@@ -40,7 +40,7 @@ export default function GeneralSettingsRoute() {
           }
         >
           <Chip
-            icon={<MaterialSymbolIcon icon="restart_alt" />}
+            icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
             label={t("reset")}
             onClick={() => {
               void i18n.changeLanguage("en-US");
