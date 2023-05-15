@@ -1,4 +1,5 @@
 import {
+  alpha,
   Box,
   CircularProgress,
   Drawer,
@@ -18,15 +19,28 @@ import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/NetworkBackend";
 import { ConversationAppBar, navigationRailWidth } from "../layout";
 import { drawerWidth } from "../layout/ConversationNavigationDrawer";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import ChatView from "./ChatView";
 import InfoMenu from "./InfoMenu";
 import PeopleMenu from "./PeopleMenu";
-import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const sideSheetWidth = 300;
 
 export const SideSheetToolbar = styled(Toolbar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
+}));
+
+export const SideSheet = styled(Drawer)(({ theme }) => ({
+  width: sideSheetWidth,
+  flexShrink: 0,
+  "&.MuiDrawer-docked .MuiDrawer-paper": {
+    minHeight: 360,
+    width: sideSheetWidth - 16,
+    borderRadius: 16,
+    margin: 8,
+    background: alpha(theme.palette.primary.main, 0.1),
+    height: "calc(100% - 24px)",
+  },
 }));
 
 const MainContainer = styled("div", {
@@ -165,26 +179,11 @@ export default function Chat({ channelId }: ChatProps) {
           t("notFound")
         )}
       </MainContainer>
-      <Drawer
+      <SideSheet
         variant={isMobile ? "temporary" : "persistent"}
         anchor={isMobile ? "bottom" : "right"}
         open={activeSidebar === "info"}
         onClose={() => setActiveSidebar(null)}
-        sx={
-          isMobile
-            ? {
-                "& .MuiDrawer-paper": {
-                  minHeight: 360,
-                },
-              }
-            : {
-                width: sideSheetWidth,
-                flexShrink: 0,
-                "& .MuiDrawer-paper": {
-                  width: sideSheetWidth,
-                },
-              }
-        }
       >
         {channel ? (
           <InfoMenu
@@ -207,27 +206,12 @@ export default function Chat({ channelId }: ChatProps) {
             </Box>
           </>
         )}
-      </Drawer>
-      <Drawer
+      </SideSheet>
+      <SideSheet
         variant={isMobile ? "temporary" : "persistent"}
         anchor={isMobile ? "bottom" : "right"}
         open={activeSidebar === "people"}
         onClose={() => setActiveSidebar(null)}
-        sx={
-          isMobile
-            ? {
-                "& .MuiDrawer-paper": {
-                  minHeight: 360,
-                },
-              }
-            : {
-                width: sideSheetWidth,
-                flexShrink: 0,
-                "& .MuiDrawer-paper": {
-                  width: sideSheetWidth,
-                },
-              }
-        }
       >
         {channel ? (
           <PeopleMenu
@@ -250,7 +234,7 @@ export default function Chat({ channelId }: ChatProps) {
             </Box>
           </>
         )}
-      </Drawer>
+      </SideSheet>
     </>
   );
 }
