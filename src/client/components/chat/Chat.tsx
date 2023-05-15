@@ -37,9 +37,10 @@ export const SideSheet = styled(Drawer)(({ theme }) => ({
     minHeight: 360,
     width: sideSheetWidth - 16,
     borderRadius: 16,
-    margin: 8,
+    margin: 16,
+    marginLeft: 0,
     background: alpha(theme.palette.primary.main, 0.1),
-    height: "calc(100% - 24px)",
+    height: "calc(100% - 32px)",
   },
 }));
 
