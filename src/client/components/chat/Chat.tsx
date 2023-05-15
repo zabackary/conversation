@@ -31,11 +31,9 @@ export const SideSheetToolbar = styled(Toolbar)(({ theme }) => ({
 }));
 
 export const SideSheet = styled(Drawer)(({ theme }) => ({
-  width: sideSheetWidth,
-  flexShrink: 0,
   "&.MuiDrawer-docked .MuiDrawer-paper": {
     minHeight: 360,
-    width: sideSheetWidth - 16,
+    width: sideSheetWidth,
     borderRadius: 16,
     margin: 16,
     marginLeft: 0,
@@ -59,7 +57,7 @@ const MainContainer = styled("div", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginRight: sideSheetWidth,
+    marginRight: sideSheetWidth + 24,
   }),
 }));
 
@@ -124,10 +122,10 @@ export default function Chat({ channelId }: ChatProps) {
             ? {
                 width: {
                   sm: `calc(100% - ${
-                    drawerWidth + navigationRailWidth + sideSheetWidth
+                    drawerWidth + navigationRailWidth + sideSheetWidth + 24
                   }px)`,
                 },
-                mr: `${sideSheetWidth}px`,
+                mr: `${sideSheetWidth + 24}px`,
               }
             : {}
         }

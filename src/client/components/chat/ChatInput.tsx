@@ -168,7 +168,6 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
               borderRadius: currentReply ? "22px 22px 28px 28px" : "28px",
               position: "relative",
               zIndex: 1,
-              border: "1px solid transparent",
             }}
             elevation={elevate ? 1 : 0}
             className={elevate ? "" : "flat"}
