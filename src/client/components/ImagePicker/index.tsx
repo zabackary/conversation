@@ -11,13 +11,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, DragEventHandler, useState } from "react";
 import { validateUrl } from "../../../shared/validation";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface ImagePickerProps {
   allowFiles?: boolean;
-  onImageSelected: (imageUrl: string) => void;
+  onImageSelected: (image: string | File) => void;
 }
 
 export default function ImagePicker({
@@ -39,6 +39,36 @@ export default function ImagePicker({
       setIsValid(null);
     }
   };
+  const handleUpload = () => {
+    const uploadInput = document.createElement("input");
+    uploadInput.type = "file";
+    uploadInput.accept = "image/*";
+    uploadInput.click();
+    uploadInput.addEventListener("change", () => {
+      if (uploadInput.files && uploadInput.files.length > 0) {
+        const item = uploadInput.files[0];
+        onImageSelected(item);
+      }
+    });
+  };
+  const [entranceCounter, setEntranceCounter] = useState(0);
+  const handleDrop: DragEventHandler = (e) => {
+    e.preventDefault();
+    setEntranceCounter(0);
+    if (e.dataTransfer.files.length > 0) {
+      onImageSelected(e.dataTransfer.files[0]);
+    }
+  };
+  const handleDragEnter: DragEventHandler = () => {
+    setEntranceCounter((x) => x + 1);
+  };
+  const handleDragLeave: DragEventHandler = () => {
+    setEntranceCounter((x) => x - 1);
+  };
+  const handleDragOver: DragEventHandler = (e) => {
+    e.preventDefault();
+  };
+  const dropping = entranceCounter > 0;
   return (
     <Stack height="400px" px={1}>
       <Collapse in={isValid === null ? false : !isValid}>
@@ -73,8 +103,19 @@ export default function ImagePicker({
       />
       <Card sx={{ p: 0, flexGrow: 1, mb: 1 }} variant="elevation">
         <CardActionArea
-          sx={{ display: "flex", height: "100%", flexDirection: "column" }}
+          sx={{
+            display: "flex",
+            height: "100%",
+            flexDirection: "column",
+            bgcolor: dropping ? "primaryContainer.main" : undefined,
+            transition: "background-color 300ms",
+          }}
           disabled={!allowFiles}
+          onClick={handleUpload}
+          onDrop={handleDrop}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
         >
           {isValid && value !== "" ? (
             <CardMedia component="img" image={value} alt="selected image" />
