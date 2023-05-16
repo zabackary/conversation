@@ -15,6 +15,13 @@ import { ChangeEventHandler, DragEventHandler, useState } from "react";
 import { validateUrl } from "../../../shared/validation";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
+enum ValidationState {
+  INVALID,
+  CENSORED,
+  ERROR,
+  VALID,
+}
+
 export interface ImagePickerProps {
   allowFiles?: boolean;
   onImageSelected: (image: string | File) => void;
@@ -25,19 +32,30 @@ export default function ImagePicker({
   onImageSelected,
 }: ImagePickerProps) {
   const [value, setValue] = useState("");
-  const [isValid, setIsValid] = useState<boolean | null>(null);
+  const [validationState, setValidationState] =
+    useState<ValidationState | null>(null);
   const handleValueChange: ChangeEventHandler<HTMLTextAreaElement> = ({
     currentTarget: { value: newValue },
   }) => {
     setValue(newValue);
-    setIsValid(validateUrl(newValue));
+    const validated = validateUrl(newValue);
+    setValidationState(
+      validated
+        ? ValidationState.VALID
+        : validated === null
+        ? ValidationState.ERROR
+        : ValidationState.CENSORED
+    );
   };
   const handleDone = () => {
     if (validateUrl(value)) {
       onImageSelected(value);
       setValue("");
-      setIsValid(null);
+      setValidationState(null);
     }
+  };
+  const handleError = () => {
+    setValidationState(ValidationState.INVALID);
   };
   const handleUpload = () => {
     const uploadInput = document.createElement("input");
@@ -71,18 +89,23 @@ export default function ImagePicker({
   const dropping = entranceCounter > 0;
   return (
     <Stack height="400px" px={1}>
-      <Collapse in={isValid === null ? false : !isValid}>
+      <Collapse in={validationState === ValidationState.CENSORED}>
         <Alert severity="error" sx={{ m: 1 }}>
           Sorry, you can&apos;t use that image.
         </Alert>
       </Collapse>
-      <Collapse in={isValid === null && value !== ""}>
-        <Alert severity="error" sx={{ m: 1 }}>
+      <Collapse in={validationState === ValidationState.ERROR}>
+        <Alert severity="info" sx={{ m: 1 }}>
           That doesn&apos;t seem to be a URL.
         </Alert>
       </Collapse>
+      <Collapse in={validationState === ValidationState.INVALID}>
+        <Alert severity="warning" sx={{ m: 1 }}>
+          That doesn&apos;t seem to be an image.
+        </Alert>
+      </Collapse>
       <TextField
-        label="Image URL"
+        label="Enter image URL"
         value={value}
         onChange={handleValueChange}
         fullWidth
@@ -92,7 +115,7 @@ export default function ImagePicker({
             <InputAdornment position="end">
               <IconButton
                 onClick={handleDone}
-                disabled={isValid !== true}
+                disabled={validationState !== ValidationState.VALID}
                 aria-label="Done"
               >
                 <MaterialSymbolIcon icon="done" />
@@ -101,6 +124,11 @@ export default function ImagePicker({
           ),
         }}
       />
+      <Collapse in={validationState === null}>
+        <Typography textAlign="center" fontStyle="italic" my={1}>
+          - or -
+        </Typography>
+      </Collapse>
       <Card sx={{ p: 0, flexGrow: 1, mb: 1 }} variant="elevation">
         <CardActionArea
           sx={{
@@ -117,8 +145,13 @@ export default function ImagePicker({
           onDragLeave={handleDragLeave}
           onDragOver={handleDragOver}
         >
-          {isValid && value !== "" ? (
-            <CardMedia component="img" image={value} alt="selected image" />
+          {validationState === ValidationState.VALID && value !== "" ? (
+            <CardMedia
+              component="img"
+              image={value}
+              alt="selected image"
+              onError={handleError}
+            />
           ) : (
             <>
               <CardMedia>
