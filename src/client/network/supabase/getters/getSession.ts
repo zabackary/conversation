@@ -1,6 +1,10 @@
+import SupabaseCache from "../cache";
 import { ConversationSupabaseClient } from "../utils";
 
-export default async function getSession(client: ConversationSupabaseClient) {
+export default async function getSession(
+  client: ConversationSupabaseClient,
+  _cache: SupabaseCache
+) {
   const {
     data: { session },
     error,

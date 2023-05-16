@@ -124,7 +124,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (!userId) throw new Error("Must be logged in to accept invites");
     const channel = (
       await this.cache.getChannelOrFallback(id, () =>
-        getChannel(this.client, id)
+        getChannel(this.client, this.cache, id)
       )
     ).getSnapshot();
     let success = false;
@@ -158,7 +158,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       }
     }
     const currentChannelList = await this.cache.getChannelListOrFallback(() =>
-      getChannels(this.client, userId as string)
+      getChannels(this.client, this.cache, userId as string)
     );
     this.cache.putChannelList(
       currentChannelList
@@ -166,7 +166,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         .concat([
           (
             await this.cache.getChannelOrFallback(id, () =>
-              getChannel(this.client, id)
+              getChannel(this.client, this.cache, id)
             )
           ).getSnapshot(),
         ])
@@ -294,7 +294,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     }
     if (userIds.includes(currentUser.id)) {
       const channelList = await this.cache.getChannelListOrFallback(() =>
-        getChannels(this.client, currentUser.id as string)
+        getChannels(this.client, this.cache, currentUser.id as string)
       );
       this.cache.putChannelList(
         channelList.getSnapshot().filter((channel) => channel.id !== id)
@@ -335,7 +335,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     const { error } = await this.client.from("channels").delete().eq("id", id);
     if (error) throw error;
     const currentChannelList = await this.cache.getChannelListOrFallback(() =>
-      getChannels(this.client, user.id as string)
+      getChannels(this.client, this.cache, user.id as string)
     );
     this.cache.putChannelList(
       currentChannelList.getSnapshot().filter((channel) => channel.id !== id)
@@ -386,14 +386,14 @@ class SupabaseBackendImpl implements NetworkBackend {
       users: [
         (
           await this.cache.getUserOrFallback(userId, () =>
-            getUser(this.client, userId)
+            getUser(this.client, this.cache, userId)
           )
         ).getSnapshot(),
       ],
     };
     this.cache.putChannel(channel);
     const currentChannelList = await this.cache.getChannelListOrFallback(() =>
-      getChannels(this.client, user.id as string)
+      getChannels(this.client, this.cache, user.id as string)
     );
     this.cache.putChannelList(
       currentChannelList.getSnapshot().concat([channel])
@@ -432,7 +432,11 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   getUser(id: string): Subscribable<User | null> {
     return new Subscribable<User | null>(async (next, nextError) => {
-      (await this.cache.getUserOrFallback(id, () => getUser(this.client, id)))
+      (
+        await this.cache.getUserOrFallback(id, () =>
+          getUser(this.client, this.cache, id)
+        )
+      )
         .map<User | null>((user) => Promise.resolve(convertUser(user)), null)
         .subscribe(({ value, error }) => {
           if (error) nextError(error);
@@ -445,7 +449,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     return new Subscribable<Message | null>(async (next, nextError) => {
       (
         await this.cache.getMessageOrFallback(id, () =>
-          getMessage(this.client, id)
+          getMessage(this.client, this.cache, id)
         )
       )
         .map<Message | null>(
@@ -476,7 +480,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         await this.cache.getChannelListOrFallback(() => {
           const id = this.getCurrentSession().getSnapshot()?.id;
           return id
-            ? getChannels(this.client, id as string)
+            ? getChannels(this.client, this.cache, id as string)
             : Promise.resolve([]);
         })
       )
@@ -510,7 +514,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         await this.cache.getChannelListOrFallback(() => {
           const id = this.getCurrentSession().getSnapshot()?.id;
           return id
-            ? getChannels(this.client, id as string)
+            ? getChannels(this.client, this.cache, id as string)
             : Promise.resolve([]);
         })
       )
@@ -565,7 +569,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     return new Subscribable<Channel | null>(async (next, nextError) => {
       (
         await this.cache.getChannelOrFallback(id, () =>
-          getChannel(this.client, id)
+          getChannel(this.client, this.cache, id)
         )
       )
         .map<Channel | null>(

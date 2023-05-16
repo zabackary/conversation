@@ -1,7 +1,9 @@
+import SupabaseCache from "../cache";
 import { ConversationSupabaseClient, normalizeJoin } from "../utils";
 
 export default async function getChannels(
   client: ConversationSupabaseClient,
+  _cache: SupabaseCache,
   userId: string
 ) {
   const { data: members, error } = await client

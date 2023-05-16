@@ -63,6 +63,7 @@ export default function AccountSettingsRoute() {
         <ImagePicker
           allowFiles
           onImageSelected={(result) => {
+            setProfileUploadTarget(null);
             console.log("selected:", result);
           }}
         />

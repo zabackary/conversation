@@ -29,7 +29,7 @@ export default function getLoggedInUserSubscribable(
           try {
             userMetadata = (
               await cache.getUserOrFallback(userId, () =>
-                getUser(client, userId)
+                getUser(client, cache, userId)
               )
             ).getSnapshot();
           } catch (e) {
