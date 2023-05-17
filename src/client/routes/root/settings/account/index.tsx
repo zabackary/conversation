@@ -95,7 +95,7 @@ export default function AccountSettingsRoute() {
       />
       <List>
         <ListItem>
-          <Alert variant="outlined" severity="info">
+          <Alert variant="outlined" severity="info" sx={{ width: "100%" }}>
             Changing any field will result in your account being marked as
             unverified until an admin can confirm your account.
           </Alert>
