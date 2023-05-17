@@ -16,12 +16,14 @@ import {
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  useMatches,
-  useOutlet,
   Link as RouterLink,
+  useLocation,
+  useMatches,
   useNavigate,
+  useOutlet,
 } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 import {
   ConversationNavigationRail,
   navigationRailWidth,
@@ -30,10 +32,9 @@ import { drawerWidth } from "../../components/layout/ConversationNavigationDrawe
 import LinkListItem from "../../components/main/LinkListItem";
 import useSnackbar from "../../components/useSnackbar";
 import useBackend from "../../hooks/useBackend";
-import useRouteForward from "../../hooks/useRouteForward";
 import { useSubscribable } from "../../hooks/useBackendFunction";
+import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
-import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 function LoadingGlimmer() {
   return (
@@ -55,7 +56,7 @@ function LoadingGlimmer() {
 
 export default function RootRoute() {
   useRouteForward();
-  const user = useUser(true);
+  const user = useUser(false);
   const match = useMatches()[1] as ReturnType<typeof useMatches>[2] | undefined;
   const currentOutlet = useOutlet();
   const theme = useTheme();
@@ -64,11 +65,23 @@ export default function RootRoute() {
   const [isReady, setIsReady] = useState(false);
   const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     if (backend.isReady) {
       backend.isReady
         .then(() => {
           setIsReady(true);
+          if (user === null) {
+            navigate(
+              `/login/?next=${encodeURIComponent(
+                location.pathname + location.hash + location.search
+              )}`,
+              {
+                replace: true,
+              }
+            );
+          }
         })
         .catch((err) => {
           console.error("Backend failed to initialize.", err);
@@ -77,7 +90,6 @@ export default function RootRoute() {
           });
         });
     } else {
-      console.log(backend);
       setIsReady(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- This is a fire-and-forget effect.
@@ -108,7 +120,6 @@ export default function RootRoute() {
       });
     }
   }, [connectionState, showSnackbar]);
-  const navigate = useNavigate();
   const handleSwitchAccount = () => {
     backend
       .authLogOut()
