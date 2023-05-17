@@ -10,7 +10,6 @@ export default async function getChannel(
     .from("channels")
     .select("*, users!members ( * )")
     .eq("id", channelId)
-    .eq("members.accepted", true)
     .maybeSingle();
   if (error) throw error;
   if (!channel) throw new Error("Couldn't find matching channel");
