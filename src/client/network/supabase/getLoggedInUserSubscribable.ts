@@ -1,16 +1,21 @@
 import { AuthChangeEvent, Session } from "@supabase/supabase-js";
-import { PrivilegeLevel, RegisteredUser } from "../../../model/user";
+import { RegisteredUser } from "../../../model/user";
 import { Subscribable } from "../NetworkBackend";
 import SupabaseCache from "./cache";
 import convertUser from "./converters/convertUser";
 import getUser from "./getters/getUser";
 import { ConversationSupabaseClient } from "./utils";
 
+export const NEEDS_ONBOARDING = Symbol("onboarding");
+export const PASSWORD_RECOVERY = Symbol("recovery");
+
 export default function getLoggedInUserSubscribable(
   client: ConversationSupabaseClient,
   cache: SupabaseCache
 ) {
-  return new Subscribable<RegisteredUser | null>(async (next) => {
+  return new Subscribable<
+    RegisteredUser | typeof NEEDS_ONBOARDING | typeof PASSWORD_RECOVERY | null
+  >(async (next) => {
     let userId: string | undefined;
     await new Promise((resolve) => {
       setTimeout(resolve, 1);
@@ -21,6 +26,7 @@ export default function getLoggedInUserSubscribable(
     ) => {
       switch (event) {
         case "USER_UPDATED":
+        case "PASSWORD_RECOVERY":
         case "SIGNED_IN": {
           if (!newSession) throw new Error("Signed in w/o session");
           if (userId === newSession.user.id) return;
@@ -36,6 +42,8 @@ export default function getLoggedInUserSubscribable(
             // Noop
           }
           if (!userMetadata) {
+            next(NEEDS_ONBOARDING);
+            /*
             // TODO: Make this good UI
             // eslint-disable-next-line no-restricted-globals
             if (confirm("Let's set up your account.")) {
@@ -63,7 +71,7 @@ export default function getLoggedInUserSubscribable(
                 banner_url: null,
                 profile_picture_url: profilePicture,
               });
-            }
+            } */
           } else {
             next(convertUser(userMetadata) as RegisteredUser);
           }

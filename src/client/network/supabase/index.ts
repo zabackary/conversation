@@ -27,7 +27,10 @@ import SupabaseCache, { SupabaseMessage } from "./cache";
 import convertChannel from "./converters/convertChannel";
 import convertMessage from "./converters/convertMessage";
 import convertUser from "./converters/convertUser";
-import getLoggedInUserSubscribable from "./getLoggedInUserSubscribable";
+import getLoggedInUserSubscribable, {
+  NEEDS_ONBOARDING,
+  PASSWORD_RECOVERY,
+} from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getMessage from "./getters/getMessage";
@@ -58,6 +61,11 @@ class SupabaseBackendImpl implements NetworkBackend {
     "connecting" | "connected" | "reconnecting" | "error"
   >;
 
+  attributes = new DispatchableSubscribable({
+    recovery: false,
+    onboarding: false,
+  });
+
   constructor() {
     if (
       process.env.NODE_ENV === "development" ||
@@ -72,7 +80,26 @@ class SupabaseBackendImpl implements NetworkBackend {
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(
       this.client,
       this.cache
-    );
+    ).filter<RegisteredUser | null>((value): value is RegisteredUser | null => {
+      if (value === NEEDS_ONBOARDING) {
+        this.attributes.dispatch({
+          recovery: false,
+          onboarding: true,
+        });
+      } else if (value === PASSWORD_RECOVERY) {
+        this.attributes.dispatch({
+          recovery: true,
+          onboarding: false,
+        });
+      } else {
+        this.attributes.dispatch({
+          recovery: false,
+          onboarding: false,
+        });
+        return true;
+      }
+      return false;
+    }, null);
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
