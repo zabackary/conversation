@@ -4,7 +4,7 @@ const path = require("node:path");
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
-  ignorePatterns: ["/*", "!/src"],
+  ignorePatterns: ["/*", "!/src", "/src/server/gd2-html"],
   settings: {
     "import/resolver": {
       typescript: {},
