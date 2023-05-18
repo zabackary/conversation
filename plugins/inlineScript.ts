@@ -6,11 +6,9 @@ export default function inlineScript(): PluginOption {
     name: "inline-script",
     enforce: "post",
     generateBundle(_, bundle) {
-      console.log(Object.keys(bundle));
       const htmlFiles = Object.keys(bundle).filter((i) => i.endsWith(".html"));
       const bundlesToDelete: string[] = [];
       for (const name of htmlFiles) {
-        console.log(name);
         const chunk = bundle[name];
         if (chunk.type === "asset" && typeof chunk.source === "string") {
           chunk.source = chunk.source.replaceAll(
