@@ -4,8 +4,8 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { createContext, ReactNode, useCallback, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { navigationRailWidth } from "./ConversationNavigationRail";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import { navigationRailWidth } from "./ConversationNavigationRail";
 
 export const drawerWidth = 240;
 
@@ -27,13 +27,6 @@ export default function ResponsiveDrawer({
   drawerHeader,
   drawerItems,
 }: Props) {
-  const drawer = (
-    <>
-      {drawerHeader}
-      {drawerItems}
-    </>
-  );
-
   const navigate = useNavigate();
   const handleBackClick = useCallback(() => {
     navigate(-1);
@@ -92,7 +85,8 @@ export default function ResponsiveDrawer({
           }}
           open
         >
-          {drawer}
+          {drawerHeader}
+          {drawerItems}
         </Drawer>
       </Box>
       <Box
