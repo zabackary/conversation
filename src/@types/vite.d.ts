@@ -7,6 +7,8 @@ interface ImportMetaEnv {
   readonly CLIENT_SUPABASE_URL?: string;
   readonly CLIENT_SUPABASE_ANON_KEY?: string;
   readonly CLIENT_FEEDBACK_EMAIL?: string;
+  readonly CLIENT_PRIVACY_POLICY_URL?: string;
+  readonly CLIENT_TOS_URL?: string;
 }
 
 interface ImportMeta {

@@ -61,6 +61,8 @@ preview it from the `/dev` URL.
     CLIENT_SUPABASE_URL=https://{{ Supabase project ID }}.supabase.co/
     CLIENT_SUPABASE_ANON_KEY={{ Supabase anon key (not service role!) }}
     CLIENT_FEEDBACK_EMAIL={{ Your email, for the 'send feedback' option }}
+    CLIENT_TOS_URL={{ The URL of a gdoc with the TOS }}
+    CLIENT_PRIVACY_POLICY_URL={{ The URL of a gdoc w/ privacy policy }}
     ```
 
 - (optional) Set up Supabase emails
