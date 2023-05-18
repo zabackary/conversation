@@ -18,10 +18,12 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
+  DocumentType,
   Subscribable,
 } from "../NetworkBackend";
 import QueuedBackend from "../QueuedBackend";
 import { DispatchableSubscribable } from "../Subscribable";
+import GasBackend from "../gas/GasBackend";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache, { SupabaseMessage } from "./cache";
 import convertChannel from "./converters/convertChannel";
@@ -65,6 +67,8 @@ class SupabaseBackendImpl implements NetworkBackend {
     recovery: false,
     onboarding: false,
   });
+
+  private gasBackend = new GasBackend();
 
   constructor() {
     if (
@@ -635,6 +639,10 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (error) throw error;
     this.cache.putUser(...data);
     return data.map(convertUser);
+  }
+
+  getDocument(documentType: DocumentType): Promise<string> {
+    return this.gasBackend.getDocument(documentType);
   }
 }
 

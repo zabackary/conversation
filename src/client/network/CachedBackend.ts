@@ -16,6 +16,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
+  DocumentType,
   Subscribable,
 } from "./NetworkBackend";
 
@@ -191,5 +192,16 @@ export default class CachedBackend implements NetworkBackend {
 
   deleteInvite(id: number): Promise<void> {
     return this.mirroredBackend.deleteInvite(id);
+  }
+
+  documentsMap: Partial<Record<DocumentType, string>> = {};
+
+  async getDocument(documentType: DocumentType): Promise<string> {
+    return (
+      this.documentsMap[documentType] ??
+      (this.documentsMap[documentType] = await this.mirroredBackend.getDocument(
+        documentType
+      ))
+    );
   }
 }

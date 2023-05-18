@@ -16,6 +16,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
+  DocumentType,
   Subscribable,
 } from "./NetworkBackend";
 
@@ -216,5 +217,9 @@ export default class QueuedBackend implements NetworkBackend {
 
   deleteInvite(id: number): Promise<void> {
     return this.deferredPromise((backend) => backend.deleteInvite(id));
+  }
+
+  getDocument(documentType: DocumentType): Promise<string> {
+    return this.deferredPromise((backend) => backend.getDocument(documentType));
   }
 }

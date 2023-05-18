@@ -23,7 +23,7 @@ import NetworkBackend, {
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
-  LoggedOutException,
+  DocumentType,
   Subscribable,
 } from "../NetworkBackend";
 import { wait } from "../utils";
@@ -37,6 +37,10 @@ import {
 } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  getDocument(documentType: DocumentType): Promise<string> {
+    throw new Error("Method not implemented.");
+  }
+
   acceptInvite(id: number): Promise<void> {
     throw new Error("Method not implemented.");
   }

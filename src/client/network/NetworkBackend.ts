@@ -44,6 +44,11 @@ export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
   id: number;
 }
 
+export enum DocumentType {
+  TERMS_OF_SERVICE,
+  PRIVACY_POLICY,
+}
+
 export default interface NetworkBackend {
   /**
    * A promise resolving when the backend is finished initializing. If not,
@@ -58,6 +63,11 @@ export default interface NetworkBackend {
   connectionState: Subscribable<
     "connecting" | "connected" | "reconnecting" | "error"
   >;
+
+  /**
+   * Gets a legal document as Markdown.
+   */
+  getDocument(documentType: DocumentType): Promise<string>;
 
   /**
    * Gets the current user session. Replaces `getUser(undefined)`.
