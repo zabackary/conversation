@@ -5,17 +5,19 @@ import {
   IconButton,
   Paper,
   styled,
+  useTheme,
 } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLinkClickHandler, useMatches } from "react-router-dom";
-import { NavigationRail, NavigationRailAction } from "../NavigationRail";
-import LanguagePickerDialog from "./LanguagePickerDialog";
-import useUser from "../../hooks/useUser";
+import logoContent from "../../../assets/logo.svg?raw";
 import { PrivilegeLevel } from "../../../model/user";
+import useUser from "../../hooks/useUser";
 import MaterialSymbolIcon, {
   MaterialSymbolIconProps,
 } from "../MaterialSymbolIcon";
+import { NavigationRail, NavigationRailAction } from "../NavigationRail";
+import LanguagePickerDialog from "./LanguagePickerDialog";
 
 const LanguageSwitcherIconButton = styled(IconButton, {
   shouldForwardProp(propName) {
@@ -134,6 +136,7 @@ export default function ConversationNavigationRail({
     setLanguagePickerOpen(false);
     if (value) void i18n.changeLanguage(value);
   };
+  const theme = useTheme();
 
   return (
     <>
@@ -151,7 +154,20 @@ export default function ConversationNavigationRail({
       ) : (
         <NavigationRail
           value={selected?.id}
-          sx={{ paddingTop: "64px", position: "fixed", top: "0" }}
+          sx={{
+            position: "fixed",
+            top: "0",
+            paddingTop: 8,
+            backgroundPosition: "top 8px center",
+            backgroundSize: `48px`,
+            backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
+              logoContent
+                .replace("#f58b86", theme.palette.primary.main)
+                .replace("#f37670", theme.palette.primary.contrastText)
+                .replace("#fff", theme.palette.primary.contrastText)
+            )}")`,
+            backgroundRepeat: "no-repeat",
+          }}
           showLabels
         >
           {routes.map((route) => (
