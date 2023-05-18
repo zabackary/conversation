@@ -14,16 +14,64 @@ import {
   useTheme,
 } from "@mui/material";
 import confetti from "canvas-confetti";
-import { MouseEventHandler, useContext, useState, useMemo } from "react";
+import { MouseEventHandler, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import darkLogo from "../../../assets/logo_large_dark.svg";
+import lightLogo from "../../../assets/logo_large_light.svg";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 import FeatureListItem from "../../components/landing/FeatureListItem";
 import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useSnackbar from "../../components/useSnackbar";
 import useUser from "../../hooks/useUser";
 import { ThemeModeContext } from "../../theme";
 import getFeaturesList from "./features";
-import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
+
+function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) throw new Error("Not hex");
+  return [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16),
+  ] as const;
+}
+
+function rgbToHsl(red: number, green: number, blue: number) {
+  const r = red / 255;
+  const g = green / 255;
+  const b = blue / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h;
+  let s;
+  const l = (max + min) / 2;
+
+  if (max === min) {
+    h = 0;
+    s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+      default: {
+        throw new Error("Expected `max` to be r, g, or b");
+      }
+    }
+    h /= 6;
+  }
+
+  return [h, s, l];
+}
 
 const LargeButton = styled(Button)(({ theme }) => ({
   height: 68,
@@ -83,12 +131,23 @@ export default function LandingRoute() {
       <AppBar
         position="fixed"
         elevation={trigger ? 4 : 0}
-        sx={{ bgcolor: trigger ? undefined : "inherit" }}
+        sx={{
+          bgcolor: trigger ? undefined : "inherit",
+        }}
       >
         <Toolbar>
-          <Typography variant="h5" component="span" sx={{ flexGrow: 1 }}>
-            [untranslated] Conversation
-          </Typography>
+          <Box
+            component="img"
+            src={theme.palette.mode === "dark" ? darkLogo : lightLogo}
+            flexGrow={1}
+            height={42}
+            ml={-1.5}
+            sx={{
+              filter: `hue-rotate(${
+                rgbToHsl(...hexToRgb(theme.palette.primary.main))[0] * 360
+              }deg)`,
+            }}
+          />
           <Fade in={trigger && !isMobile}>
             <Box sx={{ whiteSpace: "nowrap", width: isMobile ? 0 : undefined }}>
               <Button
@@ -116,7 +175,7 @@ export default function LandingRoute() {
               <MaterialSymbolIcon icon="light_mode" />
             )}
           </IconButton>
-          <IconButton onClick={handleLanguagePickerOpen}>
+          <IconButton onClick={handleLanguagePickerOpen} edge="end">
             <MaterialSymbolIcon icon="translate" />
           </IconButton>
         </Toolbar>
