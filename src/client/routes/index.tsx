@@ -2,6 +2,7 @@ import { RouteObject } from "react-router-dom";
 import ErrorRoute from "./error";
 import LandingRootRoute from "./landing";
 import LandingRoute from "./landing/landing";
+import LegalRoute from "./landing/legal";
 import LoginRootRoute from "./login";
 import LoginHelpRoute from "./login/help";
 import LoginRoute from "./login/login";
@@ -32,6 +33,10 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <LandingRoute />,
+      },
+      {
+        path: "legal",
+        element: <LegalRoute />,
       },
     ],
   },
