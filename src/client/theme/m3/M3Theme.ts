@@ -458,6 +458,9 @@ export const getThemedComponents = (
             padding: theme.spacing(1),
           },
         },
+        defaultProps: {
+          color: "inherit",
+        },
       },
       MuiTabs: {
         styleOverrides: {
