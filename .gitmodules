@@ -1,0 +1,3 @@
+[submodule "src/server/gd2-html"]
+	path = src/server/gd2-html
+	url = https://github.com/evbacher/gd2md-html
