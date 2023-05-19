@@ -99,6 +99,9 @@ devDependencies:
   '@babel/parser':
     specifier: ^7.20.13
     version: 7.20.13
+  '@babel/template':
+    specifier: ^7.20.7
+    version: 7.20.7
   '@babel/traverse':
     specifier: ^7.20.13
     version: 7.20.13
@@ -117,6 +120,9 @@ devDependencies:
   '@types/babel__generator':
     specifier: ^7.6.4
     version: 7.6.4
+  '@types/babel__template':
+    specifier: ^7.4.1
+    version: 7.4.1
   '@types/babel__traverse':
     specifier: ^7.18.3
     version: 7.18.3
@@ -180,9 +186,6 @@ devDependencies:
   eslint-import-resolver-typescript:
     specifier: ^3.5.2
     version: 3.5.2(eslint-plugin-import@2.26.0)(eslint@8.29.0)
-  eslint-plugin-googleappsscript:
-    specifier: ^1.0.4
-    version: 1.0.4
   eslint-plugin-html:
     specifier: ^7.1.0
     version: 7.1.0
@@ -1162,6 +1165,13 @@ packages:
   /@types/babel__generator@7.6.4:
     resolution: {integrity: sha512-tFkciB9j2K755yrTALxD44McOrk+gfpIpvC3sxHjRawj6PfnQxrse4Clq5y/Rq+G3mrBurMax/lG8Qn2t9mSsg==}
     dependencies:
+      '@babel/types': 7.20.7
+    dev: true
+
+  /@types/babel__template@7.4.1:
+    resolution: {integrity: sha512-azBFKemX6kMg5Io+/rdGT0dkGreboUVR0Cdm3fz9QJWpaQGJRQXl7C+6hOTCZcMll7KFyEQpgbYI2lHdsS4U7g==}
+    dependencies:
+      '@babel/parser': 7.20.13
       '@babel/types': 7.20.7
     dev: true
 
@@ -2447,13 +2457,6 @@ packages:
       eslint-import-resolver-typescript: 3.5.2(eslint-plugin-import@2.26.0)(eslint@8.29.0)
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /eslint-plugin-googleappsscript@1.0.4:
-    resolution: {integrity: sha512-Z6w1EMw0z0VOUvI0PFquigNSkYTgB+pVb2O2KYedDHnllwrgjjNBOLxsqPmtwmjOtFqCu7TuL0hJQwxVnp5OzQ==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      requireindex: 1.1.0
     dev: true
 
   /eslint-plugin-html@7.1.0:
@@ -4874,11 +4877,6 @@ packages:
   /requestidlecallback@0.3.0:
     resolution: {integrity: sha512-TWHFkT7S9p7IxLC5A1hYmAYQx2Eb9w1skrXmQ+dS1URyvR8tenMLl4lHbqEOUnpEYxNKpkVMXUgknVpBZWXXfQ==}
     dev: false
-
-  /requireindex@1.1.0:
-    resolution: {integrity: sha512-LBnkqsDE7BZKvqylbmn7lTIVdpx4K/QCduRATpO5R+wtPmky/a8pN1bO2D6wXppn1497AJF9mNjqAXr6bdl9jg==}
-    engines: {node: '>=0.10.5'}
-    dev: true
 
   /requires-port@1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}

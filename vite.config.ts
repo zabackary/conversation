@@ -7,9 +7,10 @@ import packageJson from "./package.json";
 import gasTopLevel from "./plugins/gasTopLevel";
 import gasUpload from "./plugins/gasUpload";
 import inlineScript from "./plugins/inlineScript";
+import inlineSvg from "./plugins/inlineSvg";
 import reactAxe from "./plugins/reactAxe";
 
-const BIG = 999999;
+const BIG = 99999999;
 
 export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -68,6 +69,7 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
               sideEffect: "globalThis.setTimeout=(a)=>{a()};",
             }),
             inlineScript(),
+            inlineSvg(),
           ]
         : []),
       ...(env.VITE_UPLOADONCOMPLETE ? [gasUpload()] : []),
