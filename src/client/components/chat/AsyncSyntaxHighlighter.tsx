@@ -2,8 +2,11 @@
 import { ComponentType, Suspense, lazy } from "react";
 import { PrismLight, SyntaxHighlighterProps } from "react-syntax-highlighter";
 
+const PRISM_URL =
+  "https://esm.sh/react-syntax-highlighter@15?bundle&exports=Prism";
+
 const Prism = lazy(() =>
-  import(`https://esm.sh/react-syntax-highlighter@15?bundle&exports=${"Prism"}`)
+  import(/* @vite-ignore */ PRISM_URL)
     .then((exports) => ({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       default: exports.Prism as ComponentType<SyntaxHighlighterProps>,
