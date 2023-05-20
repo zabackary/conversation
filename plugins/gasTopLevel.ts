@@ -37,6 +37,7 @@ export default function gasTopLevel(
   let viteConfig: ResolvedConfig | undefined;
   return {
     name: "gas-top-level",
+    apply: "build",
     configResolved(resolvedConfig) {
       viteConfig = resolvedConfig;
     },

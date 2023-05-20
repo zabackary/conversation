@@ -14,6 +14,7 @@ export default function inlineSvg(): PluginOption {
   `);
   return {
     name: "inline-svg",
+    apply: "build",
     async transform(code, id) {
       if (id.endsWith(".svg")) {
         const content = await readFile(id, "utf8");

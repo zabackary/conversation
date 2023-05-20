@@ -67,17 +67,13 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
         open: true,
         filename: "treemap.html",
       }),
-      ...(command === "build"
-        ? [
-            gasTopLevel({
-              entry: /src\/server\/index.ts/,
-              distEntry: /server/,
-              sideEffect: "globalThis.setTimeout=(a)=>{a()};",
-            }),
-            inlineScript(),
-            inlineSvg(),
-          ]
-        : []),
+      gasTopLevel({
+        entry: /src\/server\/index.ts/,
+        distEntry: /server/,
+        sideEffect: "globalThis.setTimeout=(a)=>{a()};",
+      }),
+      inlineScript(),
+      inlineSvg(),
       ...(env.VITE_UPLOADONCOMPLETE ? [gasUpload()] : []),
     ],
   };
