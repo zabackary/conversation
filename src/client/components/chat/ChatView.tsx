@@ -14,15 +14,15 @@ import {
 } from "@mui/material";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/hljs/vs2015";
-import ChatListSkeleton from "./ChatListSkeleton";
-import ChatList, { ChatListProps } from "./ChatList";
-import ChatInput from "./ChatInput";
-import { SentMessageEvent } from "../../network/NetworkBackend";
+import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
 import Message from "../../../model/message";
-import UserTooltip from "../UserTooltip";
+import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import UserTooltip from "../UserTooltip";
+import AsyncSyntaxHighlighter from "./AsyncSyntaxHighlighter";
+import ChatInput from "./ChatInput";
+import ChatList, { ChatListProps } from "./ChatList";
+import ChatListSkeleton from "./ChatListSkeleton";
 
 export interface ChatViewProps {
   messages?: Message[];
@@ -191,16 +191,16 @@ export default function ChatView({
                   {currentMessageDetail.user.name}
                 </Box>
               </Tooltip>{" "}
-              with {currentMessageDetail.attachments?.length ?? 0} attachments
-              and {currentMessageDetail.images?.length ?? 0} images.
+              with {currentMessageDetail.attachments.length} attachments and{" "}
+              {currentMessageDetail.images.length} images.
             </DialogContentText>
             <DialogContentText>Message source:</DialogContentText>
-            <SyntaxHighlighter
+            <AsyncSyntaxHighlighter
               style={syntaxHighlightingTheme}
               language="markdown"
             >
               {currentMessageDetail.markdown}
-            </SyntaxHighlighter>
+            </AsyncSyntaxHighlighter>
             <DialogContentText>
               Message #{currentMessageDetail.id} in channel #
               {currentMessageDetail.parent}.

@@ -1,15 +1,16 @@
-import { Box, Link, Paper, SxProps } from "@mui/material";
+import { Box, Link, Paper, SxProps, useTheme } from "@mui/material";
 import { HTMLAttributes, PropsWithChildren, SyntheticEvent } from "react";
 import ReactMarkdown from "react-markdown";
 import {
-  ReactMarkdownOptions,
   PluggableList,
+  ReactMarkdownOptions,
 } from "react-markdown/lib/react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/hljs/vs2015";
+import darkSyntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
+import lightSyntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/material-light";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import onlyText from "../onlyText";
+import AsyncSyntaxHighlighter from "./AsyncSyntaxHighlighter";
 
 function MaterialMarkdownBlockquote({ children }: PropsWithChildren) {
   return (
@@ -111,7 +112,7 @@ function MaterialMarkdownPre({
   children,
   node,
 }: PropsWithChildren<{ node: unknown }>) {
-  let language;
+  let language: string | null;
   if (
     typeof node === "object" &&
     node &&
@@ -140,14 +141,19 @@ function MaterialMarkdownPre({
   } else {
     language = null;
   }
+  const theme = useTheme();
   return (
-    <SyntaxHighlighter
+    <AsyncSyntaxHighlighter
       language={language ?? "text"}
-      style={syntaxHighlightingTheme}
       PreTag={MaterialMarkdownHighlighterPre}
+      style={
+        theme.palette.mode === "dark"
+          ? darkSyntaxHighlightingTheme
+          : lightSyntaxHighlightingTheme
+      }
     >
       {onlyText(children)}
-    </SyntaxHighlighter>
+    </AsyncSyntaxHighlighter>
   );
 }
 
