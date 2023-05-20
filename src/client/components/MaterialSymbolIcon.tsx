@@ -21,9 +21,8 @@ const MaterialSymbolIcon = forwardRef<HTMLSpanElement, MaterialSymbolIconProps>(
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...props}
         sx={{
-          fontVariationSettings: `"FILL" ${fill ? 1 : 0}, "wght" ${
-            weight ?? 400
-          }, "GRAD" ${grade ?? 0}, "opsz" ${size ?? 24}`,
+          fontVariationSettings: `"FILL" ${fill ? 1 : 0}, "GRAD" ${grade ?? 0}`,
+          fontWeight: weight,
           fontSize: `${size ?? 24}px`,
           transition: `font-variation-settings 300ms`,
           ...(sx || {}),
