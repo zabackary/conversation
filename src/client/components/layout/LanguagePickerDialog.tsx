@@ -76,10 +76,11 @@ export default function LanguagePickerDialog({
                   sx={{ bgcolor: "primary.main" }}
                   src={
                     language.code in LANGUAGE_COUNTRY_MAPPING
-                      ? `//cdn.jsdelivr.net/npm/country-flag-icons/1x1/${
+                      ? `//esm.sh/country-flag-icons@1/1x1/${
                           LANGUAGE_COUNTRY_MAPPING[language.code]
-                        }.${"svg"}`
-                      : undefined
+                        }.${"svg"}` // Weird string interpolation to work around
+                      : // VSCode syntax/parsing bug with file extensions?!
+                        undefined
                   }
                 />
               </ListItemAvatar>
