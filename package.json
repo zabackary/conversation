@@ -4,6 +4,7 @@
   "description": "A React-powered chatting app for Google Scripts",
   "license": "MIT",
   "type": "module",
+  "sideEffects": false,
   "scripts": {
     "build": "cross-env VITE_ONLYSERVER=1 vite build && cross-env VITE_ONLYCLIENT=1 VITE_SECONDPASS=1 vite build",
     "build:server-dev": "cross-env NODE_ENV=production VITE_ONLYSERVER=1 VITE_UPLOADONCOMPLETE=1 VITE_SECONDPASS=1 vite build --watch",
@@ -54,6 +55,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "match-sorter": "^6.3.1",
     "prettier": "^2.8.1",
+    "rollup-plugin-visualizer": "^5.9.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.4",
     "vite-plugin-checker": "^0.5.4",
