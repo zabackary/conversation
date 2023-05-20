@@ -13,7 +13,8 @@ import {
 } from "./theme";
 
 const router =
-  window.location.pathname === "/userCodeAppPanel"
+  window.location.pathname === "/userCodeAppPanel" ||
+  window.location.protocol === "file:"
     ? createHashRouter(routes)
     : createBrowserRouter(routes);
 
