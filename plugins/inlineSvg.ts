@@ -26,5 +26,13 @@ export default function inlineSvg(): PluginOption {
       }
       return code;
     },
+    generateBundle(_, bundle) {
+      for (const key in bundle) {
+        if (key.endsWith(".svg")) {
+          // eslint-disable-next-line no-param-reassign
+          delete bundle[key];
+        }
+      }
+    },
   };
 }
