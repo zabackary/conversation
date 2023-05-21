@@ -460,7 +460,8 @@
       "admin": "Admin",
       "peopleCard": {
         "goToDm": "Go to DM",
-        "viewProfile": "View profile"
+        "viewProfile": "View profile",
+        "disabledExplanation": "This user has been disabled due to misconduct."
       },
       "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking.",
       "tags": {
@@ -621,7 +622,23 @@
         "logout": {
           "title": "Logged in",
           "action": "Log out"
+        },
+        "requestVerification": "Request verification",
+        "infoBubble": "Changing any field will result in your account being marked as unverified until an admin can confirm your account.",
+        "subheader": {
+          "account": "Account",
+          "profile": "Profile",
+          "oauth": "Social OAuth Providers"
+        },
+        "oauth": {
+          "add": "Add provider",
+          "google": "Google",
+          "discord": "Discord"
         }
+      },
+      "terms": {
+        "label": "Terms",
+        "title": "Terms and Policies"
       }
     }
   },
@@ -763,7 +780,8 @@
       "admin": "管理者",
       "peopleCard": {
         "goToDm": "DMに行く",
-        "viewProfile": "プロフィールを見る"
+        "viewProfile": "プロフィールを見る",
+        "disabledExplanation": "このユーザーは不正行為により無効にされました。"
       },
       "adminTranslationNotice": "管理パネルは翻訳されていません。 おそらく一生翻訳されることはないので、尋ねようともしないでください。",
       "tags": {
@@ -924,7 +942,23 @@
         "logout": {
           "title": "ログイン済み",
           "action": "ログアウト"
+        },
+        "requestVerification": "検証のリクエスト",
+        "infoBubble": "いずれかのフィールドを変更すると、管理者がアカウントを確認するまで、アカウントは未確認としてマークされます。",
+        "subheader": {
+          "account": "アカウント",
+          "profile": "プロフィール",
+          "oauth": "ソーシャル OAuth ログインプロバイダー"
+        },
+        "oauth": {
+          "add": "ログインプロバイダーの追加",
+          "google": "グーグル",
+          "discord": "Discord"
         }
+      },
+      "terms": {
+        "label": "条項",
+        "title": "規約とポリシー"
       }
     }
   },
@@ -1066,7 +1100,8 @@
       "admin": "관리자",
       "peopleCard": {
         "goToDm": "DM으로 이동",
-        "viewProfile": "프로필보기"
+        "viewProfile": "프로필보기",
+        "disabledExplanation": "이 사용자는 부정 행위로 인해 비활성화되었습니다."
       },
       "adminTranslationNotice": "관리자 패널은 번역되지 않습니다. 번역되지 않을 가능성이 높으므로 묻지 마십시오.",
       "tags": {
@@ -1227,7 +1262,23 @@
         "logout": {
           "title": "로그인됨",
           "action": "로그 아웃"
+        },
+        "requestVerification": "확인 요청",
+        "infoBubble": "필드를 변경하면 관리자가 계정을 확인할 때까지 계정이 확인되지 않은 것으로 표시됩니다.",
+        "subheader": {
+          "account": "계정",
+          "profile": "프로필",
+          "oauth": "소셜 OAuth 공급자"
+        },
+        "oauth": {
+          "add": "공급자 추가",
+          "google": "Google",
+          "discord": "Discord"
         }
+      },
+      "terms": {
+        "label": "자귀",
+        "title": "약관 및 정책"
       }
     }
   },
@@ -1369,7 +1420,8 @@
       "admin": "行政",
       "peopleCard": {
         "goToDm": "去私信",
-        "viewProfile": "查看资料"
+        "viewProfile": "查看资料",
+        "disabledExplanation": "由于行为不当，该用户已被停用。"
       },
       "adminTranslationNotice": "管理面板未翻译。 它可能永远不会被翻译，所以甚至不要尝试询问。",
       "tags": {
@@ -1530,7 +1582,23 @@
         "logout": {
           "title": "登录",
           "action": "登出"
+        },
+        "requestVerification": "请求验证",
+        "infoBubble": "更改任何字段都会导致您的帐户被标记为未验证，直到管理员可以确认您的帐户。",
+        "subheader": {
+          "account": "帐户",
+          "profile": "轮廓",
+          "oauth": "社交 OAuth 提供商"
+        },
+        "oauth": {
+          "add": "添加供应商",
+          "google": "谷歌",
+          "discord": "Discord"
         }
+      },
+      "terms": {
+        "label": "条款",
+        "title": "条款和政策"
       }
     }
   },
@@ -1672,7 +1740,8 @@
       "admin": "行政",
       "peopleCard": {
         "goToDm": "去私信",
-        "viewProfile": "查看資料"
+        "viewProfile": "查看資料",
+        "disabledExplanation": "由於行為不當，該用戶已被停用。"
       },
       "adminTranslationNotice": "管理面板未翻譯。 它可能永遠不會被翻譯，所以甚至不要嘗試詢問。",
       "tags": {
@@ -1833,7 +1902,23 @@
         "logout": {
           "title": "登錄",
           "action": "登出"
+        },
+        "requestVerification": "請求驗證",
+        "infoBubble": "更改任何字段都會導致您的帳戶被標記為未驗證，直到管理員可以確認您的帳戶。",
+        "subheader": {
+          "account": "帳戶",
+          "profile": "輪廓",
+          "oauth": "社交 OAuth 提供商"
+        },
+        "oauth": {
+          "add": "添加供應商",
+          "google": "谷歌",
+          "discord": "Discord"
         }
+      },
+      "terms": {
+        "label": "條款",
+        "title": "條款和政策"
       }
     }
   }
