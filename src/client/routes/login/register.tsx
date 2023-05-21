@@ -20,18 +20,18 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Link as RouterLink,
   useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import PrivacyPolicy from "../../../documents/privacyPolicy";
-import TermsOfUse from "../../../documents/termsOfUse";
+import Document from "../../components/Document";
 import LoadingButton from "../../components/LoadingButton";
-import useBackend from "../../hooks/useBackend";
 import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
+import useBackend from "../../hooks/useBackend";
+import { DocumentType } from "../../network/NetworkBackend";
 
 function Header({ index, title }: { index: number; title: string }) {
   return (
@@ -241,13 +241,11 @@ export default function LoginRegisterRoute() {
         >
           <DialogTitle>{t("notices.header")}</DialogTitle>
           <DialogContent dividers>
-            <Typography variant="h5">Terms of use</Typography>
             <DialogContentText component="div">
-              <TermsOfUse />
+              <Document documentType={DocumentType.TERMS_OF_SERVICE} />
             </DialogContentText>
-            <Typography variant="h5">Privacy policy</Typography>
             <DialogContentText component="div">
-              <PrivacyPolicy />
+              <Document documentType={DocumentType.PRIVACY_POLICY} />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
