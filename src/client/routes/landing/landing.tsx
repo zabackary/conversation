@@ -6,6 +6,7 @@ import {
   Fade,
   Grid,
   IconButton,
+  Link as MuiLink,
   Toolbar,
   Typography,
   styled,
@@ -109,6 +110,20 @@ export default function LandingRoute() {
     });
     // UNTRANSLATED
     showSnackbar("Nice job finding an easter egg!", { urgent: true });
+  };
+  const otherEasterEgg: MouseEventHandler = (event) => {
+    void confetti({
+      disableForReducedMotion: true,
+      origin: {
+        x: event.clientX / window.innerWidth,
+        y: event.clientY / window.innerHeight,
+      },
+      particleCount: 200,
+      startVelocity: 30,
+      spread: 90,
+    });
+    // UNTRANSLATED
+    showSnackbar("There's another easter egg!", { urgent: true });
   };
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
   const user = useUser(false);
@@ -259,8 +274,21 @@ export default function LandingRoute() {
           ))}
         </Grid>
         <Divider />
-        <Typography variant="body1" textAlign="center" p={2}>
+        <Typography variant="body1" textAlign="center" m={2}>
           {t("footer")}
+        </Typography>
+        <Typography variant="body1" textAlign="center" m={2}>
+          <MuiLink component={Link} to="/legal/">
+            Legal
+          </MuiLink>{" "}
+          -{" "}
+          <MuiLink
+            onClick={otherEasterEgg}
+            component="button"
+            sx={{ font: "inherit", verticalAlign: "inherit" }}
+          >
+            Another easter egg
+          </MuiLink>
         </Typography>
       </Box>
     </>

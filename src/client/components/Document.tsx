@@ -2,6 +2,7 @@ import { Skeleton, Typography } from "@mui/material";
 import { useCallback } from "react";
 import useBackend from "../hooks/useBackend";
 import usePromise from "../hooks/usePromise";
+import { isGASWebApp } from "../hooks/useRouteForward";
 import { DocumentType } from "../network/NetworkBackend";
 import MaterialReactMarkdown from "./chat/MaterialReactMarkdown";
 
@@ -12,6 +13,8 @@ export interface DocumentProps {
 export default function Document({ documentType }: DocumentProps) {
   const backend = useBackend();
   const getDocument = useCallback(() => {
+    if (!isGASWebApp)
+      return Promise.resolve("Can't connect to the GAS backend");
     return backend.getDocument(documentType);
   }, [backend, documentType]);
   const document = usePromise(getDocument);
