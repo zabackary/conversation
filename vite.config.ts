@@ -48,8 +48,8 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
       },
       chunkSizeWarningLimit: BIG,
       assetsInlineLimit: BIG,
-      // Minifying the server-side code DOESN'T WORK because of badly-written
-      // 3rd-party code that needs a non-minified variable name.
+      // Disable minification of the server code since load times don't matter
+      // and for easier debugging
       minify: !env.VITE_ONLYSERVER,
     },
     plugins: [
