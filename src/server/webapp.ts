@@ -35,6 +35,12 @@ export function getDocument(documentType: DocumentType) {
       url = import.meta.env.CLIENT_TOS_URL;
       break;
   }
-  return md.doMarkdown({}, url) as string;
+  return md.doMarkdown(
+    {
+      recklessMode: true,
+      demoteHeadings: true,
+    },
+    url
+  ) as string;
   /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 }
