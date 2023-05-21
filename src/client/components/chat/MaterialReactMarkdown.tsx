@@ -189,7 +189,7 @@ export default function MaterialReactMarkdown({
       return children
         .split("```")
         .map((value, index) => {
-          if (index % 2 === 0) {
+          if (index % 2 === 1) {
             // Inside code block, leave untouched
             return value;
           }
