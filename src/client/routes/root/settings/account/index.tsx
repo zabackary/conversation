@@ -43,7 +43,7 @@ export default function AccountSettingsRoute() {
     window.open(
       `mailto:${
         import.meta.env.CLIENT_FEEDBACK_EMAIL ?? ""
-      }?subject=Conversation+`,
+      }?subject=Conversation+request+for+verification`,
       "_blank"
     );
   };
@@ -52,6 +52,7 @@ export default function AccountSettingsRoute() {
   const onChangeProfilePicture: MouseEventHandler<HTMLDivElement> = (e) => {
     setProfileUploadTarget(e.currentTarget);
   };
+  // TODO: Translate
   if (!user) return <>Logged out</>;
   return (
     <>
@@ -69,7 +70,7 @@ export default function AccountSettingsRoute() {
         />
       </Popover>
       <ConversationAppBar
-        title="Account"
+        title={t("account.title")}
         items={
           <>
             <Button
@@ -78,7 +79,7 @@ export default function AccountSettingsRoute() {
               onClick={handleLogOut}
               sx={{ mr: 1 }}
             >
-              Log out
+              {t("account.logout.action")}
             </Button>
             {user.privilegeLevel === PrivilegeLevel.Unverified ? (
               <Button
@@ -87,7 +88,7 @@ export default function AccountSettingsRoute() {
                 onClick={handleContact}
                 sx={{ ml: 1, mr: 1 }}
               >
-                Request verification
+                {t("account.requestVerification")}
               </Button>
             ) : null}
           </>
@@ -96,14 +97,16 @@ export default function AccountSettingsRoute() {
       <List>
         <ListItem>
           <Alert variant="outlined" severity="info" sx={{ width: "100%" }}>
-            Changing any field will result in your account being marked as
-            unverified until an admin can confirm your account.
+            {t("account.infoBubble")}
           </Alert>
         </ListItem>
-        <ListSubheader>Account</ListSubheader>
+        <ListSubheader>{t("account.subheader.account")}</ListSubheader>
         <ListItem disableGutters>
           <ListItemButton>
-            <ListItemText primary="Name" secondary={user.name} />
+            <ListItemText
+              primary={t("account.name.title")}
+              secondary={user.name}
+            />
             <ListItemSecondaryAction>
               <MaterialSymbolIcon icon="edit" />
             </ListItemSecondaryAction>
@@ -112,15 +115,15 @@ export default function AccountSettingsRoute() {
         <ListItem disableGutters>
           <ListItemButton>
             <ListItemText
-              primary="Email"
-              secondary={user.email ?? "No email"}
+              primary={t("account.email.title")}
+              secondary={user.email}
             />
             <ListItemSecondaryAction>
               <MaterialSymbolIcon icon="edit" />
             </ListItemSecondaryAction>
           </ListItemButton>
         </ListItem>
-        <ListSubheader>Profile</ListSubheader>
+        <ListSubheader>{t("account.subheader.profile")}</ListSubheader>
         <ListItem>
           <Card>
             <UserTooltip
@@ -133,8 +136,8 @@ export default function AccountSettingsRoute() {
         <ListItem disableGutters>
           <ListItemButton>
             <ListItemText
-              primary="Nickname"
-              secondary={user.nickname ?? "Unset"}
+              primary={t("account.nickname.title")}
+              secondary={user.nickname}
             />
             <ListItemSecondaryAction>
               <MaterialSymbolIcon icon="edit" />
@@ -143,19 +146,22 @@ export default function AccountSettingsRoute() {
         </ListItem>
         <ListItem disableGutters>
           <ListItemButton onClick={onChangeProfilePicture}>
-            <ListItemText primary="Profile picture" />
+            <ListItemText
+              primary={t("account.profilePicture.title")}
+              secondary={t("account.profilePicture.description")}
+            />
             <ListItemSecondaryAction>
               <MaterialSymbolIcon icon="edit" />
             </ListItemSecondaryAction>
           </ListItemButton>
         </ListItem>
-        <ListSubheader>Social OAuth Providers</ListSubheader>
+        <ListSubheader>{t("account.subheader.oauth")}</ListSubheader>
         <ListItem disableGutters>
           <ListItemButton>
             <ListItemIcon>
               <MaterialSymbolIcon icon="add" />
             </ListItemIcon>
-            <ListItemText primary="Add provider" />
+            <ListItemText primary={t("account.oauth.add")} />
           </ListItemButton>
         </ListItem>
       </List>

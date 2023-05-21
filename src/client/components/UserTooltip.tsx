@@ -7,6 +7,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { MouseEventHandler } from "react";
+import { useTranslation } from "react-i18next";
 import User, { PrivilegeLevel } from "../../model/user";
 import MaterialSymbolIcon from "./MaterialSymbolIcon";
 import ProfilePicture from "./ProfilePicture";
@@ -25,6 +26,7 @@ export default function UserTooltip({
   onChangeProfilePicture,
 }: UserTooltipProps) {
   const theme = useTheme();
+  const { t } = useTranslation("general");
   return (
     <Stack spacing={1} p={1} width={340}>
       <Stack direction="row" spacing={1}>
@@ -60,28 +62,28 @@ export default function UserTooltip({
           </Typography>
           <Stack spacing={0.5} direction="row">
             {user.privilegeLevel === PrivilegeLevel.Admin ? (
-              <InlineBadge color="secondary" badgeContent="Admin" />
+              <InlineBadge color="secondary" badgeContent={t("admin")} />
             ) : null}
             {user.privilegeLevel === PrivilegeLevel.Unverified ? (
-              <InlineBadge color="warning" badgeContent="Unverified" />
+              <InlineBadge color="warning" badgeContent={t("unverified")} />
             ) : null}
             {user.disabled ? (
-              <InlineBadge color="error" badgeContent="Disabled" />
+              <InlineBadge color="error" badgeContent={t("disabled")} />
             ) : null}
           </Stack>
         </Stack>
       </Stack>
       {user.disabled ? (
         <Typography variant="body2">
-          This user has been disabled due to misconduct.
+          {t("peopleCard.disabledExplanation")}
         </Typography>
       ) : null}
       <Box>
         <Button size="small" disabled={disabled}>
-          Go to DM
+          {t("peopleCard.goToDm")}
         </Button>{" "}
         <Button size="small" disabled={disabled}>
-          View profile
+          {t("peopleCard.viewProfile")}
         </Button>
       </Box>
     </Stack>

@@ -28,8 +28,13 @@ export default function SettingsRoute() {
             exclude={2}
           />
           <LinkListItem
-            primaryText="Account"
+            primaryText={t("account.label")}
             to="/app/settings/account/"
+            exclude={2}
+          />
+          <LinkListItem
+            primaryText={t("terms.label")}
+            to="/app/settings/terms/"
             exclude={2}
           />
         </List>

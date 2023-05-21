@@ -23,6 +23,7 @@ import AccountSettingsRoute from "./root/settings/account";
 import AppearanceSettingsRoute from "./root/settings/appearance";
 import BehaviorSettingsRoute from "./root/settings/behavior";
 import GeneralSettingsRoute from "./root/settings/general";
+import TermsSettingsRoute from "./root/settings/terms";
 
 const routes: RouteObject[] = [
   {
@@ -100,6 +101,10 @@ const routes: RouteObject[] = [
           {
             path: "account",
             element: <AccountSettingsRoute />,
+          },
+          {
+            path: "terms",
+            element: <TermsSettingsRoute />,
           },
         ],
       },
