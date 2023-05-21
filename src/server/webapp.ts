@@ -38,7 +38,6 @@ export function getDocument(documentType: DocumentType) {
   return md.doMarkdown(
     {
       recklessMode: true,
-      demoteHeadings: true,
     },
     url
   ) as string;
