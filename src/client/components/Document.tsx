@@ -57,5 +57,7 @@ export default function Document({ documentType }: DocumentProps) {
       </>
     );
   }
-  return <MaterialReactMarkdown>{document}</MaterialReactMarkdown>;
+  return (
+    <MaterialReactMarkdown stripComments>{document}</MaterialReactMarkdown>
+  );
 }

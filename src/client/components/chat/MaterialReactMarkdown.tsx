@@ -1,5 +1,10 @@
 import { Box, Link, Paper, SxProps, useTheme } from "@mui/material";
-import { HTMLAttributes, PropsWithChildren, SyntheticEvent } from "react";
+import {
+  HTMLAttributes,
+  PropsWithChildren,
+  SyntheticEvent,
+  useMemo,
+} from "react";
 import ReactMarkdown from "react-markdown";
 import {
   PluggableList,
@@ -36,6 +41,10 @@ function MaterialMarkdownP({ children }: PropsWithChildren) {
       {children}
     </Box>
   );
+}
+
+function MaterialMarkdownPaddedP({ children }: PropsWithChildren) {
+  return <Box component="p">{children}</Box>;
 }
 
 function MaterialMarkdownOl({ children }: PropsWithChildren) {
@@ -160,16 +169,37 @@ function MaterialMarkdownPre({
 export interface MaterialReactMarkdownProps extends ReactMarkdownOptions {
   inline?: boolean;
   sx?: SxProps;
+  stripComments?: boolean;
 }
 
 export default function MaterialReactMarkdown({
   inline,
   sx,
+  children,
+  stripComments,
+  remarkPlugins,
+  components,
   ...reactMarkdownProps
 }: MaterialReactMarkdownProps) {
   const plugins: PluggableList = [remarkGfm].concat(
     inline ? [remarkBreaks] : []
   );
+  const content = useMemo(() => {
+    if (stripComments) {
+      return children
+        .split("```")
+        .map((value, index) => {
+          if (index % 2 === 0) {
+            // Inside code block, leave untouched
+            return value;
+          }
+          // Outside code block, use regex
+          return value.replace(/<!--(.*?)-->/g, "");
+        })
+        .join("```");
+    }
+    return children;
+  }, [children, stripComments]);
   return (
     <Box sx={sx}>
       <ReactMarkdown
@@ -177,15 +207,18 @@ export default function MaterialReactMarkdown({
         {...reactMarkdownProps}
         components={{
           blockquote: MaterialMarkdownBlockquote,
-          p: MaterialMarkdownP,
+          p: inline ? MaterialMarkdownP : MaterialMarkdownPaddedP,
           ol: MaterialMarkdownOl,
           ul: MaterialMarkdownUl,
           a: MaterialMarkdownAnchor,
           code: MaterialMarkdownCode,
           pre: MaterialMarkdownPre,
+          ...components,
         }}
-        remarkPlugins={plugins}
-      />
+        remarkPlugins={plugins.concat(remarkPlugins ?? [])}
+      >
+        {content}
+      </ReactMarkdown>
     </Box>
   );
 }
