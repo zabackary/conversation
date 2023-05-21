@@ -48,6 +48,9 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
       },
       chunkSizeWarningLimit: BIG,
       assetsInlineLimit: BIG,
+      // Minifying the server-side code DOESN'T WORK because of badly-written
+      // 3rd-party code that needs a non-minified variable name.
+      minify: !env.VITE_ONLYSERVER,
     },
     plugins: [
       react({
@@ -64,8 +67,11 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
       reactAxe(),
       visualizer({
         template: "treemap",
-        open: true,
-        filename: "treemap.html",
+        filename: env.VITE_ONLYCLIENT
+          ? "treemap-client.html"
+          : env.VITE_ONLYSERVER
+          ? "treemap-server.html"
+          : "treemap.html",
       }),
       gasTopLevel({
         entry: /src\/server\/index.ts/,

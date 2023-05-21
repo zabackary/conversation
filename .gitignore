@@ -8,3 +8,5 @@ vite.config.ts.timestamp-*
 *.local
 **/desktop.ini
 treemap.html
+treemap-client.html
+treemap-server.html
