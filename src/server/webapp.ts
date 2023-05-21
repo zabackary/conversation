@@ -24,8 +24,10 @@ export function doPost() {
 }
 
 export function getDocument(documentType: DocumentType) {
-  /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
-  gdc.init(gdc.docTypes.md);
+  const cache = CacheService.getScriptCache();
+  const cacheKey = `md-document-${documentType}`;
+  const maybeEntry = cache.get(cacheKey);
+  if (maybeEntry) return maybeEntry;
   let url: string | undefined;
   switch (documentType) {
     case DocumentType.PRIVACY_POLICY:
@@ -35,11 +37,15 @@ export function getDocument(documentType: DocumentType) {
       url = import.meta.env.CLIENT_TOS_URL;
       break;
   }
-  return md.doMarkdown(
+  /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+  gdc.init(gdc.docTypes.md);
+  const markdown = md.doMarkdown(
     {
       recklessMode: true,
     },
     url
   ) as string;
   /* eslint-enable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
+  cache.put(cacheKey, markdown);
+  return markdown;
 }
