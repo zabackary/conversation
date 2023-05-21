@@ -5,9 +5,9 @@ import EmojiPicker, {
 import {
   Box,
   CircularProgress,
-  useTheme,
   darken,
   lighten,
+  useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import useSnackbar from "../useSnackbar";
@@ -15,23 +15,25 @@ import useSnackbar from "../useSnackbar";
 export function parseColor(hexOrRgb: string) {
   const parsedHex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexOrRgb);
   const parsedRgb = /^rgb\((\d+), (\d+), (\d+)\)/.exec(hexOrRgb);
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   return parsedHex
     ? [
-        parseInt(parsedHex[1], 16),
-        parseInt(parsedHex[2], 16),
-        parseInt(parsedHex[3], 16),
+        parseInt(parsedHex[1]!, 16),
+        parseInt(parsedHex[2]!, 16),
+        parseInt(parsedHex[3]!, 16),
       ]
     : parsedRgb
     ? [
-        parseInt(parsedRgb[1], 10),
-        parseInt(parsedRgb[2], 10),
-        parseInt(parsedRgb[3], 10),
+        parseInt(parsedRgb[1]!, 10),
+        parseInt(parsedRgb[2]!, 10),
+        parseInt(parsedRgb[3]!, 10),
       ]
     : (() => {
         throw new Error(
           `Invalid hex/rgb code (must not be shortened): ${hexOrRgb}`
         );
       })();
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 }
 
 export interface DelayedEmojiPickerProps extends EmojiPickerProps {

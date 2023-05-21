@@ -30,10 +30,10 @@ export default function ChatList({
             key={message.id}
             showAvatar={
               index === 0 ||
-              lastMessage.isService ||
+              lastMessage?.isService ||
               message.isService ||
               message.replied !== undefined ||
-              lastMessage.user.id !== message.user.id ||
+              lastMessage?.user.id !== message.user.id ||
               message.sent.getTime() - lastMessage.sent.getTime() >
                 COMBINE_MESSAGES_THRESHOLD
             }

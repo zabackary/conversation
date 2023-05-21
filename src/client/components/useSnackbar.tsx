@@ -6,8 +6,8 @@ import {
   styled,
 } from "@mui/material";
 import {
-  createContext,
   ReactNode,
+  createContext,
   useContext,
   useEffect,
   useMemo,
@@ -147,16 +147,11 @@ export function SnackbarProvider({
     ) {
       setRemovedMessage(undefined);
       handleClose();
-    } else if (queue.length > 0 && !currentMessage) {
+    } else if (queue[0] && !currentMessage) {
       setCurrentMessage({ ...queue[0] });
       setQueue((prev) => prev.slice(1));
       setOpen(true);
-    } else if (
-      queue.length > 0 &&
-      queue[0].options.urgent &&
-      currentMessage &&
-      open
-    ) {
+    } else if (queue[0] && queue[0].options.urgent && currentMessage && open) {
       // Close an active snack when a new one is added
       setOpen(false);
     }

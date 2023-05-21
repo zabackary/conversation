@@ -32,9 +32,9 @@ function hexToRgb(hex: string) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) throw new Error("Not hex");
   return [
-    parseInt(result[1], 16),
-    parseInt(result[2], 16),
-    parseInt(result[3], 16),
+    parseInt(result[1] ?? "0", 16),
+    parseInt(result[2] ?? "0", 16),
+    parseInt(result[3] ?? "0", 16),
   ] as const;
 }
 
@@ -71,7 +71,7 @@ function rgbToHsl(red: number, green: number, blue: number) {
     h /= 6;
   }
 
-  return [h, s, l];
+  return [h, s, l] as const;
 }
 
 const LargeButton = styled(Button)(({ theme }) => ({

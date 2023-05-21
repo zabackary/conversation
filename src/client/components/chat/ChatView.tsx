@@ -50,7 +50,7 @@ export default function ChatView({
     if (!inputRef.current || !containerRef.current) return undefined;
     const cachedRef = inputRef.current;
     const observer = new IntersectionObserver(
-      ([e]) => setIsSticky(e.intersectionRatio < 1),
+      ([e]) => setIsSticky(!!e && e.intersectionRatio < 1),
       {
         rootMargin: "0px 0px -1px 0px",
         threshold: 1,
@@ -95,6 +95,7 @@ export default function ChatView({
       if (
         oldEntry &&
         isSticky &&
+        !!entry &&
         entry.contentRect.width < oldEntry.contentRect.width
       ) {
         window.scrollTo({

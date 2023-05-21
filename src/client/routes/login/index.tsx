@@ -17,10 +17,10 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
-import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 
 export default function LoginRootRoute() {
   useRouteForward();
@@ -86,7 +86,7 @@ export default function LoginRootRoute() {
             <MaterialSymbolIcon icon="lock" />
           </Avatar>
           <SwitchTransition>
-            <Fade key={match.pathname} timeout={200} unmountOnExit>
+            <Fade key={match?.pathname} timeout={200} unmountOnExit>
               <Box
                 sx={{
                   display: "flex",

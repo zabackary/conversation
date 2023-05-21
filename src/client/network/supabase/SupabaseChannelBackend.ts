@@ -88,7 +88,8 @@ export default class SupabaseChannelBackend implements ChannelBackend {
       })
       .select("id");
     if (error) throw error;
-    const attachmentId = data[0].id;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const attachmentId = data[0]!.id;
     this.backend.client.storage
       .from(UPLOAD_BUCKET)
       .upload(attachmentId, file)
@@ -129,7 +130,8 @@ export default class SupabaseChannelBackend implements ChannelBackend {
       })
       .select("id");
     if (error) throw error;
-    const messageId = data[0].id;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const messageId = data[0]!.id;
     if (message.attachments)
       await Promise.all(
         message.attachments.map((attachment) => {

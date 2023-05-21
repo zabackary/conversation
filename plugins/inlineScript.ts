@@ -20,6 +20,7 @@ export default function inlineScript(): PluginOption {
       const bundlesToDelete: string[] = [];
       for (const name of htmlFiles) {
         const chunk = bundle[name];
+        if (!chunk) throw new Error("what has this world come to?!?");
         if (chunk.type === "asset" && typeof chunk.source === "string") {
           const filePath = resolve(root, outDir, name);
           await writeFile(

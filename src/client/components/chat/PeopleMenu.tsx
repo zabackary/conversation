@@ -32,16 +32,16 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "use-debounce";
-import User, { UserId } from "../../../model/user";
 import Channel from "../../../model/channel";
-import { SideSheetToolbar } from "./Chat";
-import LoadingButton from "../LoadingButton";
+import User, { UserId } from "../../../model/user";
 import useBackend from "../../hooks/useBackend";
-import useSnackbar from "../useSnackbar";
-import UserTooltip from "../UserTooltip";
-import ProfilePicture from "../ProfilePicture";
 import useUser from "../../hooks/useUser";
+import LoadingButton from "../LoadingButton";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import ProfilePicture from "../ProfilePicture";
+import UserTooltip from "../UserTooltip";
+import useSnackbar from "../useSnackbar";
+import { SideSheetToolbar } from "./Chat";
 
 export interface PeopleMenuListItemProps {
   user: User;
@@ -143,7 +143,8 @@ export default function PeopleMenu({
     if (Object.hasOwn(searchCache, debouncedAutocompleteInputValue)) {
       setOptions([
         debouncedAutocompleteInputValue,
-        searchCache[debouncedAutocompleteInputValue].filter(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        searchCache[debouncedAutocompleteInputValue]!.filter(
           (user) => !memberIds.includes(user.id)
         ),
       ]);

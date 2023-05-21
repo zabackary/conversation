@@ -233,6 +233,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (error) throw error;
     return data.map((dbMember) => {
       const channel = normalizeJoin(dbMember.channels)[0];
+      if (!channel) throw new Error("Could not get channel for invite");
       return {
         actor: dbMember.actor ?? undefined,
         description: channel.description ?? "",
@@ -396,6 +397,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       .select();
     if (error) throw error;
     const [dbChannel] = data;
+    if (!dbChannel) throw new Error("Could not get channel ID");
     const { error: memberError } = await this.client.from("members").insert({
       accepted: true,
       channel_id: dbChannel.id,

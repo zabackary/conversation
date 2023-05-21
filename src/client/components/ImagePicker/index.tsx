@@ -63,9 +63,8 @@ export default function ImagePicker({
     uploadInput.accept = "image/*";
     uploadInput.click();
     uploadInput.addEventListener("change", () => {
-      if (uploadInput.files && uploadInput.files.length > 0) {
-        const item = uploadInput.files[0];
-        onImageSelected(item);
+      if (uploadInput.files && uploadInput.files[0]) {
+        onImageSelected(uploadInput.files[0]);
       }
     });
   };
@@ -73,7 +72,7 @@ export default function ImagePicker({
   const handleDrop: DragEventHandler = (e) => {
     e.preventDefault();
     setEntranceCounter(0);
-    if (e.dataTransfer.files.length > 0) {
+    if (e.dataTransfer.files[0]) {
       onImageSelected(e.dataTransfer.files[0]);
     }
   };

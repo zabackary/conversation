@@ -58,6 +58,10 @@ export default function ChatItem({
     if (!message.markdown.startsWith(TRANSLATION_MARKER))
       return message.markdown;
     const split = message.markdown.slice(TRANSLATION_MARKER.length).split(":");
+    if (!split[0]) {
+      console.warn("Invalid translation sequence:", split);
+      return message.markdown;
+    }
     if (WHITELISTED_TRANSLATIONS.includes(split[0])) {
       return t(split[0], Object(split.slice(1)));
     }

@@ -9,7 +9,7 @@ export default function LandingRootRoute() {
   const currentOutlet = useOutlet();
   return (
     <SwitchTransition>
-      <Fade key={match.id} timeout={200} unmountOnExit>
+      <Fade key={match?.id} timeout={200} unmountOnExit>
         <div>{currentOutlet}</div>
       </Fade>
     </SwitchTransition>
