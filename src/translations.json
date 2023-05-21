@@ -139,7 +139,8 @@
       "admin": "Admin",
       "peopleCard": {
         "goToDm": "Go to DM",
-        "viewProfile": "View profile"
+        "viewProfile": "View profile",
+        "disabledExplanation": "This user has been disabled due to misconduct."
       },
       "adminTranslationNotice": "The admin panel is not translated. It will likely never be translated, so don't even try asking.",
       "tags": {
@@ -300,6 +301,18 @@
         "logout": {
           "title": "Logged in",
           "action": "Log out"
+        },
+        "requestVerification": "Request verification",
+        "infoBubble": "Changing any field will result in your account being marked as unverified until an admin can confirm your account.",
+        "subheader": {
+          "account": "Account",
+          "profile": "Profile",
+          "oauth": "Social OAuth Providers"
+        },
+        "oauth": {
+          "add": "Add provider",
+          "google": "Google",
+          "discord": "Discord"
         }
       },
       "terms": {
