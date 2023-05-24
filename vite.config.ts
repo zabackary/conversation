@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import react from "@vitejs/plugin-react";
+import { exec as nodeExec } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, loadEnv } from "vite";
 import checker from "vite-plugin-checker";
@@ -11,14 +13,15 @@ import inlineScript from "./plugins/inlineScript";
 import inlineSvg from "./plugins/inlineSvg";
 import reactAxe from "./plugins/reactAxe";
 
-const BIG = 99999999;
+const exec = promisify(nodeExec);
 
-export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
+export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
   return {
     define: {
       __BUILD_TIMESTAMP__: `"${new Date().toISOString()}"`,
       __VERSION__: `"${packageJson.version}"`,
+      __COMMIT_HASH__: (await exec("git rev-parse HEAD")).stdout.trim(),
     },
     envPrefix: "CLIENT_",
     build: {
@@ -46,8 +49,8 @@ export default defineConfig(({ command, mode, ssrBuild: _ssrBuild }) => {
               }),
         },
       },
-      chunkSizeWarningLimit: BIG,
-      assetsInlineLimit: BIG,
+      chunkSizeWarningLimit: Infinity,
+      assetsInlineLimit: Infinity,
       // Disable minification of the server code since load times don't matter
       // and for easier debugging
       minify: !env.VITE_ONLYSERVER,
