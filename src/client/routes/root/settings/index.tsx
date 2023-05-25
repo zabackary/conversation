@@ -41,8 +41,8 @@ export default function SettingsRoute() {
       }
     >
       <Outlet />
-      <Typography variant="body2" textAlign="center" m={1}>
-        v{__VERSION__}
+      <Typography variant="body2" textAlign="center" p={1}>
+        v{__VERSION__} &middot; rev {__COMMIT_HASH__}
       </Typography>
     </ConversationNavigationDrawer>
   );

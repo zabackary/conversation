@@ -18,21 +18,21 @@ import {
   Typography,
 } from "@mui/material";
 import {
-  createContext,
   MouseEvent,
   ReactNode,
+  createContext,
   useCallback,
   useContext,
   useId,
   useState,
 } from "react";
 import { useTranslation } from "react-i18next";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import {
   drawerWidth,
   toolbarButtonContext,
 } from "./ConversationNavigationDrawer";
 import { navigationRailWidth } from "./ConversationNavigationRail";
-import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const closeOverflowFunctionContext = createContext(() => {
   // no-op
@@ -170,6 +170,7 @@ export default function ConversationAppBar({
               <Typography>
                 {t("aboutDialog.timestamp", {
                   version: __VERSION__,
+                  revision: __COMMIT_HASH__,
                   date: new Date(__BUILD_TIMESTAMP__),
                 })}
               </Typography>
