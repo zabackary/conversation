@@ -130,7 +130,7 @@
         "title": "About Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation contributors. All rights reserved.",
-        "timestamp": "Version {{ version }}, built on {{ date, datetime }}"
+        "timestamp": "Version {{ version }} from {{ revision }}, generated on {{ date, datetime }}"
       },
       "error": "Something went wrong. Try again later.",
       "languageSelect": "Select language",
@@ -152,7 +152,8 @@
         "title": "Send feedback",
         "subject": "Feedback regarding Conversation 4",
         "body": "Dear Conversation Team,\r\n\r\nI have some feedback for Conversation development.\r\n\r\n--> FOR BUGS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# Description\r\n\r\n> Describe, in detail, the problem that you found in Conversation.\r\n\r\n👉 \r\n\r\n# Reproduction steps\r\n\r\n> Explain how to make your bug happen again specifically. If I cannot reproduce\r\n> the bug, no further steps will be taken.\r\n\r\n👉 \r\n\r\n--> FOR FEATURE REQUESTS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# What's missing?\r\n\r\n> Describe the feature that you think Conversation is missing.\r\n\r\n👉 \r\n\r\n# How can I fix the gap?\r\n\r\n> Describe what would help fill on the feature gap.\r\n\r\n👉 "
-      }
+      },
+      "translationWarning": "This content isn't available in your language."
     },
     "landing": {
       "header": {
@@ -451,7 +452,7 @@
         "title": "About Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation contributors. All rights reserved.",
-        "timestamp": "Version {{ version}}, built on {{ date, datetime }}"
+        "timestamp": "Version {{ version }} from {{ revision }}, generated on {{ date, datetime }}"
       },
       "error": "Something went wrong. Try again later.",
       "languageSelect": "Select language",
@@ -473,7 +474,8 @@
         "title": "Send feedback",
         "subject": "Feedback regarding Conversation 4",
         "body": "Dear Conversation Team,\r\n\r\nI have some feedback for Conversation development.\r\n\r\n--> FOR BUGS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# Description\r\n\r\n> Describe, in detail, the problem that you found in Conversation.\r\n\r\n👉 \r\n\r\n# Reproduction steps\r\n\r\n> Explain how to make your bug happen again specifically. If I cannot reproduce\r\n> the bug, no further steps will be taken.\r\n\r\n👉 \r\n\r\n--> FOR FEATURE REQUESTS, PLEASE FILL OUT THE FOLLOWING TEMPLATE\r\n\r\n# What's missing?\r\n\r\n> Describe the feature that you think Conversation is missing.\r\n\r\n👉 \r\n\r\n# How can I fix the gap?\r\n\r\n> Describe what would help fill on the feature gap.\r\n\r\n👉 "
-      }
+      },
+      "translationWarning": "This content isn't available in your language."
     },
     "landing": {
       "header": {
@@ -771,7 +773,7 @@
         "title": "Conversationについて",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 協力者。 全著作権所有。",
-        "timestamp": "バージョン {{ version }}, {{ date, datetime }} に建設された"
+        "timestamp": "{{ revision }} からバージョン {{ version }}, {{ date, datetime }} に建設された"
       },
       "error": "エラーが発生しました。 あとでもう一度試してみてください。",
       "languageSelect": "言語",
@@ -793,7 +795,8 @@
         "title": "フィードバック",
         "subject": "Conversation 4 に関するフィードバック",
         "body": "対話チームへ\n\n会話の開発についていくつかのフィードバックがあります。\n\n--> バグについては、以下のテンプレートに記入してください\n\n＃ 説明\n\n> 会話で見つけた問題を詳しく説明してください。\n\n👉\n\n# 発生手順\n\n> バグが発生する状況を具体的に説明してください。 管理者がこれを再現できない場合\n> これ以上の手順は実行されません。\n\n👉\n\n--> 機能のリクエストについては、次のテンプレートに記入してください\n\n＃何が足りない？\n\n> 会話に欠けていると思う特徴を説明してください。\n\n👉\n\n＃ギャップを修正するにはどうすればよいですか？\n\n> 機能のギャップを埋めるのに何が役立つかを説明してください。\n\n👉"
-      }
+      },
+      "translationWarning": "このコンテンツはあなたの言語では利用できません。"
     },
     "landing": {
       "header": {
@@ -1113,7 +1116,8 @@
         "title": "피드백 보내기",
         "subject": "Conversation 4에 대한 피드백",
         "body": "친애하는 대화 팀,\n\n대화 개발에 대한 몇 가지 피드백이 있습니다.\n\n--> 버그의 경우 다음 템플릿을 작성하십시오.\n\n# 설명\n\n> Conversation에서 발견한 문제점을 자세히 기술하십시오.\n\n👉\n\n# 재생산 단계\n\n> 버그를 다시 발생시키는 방법을 구체적으로 설명하십시오. 내가 확인할 수 없는\n버그인 경우 추가 조치가 취해지지 않습니다.\n\n👉\n\n--> 기능 요청의 경우 다음 템플릿을 작성하십시오.\n\n# 무엇이 빠졌나요?\n\n> Conversation에 없다고 생각하는 기능을 기술하십시오.\n\n👉\n\n# 무슨 기능이 없나요?\n\n> 어떤 기능이 추가되었으면 좋은지 설명하세요.\n\n👉 "
-      }
+      },
+      "translationWarning": "이 콘텐츠는 귀하의 언어로 제공되지 않습니다."
     },
     "landing": {
       "header": {
@@ -1411,7 +1415,7 @@
         "title": "关于 Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 贡献者。 版权所有。",
-        "timestamp": "版本 {{ version}}，基于 {{ date, datetime }}"
+        "timestamp": "来自 {{ revision }} 的版本 {{ version }}，生成于 {{ date, datetime }}"
       },
       "error": "发现问题，稍后再试。",
       "languageSelect": "选择语言",
@@ -1433,7 +1437,8 @@
         "title": "发送反馈",
         "subject": "关于对话 4 的反馈",
         "body": "亲爱的对话团队，\n\n我对 Conversation 开发有一些反馈。\n\n--> 对于错误，请填写以下模板\n\n＃ 描述\n\n> 详细描述您在对话中发现的问题。\n\n👉\n\n# 复制步骤\n\n> 具体解释如何让你的错误再次发生。 如果我不能重现\n> 错误，将不会采取进一步的措施。\n\n👉\n\n--> 对于功能请求，请填写以下模板\n\n＃ 少了什么东西？\n\n> 描述您认为 Conversation 缺少的功能。\n\n👉\n\n# 我怎样才能弥补差距？\n\n> 描述什么有助于填补功能缺口。\n\n👉"
-      }
+      },
+      "translationWarning": "此内容没有您的语言版本。"
     },
     "landing": {
       "header": {
@@ -1731,7 +1736,7 @@
         "title": "關於 Conversation",
         "header": "Conversation 4",
         "copyright": "©2020-2023 Conversation 貢獻者。 版權所有。",
-        "timestamp": "版本 {{ version}}，基於 {{ date, datetime }}"
+        "timestamp": "來自 {{ revision }} 的版本 {{ version }}，生成於 {{ date, datetime }}"
       },
       "error": "出了些問題。 稍後再試。",
       "languageSelect": "選擇語言",
@@ -1753,7 +1758,8 @@
         "title": "發送反饋",
         "subject": "關於對話 4 的反饋",
         "body": "親愛的對話團隊，\n\n我對 Conversation 開發有一些反饋。\n\n--> 對於錯誤，請填寫以下模板\n\n＃ 描述\n\n> 詳細描述您在對話中發現的問題。\n\n👉\n\n# 複製步驟\n\n> 具體解釋如何讓你的錯誤再次發生。 如果我不能重現\n> 錯誤，將不會採取進一步的措施。\n\n👉\n\n--> 對於功能請求，請填寫以下模板\n\n＃ 少了什麼東西？\n\n> 描述您認為 Conversation 缺少的功能。\n\n👉\n\n# 我怎樣才能彌補差距？\n\n> 描述什麼有助於填補功能缺口。\n\n👉"
-      }
+      },
+      "translationWarning": "此内容没有您的语言版本。"
     },
     "landing": {
       "header": {
