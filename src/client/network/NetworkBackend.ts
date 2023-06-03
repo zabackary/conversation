@@ -141,7 +141,7 @@ export default interface NetworkBackend {
   /**
    * Adds the user as a member of the channel, after having an invite.
    *
-   * @param id The ID of the channel the invite is corallated to.
+   * @param id The ID of the channel the invite is correlated to.
    */
   acceptInvite(id: number): Promise<void>;
 
@@ -245,8 +245,8 @@ export default interface NetworkBackend {
    * Generates and returns a link that users can use to join the given channel.
    *
    * @argument maxUsers Optional; the maximum amount of users that can use this
-   * link. If unset and channel is unlisted, backends SHOULD encode the passcode
-   * to join the channel.
+   * link. If unset and channel is unlisted, backends SHOULD encode the
+   * passphrase to join the channel.
    */
   generateLink(id: number): Promise<string>;
 
@@ -304,7 +304,7 @@ export interface ChannelBackend {
   /**
    * Gets the existing messages at the time of channel open. This method is
    * *not* intended to be called more than once and is permitted to have
-   * suboptimal performance on the server-side implmentation.
+   * suboptimal performance on the server-side implementation.
    *
    * @returns A promise that resolves with a list of `Message`s.
    */
