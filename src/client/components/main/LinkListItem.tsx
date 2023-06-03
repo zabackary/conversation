@@ -4,13 +4,14 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemIcon,
+  ListItemProps,
   ListItemText,
   Skeleton,
 } from "@mui/material";
 import { ReactNode, forwardRef } from "react";
 import { Link, useMatches } from "react-router-dom";
 
-export interface LinkListItemProps {
+export interface LinkListItemProps extends ListItemProps {
   primaryText?: string;
   secondaryText?: string;
   to?: string;
@@ -31,6 +32,7 @@ const LinkListItem = forwardRef<HTMLLIElement, LinkListItemProps>(
       badge,
       avatar,
       exclude = 2,
+      ...props
     },
     ref
   ) => {
@@ -40,7 +42,8 @@ const LinkListItem = forwardRef<HTMLLIElement, LinkListItemProps>(
       typeof dynamicIcon === "function" ? dynamicIcon(!!isMatch) : dynamicIcon;
 
     return (
-      <ListItem disablePadding sx={{ my: 0.5 }} ref={ref}>
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <ListItem disablePadding sx={{ my: 0.5 }} ref={ref} {...props}>
         {loading || !to ? (
           <ListItemButton disabled sx={{ opacity: "1 !important" }}>
             <ListItemIcon>

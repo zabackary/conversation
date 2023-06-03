@@ -1,12 +1,13 @@
-import { Collapse } from "@mui/material";
+import { Collapse, Tooltip } from "@mui/material";
 import { TransitionGroup } from "react-transition-group";
 import Channel from "../../../model/channel";
 import useUser from "../../hooks/useUser";
 import useUserActivity from "../../hooks/useUserActivity";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import ProfilePicture from "../ProfilePicture";
+import UserTooltip from "../UserTooltip";
 import { ContrastBadge } from "./DrawerHeader";
 import LinkListItem from "./LinkListItem";
-import ProfilePicture from "../ProfilePicture";
-import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface DmChannelListItemProps {
   channel: Channel;
@@ -18,22 +19,23 @@ export function DmChannelListItem({ channel }: ChannelListItemProps) {
   if (!person) throw new Error("Couldn't find the other person in this DM.");
   const active = useUserActivity(person.id);
   return (
-    <LinkListItem
-      primaryText={person.name}
-      secondaryText={person.email}
-      to={`/app/dms/${channel.id}`}
-      avatar={
-        <ContrastBadge
-          color="success"
-          variant="dot"
-          overlap="circular"
-          invisible={!active}
-        >
-          {user && <ProfilePicture user={user} />}
-        </ContrastBadge>
-      }
-      badge={500}
-    />
+    <Tooltip title={<UserTooltip user={person} />} placement="right">
+      <LinkListItem
+        primaryText={person.name}
+        secondaryText={person.email}
+        to={`/app/dms/${channel.id}`}
+        avatar={
+          <ContrastBadge
+            color="success"
+            variant="dot"
+            overlap="circular"
+            invisible={!active}
+          >
+            {user && <ProfilePicture user={user} />}
+          </ContrastBadge>
+        }
+      />
+    </Tooltip>
   );
 }
 

@@ -909,9 +909,13 @@ export const getThemedComponents = (
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
-            background: theme.palette.secondaryContainer.main,
-            color: theme.palette.secondaryContainer.contrastText,
+            background: theme.palette.inverseSurface.main,
+            color: theme.palette.inverseOnSurface.main,
           },
+        },
+        defaultProps: {
+          enterNextDelay: 500,
+          leaveDelay: 200,
         },
       },
       MuiAccordion: {
