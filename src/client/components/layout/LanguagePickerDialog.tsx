@@ -77,7 +77,7 @@ export default function LanguagePickerDialog({
                   src={
                     language.code in LANGUAGE_COUNTRY_MAPPING
                       ? `//esm.sh/country-flag-icons@1/1x1/${
-                          LANGUAGE_COUNTRY_MAPPING[language.code]
+                          LANGUAGE_COUNTRY_MAPPING[language.code] ?? ""
                         }.${"svg"}` // Weird string interpolation to work around
                       : // VSCode syntax/parsing bug with file extensions?!
                         undefined

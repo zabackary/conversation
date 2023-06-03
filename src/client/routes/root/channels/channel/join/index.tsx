@@ -36,7 +36,7 @@ export default function ChannelJoinScreen() {
     event.preventDefault();
     setLoading(true);
   };
-  const ids = [useId(), useId(), useId()];
+  const ids = [useId(), useId(), useId()] as const;
   const { t } = useTranslation("channel");
   const [createOpen, setCreateOpen] = useState(false);
   const theme = useTheme();

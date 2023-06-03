@@ -2,15 +2,15 @@ import { Box, Fab, Fade, List } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Link, useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 import { ConversationNavigationDrawer } from "../../../components/layout";
 import ChannelList from "../../../components/main/ChannelList";
 import DrawerHeader from "../../../components/main/DrawerHeader";
 import useChannels from "../../../hooks/useChannels";
 import useUser from "../../../hooks/useUser";
-import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 
 export default function ChannelListRoute() {
-  const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
+  const match = useMatches()[2];
   const currentOutlet = useOutlet();
   const channels = useChannels();
   const user = useUser();

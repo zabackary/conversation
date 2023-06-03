@@ -3,16 +3,16 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
+import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 import { ConversationNavigationDrawer } from "../../../components/layout";
 import ChannelList from "../../../components/main/ChannelList";
 import DrawerHeader from "../../../components/main/DrawerHeader";
 import useSnackbar from "../../../components/useSnackbar";
 import useDMs from "../../../hooks/useDMs";
 import useUser from "../../../hooks/useUser";
-import MaterialSymbolIcon from "../../../components/MaterialSymbolIcon";
 
 export default function DmListRoute() {
-  const match = useMatches()[2] as ReturnType<typeof useMatches>[2] | undefined;
+  const match = useMatches()[2];
   const currentOutlet = useOutlet();
   const dms = useDMs();
   const user = useUser();

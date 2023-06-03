@@ -57,7 +57,7 @@ function LoadingGlimmer() {
 export default function RootRoute() {
   useRouteForward();
   const user = useUser(false);
-  const match = useMatches()[1] as ReturnType<typeof useMatches>[2] | undefined;
+  const match = useMatches()[1];
   const currentOutlet = useOutlet();
   const theme = useTheme();
   const isMobile = !useMediaQuery(theme.breakpoints.up("sm"));
