@@ -101,7 +101,7 @@ export interface PeopleMenuProps {
   handleSidebarClose(): void;
 }
 
-const searchCache: Record<string, User[]> = {};
+export const searchCache: Record<string, User[]> = {};
 
 export default function PeopleMenu({
   channel,
