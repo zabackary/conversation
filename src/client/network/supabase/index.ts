@@ -225,7 +225,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     const { data, error } = await this.client
       .from("members")
       .select(
-        "invite_message, actor, channels!channel_id(description, id, name, owner)"
+        "invite_message, actor, channels!channel_id(description, id, name, owner, is_dm)"
       )
       .eq("accepted", false)
       .eq("user_id", user.id as string)
@@ -241,6 +241,7 @@ class SupabaseBackendImpl implements NetworkBackend {
         inviteMessage: dbMember.invite_message ?? "",
         name: channel.name ?? "",
         owner: channel.owner,
+        dm: channel.is_dm,
       };
     });
   }

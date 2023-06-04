@@ -50,7 +50,9 @@ export default function ChannelJoinScreen() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [backend, refreshCount]
   );
-  const invitedChannels = usePromise(getInvitedChannels); // TODO: Add paging
+  const invitedChannels = usePromise(getInvitedChannels)?.filter(
+    (value) => !value.dm
+  ); // TODO: Add paging
   const getPublicChannels = useCallback(
     () => backend.getPublicChannels(0, 20),
     // I want to run the promise every time refreshCount changes

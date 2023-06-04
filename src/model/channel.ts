@@ -62,4 +62,5 @@ export type InvitedChannelListing = Pick<
 > & {
   actor?: UserId;
   inviteMessage: string;
+  dm: boolean;
 };
