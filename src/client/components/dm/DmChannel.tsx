@@ -5,9 +5,9 @@ import useBackend from "../../hooks/useBackend";
 import useChannel from "../../hooks/useChannel";
 import useUser from "../../hooks/useUser";
 import { ChannelBackend } from "../../network/NetworkBackend";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import ChatView from "../chat/ChatView";
 import { ConversationAppBar } from "../layout";
-import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 export interface DmChannelProps {
   channelId: number;
@@ -56,6 +56,7 @@ export default function DmChannel({ channelId }: DmChannelProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps --- We don't care when the backend changes.
   }, [backend, channelId]);
   const otherMember = channel?.members.find((member) => member.id !== user?.id);
+  // TODO: Translate component
   return (
     <>
       <ConversationAppBar title={otherMember?.name ?? ""} />
@@ -70,17 +71,17 @@ export default function DmChannel({ channelId }: DmChannelProps) {
           afterInput={
             <Stack direction="row" spacing={1}>
               <Chip
-                icon={<MaterialSymbolIcon icon="mail" />}
+                icon={<MaterialSymbolIcon icon="contact_mail" size={18} />}
                 label={`Email ${otherMember?.nickname ?? "Loading..."}`}
-                component="a"
                 href={`mailto:${otherMember?.email ?? "Loading..."}`}
                 target="_blank"
                 variant="outlined"
+                component="a"
                 clickable
               />
               <Chip
-                icon={<MaterialSymbolIcon icon="block" />}
-                label="Block"
+                icon={<MaterialSymbolIcon icon="contact_page" size={18} />}
+                label="View profile"
                 onClick={() => {
                   // TODO: Block user
                 }}
