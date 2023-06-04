@@ -31,7 +31,7 @@ export function DmChannelListItem({ channel }: ChannelListItemProps) {
             overlap="circular"
             invisible={!active}
           >
-            {user && <ProfilePicture user={user} />}
+            {user && <ProfilePicture user={person} />}
           </ContrastBadge>
         }
       />
