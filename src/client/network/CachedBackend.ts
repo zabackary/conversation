@@ -89,7 +89,9 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.authCreateAccount(newUser, password);
   }
 
-  currentSessionSubscribable: Subscribable<RegisteredUser | null> | undefined;
+  private currentSessionSubscribable:
+    | Subscribable<RegisteredUser | null>
+    | undefined;
 
   getCurrentSession(): Subscribable<RegisteredUser | null> {
     return (
@@ -99,7 +101,7 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  userSubscribableMap: Record<string, Subscribable<User | null>> = {};
+  private userSubscribableMap: Record<string, Subscribable<User | null>> = {};
 
   getUser(user: UserId): Subscribable<User | null> {
     return (
@@ -108,7 +110,8 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  statusSubscribableMap: Record<string, Subscribable<boolean | null>> = {};
+  private statusSubscribableMap: Record<string, Subscribable<boolean | null>> =
+    {};
 
   getUserActivity(user: UserId): Subscribable<boolean | null> {
     return (
@@ -118,7 +121,7 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  dmsSubscribable: Subscribable<DmChannel[] | null> | undefined;
+  private dmsSubscribable: Subscribable<DmChannel[] | null> | undefined;
 
   getDMs(): Subscribable<DmChannel[] | null> {
     return (
@@ -140,7 +143,7 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.joinChannel(info);
   }
 
-  channelsSubscribable: Subscribable<Channel[] | null> | undefined;
+  private channelsSubscribable: Subscribable<Channel[] | null> | undefined;
 
   getChannels(): Subscribable<Channel[] | null> {
     return (
@@ -158,7 +161,8 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.connectChannel(id);
   }
 
-  channelSubscribableMap: Record<string, Subscribable<Channel | null>> = {};
+  private channelSubscribableMap: Record<string, Subscribable<Channel | null>> =
+    {};
 
   getChannel(id: number): Subscribable<Channel | null> {
     return (
@@ -167,7 +171,8 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  messageSubscribableMap: Record<number, Subscribable<Message | null>> = {};
+  private messageSubscribableMap: Record<number, Subscribable<Message | null>> =
+    {};
 
   getMessage(id: number): Subscribable<Message | null> {
     return (
@@ -176,7 +181,7 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  searchMap: Record<string, Promise<User[]>> = {};
+  private searchMap: Record<string, Promise<User[]>> = {};
 
   searchUsers(query: string): Promise<User[]> {
     return (
@@ -186,7 +191,7 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
-  openDMMap: Record<string, Promise<number>> = {};
+  private openDMMap: Record<string, Promise<number>> = {};
 
   openDM(user: UserId): Promise<number> {
     return (
@@ -204,7 +209,7 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.deleteInvite(id);
   }
 
-  documentsMap: Partial<Record<DocumentType, string>> = {};
+  private documentsMap: Partial<Record<DocumentType, string>> = {};
 
   async getDocument(documentType: DocumentType): Promise<string> {
     return (
