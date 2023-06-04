@@ -30,17 +30,17 @@ export interface ChannelJoinInfo {
 }
 
 export interface PublicChannelJoinInfo extends ChannelJoinInfo {
-  type: PrivacyLevel.Public;
+  type: PrivacyLevel.PUBLIC;
 }
 
 export interface UnlistedChannelJoinInfo extends ChannelJoinInfo {
-  type: PrivacyLevel.Unlisted;
+  type: PrivacyLevel.UNLISTED;
   id: number;
   key: string;
 }
 
 export interface PrivateChannelJoinInfo extends ChannelJoinInfo {
-  type: PrivacyLevel.Private;
+  type: PrivacyLevel.PRIVATE;
   id: number;
 }
 
@@ -167,7 +167,7 @@ export default interface NetworkBackend {
    * @param name The name of the new channel
    * @param description The description
    * @param privacyLevel The privacy level
-   * @param password The password, if `privacyLevel` is {@link PrivacyLevel.Unlisted `Unlisted`}
+   * @param password The password, if `privacyLevel` is {@link PrivacyLevel.UNLISTED `Unlisted`}
    * @returns A promise resolving with the new channel or rejecting if something
    * went wrong.
    */

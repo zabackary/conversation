@@ -7,10 +7,10 @@ export default function convertUser(dbUser: SupabaseUser): User {
     name: dbUser.name,
     // eslint-disable-next-line no-nested-ternary
     privilegeLevel: dbUser.admin
-      ? PrivilegeLevel.Admin
+      ? PrivilegeLevel.ADMIN
       : dbUser.verified
-      ? PrivilegeLevel.Normal
-      : PrivilegeLevel.Unverified,
+      ? PrivilegeLevel.NORMAL
+      : PrivilegeLevel.UNVERIFIED,
     banner: dbUser.banner_url ?? undefined,
     email: dbUser.email ?? undefined,
     profilePicture: dbUser.profile_picture_url ?? undefined,

@@ -81,7 +81,7 @@ export default function AccountSettingsRoute() {
             >
               {t("account.logout.action")}
             </Button>
-            {user.privilegeLevel === PrivilegeLevel.Unverified ? (
+            {user.privilegeLevel === PrivilegeLevel.UNVERIFIED ? (
               <Button
                 variant="tonal"
                 startIcon={<MaterialSymbolIcon icon="mail" />}

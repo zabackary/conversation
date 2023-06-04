@@ -81,7 +81,7 @@ export enum InvalidTextReason {
   SLUR,
   BAD_URL,
   TOO_LONG,
-  BAD_UNCIODE,
+  BAD_UNICODE,
 }
 
 /**
@@ -92,7 +92,7 @@ export enum InvalidTextReason {
  */
 export function validateText(text: string) {
   if (text.length > 512) return InvalidTextReason.TOO_LONG;
-  if (INVALID_UNICODE_REGEX.test(text)) return InvalidTextReason.BAD_UNCIODE;
+  if (INVALID_UNICODE_REGEX.test(text)) return InvalidTextReason.BAD_UNICODE;
   const urls = URL_REGEX.exec(text);
   for (const url of urls ?? []) {
     if (!validateUrl(url)) return InvalidTextReason.BAD_URL;

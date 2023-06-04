@@ -90,7 +90,7 @@ function ConversationNavigationRailAction({
   const handleClick = useLinkClickHandler(route.href);
   const { t } = useTranslation();
   const user = useUser(false);
-  if (route.admin && user?.privilegeLevel !== PrivilegeLevel.Admin) return null;
+  if (route.admin && user?.privilegeLevel !== PrivilegeLevel.ADMIN) return null;
   return rail ? (
     <NavigationRailAction
       label={t(route.label)}

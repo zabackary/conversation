@@ -26,8 +26,8 @@ interface SnackbarQueueItem {
 }
 
 export enum SnackbarDuration {
-  Long = 10000,
-  Short = 4000,
+  LONG = 10000,
+  SHORT = 4000,
 }
 
 export interface SnackbarOptions {
@@ -122,7 +122,7 @@ export function SnackbarProvider({
         const options: SnackbarOptions = {
           action: null,
           urgent: false,
-          autoHideDuration: SnackbarDuration.Short,
+          autoHideDuration: SnackbarDuration.SHORT,
           autoHide: true,
           showCloseButton: false,
           snackbarProps: {},

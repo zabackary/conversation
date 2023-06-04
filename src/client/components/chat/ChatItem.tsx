@@ -133,11 +133,11 @@ export default function ChatItem({
                     {message.isService ? (
                       <InlineBadge color="primary" badgeContent="bot" />
                     ) : null}
-                    {message.user.privilegeLevel === PrivilegeLevel.Admin ? (
+                    {message.user.privilegeLevel === PrivilegeLevel.ADMIN ? (
                       <InlineBadge color="secondary" badgeContent="Admin" />
                     ) : null}
                     {message.user.privilegeLevel ===
-                    PrivilegeLevel.Unverified ? (
+                    PrivilegeLevel.UNVERIFIED ? (
                       <InlineBadge color="warning" badgeContent="Unverified" />
                     ) : null}
                     {message.user.disabled ? (

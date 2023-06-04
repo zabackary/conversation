@@ -1,9 +1,9 @@
 export type UserId = number | string;
 
 export enum PrivilegeLevel {
-  Unverified,
-  Normal,
-  Admin,
+  UNVERIFIED,
+  NORMAL,
+  ADMIN,
 }
 
 export interface BaseUser {

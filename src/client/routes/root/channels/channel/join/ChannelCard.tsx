@@ -118,11 +118,11 @@ function InviteChannelCard({
   const user = useUserInfo(actor);
   const channel = useChannel(invite.id);
   let privacyLevel;
-  if (channel?.privacyLevel === PrivacyLevel.Public) {
+  if (channel?.privacyLevel === PrivacyLevel.PUBLIC) {
     privacyLevel = "Public";
-  } else if (channel?.privacyLevel === PrivacyLevel.Unlisted) {
+  } else if (channel?.privacyLevel === PrivacyLevel.UNLISTED) {
     privacyLevel = "Unlisted";
-  } else if (channel?.privacyLevel === PrivacyLevel.Private) {
+  } else if (channel?.privacyLevel === PrivacyLevel.PRIVATE) {
     privacyLevel = "Private";
   } else {
     privacyLevel = "";

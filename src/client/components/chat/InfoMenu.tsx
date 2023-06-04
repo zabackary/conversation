@@ -1,31 +1,31 @@
 import {
   Box,
   Button,
+  Checkbox,
   Collapse,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
+  IconButton,
   Stack,
   SxProps,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-  IconButton,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import { FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Channel, { PrivacyLevel } from "../../../model/channel";
-import LoadingButton from "../LoadingButton";
 import useBackend from "../../hooks/useBackend";
-import useSnackbar from "../useSnackbar";
 import useUser from "../../hooks/useUser";
-import { SideSheetToolbar } from "./Chat";
+import LoadingButton from "../LoadingButton";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import useSnackbar from "../useSnackbar";
+import { SideSheetToolbar } from "./Chat";
 
 export interface InfoMenuProps {
   channel: Channel;
@@ -173,18 +173,18 @@ export default function InfoMenu({
           fullWidth
           disabled={!canEdit}
         >
-          <ToggleButton value={PrivacyLevel.Private}>
+          <ToggleButton value={PrivacyLevel.PRIVATE}>
             {t("channelInfo.private")}
           </ToggleButton>
-          <ToggleButton value={PrivacyLevel.Unlisted}>
+          <ToggleButton value={PrivacyLevel.UNLISTED}>
             {t("channelInfo.unlisted")}
           </ToggleButton>
-          <ToggleButton value={PrivacyLevel.Public}>
+          <ToggleButton value={PrivacyLevel.PUBLIC}>
             {t("channelInfo.public")}
           </ToggleButton>
         </ToggleButtonGroup>
         <Collapse
-          in={pendingChange.privacyLevel === PrivacyLevel.Unlisted}
+          in={pendingChange.privacyLevel === PrivacyLevel.UNLISTED}
           sx={{ width: "100%" }}
         >
           <TextField

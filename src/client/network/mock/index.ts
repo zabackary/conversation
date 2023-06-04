@@ -223,7 +223,7 @@ export default class MockBackend implements NetworkBackend {
       (channel) =>
         !channel.members.map((member) => member.id).includes(user.id) &&
         !channel.dm &&
-        channel.privacyLevel === PrivacyLevel.Public
+        channel.privacyLevel === PrivacyLevel.PUBLIC
     ) as GroupChannel[];
   }
 

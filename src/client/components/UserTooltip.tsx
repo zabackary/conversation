@@ -61,10 +61,10 @@ export default function UserTooltip({
             {user.nickname} {user.email ? <>&middot; {user.email}</> : null}
           </Typography>
           <Stack spacing={0.5} direction="row">
-            {user.privilegeLevel === PrivilegeLevel.Admin ? (
+            {user.privilegeLevel === PrivilegeLevel.ADMIN ? (
               <InlineBadge color="secondary" badgeContent={t("admin")} />
             ) : null}
-            {user.privilegeLevel === PrivilegeLevel.Unverified ? (
+            {user.privilegeLevel === PrivilegeLevel.UNVERIFIED ? (
               <InlineBadge color="warning" badgeContent={t("unverified")} />
             ) : null}
             {user.disabled ? (

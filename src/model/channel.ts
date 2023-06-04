@@ -2,9 +2,9 @@ import Message from "./message";
 import User, { UserId } from "./user";
 
 export enum PrivacyLevel {
-  Public,
-  Unlisted,
-  Private,
+  PUBLIC,
+  UNLISTED,
+  PRIVATE,
 }
 
 interface BaseChannel {
@@ -40,14 +40,14 @@ export interface DmChannel extends BaseChannel {
   members: [User, User];
   name: "";
   description: "";
-  privacyLevel: PrivacyLevel.Private;
+  privacyLevel: PrivacyLevel.PRIVATE;
 }
 
 type Channel = GroupChannel | DmChannel;
 export default Channel;
 
 export interface UnlistedChannel extends BaseChannel {
-  privacyLevel: PrivacyLevel.Unlisted;
+  privacyLevel: PrivacyLevel.UNLISTED;
   key: string;
 }
 

@@ -4,7 +4,7 @@ const deletedUser: User = {
   id: -1,
   isBot: false,
   name: "!translation:deleted_user",
-  privilegeLevel: PrivilegeLevel.Unverified,
+  privilegeLevel: PrivilegeLevel.UNVERIFIED,
   disabled: false,
 };
 

@@ -598,7 +598,7 @@ class SupabaseBackendImpl implements NetworkBackend {
       await this.createChannel(
         null,
         null,
-        PrivacyLevel.Private,
+        PrivacyLevel.PRIVATE,
         undefined,
         true,
         [user as string]

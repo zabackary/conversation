@@ -21,9 +21,9 @@ import {
 import { FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PrivacyLevel } from "../../../../../../model/channel";
-import useBackend from "../../../../../hooks/useBackend";
-import useSnackbar from "../../../../../components/useSnackbar";
 import MaterialSymbolIcon from "../../../../../components/MaterialSymbolIcon";
+import useSnackbar from "../../../../../components/useSnackbar";
+import useBackend from "../../../../../hooks/useBackend";
 
 export interface CreateProps {
   onClose: () => void;
@@ -45,7 +45,7 @@ export default function Create({ onClose }: CreateProps) {
         formData.get("name") as string,
         formData.get("description") as string,
         privacyLevel,
-        privacyLevel === PrivacyLevel.Unlisted
+        privacyLevel === PrivacyLevel.UNLISTED
           ? (formData.get("password") as string)
           : undefined
       )
@@ -104,10 +104,10 @@ export default function Create({ onClose }: CreateProps) {
                 )
               }
               renderValue={(value) => {
-                if (value === PrivacyLevel.Private) {
+                if (value === PrivacyLevel.PRIVATE) {
                   return t("channelInfo.private");
                 }
-                if (value === PrivacyLevel.Unlisted) {
+                if (value === PrivacyLevel.UNLISTED) {
                   return t("channelInfo.unlisted");
                 }
                 return t("channelInfo.public");
@@ -120,21 +120,21 @@ export default function Create({ onClose }: CreateProps) {
                 },
               }}
             >
-              <MenuItem value={PrivacyLevel.Private}>
+              <MenuItem value={PrivacyLevel.PRIVATE}>
                 <ListItemText
                   primary={t("channelInfo.private")}
                   secondary={t("channelInfo.privateHint")}
                   secondaryTypographyProps={{ whiteSpace: "normal" }}
                 />
               </MenuItem>
-              <MenuItem value={PrivacyLevel.Unlisted}>
+              <MenuItem value={PrivacyLevel.UNLISTED}>
                 <ListItemText
                   primary={t("channelInfo.unlisted")}
                   secondary={t("channelInfo.unlistedHint")}
                   secondaryTypographyProps={{ whiteSpace: "normal" }}
                 />
               </MenuItem>
-              <MenuItem value={PrivacyLevel.Public}>
+              <MenuItem value={PrivacyLevel.PUBLIC}>
                 <ListItemText
                   primary={t("channelInfo.public")}
                   secondary={t("channelInfo.publicHint")}
@@ -144,7 +144,7 @@ export default function Create({ onClose }: CreateProps) {
             </Select>
           </FormControl>
           <Collapse
-            in={privacyLevel === PrivacyLevel.Unlisted}
+            in={privacyLevel === PrivacyLevel.UNLISTED}
             sx={{ width: "100%" }}
           >
             <TextField

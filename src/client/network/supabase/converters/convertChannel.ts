@@ -10,7 +10,7 @@ export default function convertChannel(dbChannel: SupabaseChannel): Channel {
         members: members as [User, User],
         name: "",
         description: "",
-        privacyLevel: PrivacyLevel.Private,
+        privacyLevel: PrivacyLevel.PRIVATE,
         history: Number.MAX_SAFE_INTEGER,
         id: dbChannel.id,
         lastMessage: undefined,
