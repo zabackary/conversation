@@ -535,6 +535,17 @@ class SupabaseBackendImpl implements NetworkBackend {
     }, null);
   }
 
+  async openDM(user: UserId): Promise<number> {
+    const { data, error } = await this.client
+      .from("members")
+      .select("channels(*)")
+      .eq("user_id", user)
+      .eq("channels.is_dm", true);
+    if (error) throw error;
+    console.log(data);
+    throw new Error("not implemented");
+  }
+
   joinChannel<JoinInfo extends ChannelJoinInfo>(
     _info: JoinInfo
   ): Promise<string | null> {

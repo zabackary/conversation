@@ -37,6 +37,10 @@ import {
 } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  openDM(user: UserId): Promise<number> {
+    throw new Error("Method not implemented.");
+  }
+
   getDocument(documentType: DocumentType): Promise<string> {
     throw new Error("Method not implemented.");
   }

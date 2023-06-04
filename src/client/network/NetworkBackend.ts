@@ -101,6 +101,15 @@ export default interface NetworkBackend {
   getDMs(): Subscribable<DmChannel[] | null>;
 
   /**
+   * Finds or creates a DM with the specified user. If it does not exist,
+   * creates one and returns the new ID. If it does exist, just returns the
+   * existing ID.
+   *
+   * @param user The ID of the user to open a DM to
+   */
+  openDM(user: UserId): Promise<number>;
+
+  /**
    * Gets all channels with privacy "public" that can be joined without invite.
    *
    * @returns A promise resolving with a list of public `Channel`s that are

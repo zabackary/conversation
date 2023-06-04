@@ -97,6 +97,10 @@ export default class QueuedBackend implements NetworkBackend {
     );
   }
 
+  openDM(user: UserId): Promise<number> {
+    return this.deferredPromise((backend) => backend.openDM(user));
+  }
+
   addMembers(id: number, userIds: UserId[], invitation: string): Promise<void> {
     return this.deferredPromise((backend) =>
       backend.addMembers(id, userIds, invitation)

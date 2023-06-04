@@ -186,6 +186,16 @@ export default class CachedBackend implements NetworkBackend {
     );
   }
 
+  openDMMap: Record<string, Promise<number>> = {};
+
+  openDM(user: UserId): Promise<number> {
+    return (
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      this.openDMMap[user] ||
+      (this.openDMMap[user] = this.mirroredBackend.openDM(user))
+    );
+  }
+
   acceptInvite(id: number): Promise<void> {
     return this.mirroredBackend.acceptInvite(id);
   }
