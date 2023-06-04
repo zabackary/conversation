@@ -182,11 +182,19 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
                 "&:hover": {
                   borderColor: isFocused ? undefined : "divider",
                 },
-                border: `${isFocused ? "2px" : "1px"} solid transparent`,
-                borderColor: isFocused
-                  ? "primary.main"
-                  : alpha(theme.palette.divider, 0.6),
-                p: isFocused ? "6px 13px" : "7px 14px",
+                border: `1px solid ${
+                  isFocused
+                    ? theme.palette.primary.main
+                    : alpha(theme.palette.divider, 0.6)
+                }`,
+                boxShadow: isFocused
+                  ? ["0 1px", "0 -1px", "1px 0", "-1px 0"]
+                      .map(
+                        (item) => `inset ${item} ${theme.palette.primary.main}`
+                      )
+                      .join()
+                  : undefined,
+                p: "7px 14px",
                 flexWrap: "wrap",
                 cursor: "text",
               }}
