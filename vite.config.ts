@@ -21,7 +21,9 @@ export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
     define: {
       __BUILD_TIMESTAMP__: `"${new Date().toISOString()}"`,
       __VERSION__: `"${packageJson.version}"`,
-      __COMMIT_HASH__: `"${(await exec("git rev-parse HEAD")).stdout.trim()}"`,
+      __COMMIT_HASH__: `"${(
+        await exec("git rev-parse --short HEAD")
+      ).stdout.trim()}"`,
     },
     envPrefix: "CLIENT_",
     build: {
