@@ -4,6 +4,7 @@ import {
   BottomNavigationActionProps,
   IconButton,
   Paper,
+  Tooltip,
   styled,
   useTheme,
 } from "@mui/material";
@@ -91,30 +92,34 @@ function ConversationNavigationRailAction({
   const { t } = useTranslation();
   const user = useUser(false);
   if (route.admin && user?.privilegeLevel !== PrivilegeLevel.ADMIN) return null;
-  return rail ? (
-    <NavigationRailAction
-      label={t(route.label)}
-      icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
-      value={route.id}
-      component="a"
-      // @ts-ignore This really does work. It's a bug in `styled()` I think
-      onClick={handleClick}
-      selected={selected}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-    />
-  ) : (
-    <BottomNavigationAction
-      label={t(route.label)}
-      icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
-      value={route.id}
-      component="a"
-      // @ts-ignore This really does work. It's a bug in `styled()` I think
-      onClick={handleClick}
-      selected={selected}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...props}
-    />
+  return (
+    <Tooltip title={t(route.label)} placement={rail ? "right" : "top"}>
+      {rail ? (
+        <NavigationRailAction
+          label={t(route.label)}
+          icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
+          value={route.id}
+          component="a"
+          // @ts-ignore This really does work. It's a bug in `styled()` I think
+          onClick={handleClick}
+          selected={selected}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+        />
+      ) : (
+        <BottomNavigationAction
+          label={t(route.label)}
+          icon={<MaterialSymbolIcon icon={route.icon} fill={selected} />}
+          value={route.id}
+          component="a"
+          // @ts-ignore This really does work. It's a bug in `styled()` I think
+          onClick={handleClick}
+          selected={selected}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
+        />
+      )}
+    </Tooltip>
   );
 }
 
@@ -177,13 +182,12 @@ export default function ConversationNavigationRail({
               rail
             />
           ))}
-          <LanguageSwitcherIconButton
-            size="large"
-            onClick={handleClickOpen}
-            aria-label="select language"
-          >
-            <MaterialSymbolIcon icon="translate" />
-          </LanguageSwitcherIconButton>
+          {/* TODO: translate */}
+          <Tooltip title="Select language" placement="right">
+            <LanguageSwitcherIconButton size="large" onClick={handleClickOpen}>
+              <MaterialSymbolIcon icon="translate" />
+            </LanguageSwitcherIconButton>
+          </Tooltip>
         </NavigationRail>
       )}
       <LanguagePickerDialog open={languagePickerOpen} onClose={handleClose} />
