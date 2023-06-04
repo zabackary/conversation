@@ -374,11 +374,50 @@ class SupabaseBackendImpl implements NetworkBackend {
     );
   }
 
-  async createChannel(
+  /**
+   * Create a channel
+   * @param name The name of the channel
+   * @param description The description
+   * @param privacyLevel self-explanatory
+   * @param password guess...
+   * @returns a promise for your love
+   */
+  createChannel(
     name: string,
     description: string,
     privacyLevel: PrivacyLevel,
-    password?: string | undefined
+    password?: string
+  ): Promise<Channel>;
+
+  /**
+   * Creates a channel with more options.
+   *
+   * @internal
+   *
+   * @param name The name of the channel
+   * @param description The description
+   * @param privacyLevel Privacy level
+   * @param password Password
+   * @param isDm Whether the channel is a DM
+   * @param initialMembers The members the channel should start out with
+   * That doesn't mean the members are in; they may need to accept invites.
+   */
+  createChannel(
+    name: string | null,
+    description: string | null,
+    privacyLevel: PrivacyLevel,
+    password: string | undefined,
+    isDm: boolean,
+    initialMembers: string[]
+  ): Promise<Channel>;
+
+  async createChannel(
+    name: string | null,
+    description: string | null,
+    privacyLevel: PrivacyLevel,
+    password?: string | undefined,
+    isDm = false,
+    initialMembers: string[] = []
   ): Promise<Channel> {
     const user = this.loggedInUserSubscribable.getSnapshot();
     if (user === null || user instanceof Error)
@@ -387,7 +426,7 @@ class SupabaseBackendImpl implements NetworkBackend {
     const { data, error } = await this.client
       .from("channels")
       .insert({
-        is_dm: false,
+        is_dm: isDm,
         owner: userId,
         privacy_level: privacyLevel,
         description,
@@ -398,11 +437,13 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (error) throw error;
     const [dbChannel] = data;
     if (!dbChannel) throw new Error("Could not get channel ID");
-    const { error: memberError } = await this.client.from("members").insert({
-      accepted: true,
-      channel_id: dbChannel.id,
-      user_id: userId,
-    });
+    const { error: memberError } = await this.client.from("members").insert(
+      [userId, ...initialMembers].map((id) => ({
+        accepted: userId === id,
+        channel_id: dbChannel.id,
+        user_id: id,
+      }))
+    );
     if (memberError) {
       console.warn("Attempting rollback of channel creation...");
       const { error: rollbackError } = await this.client
@@ -536,14 +577,33 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   async openDM(user: UserId): Promise<number> {
+    // This relies on the fact that users can't see the channels they're not
+    // part of, because of RLS. If the row-level security fails, this will fail
+    // along with it.
     const { data, error } = await this.client
       .from("members")
-      .select("channels(*)")
+      .select("channels(id)")
       .eq("user_id", user)
       .eq("channels.is_dm", true);
     if (error) throw error;
-    console.log(data);
-    throw new Error("not implemented");
+    // Find a member attached to a valid DM (array is for extra-safe types)
+    const candidate = data.find(
+      (member) => member.channels !== null && !Array.isArray(member.channels)
+    ) as { channels: { id: number } } | null;
+    if (candidate) {
+      // Yay, found the channel. Return it.
+      return candidate.channels.id;
+    }
+    return (
+      await this.createChannel(
+        null,
+        null,
+        PrivacyLevel.Private,
+        undefined,
+        true,
+        [user as string]
+      )
+    ).id;
   }
 
   joinChannel<JoinInfo extends ChannelJoinInfo>(

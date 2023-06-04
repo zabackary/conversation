@@ -70,10 +70,13 @@ export default function DmListRoute() {
   }, [autocompleteInputValue, flushInputValue]);
   const dms = useDMs();
   const user = useUser();
+  const [isLoading, setIsLoading] = useState(false);
   const handleDmTargetSelect = (event: SyntheticEvent, target: User | null) => {
     if (target) {
-      console.log(target);
-      event.preventDefault();
+      setIsLoading(true);
+      backend.openDM(target.id).finally(() => {
+        setIsLoading(false);
+      });
       setAutocompleteInputValue("");
     }
   };
@@ -89,6 +92,7 @@ export default function DmListRoute() {
             }}
             options={options[1]}
             inputValue={autocompleteInputValue}
+            value={null}
             onChange={handleDmTargetSelect}
             renderInput={(props) => (
               <TextField
@@ -103,6 +107,18 @@ export default function DmListRoute() {
                     borderBottomRightRadius: autocompleteOpen ? 0 : undefined,
                   },
                   ...props.InputProps,
+                  endAdornment:
+                    options[0] !== autocompleteInputValue || isLoading ? (
+                      <CircularProgress
+                        color="inherit"
+                        size={20}
+                        sx={{
+                          position: "absolute",
+                          top: "calc(50% - 8px)",
+                          right: "9px",
+                        }}
+                      />
+                    ) : null,
                 }}
                 label="Find or create a DM"
                 placeholder={t("people.searchUsers", { namespace: "channel" })}
@@ -127,7 +143,6 @@ export default function DmListRoute() {
             onInputChange={(_e, newInputValue, reason) => {
               if (reason !== "reset") setAutocompleteInputValue(newInputValue);
             }}
-            popupIcon={null}
             getOptionLabel={(option) => option.name}
             renderOption={(props, targetOption, state) => (
               <ListItem
