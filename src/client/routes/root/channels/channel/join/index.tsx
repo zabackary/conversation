@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Dialog,
+  Fab,
   Grid,
   ListItemIcon,
   MenuItem,
@@ -72,6 +73,17 @@ export default function ChannelJoinScreen() {
     <>
       <ConversationAppBar
         title={t("join.title")}
+        items={
+          <Button
+            sx={{ mr: 1, display: { xs: "none", sm: "inline-flex" } }}
+            variant="tonal"
+            size="large"
+            onClick={() => setCreateOpen(true)}
+            startIcon={<MaterialSymbolIcon icon="group_add" />}
+          >
+            {t("createChannel")}
+          </Button>
+        }
         overflowItems={
           <MenuItem onClick={handleRefresh}>
             <ListItemIcon>
@@ -81,15 +93,20 @@ export default function ChannelJoinScreen() {
           </MenuItem>
         }
       />
+      <Fab
+        variant="extended"
+        sx={{
+          position: "fixed",
+          bottom: { xs: 96, sm: 16 },
+          right: 16,
+          display: { sm: "none" },
+        }}
+        color="primary"
+      >
+        <MaterialSymbolIcon icon="group_add" sx={{ mr: 1 }} />
+        {t("createChannel")}
+      </Fab>
       <Box m={3}>
-        <Button
-          sx={{ mb: 3, minWidth: "33.33%", mx: "auto", display: "block" }}
-          variant="outlined"
-          size="large"
-          onClick={() => setCreateOpen(true)}
-        >
-          {t("createChannel")}
-        </Button>
         <Dialog
           open={createOpen}
           onClose={() => setCreateOpen(false)}
