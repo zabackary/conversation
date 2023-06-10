@@ -74,7 +74,7 @@ export default function Create({ onClose }: CreateProps) {
               <Typography variant="h5" component="h2" ml={2} flex={1}>
                 {t("createChannel")}
               </Typography>
-              <Button color="inherit" type="submit">
+              <Button variant="filled" type="submit">
                 {t("createChannelContinue")}
               </Button>
             </Toolbar>

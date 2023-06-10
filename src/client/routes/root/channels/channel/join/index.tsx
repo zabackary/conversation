@@ -104,6 +104,7 @@ export default function ChannelJoinScreen() {
           display: { sm: "none" },
         }}
         color="primary"
+        onClick={() => setCreateOpen(true)}
       >
         <MaterialSymbolIcon icon="group_add" sx={{ mr: 1 }} />
         {t("createChannel")}
