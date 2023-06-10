@@ -19,8 +19,8 @@ import {
 } from "@mui/material";
 import {
   MouseEvent,
+  MouseEventHandler,
   ReactNode,
-  createContext,
   useCallback,
   useContext,
   useId,
@@ -28,19 +28,12 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
+import useSnackbar from "../useSnackbar";
 import {
   drawerWidth,
   toolbarButtonContext,
 } from "./ConversationNavigationDrawer";
 import { navigationRailWidth } from "./ConversationNavigationRail";
-
-const closeOverflowFunctionContext = createContext(() => {
-  // no-op
-});
-
-export function useCloseOverflowFunction() {
-  return useContext(closeOverflowFunctionContext);
-}
 
 export interface ConversationAppBarProps {
   title: string;
@@ -70,7 +63,6 @@ export default function ConversationAppBar({
   const aboutDescriptionId = useId();
   const handleAboutMenu = () => {
     setAboutOpen(true);
-    handleClose();
   };
   const { t } = useTranslation();
   const handleFeedback = () => {
@@ -81,9 +73,17 @@ export default function ConversationAppBar({
         t("reportProblem.title")
       )}&body=${encodeURIComponent(t("reportProblem.body"))}`
     );
-    handleClose();
   };
-
+  const { showSnackbar } = useSnackbar();
+  const handleHelp = () => {
+    // TODO: translate
+    showSnackbar("Help isn't finished yet.");
+  };
+  const handleMenuClick: MouseEventHandler = (event) => {
+    if (!["UL", "HR"].includes((event.target as HTMLElement).tagName)) {
+      handleClose();
+    }
+  };
   return (
     <>
       <AppBar
@@ -121,12 +121,11 @@ export default function ConversationAppBar({
               "aria-labelledby": menuButtonId,
               sx: { width: 180, maxWidth: "100%" },
             }}
+            onClick={handleMenuClick}
           >
-            <closeOverflowFunctionContext.Provider value={handleClose}>
-              {overflowItems}
-            </closeOverflowFunctionContext.Provider>
+            {overflowItems}
             {overflowItems ? <Divider /> : null}
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handleHelp}>
               <ListItemIcon>
                 <MaterialSymbolIcon icon="help" />
               </ListItemIcon>
