@@ -72,7 +72,9 @@ export default function DmChannel({ channelId }: DmChannelProps) {
             <Stack direction="row" spacing={1}>
               <Chip
                 icon={<MaterialSymbolIcon icon="contact_mail" size={18} />}
-                label={`Email ${otherMember?.nickname ?? "Loading..."}`}
+                label={`Email ${
+                  otherMember?.nickname ?? otherMember?.name ?? "Loading..."
+                }`}
                 href={`mailto:${otherMember?.email ?? "Loading..."}`}
                 target="_blank"
                 variant="outlined"
