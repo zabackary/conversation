@@ -1181,10 +1181,12 @@ export const getThemedComponents = (
           },
         },
       },
-      MuiTouchRipple: {
+      MuiButtonBase: {
         styleOverrides: {
-          rippleVisible: {
-            animationDuration: "120ms",
+          root: {
+            "& .MuiTouchRipple-rippleVisible": {
+              animationDuration: "180ms",
+            },
           },
         },
       },
