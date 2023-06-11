@@ -320,7 +320,7 @@ export default function ChatView({
         sx={{
           marginBottom: {
             xs: 12,
-            sm: 0,
+            sm: afterInput ? 2 : 0,
           },
           mx: 1,
         }}
