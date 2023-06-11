@@ -3,12 +3,16 @@ import {
   Avatar,
   Box,
   CircularProgress,
+  Collapse,
   Fade,
+  InputBase,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  TextField,
+  darken,
+  lighten,
+  useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -81,6 +85,7 @@ export default function DmListRoute() {
     }
   };
   const [autocompleteOpen, setAutoCompleteOpen] = useState(false);
+  const theme = useTheme();
   return (
     <ConversationNavigationDrawer
       drawerHeader={<DrawerHeader user={user} />}
@@ -95,33 +100,46 @@ export default function DmListRoute() {
             value={null}
             onChange={handleDmTargetSelect}
             renderInput={(props) => (
-              <TextField
+              <InputBase
                 // eslint-disable-next-line react/jsx-props-no-spreading
-                {...props}
-                variant="filled"
-                InputProps={{
-                  disableUnderline: true,
-                  sx: {
-                    borderRadius: 3,
-                    borderBottomLeftRadius: autocompleteOpen ? 0 : undefined,
-                    borderBottomRightRadius: autocompleteOpen ? 0 : undefined,
-                  },
-                  ...props.InputProps,
-                  endAdornment:
-                    options[0] !== autocompleteInputValue || isLoading ? (
-                      <CircularProgress
-                        color="inherit"
-                        size={20}
-                        sx={{
-                          position: "absolute",
-                          top: "calc(50% - 8px)",
-                          right: "9px",
-                        }}
-                      />
-                    ) : null,
+                {...props.InputProps}
+                fullWidth={props.fullWidth}
+                inputProps={props.inputProps}
+                sx={{
+                  borderRadius: 7,
+                  borderBottomLeftRadius: autocompleteOpen ? 0 : undefined,
+                  borderBottomRightRadius: autocompleteOpen ? 0 : undefined,
+                  height: 56,
+                  paddingLeft: 2,
+                  paddingRight: "16px !important",
+                  background:
+                    theme.palette.mode === "dark"
+                      ? darken(theme.palette.primary.main, 0.8)
+                      : lighten(theme.palette.primary.main, 0.9),
                 }}
-                label="Find or create a DM"
-                placeholder={t("people.searchUsers", { namespace: "channel" })}
+                startAdornment={
+                  <Collapse
+                    in={!autocompleteOpen}
+                    orientation="horizontal"
+                    sx={{ height: 24 }}
+                  >
+                    <MaterialSymbolIcon
+                      icon="search"
+                      size={24}
+                      sx={{ color: theme.palette.onSurfaceVariant.main, mr: 2 }}
+                    />
+                  </Collapse>
+                }
+                endAdornment={
+                  options[0] !== autocompleteInputValue || isLoading ? (
+                    <CircularProgress
+                      color="inherit"
+                      size={20}
+                      sx={{ ml: 2 }}
+                    />
+                  ) : null
+                }
+                placeholder="Find or create a DM"
               />
             )}
             open={autocompleteOpen}
@@ -139,6 +157,14 @@ export default function DmListRoute() {
                 t("people.noUsersFound", { namespace: "channel" })
               )
             }
+            componentsProps={{
+              paper: {
+                sx: {
+                  borderTop: `1px solid ${theme.palette.divider}`,
+                  borderRadius: "0 0 28px 28px",
+                },
+              },
+            }}
             filterOptions={(x) => x}
             onInputChange={(_e, newInputValue, reason) => {
               if (reason !== "reset") setAutocompleteInputValue(newInputValue);
