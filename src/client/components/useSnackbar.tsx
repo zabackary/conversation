@@ -1,10 +1,4 @@
-import {
-  Icon,
-  IconButton,
-  Snackbar,
-  SnackbarProps,
-  styled,
-} from "@mui/material";
+import { IconButton, Snackbar, SnackbarProps, styled } from "@mui/material";
 import {
   ReactNode,
   createContext,
@@ -13,7 +7,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { MaterialSymbol } from "react-material-symbols";
+import MaterialSymbolIcon from "./MaterialSymbolIcon";
 
 const SurfaceIconButton = styled(IconButton)(({ theme }) => ({
   color: theme.palette.inverseOnSurface.main,
@@ -96,7 +90,9 @@ export interface SnackbarProviderProps {
   children: ReactNode;
 }
 
-const defaultDefaultSnackbarOptions = {};
+const defaultDefaultSnackbarOptions = {
+  showCloseButton: true,
+} satisfies Partial<SnackbarOptions>;
 
 export function SnackbarProvider({
   children,
@@ -152,7 +148,7 @@ export function SnackbarProvider({
       setQueue((prev) => prev.slice(1));
       setOpen(true);
     } else if (queue[0] && queue[0].options.urgent && currentMessage && open) {
-      // Close an active snack when a new one is added
+      // Close an active snackbar when a new one is added
       setOpen(false);
     }
   }, [queue, currentMessage, open, removedMessage]);
@@ -162,6 +158,13 @@ export function SnackbarProvider({
       <Snackbar
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...currentMessage?.options.snackbarProps}
+        sx={{
+          bottom: {
+            xs: 88,
+            sm: 24,
+          },
+          ...currentMessage?.options.snackbarProps.sx,
+        }}
         key={currentMessage?.key}
         open={open}
         onClose={handleClose}
@@ -181,9 +184,7 @@ export function SnackbarProvider({
                 sx={{ p: 0.5 }}
                 onClick={handleClose}
               >
-                <Icon>
-                  <MaterialSymbol icon="close" />
-                </Icon>
+                <MaterialSymbolIcon icon="close" />
               </SurfaceIconButton>
             ) : null}
           </>
