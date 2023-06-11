@@ -1,4 +1,15 @@
-import { Chip, Stack } from "@mui/material";
+import {
+  Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  ListItemIcon,
+  MenuItem,
+  Stack,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import Message from "../../../model/message";
 import useBackend from "../../hooks/useBackend";
@@ -8,6 +19,7 @@ import { ChannelBackend } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import ChatView from "../chat/ChatView";
 import { ConversationAppBar } from "../layout";
+import useSnackbar from "../useSnackbar";
 
 export interface DmChannelProps {
   channelId: number;
@@ -56,10 +68,50 @@ export default function DmChannel({ channelId }: DmChannelProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps --- We don't care when the backend changes.
   }, [backend, channelId]);
   const otherMember = channel?.members.find((member) => member.id !== user?.id);
+  const { showSnackbar } = useSnackbar();
+  const [deletionOpen, setDeletionOpen] = useState(false);
+  const handleDeleteChannel = () => {
+    setDeletionOpen(false);
+    if (channel)
+      backend
+        .deleteChannel(channel.id)
+        .then(() => {
+          // TODO: translate
+          showSnackbar("Channel deleted.");
+        })
+        .catch(() => {
+          // TODO: translate
+          showSnackbar("Failed to delete channel.");
+        });
+  };
   // TODO: Translate component
   return (
     <>
-      <ConversationAppBar title={otherMember?.name ?? ""} />
+      <ConversationAppBar
+        title={otherMember?.name ?? ""}
+        overflowItems={
+          <MenuItem onClick={() => setDeletionOpen(true)}>
+            <ListItemIcon>
+              <MaterialSymbolIcon icon="delete" />
+            </ListItemIcon>
+            Close DM
+          </MenuItem>
+        }
+      />
+      <Dialog open={deletionOpen} onClose={() => setDeletionOpen(false)}>
+        {/* TODO: Translate */}
+        <DialogTitle>[untranslated] Close DM?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Once you close a DM, all content within it is deleted forever. There
+            is no &quot;undo&quot; button.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDeletionOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteChannel}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
       {!notFound ? (
         <ChatView
           messages={messages ?? undefined}
@@ -75,7 +127,7 @@ export default function DmChannel({ channelId }: DmChannelProps) {
                 label={`Email ${
                   otherMember?.nickname ?? otherMember?.name ?? "Loading..."
                 }`}
-                href={`mailto:${otherMember?.email ?? "Loading..."}`}
+                href={`mailto:${otherMember?.email ?? ""}`}
                 target="_blank"
                 variant="outlined"
                 component="a"
