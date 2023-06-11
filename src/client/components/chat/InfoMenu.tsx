@@ -82,7 +82,6 @@ export default function InfoMenu({
       pendingChange.membersCanEdit !== channel.membersCanEdit);
   const backend = useBackend();
   const { showSnackbar } = useSnackbar();
-  // TODO: Translate below snackbars
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     backend
@@ -96,9 +95,11 @@ export default function InfoMenu({
             : undefined,
       })
       .then(() => {
+        // TODO: translate
         showSnackbar("Changes saved.");
       })
       .catch(() => {
+        // TODO: translate
         showSnackbar("Failed to save changes.");
       });
   };
@@ -108,9 +109,11 @@ export default function InfoMenu({
     backend
       .deleteChannel(channel.id)
       .then(() => {
+        // TODO: translate
         showSnackbar("Channel deleted.");
       })
       .catch(() => {
+        // TODO: translate
         showSnackbar("Failed to delete channel.");
       });
   };
