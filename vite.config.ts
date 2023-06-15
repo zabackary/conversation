@@ -7,6 +7,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig, loadEnv } from "vite";
 import checker from "vite-plugin-checker";
 import packageJson from "./package.json";
+import devConstantProvider from "./plugins/devConstantProvider";
 import gasTopLevel from "./plugins/gasTopLevel";
 import gasUpload from "./plugins/gasUpload";
 import inlineScript from "./plugins/inlineScript";
@@ -14,6 +15,8 @@ import inlineSvg from "./plugins/inlineSvg";
 import reactAxe from "./plugins/reactAxe";
 
 const exec = promisify(nodeExec);
+
+const DEV_URL = new URL("http://localhost:5173");
 
 export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -26,6 +29,9 @@ export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
       ).stdout.trim()}"`,
     },
     envPrefix: "CLIENT_",
+    server: {
+      port: parseInt(DEV_URL.port, 10),
+    },
     build: {
       // Relative to the root
       outDir: "dist",
@@ -85,6 +91,11 @@ export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
       }),
       inlineScript(),
       inlineSvg(),
+      devConstantProvider("APP_CONFIG", {
+        baseURL: DEV_URL.toString(),
+        versionType: "dev",
+        alert: "",
+      } satisfies GlobalAppConfig),
       ...(env.VITE_UPLOADONCOMPLETE ? [gasUpload()] : []),
     ],
   };

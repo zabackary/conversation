@@ -1,17 +1,76 @@
+import normalizeException from "normalize-exception";
+import { injectHTMLConstants } from "../../plugins/devConstantProvider";
 import { DocumentType } from "../client/network/NetworkBackend";
 import { gdc, md } from "./gd2-html/addon/gdc.js";
 
-export function doGet() {
-  let output: GoogleAppsScript.HTML.HtmlOutput | undefined;
+const DEPLOYMENT_EDITOR_HASH = "KmcJi4Ib";
+const DEFAULT_CONFIG = {
+  baseURL: "",
+  versionType: "stable",
+  alert: "",
+};
+const APP_CONFIG_KEY = "app_config";
+
+export function doGet(event: GoogleAppsScript.Events.DoGet) {
+  const output = HtmlService.createHtmlOutput();
   try {
-    output = HtmlService.createHtmlOutputFromFile("index.html");
-  } catch (e) {
-    output = HtmlService.createHtmlOutput(
-      "<h1>Conversation 4</h1><em>Fatal error: Cannot find <code>index.html</code></em>"
+    const scriptProperties = PropertiesService.getScriptProperties();
+    const appConfig = {
+      ...DEFAULT_CONFIG,
+      ...(JSON.parse(
+        scriptProperties.getProperty(APP_CONFIG_KEY) ??
+          JSON.stringify(DEFAULT_CONFIG)
+      ) as GlobalAppConfig),
+    };
+    let fileName;
+    switch (event.pathInfo) {
+      case null:
+      case "/":
+      case undefined:
+      case "": {
+        fileName = "index.html";
+        break;
+      }
+      case `app_deployment_editor_${DEPLOYMENT_EDITOR_HASH}`: {
+        fileName = "updateDetails.html";
+        break;
+      }
+      default: {
+        fileName = "notFound.html";
+        break;
+      }
+    }
+    output.setContent(
+      injectHTMLConstants(
+        HtmlService.createHtmlOutputFromFile(fileName).getContent(),
+        "APP_CONFIG",
+        appConfig
+      )
     );
+  } catch (e) {
+    const exception = normalizeException(e);
+    output.setContent(/* html */ `<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Error</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <h1>Conversation 4</h1>
+  <p>Something went wrong when starting up Conversation. Here's the stack 
+  trace:</p>
+  <pre>
+    ${exception.stack ?? exception.name + exception.message}
+  </pre>
+</body>
+
+</html>`);
+    output.setTitle("Error");
   }
   return output
-    .setTitle("Conversation")
     .addMetaTag(
       "viewport",
       "width=device-width, initial-scale=1, shrink-to-fit=no"
@@ -19,7 +78,14 @@ export function doGet() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT);
 }
 
-export function doPost() {
+export function updateDetails(newDetails: Record<string, unknown>) {
+  console.log("updating:", newDetails);
+  // TODO: Make sure a hash is passed so we can check authenticity
+  const scriptProperties = PropertiesService.getScriptProperties();
+  scriptProperties.setProperty(APP_CONFIG_KEY, JSON.stringify(newDetails));
+}
+
+export function doPost(_event: GoogleAppsScript.Events.DoPost) {
   throw new Error("Conversation does not support HTTP POST.");
 }
 

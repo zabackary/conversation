@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fff" />
+    <title>Conversation - Update details</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <base target="_top" />
+  </head>
+  <body>
+    <header
+      class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom"
+    >
+      <span
+        href="#"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none"
+      >
+        <svg
+          width="40"
+          height="40"
+          clip-rule="evenodd"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-miterlimit="10"
+          version="1.1"
+          viewBox="0 0 40 40"
+          preserveAspectRatio="xMinYMin meet"
+          xml:space="preserve"
+          xmlns="http://www.w3.org/2000/svg"
+          class="mx-2"
+        >
+          <clipPath>
+            <rect width="772" height="662" />
+          </clipPath>
+
+          <path
+            d="m3.8151 36.032c12.927-1.22 33.702-4.7935 33.667-18.635-0.16102-8.3134-11.084-9.9896-16.834-6.8581 2.4549-6.3048-8.869-6.2569-12.801-3.0526-3.9323 3.2042-6.0412 8.6679-5.1407 15.453s3.7747 7.2416 1.1084 13.093z"
+            fill="#f58b86"
+            stroke-width=".11141"
+          />
+          <path
+            d="m3.8151 36.032c14.07-5.0035 16.834-25.493 16.834-25.493"
+            clip-rule="evenodd"
+            fill="none"
+            stroke="#f37670"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width=".2"
+          />
+          <g fill="#fff" stroke-width=".14475">
+            <circle cx="12.586" cy="20" r="2.115" />
+            <circle
+              cx="20"
+              cy="20"
+              r="2.115"
+              clip-rule="evenodd"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <circle
+              cx="27.414"
+              cy="20"
+              r="2.115"
+              clip-rule="evenodd"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+        </svg>
+        <ol class="breadcrumb fs-4 mb-0">
+          <li class="breadcrumb-item">Conversation</li>
+          <li class="breadcrumb-item active">App deployment editor</li>
+        </ol>
+      </span>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a href="{{!CONFIG-baseURL!}}" class="nav-link">Back to main app</a>
+        </li>
+      </ul>
+    </header>
+    <main class="container">
+      <div class="alert alert-warning" role="alert">
+        <h4 class="alert-heading">This is an admin app.</h4>
+        <p class="mb-0">
+          You probably shouldn't be here. I don't know how you found this, but
+          it's an admin app for admins, not for you.
+        </p>
+      </div>
+      <form>
+        <div class="mb-3">
+          <label class="form-label">App root URL</label>
+          <input
+            type="text"
+            class="form-control"
+            name="baseURL"
+            value="{{!CONFIG-baseURL!}}"
+          />
+          <div class="form-text">
+            Include the # hash symbol, e.g.
+            <code>https://script.google.com/...#</code>, but not the slash.
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Deployment type</label>
+          <input
+            type="text"
+            class="form-control"
+            name="versionType"
+            value="{{!CONFIG-versionType!}}"
+          />
+          <div class="form-text">
+            Should satisfy the type
+            <code>"dev" | "nightly" | "beta" | "stable"</code>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Front-page alert</label>
+          <input
+            type="text"
+            class="form-control"
+            name="alert"
+            value="{{!CONFIG-alert!}}"
+          />
+          <div class="form-text">Set to nothing to disable.</div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </main>
+    <script>
+      document.querySelector("form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const newDetails = Object.fromEntries(
+          new FormData(e.currentTarget).entries()
+        );
+        google.script.run
+          .withSuccessHandler(() => {
+            alert("Updated");
+          })
+          .withFailureHandler(() => {
+            alert("Failed");
+          })
+          .updateDetails(newDetails);
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
