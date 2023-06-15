@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   CircularProgress,
-  Collapse,
   Fade,
   InputBase,
   List,
@@ -118,17 +117,11 @@ export default function DmListRoute() {
                       : lighten(theme.palette.primary.main, 0.9),
                 }}
                 startAdornment={
-                  <Collapse
-                    in={!autocompleteOpen}
-                    orientation="horizontal"
-                    sx={{ height: 24 }}
-                  >
-                    <MaterialSymbolIcon
-                      icon="search"
-                      size={24}
-                      sx={{ color: theme.palette.onSurfaceVariant.main, mr: 2 }}
-                    />
-                  </Collapse>
+                  <MaterialSymbolIcon
+                    icon="search"
+                    size={24}
+                    sx={{ color: theme.palette.onSurfaceVariant.main, mr: 2 }}
+                  />
                 }
                 endAdornment={
                   options[0] !== autocompleteInputValue || isLoading ? (
