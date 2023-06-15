@@ -464,6 +464,11 @@ class SupabaseBackendImpl implements NetworkBackend {
             getUser(this.client, this.cache, userId)
           )
         ).getSnapshot(),
+        ...(await Promise.all(
+          initialMembers.map((memberId) =>
+            getUser(this.client, this.cache, memberId)
+          )
+        )),
       ],
     };
     this.cache.putChannel(channel);
