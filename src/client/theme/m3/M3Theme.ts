@@ -1194,6 +1194,9 @@ export const getThemedComponents = (
       MuiButtonBase: {
         styleOverrides: {
           root: {
+            "& .MuiTouchRipple-root": {
+              opacity: 0.5,
+            },
             "& .MuiTouchRipple-rippleVisible": {
               animationDuration: "180ms",
             },

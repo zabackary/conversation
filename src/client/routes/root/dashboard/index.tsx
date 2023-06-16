@@ -83,6 +83,21 @@ export default function DashboardRoute() {
           </ul>
         </CardContent>
       </Card>
+      <Card sx={{ mb: 1 }}>
+        <CardContent>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <MaterialSymbolIcon icon="language" size={14} sx={{ mr: 0.5 }} />
+            Localization
+          </Typography>
+          <Typography variant="h5" component="div" mb={1.5}>
+            Translation status
+          </Typography>
+          <Typography variant="body2">
+            Some parts of the UI remain untranslated; however, you can help
+            contribute.
+          </Typography>
+        </CardContent>
+      </Card>
     </Box>
   );
 }
