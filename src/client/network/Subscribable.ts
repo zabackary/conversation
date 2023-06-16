@@ -1,6 +1,8 @@
 // TODO move to directory
 /* eslint-disable max-classes-per-file */
 
+import normalizeException from "normalize-exception";
+
 export default class Subscribable<T>
   implements SubscribableLike<T>, AsyncIterable<T>
 {
@@ -70,6 +72,22 @@ export default class Subscribable<T>
       });
       mapper(this.getSnapshot()).then(next).catch(nextError);
     }, initial);
+  }
+
+  mapSync<U>(mapper: (value: T) => U) {
+    return new Subscribable<U>((next, nextError) => {
+      this.subscribe(({ value, error }) => {
+        if (error) {
+          nextError(error);
+          return;
+        }
+        try {
+          next(mapper(value));
+        } catch (e) {
+          nextError(normalizeException(e));
+        }
+      });
+    }, mapper(this.getSnapshot()));
   }
 
   filter<U extends T>(predicate: (value: T) => value is U, initial: U) {
