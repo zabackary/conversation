@@ -84,26 +84,27 @@ class SupabaseBackendImpl implements NetworkBackend {
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(
       this.client,
       this.cache
-    ).filter<RegisteredUser | null>((value): value is RegisteredUser | null => {
+    ).mapSync<RegisteredUser | null>((value) => {
       if (value === NEEDS_ONBOARDING) {
         this.attributes.dispatch({
           recovery: false,
           onboarding: true,
         });
-      } else if (value === PASSWORD_RECOVERY) {
+        return null;
+      }
+      if (value === PASSWORD_RECOVERY) {
         this.attributes.dispatch({
           recovery: true,
           onboarding: false,
         });
-      } else {
-        this.attributes.dispatch({
-          recovery: false,
-          onboarding: false,
-        });
-        return true;
+        return null;
       }
-      return false;
-    }, null);
+      this.attributes.dispatch({
+        recovery: false,
+        onboarding: false,
+      });
+      return value;
+    });
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
@@ -502,6 +503,9 @@ class SupabaseBackendImpl implements NetworkBackend {
     const { error } = await this.client.auth.signUp({
       email: newUser.email,
       password,
+      options: {
+        emailRedirectTo: `${APP_CONFIG.baseURL}/account_setup/`,
+      },
     });
     if (error) throw error;
   }
