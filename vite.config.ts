@@ -94,7 +94,7 @@ export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
       devConstantProvider("APP_CONFIG", {
         baseURL: DEV_URL.toString(),
         versionType: "dev",
-        alert: "",
+        alert: "Test alert. This is the DEBUG version of Conversation.",
       } satisfies GlobalAppConfig),
       ...(env.VITE_UPLOADONCOMPLETE ? [gasUpload()] : []),
     ],
