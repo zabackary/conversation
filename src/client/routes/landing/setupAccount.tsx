@@ -17,9 +17,12 @@ import {
 } from "@mui/material";
 import confetti from "canvas-confetti";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../components/ImagePicker";
 import LoadingButton from "../../components/LoadingButton";
 import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
+import useSnackbar from "../../components/useSnackbar";
+import useBackend from "../../hooks/useBackend";
 
 export default function SetupAccountRoute() {
   const [activeStep, setActiveStep] = useState(0);
@@ -34,15 +37,39 @@ export default function SetupAccountRoute() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleComplete = () => {
-    setIsLoading(true);
-  };
-
   const [name, setName] = useState("");
 
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
 
   const [nickname, setNickname] = useState("");
+
+  const backend = useBackend();
+
+  const { showSnackbar } = useSnackbar();
+
+  const navigate = useNavigate();
+
+  const handleComplete = () => {
+    setIsLoading(true);
+    backend
+      .setUserDetails({
+        name,
+        profilePicture: profilePicture ?? undefined,
+        nickname,
+      })
+      .then(() => {
+        // Bad workaround for waiting for the user to refresh.
+        setTimeout(() => {
+          navigate("/app");
+        }, 1500);
+      })
+      .catch(() => {
+        showSnackbar("Something went wrong.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement | null>(null);
 
