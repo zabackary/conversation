@@ -49,6 +49,11 @@ export enum DocumentType {
   PRIVACY_POLICY,
 }
 
+export interface BackendAttributes {
+  onboarding: boolean;
+  recovery: boolean;
+}
+
 export default interface NetworkBackend {
   /**
    * A promise resolving when the backend is finished initializing. If not,
@@ -63,6 +68,11 @@ export default interface NetworkBackend {
   connectionState: Subscribable<
     "connecting" | "connected" | "reconnecting" | "error"
   >;
+
+  /**
+   * The backend's current special auth stuff.
+   */
+  attributes: Subscribable<BackendAttributes>;
 
   /**
    * Gets a legal document as Markdown.

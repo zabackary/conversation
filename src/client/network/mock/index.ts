@@ -20,6 +20,7 @@ import {
   validateUrl,
 } from "../../../shared/validation";
 import NetworkBackend, {
+  BackendAttributes,
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
@@ -255,4 +256,14 @@ export default class MockBackend implements NetworkBackend {
   searchUsers(query: string): Promise<User[]> {
     throw new Error("Not implemented yet");
   }
+
+  attributes = new Subscribable<BackendAttributes>(
+    () => {
+      // No-op
+    },
+    {
+      onboarding: false,
+      recovery: false,
+    }
+  );
 }

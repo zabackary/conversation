@@ -13,6 +13,7 @@ import User, {
   UserId,
 } from "../../model/user";
 import NetworkBackend, {
+  BackendAttributes,
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
@@ -60,6 +61,12 @@ export default class QueuedBackend implements NetworkBackend {
     this.connectionState = this.deferredSubscribable(
       (backend) => backend.connectionState
     ).map((value) => Promise.resolve(value || "connecting"), "connecting");
+    this.attributes = this.deferredSubscribable(
+      (backend) => backend.attributes
+    ).filter((attributes): attributes is BackendAttributes => !!attributes, {
+      onboarding: false,
+      recovery: false,
+    });
   }
 
   private deferredSubscribable<T>(
@@ -87,6 +94,8 @@ export default class QueuedBackend implements NetworkBackend {
   connectionState: Subscribable<
     "connecting" | "connected" | "reconnecting" | "error"
   >;
+
+  attributes: Subscribable<BackendAttributes>;
 
   getInvitedChannels(
     offset: number,

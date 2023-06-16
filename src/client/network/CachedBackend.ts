@@ -13,6 +13,7 @@ import User, {
   UserId,
 } from "../../model/user";
 import NetworkBackend, {
+  BackendAttributes,
   ChannelBackend,
   ChannelDetails,
   ChannelJoinInfo,
@@ -27,9 +28,12 @@ export default class CachedBackend implements NetworkBackend {
     "connecting" | "connected" | "reconnecting" | "error"
   >;
 
+  attributes: Subscribable<BackendAttributes>;
+
   constructor(private mirroredBackend: NetworkBackend) {
     this.isReady = mirroredBackend.isReady;
     this.connectionState = mirroredBackend.connectionState;
+    this.attributes = mirroredBackend.attributes;
   }
 
   getInvitedChannels(
