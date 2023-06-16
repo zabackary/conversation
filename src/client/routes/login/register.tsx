@@ -21,12 +21,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { FormEvent, useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Link as RouterLink,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import Document from "../../components/Document";
 import LoadingButton from "../../components/LoadingButton";
 import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
@@ -51,8 +46,6 @@ export default function LoginRegisterRoute() {
   const navigate = useNavigate();
   const [invalid, setInvalid] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchParams, _setSearchParams] = useSearchParams();
-  const next = searchParams.get("next");
   const formData = useRef<FormData>();
   const [isTermsDialogOpen, setIsTermsDialogOpen] = useState(false);
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -85,7 +78,7 @@ export default function LoginRegisterRoute() {
       )
       .then(() => {
         setLoading(false);
-        navigate(next ?? "/");
+        navigate("/register_onboarding");
       })
       .catch((error) => {
         setLoading(false);

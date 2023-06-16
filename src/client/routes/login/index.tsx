@@ -19,6 +19,7 @@ import {
 import { SwitchTransition } from "react-transition-group";
 import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
 import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
+import useBackendAttributes from "../../hooks/useBackendAttributes";
 import useRouteForward from "../../hooks/useRouteForward";
 import useUser from "../../hooks/useUser";
 
@@ -30,11 +31,22 @@ export default function LoginRootRoute() {
   const user = useUser(false);
   const navigate = useNavigate();
   const [searchParams, _setSearchParams] = useSearchParams();
+  const attributes = useBackendAttributes();
   useEffect(() => {
-    if (user !== null && searchParams.has("next")) {
+    if (attributes?.onboarding) {
+      navigate("/account_setup", { replace: true });
+    } else if (attributes?.recovery) {
+      navigate("/app/settings/account", { replace: true });
+    } else if (user !== null && searchParams.has("next")) {
       navigate(searchParams.get("next") ?? "/", { replace: true });
     }
-  }, [user, searchParams, navigate]);
+  }, [
+    user,
+    searchParams,
+    navigate,
+    attributes?.onboarding,
+    attributes?.recovery,
+  ]);
   const { i18n } = useTranslation();
   const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
   const handleLanguagePickerClose = (language: string | undefined) => {
