@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertTitle,
   AppBar,
   Box,
   Button,
@@ -197,6 +199,12 @@ export default function LandingRoute() {
       </AppBar>
       <Box component="main" p={2}>
         <Toolbar />
+        {APP_CONFIG.alert !== "" ? (
+          <Alert severity="error" variant="filled" sx={{ mb: 2 }}>
+            <AlertTitle>App status alert</AlertTitle>
+            {APP_CONFIG.alert}
+          </Alert>
+        ) : null}
         <Box
           component="header"
           p={4}
