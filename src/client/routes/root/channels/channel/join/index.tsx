@@ -240,13 +240,15 @@ export default function ChannelJoinScreen() {
             >
               {publicChannels ? (
                 publicChannels.length > 0 ? (
-                  publicChannels.map((invite) => (
-                    <ChannelCard
-                      invite={invite}
-                      key={invite.id}
-                      handleAccept={handleAccept}
-                    />
-                  ))
+                  publicChannels
+                    .sort((invite) => (invite.name === "Main Channel" ? -1 : 0))
+                    .map((invite) => (
+                      <ChannelCard
+                        invite={invite}
+                        key={invite.id}
+                        handleAccept={handleAccept}
+                      />
+                    ))
                 ) : (
                   <Stack direction="row" spacing={1}>
                     <MaterialSymbolIcon icon="music_note" />

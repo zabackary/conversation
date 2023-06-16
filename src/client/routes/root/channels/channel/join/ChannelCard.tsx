@@ -67,7 +67,18 @@ function BaseChannelCard({
       });
   };
   return (
-    <Card variant="filled" sx={{ width: "min(100%, 280px)" }}>
+    <Card
+      variant="filled"
+      sx={{
+        width: "min(100%, 280px)",
+        backgroundColor:
+          invite.name === "Main Channel" ? "primaryContainer.main" : undefined,
+        color:
+          invite.name === "Main Channel"
+            ? "onPrimaryContainer.main"
+            : undefined,
+      }}
+    >
       <CardActionArea onClick={handleAcceptClick}>
         <CardHeader
           avatar={

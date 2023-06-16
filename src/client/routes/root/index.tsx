@@ -209,7 +209,11 @@ export default function RootRoute() {
       </Container>
     );
   return isReady ? (
-    <Stack direction={isMobile ? "column" : "row"} height="100%">
+    <Stack
+      direction={isMobile ? "column" : "row"}
+      height="100%"
+      onContextMenu={(e) => isMobile && e.preventDefault()}
+    >
       <Box width={navigationRailWidth}>
         <ConversationNavigationRail mobile={isMobile} />
       </Box>
