@@ -6,16 +6,22 @@ import convertUser from "./converters/convertUser";
 import getUser from "./getters/getUser";
 import { ConversationSupabaseClient } from "./utils";
 
-export const NEEDS_ONBOARDING = Symbol("onboarding");
-export const PASSWORD_RECOVERY = Symbol("recovery");
+export enum UserAuthStatus {
+  NEEDS_ONBOARDING,
+  PASSWORD_RECOVERY,
+}
+
+export interface LoggedInUserSubscribableResponse {
+  status?: UserAuthStatus;
+  user?: RegisteredUser;
+  id?: string;
+}
 
 export default function getLoggedInUserSubscribable(
   client: ConversationSupabaseClient,
   cache: SupabaseCache
 ) {
-  return new Subscribable<
-    RegisteredUser | typeof NEEDS_ONBOARDING | typeof PASSWORD_RECOVERY | null
-  >(async (next) => {
+  return new Subscribable<LoggedInUserSubscribableResponse>(async (next) => {
     let userId: string | undefined;
     await new Promise((resolve) => {
       setTimeout(resolve, 1);
@@ -42,45 +48,26 @@ export default function getLoggedInUserSubscribable(
             // Noop
           }
           if (!userMetadata) {
-            next(NEEDS_ONBOARDING);
-            /*
-            // TODO: Make this good UI
-            // eslint-disable-next-line no-restricted-globals
-            if (confirm("Let's set up your account.")) {
-              const name = prompt("Name?") ?? "";
-              const nickname = prompt("Nickname?") ?? "";
-              const profilePicture = prompt("Profile picture URL?");
-              next({
-                ...newSession.user,
-                email: newSession.user.email ?? "",
-                name,
-                nickname,
-                privilegeLevel: PrivilegeLevel.Unverified,
-                profilePicture: profilePicture ?? undefined,
-                active: false,
-                banner: undefined,
-                isBot: false,
-                disabled: false,
-              });
-              await client.from("users").insert({
-                id: newSession.user.id,
-                is_bot: false,
-                name,
-                nickname,
-                verified: false,
-                banner_url: null,
-                profile_picture_url: profilePicture,
-              });
-            } */
+            next({
+              status: UserAuthStatus.NEEDS_ONBOARDING,
+              id: userId,
+            });
           } else {
-            next(convertUser(userMetadata) as RegisteredUser);
+            next({
+              status:
+                event === "PASSWORD_RECOVERY"
+                  ? UserAuthStatus.PASSWORD_RECOVERY
+                  : undefined,
+              user: convertUser(userMetadata) as RegisteredUser,
+              id: userId,
+            });
           }
           break;
         }
         case "USER_DELETED":
         case "SIGNED_OUT": {
           userId = undefined;
-          next(null);
+          next({});
           break;
         }
         default:
@@ -97,5 +84,5 @@ export default function getLoggedInUserSubscribable(
     client.auth.onAuthStateChange((...args) => {
       void handleAuthChanged(...args);
     });
-  }, null);
+  }, {});
 }

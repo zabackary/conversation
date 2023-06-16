@@ -246,6 +246,12 @@ export default class MockBackend implements NetworkBackend {
     }, null);
   }
 
+  setUserDetails(
+    details: Pick<RegisteredUser, "name" | "nickname" | "profilePicture">
+  ): Promise<void> {
+    throw new Error("Unimplemented");
+  }
+
   clearCache() {
     console.log("Cache cleared, but there is no cache! :D");
     return new Promise<void>((resolve) => {

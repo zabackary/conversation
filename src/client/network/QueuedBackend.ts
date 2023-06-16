@@ -109,6 +109,12 @@ export default class QueuedBackend implements NetworkBackend {
     );
   }
 
+  setUserDetails(
+    details: Pick<RegisteredUser, "name" | "nickname" | "profilePicture">
+  ): Promise<void> {
+    return this.deferredPromise((backend) => backend.setUserDetails(details));
+  }
+
   openDM(user: UserId): Promise<number> {
     return this.deferredPromise((backend) => backend.openDM(user));
   }

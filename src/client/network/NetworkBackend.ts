@@ -75,6 +75,15 @@ export default interface NetworkBackend {
   attributes: Subscribable<BackendAttributes>;
 
   /**
+   * Upsert user details.
+   *
+   * @param details The new details to upsert.
+   */
+  setUserDetails(
+    details: Pick<RegisteredUser, "name" | "nickname" | "profilePicture">
+  ): Promise<void>;
+
+  /**
    * Gets a legal document as Markdown.
    */
   getDocument(documentType: DocumentType): Promise<string>;

@@ -30,8 +30,7 @@ import convertChannel from "./converters/convertChannel";
 import convertMessage from "./converters/convertMessage";
 import convertUser from "./converters/convertUser";
 import getLoggedInUserSubscribable, {
-  NEEDS_ONBOARDING,
-  PASSWORD_RECOVERY,
+  UserAuthStatus,
 } from "./getLoggedInUserSubscribable";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
@@ -70,6 +69,8 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   private gasBackend = new GasBackend();
 
+  private lastUserId: string | undefined;
+
   constructor() {
     if (
       process.env.NODE_ENV === "development" ||
@@ -85,25 +86,26 @@ class SupabaseBackendImpl implements NetworkBackend {
       this.client,
       this.cache
     ).mapSync<RegisteredUser | null>((value) => {
-      if (value === NEEDS_ONBOARDING) {
+      if (value.id) this.lastUserId = value.id;
+      if (value.status === UserAuthStatus.NEEDS_ONBOARDING) {
         this.attributes.dispatch({
           recovery: false,
           onboarding: true,
         });
         return null;
       }
-      if (value === PASSWORD_RECOVERY) {
+      if (value.status === UserAuthStatus.PASSWORD_RECOVERY) {
         this.attributes.dispatch({
           recovery: true,
           onboarding: false,
         });
-        return null;
+        return value.user ?? null;
       }
       this.attributes.dispatch({
         recovery: false,
         onboarding: false,
       });
-      return value;
+      return value.user ?? null;
     });
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
@@ -149,6 +151,21 @@ class SupabaseBackendImpl implements NetworkBackend {
       }
     });
     this.connectionState = dispatchableConnectionState.downgrade();
+  }
+
+  async setUserDetails(
+    details: Pick<RegisteredUser, "name" | "nickname" | "profilePicture">
+  ): Promise<void> {
+    if (!this.lastUserId)
+      throw new Error("Can't find logged in user to set details of");
+    const { error } = await this.client.from("users").upsert({
+      name: details.name,
+      id: this.lastUserId,
+      is_bot: false,
+      nickname: details.nickname ?? "",
+      verified: false,
+    });
+    if (error) throw error;
   }
 
   async acceptInvite(id: number): Promise<void> {

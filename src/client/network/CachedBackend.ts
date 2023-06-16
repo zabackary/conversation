@@ -67,6 +67,12 @@ export default class CachedBackend implements NetworkBackend {
     return this.mirroredBackend.deleteChannel(id);
   }
 
+  setUserDetails(
+    details: Pick<RegisteredUser, "name" | "nickname" | "profilePicture">
+  ): Promise<void> {
+    return this.mirroredBackend.setUserDetails(details);
+  }
+
   createChannel(
     name: string,
     description: string,
