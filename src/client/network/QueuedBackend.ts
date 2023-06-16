@@ -63,10 +63,13 @@ export default class QueuedBackend implements NetworkBackend {
     ).map((value) => Promise.resolve(value || "connecting"), "connecting");
     this.attributes = this.deferredSubscribable(
       (backend) => backend.attributes
-    ).filter((attributes): attributes is BackendAttributes => !!attributes, {
-      onboarding: false,
-      recovery: false,
-    });
+    ).mapSync(
+      (attributes) =>
+        attributes || {
+          onboarding: false,
+          recovery: false,
+        }
+    );
   }
 
   private deferredSubscribable<T>(
