@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import confetti from "canvas-confetti";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ImagePicker from "../../components/ImagePicker";
 import LoadingButton from "../../components/LoadingButton";
 import MaterialSymbolIcon from "../../components/MaterialSymbolIcon";
@@ -47,8 +46,6 @@ export default function SetupAccountRoute() {
 
   const { showSnackbar } = useSnackbar();
 
-  const navigate = useNavigate();
-
   const handleComplete = () => {
     setIsLoading(true);
     backend
@@ -58,10 +55,7 @@ export default function SetupAccountRoute() {
         nickname,
       })
       .then(() => {
-        // Bad workaround for waiting for the user to refresh.
-        setTimeout(() => {
-          navigate("/app");
-        }, 1500);
+        window.open(`${APP_CONFIG.baseURL}/app`, "_top");
       })
       .catch(() => {
         showSnackbar("Something went wrong.");
