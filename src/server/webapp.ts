@@ -23,20 +23,24 @@ export function doGet(event: GoogleAppsScript.Events.DoGet) {
       ) as GlobalAppConfig),
     };
     let fileName;
+    let title;
     switch (event.pathInfo) {
       case null:
       case "/":
       case undefined:
       case "": {
         fileName = "index.html";
+        title = "Conversation";
         break;
       }
       case `app_deployment_editor_${DEPLOYMENT_EDITOR_HASH}`: {
         fileName = "updateDetails.html";
+        title = "Deployment details";
         break;
       }
       default: {
         fileName = "notFound.html";
+        title = "Conversation / 404";
         break;
       }
     }
@@ -47,6 +51,7 @@ export function doGet(event: GoogleAppsScript.Events.DoGet) {
         appConfig
       )
     );
+    output.setTitle(title);
   } catch (e) {
     const exception = normalizeException(e);
     output.setContent(/* html */ `<!DOCTYPE html>
@@ -60,7 +65,7 @@ export function doGet(event: GoogleAppsScript.Events.DoGet) {
 
 <body>
   <h1>Conversation 4</h1>
-  <p>Something went wrong when starting up Conversation. Here's the stack 
+  <p>Something went wrong when starting up Conversation (500). Here's the stack 
   trace:</p>
   <pre>
     ${exception.stack ?? exception.name + exception.message}
@@ -68,7 +73,7 @@ export function doGet(event: GoogleAppsScript.Events.DoGet) {
 </body>
 
 </html>`);
-    output.setTitle("Error");
+    output.setTitle("Conversation / 500");
   }
   return output
     .addMetaTag(

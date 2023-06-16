@@ -55,7 +55,12 @@ export default function SetupAccountRoute() {
         nickname,
       })
       .then(() => {
-        window.open(`${APP_CONFIG.baseURL}/app`, "_top");
+        window.open(
+          APP_CONFIG.baseURL.at(-1) === "#"
+            ? APP_CONFIG.baseURL.slice(0, -1)
+            : APP_CONFIG.baseURL,
+          "_top"
+        );
       })
       .catch(() => {
         showSnackbar("Something went wrong.");
