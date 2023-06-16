@@ -814,6 +814,16 @@ export const getThemedComponents = (
           },
         ],
       },
+      MuiAlert: {
+        styleOverrides: {
+          root: {
+            borderRadius: 32,
+          },
+          icon: {
+            alignItems: "center",
+          },
+        },
+      },
       MuiPaper: {
         styleOverrides: {
           root: {
