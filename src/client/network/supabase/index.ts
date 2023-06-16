@@ -50,7 +50,7 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   private cache = new SupabaseCache();
 
-  private loggedInUserSubscribable: Subscribable<RegisteredUser | null>;
+  private loggedInUserSubscribable!: Subscribable<RegisteredUser | null>;
 
   isReady: Promise<void>;
 
@@ -71,17 +71,7 @@ class SupabaseBackendImpl implements NetworkBackend {
 
   private lastUserId: string | undefined;
 
-  constructor() {
-    if (
-      process.env.NODE_ENV === "development" ||
-      process.env.NODE_ENV === "local"
-    ) {
-      console.log(
-        "Supabase client started initialization. Client is available at window.supabaseClient for debugging since NODE_ENV=development."
-      );
-      // @ts-ignore This property is write-only and I don't really care about types.
-      window.supabaseClient = this.client;
-    }
+  private initializeLoggedInUserSubscribable() {
     this.loggedInUserSubscribable = getLoggedInUserSubscribable(
       this.client,
       this.cache
@@ -107,6 +97,20 @@ class SupabaseBackendImpl implements NetworkBackend {
       });
       return value.user ?? null;
     });
+  }
+
+  constructor() {
+    if (
+      process.env.NODE_ENV === "development" ||
+      process.env.NODE_ENV === "local"
+    ) {
+      console.log(
+        "Supabase client started initialization. Client is available at window.supabaseClient for debugging since NODE_ENV=development."
+      );
+      // @ts-ignore This property is write-only and I don't really care about types.
+      window.supabaseClient = this.client;
+    }
+    this.initializeLoggedInUserSubscribable();
     this.isReady = new Promise((resolve, reject) => {
       this.client.auth
         .initialize()
@@ -166,6 +170,8 @@ class SupabaseBackendImpl implements NetworkBackend {
       verified: false,
     });
     if (error) throw error;
+    // Force refresh of user object
+    this.initializeLoggedInUserSubscribable();
   }
 
   async acceptInvite(id: number): Promise<void> {
