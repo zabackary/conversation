@@ -22,7 +22,7 @@
     "@babel/traverse": "^7.20.13",
     "@babel/types": "^7.20.7",
     "@emotion/react": "^11.10.5",
-    "@emotion/styled": "^11.10.5",
+    "@emotion/styled": "^11.11.0",
     "@google/clasp": "^2.4.2",
     "@types/babel__generator": "^7.6.4",
     "@types/babel__template": "^7.4.1",
