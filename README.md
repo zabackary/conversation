@@ -3,6 +3,10 @@
 Conversation is a chat app built from the ground up to be safe for students to
 use for communicating with peers about projects, life, and more.
 
+## Bugs
+
+If you're an end user and you're having a problem, don't hesitate to report a bug. Either send it to my email (using the "Send feedback" option in the overflow menu) or create a new GitHub issue.
+
 ## Features
 
 ### _Simple_
