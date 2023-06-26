@@ -64,7 +64,6 @@ export default function getLoggedInUserSubscribable(
           }
           break;
         }
-        case "USER_DELETED":
         case "SIGNED_OUT": {
           userId = undefined;
           next({});
