@@ -622,10 +622,10 @@ class SupabaseBackendImpl implements NetworkBackend {
     // Find a member attached to a valid DM (array is for extra-safe types)
     const candidate = data.find(
       (member) => member.channels !== null && !Array.isArray(member.channels)
-    ) as { channels: { id: number } } | null;
-    if (candidate) {
+    ) as { channels: { id: number }[] } | null;
+    if (candidate && candidate.channels[0]) {
       // Yay, found the channel. Return it.
-      return candidate.channels.id;
+      return candidate.channels[0].id;
     }
     return (
       await this.createChannel(
