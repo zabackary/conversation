@@ -10,7 +10,7 @@
     "build:server-dev": "cross-env NODE_ENV=production VITE_ONLYSERVER=1 VITE_UPLOADONCOMPLETE=1 VITE_SECONDPASS=1 vite build --watch",
     "upload": "clasp push",
     "deploy": "pnpm run build && pnpm run upload",
-    "serve": "cross-env NODE_ENV=local vite serve",
+    "serve": "cross-env NODE_ENV=local vite serve --host",
     "lint": "eslint",
     "update-supabase-types": "supabase gen types typescript --project-id=pcenneuseahncajmkcoe > src/@types/supabase.ts"
   },
