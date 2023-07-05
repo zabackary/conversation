@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@axe-core/react':
-    specifier: ^4.5.2
-    version: 4.5.2
+    specifier: ^4.7.3
+    version: 4.7.3
   '@babel/runtime':
     specifier: ^7.20.6
     version: 7.20.6
@@ -242,10 +242,10 @@ packages:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
 
-  /@axe-core/react@4.5.2:
-    resolution: {integrity: sha512-I592DzOZcNE/o/q9KO92kxnAIHYsFMhhGxaByuIAHio8YeK7DGX1GadqWsNzzZ3qmrsfw1RncXZS43rQs2Bfvw==}
+  /@axe-core/react@4.7.3:
+    resolution: {integrity: sha512-dN2ZqUdaWJNmxEuedJKkAZBBQWs1qj/Aeby2x8ZKMhhcDBGkcT42MRlaOMWTvPG/YosP6RaGi160eFFZ3TiUMg==}
     dependencies:
-      axe-core: 4.5.2
+      axe-core: 4.7.2
       requestidlecallback: 0.3.0
     dev: false
 
@@ -1794,6 +1794,12 @@ packages:
   /axe-core@4.5.2:
     resolution: {integrity: sha512-u2MVsXfew5HBvjsczCv+xlwdNnB1oQR9HlAcsejZttNjKKSkeDNVwB1vMThIUIFI9GoT57Vtk8iQLwqOfAkboA==}
     engines: {node: '>=4'}
+    dev: true
+
+  /axe-core@4.7.2:
+    resolution: {integrity: sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==}
+    engines: {node: '>=4'}
+    dev: false
 
   /axobject-query@2.2.0:
     resolution: {integrity: sha512-Td525n+iPOOyUQIeBfcASuG6uJsDOITl7Mds5gFyerkWiX7qhUTdYUBlSgNMyVqtSJqwpt1kXGLdUt6SykLMRA==}
