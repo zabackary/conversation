@@ -3,19 +3,24 @@ import {
   Avatar,
   Box,
   CircularProgress,
+  Collapse,
   Fade,
+  IconButton,
   InputBase,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Stack,
+  Tooltip,
+  Typography,
   darken,
   lighten,
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMatches, useOutlet } from "react-router-dom";
+import { Link as RouterLink, useMatches, useOutlet } from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { useDebounce } from "use-debounce";
 import User from "../../../../model/user";
@@ -110,7 +115,7 @@ export default function DmListRoute() {
                   borderBottomRightRadius: autocompleteOpen ? 0 : undefined,
                   height: 56,
                   paddingLeft: 2,
-                  paddingRight: "16px !important",
+                  paddingRight: "0 !important",
                   background:
                     theme.palette.mode === "dark"
                       ? darken(theme.palette.primary.main, 0.8)
@@ -124,13 +129,43 @@ export default function DmListRoute() {
                   />
                 }
                 endAdornment={
-                  options[0] !== autocompleteInputValue || isLoading ? (
-                    <CircularProgress
-                      color="inherit"
-                      size={20}
-                      sx={{ ml: 2 }}
-                    />
-                  ) : null
+                  <>
+                    {options[0] !== autocompleteInputValue || isLoading ? (
+                      <CircularProgress
+                        color="inherit"
+                        size={20}
+                        sx={{ ml: 1, mr: 2 }}
+                      />
+                    ) : null}
+                    <Collapse
+                      in={!autocompleteOpen}
+                      orientation="horizontal"
+                      sx={{
+                        borderRadius: 7,
+                      }}
+                    >
+                      <Tooltip title="DM invites">
+                        <IconButton
+                          sx={{
+                            ml: 1,
+                            mr: 2,
+                            backgroundColor:
+                              theme.palette.primaryContainer.main,
+                          }}
+                          component={RouterLink}
+                          to="/app/dms"
+                        >
+                          <MaterialSymbolIcon
+                            icon="contacts"
+                            size={18}
+                            sx={{
+                              color: theme.palette.onSurfaceVariant.main,
+                            }}
+                          />
+                        </IconButton>
+                      </Tooltip>
+                    </Collapse>
+                  </>
                 }
                 placeholder="Find or create a DM"
               />
@@ -141,7 +176,21 @@ export default function DmListRoute() {
             noOptionsText={
               // eslint-disable-next-line no-nested-ternary
               autocompleteInputValue === "" ? (
-                t("people.searchUsers", { namespace: "channel" })
+                <Stack alignItems="center">
+                  <Avatar
+                    sx={{
+                      backgroundColor: theme.palette.tertiaryContainer.main,
+                      color: theme.palette.onTertiaryContainer.main,
+                      width: 54,
+                      height: 54,
+                    }}
+                  >
+                    <MaterialSymbolIcon icon="diversity_3" size={36} />
+                  </Avatar>
+                  <Typography my={1}>
+                    {t("people.searchUsers", { namespace: "channel" })}
+                  </Typography>
+                </Stack>
               ) : options[0] !== autocompleteInputValue ? (
                 <Box display="flex" justifyContent="center">
                   <CircularProgress />
