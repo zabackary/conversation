@@ -1,5 +1,7 @@
 import {
   Button,
+  Card,
+  CardHeader,
   Chip,
   Dialog,
   DialogActions,
@@ -120,6 +122,16 @@ export default function DmChannel({ channelId }: DmChannelProps) {
           onSend={(message) => {
             void channelBackend?.send(message);
           }}
+          topAlert={
+            messages?.length === 0 ? (
+              <Card sx={{ m: 2 }} variant="outlined">
+                <CardHeader
+                  title="Welcome to your new DM!"
+                  subheader="The other person will need to accept the invite before they can chat."
+                />
+              </Card>
+            ) : undefined
+          }
           afterInput={
             <Stack direction="row" spacing={1}>
               <Chip

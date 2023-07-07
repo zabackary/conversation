@@ -31,6 +31,7 @@ export interface ChatViewProps {
   channelName?: string;
   afterInput?: ReactNode;
   sx?: SxProps;
+  topAlert?: ReactNode;
 }
 
 export default function ChatView({
@@ -40,6 +41,7 @@ export default function ChatView({
   channelName,
   sx,
   afterInput,
+  topAlert,
 }: ChatViewProps) {
   const [isSticky, setIsSticky] = useState(false);
   const inputRef = useRef<HTMLDivElement | null>(null);
@@ -274,6 +276,7 @@ export default function ChatView({
           </MenuItem>
         */}
         </Menu>
+        {topAlert}
         {messages ? (
           <ChatList
             messages={messages}
