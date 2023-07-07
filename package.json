@@ -1,6 +1,6 @@
 {
   "name": "conversation",
-  "version": "4.0.0-dev",
+  "version": "v4.0.0-alpha.2",
   "description": "A React-powered chatting app for Google Scripts",
   "license": "MIT",
   "type": "module",
