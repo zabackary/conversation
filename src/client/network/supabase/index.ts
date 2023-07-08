@@ -621,11 +621,12 @@ class SupabaseBackendImpl implements NetworkBackend {
     if (error) throw error;
     // Find a member attached to a valid DM (array is for extra-safe types)
     const candidate = data.find(
-      (member) => member.channels !== null && !Array.isArray(member.channels)
-    ) as { channels: { id: number }[] } | null;
-    if (candidate && candidate.channels[0]) {
+      (member) => normalizeJoin(member.channels).length > 0
+    );
+    if (candidate) {
       // Yay, found the channel. Return it.
-      return candidate.channels[0].id;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return normalizeJoin(candidate.channels)[0]!.id;
     }
     return (
       await this.createChannel(

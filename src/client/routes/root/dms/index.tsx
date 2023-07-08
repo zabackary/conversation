@@ -20,7 +20,12 @@ import {
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link as RouterLink, useMatches, useOutlet } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useMatches,
+  useNavigate,
+  useOutlet,
+} from "react-router-dom";
 import { SwitchTransition } from "react-transition-group";
 import { useDebounce } from "use-debounce";
 import User from "../../../../model/user";
@@ -44,6 +49,7 @@ export default function DmListRoute() {
   const [options, setOptions] = useState<[string, User[]]>(["", []]);
   const [debouncedAutocompleteInputValue, { flush: flushInputValue }] =
     useDebounce(autocompleteInputValue, 1500);
+  const navigate = useNavigate();
   const backend = useBackend();
   const { showSnackbar } = useSnackbar();
   useEffect(() => {
@@ -82,9 +88,14 @@ export default function DmListRoute() {
   const handleDmTargetSelect = (event: SyntheticEvent, target: User | null) => {
     if (target) {
       setIsLoading(true);
-      backend.openDM(target.id).finally(() => {
-        setIsLoading(false);
-      });
+      backend
+        .openDM(target.id)
+        .then((channelId) => {
+          navigate(`/app/dms/${channelId}`);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
       setAutocompleteInputValue("");
     }
   };
