@@ -12,7 +12,7 @@ import {
   SxProps,
   Tooltip,
 } from "@mui/material";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
 import Message from "../../../model/message";
@@ -119,17 +119,20 @@ export default function ChatView({
     message: Message;
   } | null>(null);
 
-  const handleContextMenu = (x: number, y: number, message: Message) => {
-    setContextMenu(
-      contextMenu === null
-        ? {
-            mouseX: x + 2,
-            mouseY: y - 6,
-            message,
-          }
-        : null
-    );
-  };
+  const handleContextMenu = useCallback(
+    (x: number, y: number, message: Message) => {
+      setContextMenu((oldContextMenu) =>
+        oldContextMenu === null
+          ? {
+              mouseX: x + 2,
+              mouseY: y - 6,
+              message,
+            }
+          : null
+      );
+    },
+    [setContextMenu]
+  );
 
   const handleClose = (e?: unknown) => {
     setContextMenu(null);
