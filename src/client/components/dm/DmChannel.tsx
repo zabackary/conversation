@@ -155,6 +155,19 @@ export default function DmChannel({ channelId }: DmChannelProps) {
               />
             </Stack>
           }
+          onLoadMore={async () => {
+            if (!channelBackend || !channelBackend.fetchHistory)
+              throw new Error(
+                "Backend not initialized or doesn't support history"
+              );
+            const newMessages = await channelBackend.fetchHistory();
+            if (!newMessages) return true;
+            setMessages((oldMessages) => [
+              ...newMessages,
+              ...(oldMessages ?? []),
+            ]);
+            return false;
+          }}
           sx={{ flexGrow: 1 }}
         />
       ) : (
