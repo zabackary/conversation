@@ -18,6 +18,7 @@ import {
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
+import { useDebouncedCallback } from "use-debounce";
 import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
@@ -79,6 +80,36 @@ export default function ChatView({
 
   const oldMessagesRef = useRef<Message[] | undefined>(undefined);
 
+  const scrollCallback = useDebouncedCallback(() => {
+    if (messages && !isPending && !exhausted && window.scrollY < 200) {
+      const oldHeight = document.body.scrollHeight;
+      setIsPending(true);
+      setTimeout(
+        () =>
+          window.scrollBy({
+            top: document.body.scrollHeight - oldHeight,
+          }),
+        0
+      );
+      onLoadMore()
+        .then((finished) => {
+          if (finished) setExhausted(true);
+          const oldHeight2 = document.body.scrollHeight;
+          setTimeout(() => {
+            window.scrollBy({
+              top: document.body.scrollHeight - oldHeight2,
+            });
+          }, 0);
+        })
+        .catch(() => {
+          showSnackbar("Something went wrong while fetching messages");
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
+    }
+  }, 500);
+
   useEffect(() => {
     const oldMessages = oldMessagesRef.current;
     if (messages && oldMessages === undefined) {
@@ -94,41 +125,11 @@ export default function ChatView({
       });
       oldMessagesRef.current = messages;
     }
-    const scrollListener = (e: Event) => {
-      if (
-        messages &&
-        !isPending &&
-        !exhausted &&
-        (e.currentTarget as Window).scrollY < 20
-      ) {
-        setIsPending(true);
-        onLoadMore()
-          .then((finished) => {
-            if (finished) setExhausted(true);
-          })
-          .catch(() => {
-            showSnackbar("Something went wrong while fetching messages");
-          })
-          .finally(() => {
-            setIsPending(false);
-          });
-      }
-    };
-    window.addEventListener("scroll", scrollListener);
+    window.addEventListener("scroll", scrollCallback);
     return () => {
-      window.removeEventListener("scroll", scrollListener);
+      window.removeEventListener("scroll", scrollCallback);
     };
-  }, [
-    messages,
-    oldMessagesRef,
-    isSticky,
-    isPending,
-    setIsPending,
-    showSnackbar,
-    setExhausted,
-    exhausted,
-    onLoadMore,
-  ]);
+  }, [messages, oldMessagesRef, isSticky, scrollCallback]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
