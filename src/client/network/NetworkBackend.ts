@@ -330,9 +330,19 @@ export interface ChannelBackend {
   disconnect(): Promise<void>;
 
   /**
+   * Gets the messages above the last-known message, or `null` if there are no
+   * more messages.
+   * Ordered from oldest to newest.
+   *
+   * @returns A promise that resolves with a list of `Message`s.
+   */
+  fetchHistory?(): Promise<Message[] | null>;
+
+  /**
    * Gets the existing messages at the time of channel open. This method is
    * *not* intended to be called more than once and is permitted to have
    * suboptimal performance on the server-side implementation.
+   * Ordered from oldest to newest.
    *
    * @returns A promise that resolves with a list of `Message`s.
    */
