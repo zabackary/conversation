@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,8 +10,10 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Stack,
   SxProps,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +22,7 @@ import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import UserTooltip from "../UserTooltip";
+import useSnackbar from "../useSnackbar";
 import AsyncSyntaxHighlighter from "./AsyncSyntaxHighlighter";
 import ChatInput from "./ChatInput";
 import ChatList, { ChatListProps } from "./ChatList";
@@ -27,6 +31,7 @@ import ChatListSkeleton from "./ChatListSkeleton";
 export interface ChatViewProps {
   messages?: Message[];
   onSend: (event: SentMessageEvent) => void;
+  onLoadMore: () => Promise<boolean>;
   username?: string;
   channelName?: string;
   afterInput?: ReactNode;
@@ -42,11 +47,13 @@ export default function ChatView({
   sx,
   afterInput,
   topAlert,
+  onLoadMore,
 }: ChatViewProps) {
   const [isSticky, setIsSticky] = useState(false);
   const inputRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation("channel");
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!inputRef.current || !containerRef.current) return undefined;
@@ -67,6 +74,9 @@ export default function ChatView({
     };
   }, [inputRef, containerRef]);
 
+  const [isPending, setIsPending] = useState(false);
+  const [exhausted, setExhausted] = useState(false);
+
   const oldMessagesRef = useRef<Message[] | undefined>(undefined);
 
   useEffect(() => {
@@ -84,7 +94,41 @@ export default function ChatView({
       });
       oldMessagesRef.current = messages;
     }
-  }, [messages, oldMessagesRef, isSticky]);
+    const scrollListener = (e: Event) => {
+      if (
+        messages &&
+        !isPending &&
+        !exhausted &&
+        (e.currentTarget as Window).scrollY < 20
+      ) {
+        setIsPending(true);
+        onLoadMore()
+          .then((finished) => {
+            if (finished) setExhausted(true);
+          })
+          .catch(() => {
+            showSnackbar("Something went wrong while fetching messages");
+          })
+          .finally(() => {
+            setIsPending(false);
+          });
+      }
+    };
+    window.addEventListener("scroll", scrollListener);
+    return () => {
+      window.removeEventListener("scroll", scrollListener);
+    };
+  }, [
+    messages,
+    oldMessagesRef,
+    isSticky,
+    isPending,
+    setIsPending,
+    showSnackbar,
+    setExhausted,
+    exhausted,
+    onLoadMore,
+  ]);
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -279,6 +323,31 @@ export default function ChatView({
           </MenuItem>
         */}
         </Menu>
+        {isPending ? (
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            my={2}
+          >
+            <CircularProgress size={24} />
+            <Typography>Fetching messages</Typography>
+          </Stack>
+        ) : null}
+        {exhausted ? (
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            my={2}
+          >
+            <Typography>Nothing else here!</Typography>
+          </Stack>
+        ) : null}
         {topAlert}
         {messages ? (
           <ChatList
