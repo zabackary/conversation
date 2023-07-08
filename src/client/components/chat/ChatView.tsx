@@ -87,7 +87,7 @@ export default function ChatView({
   }, [messages, oldMessagesRef, isSticky]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 99999 });
   }, []);
 
   useEffect(() => {
