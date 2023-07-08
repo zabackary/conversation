@@ -52,17 +52,44 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     });
   }
 
-  async listMessages(): Promise<Message[]> {
-    return Promise.all(
-      (await getMessages(this.backend.client, this.cache, this.id, 30)).map(
-        async (dbMessage) => {
-          const message = await convertMessage(dbMessage, (id) =>
-            promiseFromSubscribable(this.backend.getUser(id))
-          );
-          return message;
-        }
-      )
+  /**
+   * The sent date of the earliest known message in this channel.
+   *
+   * `undefined` - hasn't loaded yet.
+   * `null` - we've seen all messages.
+   * `instanceof Date` - has message.
+   */
+  private earliestKnownMessageDate?: Date | null;
+
+  async fetchHistory(): Promise<Message[] | null> {
+    if (this.earliestKnownMessageDate === null) {
+      return null;
+    }
+    if (this.earliestKnownMessageDate === undefined) {
+      throw new Error("Must list messages before fetching history");
+    }
+    return this.listMessages(this.earliestKnownMessageDate);
+  }
+
+  async listMessages(lastDate = new Date()): Promise<Message[]> {
+    const messages = await Promise.all(
+      (
+        await getMessages(
+          this.backend.client,
+          this.cache,
+          this.id,
+          30,
+          lastDate
+        )
+      ).map(async (dbMessage) => {
+        const message = await convertMessage(dbMessage, (id) =>
+          promiseFromSubscribable(this.backend.getUser(id))
+        );
+        return message;
+      })
     );
+    this.earliestKnownMessageDate = messages[0]?.sent ?? null;
+    return messages;
   }
 
   listeners: ((event: ChannelBackendEvent) => void)[] = [];
