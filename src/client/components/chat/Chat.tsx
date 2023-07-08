@@ -173,6 +173,19 @@ export default function Chat({ channelId }: ChatProps) {
             onSend={(message) => {
               void channelBackend?.send(message);
             }}
+            onLoadMore={async () => {
+              if (!channelBackend || !channelBackend.fetchHistory)
+                throw new Error(
+                  "Backend not initialized or doesn't support history"
+                );
+              const newMessages = await channelBackend.fetchHistory();
+              if (!newMessages) return true;
+              setMessages((oldMessages) => [
+                ...newMessages,
+                ...(oldMessages ?? []),
+              ]);
+              return false;
+            }}
           />
         ) : (
           t("notFound")

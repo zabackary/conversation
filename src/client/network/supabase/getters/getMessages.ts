@@ -6,7 +6,7 @@ export default async function getMessages(
   cache: SupabaseCache,
   channelId: number,
   limit = 10,
-  offset = 0
+  lastDate = new Date()
 ) {
   const { data: messages, error } = await client
     .from("messages")
@@ -15,7 +15,8 @@ export default async function getMessages(
     .order("sent_at", {
       ascending: false,
     })
-    .range(offset, offset + limit - 1);
+    .lt("sent_at", lastDate.toISOString())
+    .range(0, limit - 1);
   if (error) throw error;
   const normalizedMessages = messages.map(
     ({ attachments: _, ...message }) => message

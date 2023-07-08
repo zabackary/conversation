@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   createBrowserRouter,
   createHashRouter,
@@ -18,6 +19,8 @@ const router =
     ? createHashRouter(routes)
     : createBrowserRouter(routes);
 
+const MemoizedAppRouter = memo(() => <RouterProvider router={router} />);
+
 export default function App() {
   return (
     <BackendContextProvider>
@@ -25,7 +28,7 @@ export default function App() {
         <M3ThemeSchemeProvider>
           <M3ThemeProvider>
             <SnackbarProvider>
-              <RouterProvider router={router} />
+              <MemoizedAppRouter />
             </SnackbarProvider>
           </M3ThemeProvider>
         </M3ThemeSchemeProvider>
