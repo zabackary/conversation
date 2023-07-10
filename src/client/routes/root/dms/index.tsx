@@ -103,7 +103,7 @@ export default function DmListRoute() {
   const theme = useTheme();
   return (
     <ConversationNavigationDrawer
-      drawerHeader={<DrawerHeader user={user} />}
+      drawerHeader={<DrawerHeader user={user ?? null} />}
       drawerItems={
         <>
           <Autocomplete

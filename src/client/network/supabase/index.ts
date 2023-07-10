@@ -545,7 +545,7 @@ class SupabaseBackendImpl implements NetworkBackend {
             getUser(this.client, this.cache, id)
           )
         )
-          .mapSyncEmpty<User | null>((user) => convertUser(user))
+          .mapSync<User | null>((user) => convertUser(user))
           .pipe(next, nextError);
       }
     );
@@ -559,7 +559,7 @@ class SupabaseBackendImpl implements NetworkBackend {
             getMessage(this.client, this.cache, id)
           )
         )
-          .mapEmpty<Message | null>((message) =>
+          .map<Message | null>((message) =>
             convertMessage(message, (userId) =>
               promiseFromSubscribable(this.getUser(userId))
             )
@@ -586,7 +586,7 @@ class SupabaseBackendImpl implements NetworkBackend {
               : Promise.resolve([]);
           })
         )
-          .mapSyncEmpty<DmChannel[] | null>((channels) =>
+          .mapSync<DmChannel[] | null>((channels) =>
             channels
               .map((channel) => convertChannel(channel))
               .filter<DmChannel>((channel): channel is DmChannel => channel.dm)
@@ -644,7 +644,7 @@ class SupabaseBackendImpl implements NetworkBackend {
               : Promise.resolve([]);
           })
         )
-          .mapSyncEmpty<GroupChannel[] | null>((channels) =>
+          .mapSync<GroupChannel[] | null>((channels) =>
             channels
               .map((channel) => convertChannel(channel))
               .filter<GroupChannel>(
@@ -693,7 +693,7 @@ class SupabaseBackendImpl implements NetworkBackend {
             getChannel(this.client, this.cache, id)
           )
         )
-          .mapSyncEmpty<Channel | null>((user) => convertChannel(user))
+          .mapSync<Channel | null>((user) => convertChannel(user))
           .pipe(next, nextError);
       }
     );

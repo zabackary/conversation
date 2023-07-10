@@ -82,20 +82,7 @@ export default class Subscribable<T>
     return this.value;
   }
 
-  map<U>(mapper: (value: T) => Promise<U>, initial: U) {
-    return new Subscribable<U>((next, nextError) => {
-      this.subscribe(({ value, error }) => {
-        if (error) {
-          nextError(error);
-          return;
-        }
-        mapper(value).then(next).catch(nextError);
-      });
-      mapper(this.getSnapshot()).then(next).catch(nextError);
-    }, initial);
-  }
-
-  mapEmpty<U>(mapper: (value: T) => Promise<U>) {
+  map<U>(mapper: (value: T) => Promise<U>) {
     return Subscribable.fromEmptyGenerator<U>((next, nextError) => {
       this.subscribe(({ value, error }) => {
         if (error) {
@@ -110,22 +97,6 @@ export default class Subscribable<T>
   }
 
   mapSync<U>(mapper: (value: T) => U) {
-    return new Subscribable<U>((next, nextError) => {
-      this.subscribe(({ value, error }) => {
-        if (error) {
-          nextError(error);
-          return;
-        }
-        try {
-          next(mapper(value));
-        } catch (e) {
-          nextError(normalizeException(e));
-        }
-      });
-    }, mapper(this.getSnapshot()));
-  }
-
-  mapSyncEmpty<U>(mapper: (value: T) => U) {
     return new Subscribable<U | typeof Subscribable.EMPTY>(
       (next, nextError) => {
         this.subscribe(({ value, error }) => {

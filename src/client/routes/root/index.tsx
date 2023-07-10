@@ -99,7 +99,7 @@ export default function RootRoute() {
     let message: string | null;
     switch (connectionState) {
       case "connected":
-      case null:
+      case undefined:
         message = "Connected.";
         break;
       case "connecting":

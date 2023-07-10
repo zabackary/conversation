@@ -1,3 +1,4 @@
+import normalizeException from "normalize-exception";
 import { memo } from "react";
 import {
   createBrowserRouter,
@@ -20,6 +21,14 @@ const router =
     : createBrowserRouter(routes);
 
 const MemoizedAppRouter = memo(() => <RouterProvider router={router} />);
+
+window.addEventListener("error", (event) => {
+  document.write(
+    `<pre>Fatal error: ${
+      normalizeException(event.error).stack ?? "failed to get error content"
+    }</pre>`
+  );
+});
 
 export default function App() {
   return (

@@ -17,7 +17,7 @@ export default function ChannelListRoute() {
   const { t } = useTranslation("channel");
   return (
     <ConversationNavigationDrawer
-      drawerHeader={<DrawerHeader user={user} />}
+      drawerHeader={<DrawerHeader user={user ?? null} />}
       drawerItems={
         <>
           <Fab

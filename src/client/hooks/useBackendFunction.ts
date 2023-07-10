@@ -20,7 +20,7 @@ export function useSubscribable<T>(getSubscribable: () => Subscribable<T>) {
       unsubscribe();
     };
   }, [subscribable]);
-  return subscribable.getSnapshot();
+  return subscribable.getMaybeSnapshot();
 }
 
 export default function useBackendFunction<T>(

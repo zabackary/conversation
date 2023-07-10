@@ -194,7 +194,7 @@ export default class MockBackend implements NetworkBackend {
         return channel;
       }
       return null;
-    }, null);
+    });
   }
 
   getCurrentSession(): Subscribable<RegisteredUser | null> {
@@ -243,7 +243,7 @@ export default class MockBackend implements NetworkBackend {
           !channel.dm &&
           channel.members.map((member) => member.id).includes(user.id)
       );
-    }, null);
+    });
   }
 
   setUserDetails(

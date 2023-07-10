@@ -60,7 +60,7 @@ export default class QueuedBackend implements NetworkBackend {
     });
     this.connectionState = this.deferredSubscribable(
       (backend) => backend.connectionState
-    ).map((value) => Promise.resolve(value || "connecting"), "connecting");
+    ).map((value) => Promise.resolve(value || "connecting"));
     this.attributes = this.deferredSubscribable(
       (backend) => backend.attributes
     ).mapSync(
@@ -75,16 +75,18 @@ export default class QueuedBackend implements NetworkBackend {
   private deferredSubscribable<T>(
     factory: (backend: NetworkBackend) => Subscribable<T>
   ) {
-    return new Subscribable<T | null>(async (next, nextError) => {
-      const backend = await this.routeFound;
-      const subscribable = factory(backend);
-      const snapshot = subscribable.getSnapshot();
-      if (snapshot !== null) next(snapshot);
-      subscribable.subscribe(({ value, error }) => {
-        if (!error) next(value);
-        else nextError(error);
-      });
-    }, null);
+    return Subscribable.fromEmptyGenerator<T | null>(
+      async (next, nextError) => {
+        const backend = await this.routeFound;
+        const subscribable = factory(backend);
+        const snapshot = subscribable.getSnapshot();
+        if (snapshot !== null) next(snapshot);
+        subscribable.subscribe(({ value, error }) => {
+          if (!error) next(value);
+          else nextError(error);
+        });
+      }
+    );
   }
 
   private async deferredPromise<T>(
