@@ -538,41 +538,35 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getUser(id: string): Subscribable<User | null> {
-    return new Subscribable<User | null>(async (next, nextError) => {
-      (
-        await this.cache.getUserOrFallback(id, () =>
-          getUser(this.client, this.cache, id)
+    return Subscribable.fromEmptyGenerator<User | null>(
+      async (next, nextError) => {
+        (
+          await this.cache.getUserOrFallback(id, () =>
+            getUser(this.client, this.cache, id)
+          )
         )
-      )
-        .map<User | null>((user) => Promise.resolve(convertUser(user)), null)
-        .subscribe(({ value, error }) => {
-          if (error) nextError(error);
-          else next(value);
-        });
-    }, null);
+          .mapSyncEmpty<User | null>((user) => convertUser(user))
+          .pipe()(next, nextError);
+      }
+    );
   }
 
   getMessage(id: number): Subscribable<Message | null> {
-    return new Subscribable<Message | null>(async (next, nextError) => {
-      (
-        await this.cache.getMessageOrFallback(id, () =>
-          getMessage(this.client, this.cache, id)
+    return Subscribable.fromEmptyGenerator<Message | null>(
+      async (next, nextError) => {
+        (
+          await this.cache.getMessageOrFallback(id, () =>
+            getMessage(this.client, this.cache, id)
+          )
         )
-      )
-        .map<Message | null>(
-          (message) =>
-            Promise.resolve(
-              convertMessage(message, (userId) =>
-                promiseFromSubscribable(this.getUser(userId))
-              )
-            ),
-          null
-        )
-        .subscribe(({ value, error }) => {
-          if (error) nextError(error);
-          else next(value);
-        });
-    }, null);
+          .mapEmpty<Message | null>((message) =>
+            convertMessage(message, (userId) =>
+              promiseFromSubscribable(this.getUser(userId))
+            )
+          )
+          .pipe()(next, nextError);
+      }
+    );
   }
 
   getUserActivity(_user: UserId): Subscribable<boolean | null> {
@@ -582,31 +576,24 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getDMs(): Subscribable<DmChannel[] | null> {
-    return new Subscribable<DmChannel[] | null>(async (next, nextError) => {
-      (
-        await this.cache.getChannelListOrFallback(() => {
-          const id = this.getCurrentSession().getSnapshot()?.id;
-          return id
-            ? getChannels(this.client, this.cache, id as string)
-            : Promise.resolve([]);
-        })
-      )
-        .map<DmChannel[] | null>(
-          (channels) =>
-            Promise.resolve(
-              channels
-                .map((channel) => convertChannel(channel))
-                .filter<DmChannel>(
-                  (channel): channel is DmChannel => channel.dm
-                )
-            ),
-          null
+    return Subscribable.fromEmptyGenerator<DmChannel[] | null>(
+      async (next, nextError) => {
+        (
+          await this.cache.getChannelListOrFallback(() => {
+            const id = this.getCurrentSession().getSnapshot()?.id;
+            return id
+              ? getChannels(this.client, this.cache, id as string)
+              : Promise.resolve([]);
+          })
         )
-        .subscribe(({ value, error }) => {
-          if (error) nextError(error);
-          else next(value);
-        });
-    }, null);
+          .mapSyncEmpty<DmChannel[] | null>((channels) =>
+            channels
+              .map((channel) => convertChannel(channel))
+              .filter<DmChannel>((channel): channel is DmChannel => channel.dm)
+          )
+          .pipe()(next, nextError);
+      }
+    );
   }
 
   async openDM(user: UserId): Promise<number> {
@@ -647,31 +634,26 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getChannels(): Subscribable<Channel[] | null> {
-    return new Subscribable<Channel[] | null>(async (next, nextError) => {
-      (
-        await this.cache.getChannelListOrFallback(() => {
-          const id = this.getCurrentSession().getSnapshot()?.id;
-          return id
-            ? getChannels(this.client, this.cache, id as string)
-            : Promise.resolve([]);
-        })
-      )
-        .map<GroupChannel[] | null>(
-          (channels) =>
-            Promise.resolve(
-              channels
-                .map((channel) => convertChannel(channel))
-                .filter<GroupChannel>(
-                  (channel): channel is GroupChannel => !channel.dm
-                )
-            ),
-          null
+    return Subscribable.fromEmptyGenerator<Channel[] | null>(
+      async (next, nextError) => {
+        (
+          await this.cache.getChannelListOrFallback(() => {
+            const id = this.getCurrentSession().getSnapshot()?.id;
+            return id
+              ? getChannels(this.client, this.cache, id as string)
+              : Promise.resolve([]);
+          })
         )
-        .subscribe(({ value, error }) => {
-          if (error) nextError(error);
-          else next(value);
-        });
-    }, null);
+          .mapSyncEmpty<GroupChannel[] | null>((channels) =>
+            channels
+              .map((channel) => convertChannel(channel))
+              .filter<GroupChannel>(
+                (channel): channel is GroupChannel => !channel.dm
+              )
+          )
+          .pipe()(next, nextError);
+      }
+    );
   }
 
   clearCache(): Promise<void> {
@@ -704,21 +686,17 @@ class SupabaseBackendImpl implements NetworkBackend {
   }
 
   getChannel(id: number): Subscribable<Channel | null> {
-    return new Subscribable<Channel | null>(async (next, nextError) => {
-      (
-        await this.cache.getChannelOrFallback(id, () =>
-          getChannel(this.client, this.cache, id)
+    return Subscribable.fromEmptyGenerator<Channel | null>(
+      async (next, nextError) => {
+        (
+          await this.cache.getChannelOrFallback(id, () =>
+            getChannel(this.client, this.cache, id)
+          )
         )
-      )
-        .map<Channel | null>(
-          (user) => Promise.resolve(convertChannel(user)),
-          null
-        )
-        .subscribe(({ value, error }) => {
-          if (error) nextError(error);
-          else next(value);
-        });
-    }, null);
+          .mapSyncEmpty<Channel | null>((user) => convertChannel(user))
+          .pipe()(next, nextError);
+      }
+    );
   }
 
   /**
