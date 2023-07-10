@@ -95,6 +95,20 @@ export default class Subscribable<T>
     }, initial);
   }
 
+  mapEmpty<U>(mapper: (value: T) => Promise<U>) {
+    return Subscribable.fromEmptyGenerator<U>((next, nextError) => {
+      this.subscribe(({ value, error }) => {
+        if (error) {
+          nextError(error);
+          return;
+        }
+        mapper(value).then(next).catch(nextError);
+      });
+      if (this.value !== Subscribable.EMPTY)
+        mapper(this.value).then(next).catch(nextError);
+    });
+  }
+
   mapSync<U>(mapper: (value: T) => U) {
     return new Subscribable<U>((next, nextError) => {
       this.subscribe(({ value, error }) => {
@@ -111,6 +125,27 @@ export default class Subscribable<T>
     }, mapper(this.getSnapshot()));
   }
 
+  mapSyncEmpty<U>(mapper: (value: T) => U) {
+    return new Subscribable<U | typeof Subscribable.EMPTY>(
+      (next, nextError) => {
+        this.subscribe(({ value, error }) => {
+          if (error) {
+            nextError(error);
+            return;
+          }
+          try {
+            next(mapper(value));
+          } catch (e) {
+            nextError(normalizeException(e));
+          }
+        });
+      },
+      this.value === Subscribable.EMPTY
+        ? Subscribable.EMPTY
+        : mapper(this.value)
+    ) as Subscribable<U>;
+  }
+
   filter<U extends T>(predicate: (value: T) => value is U, initial: U) {
     return new Subscribable<U>((next, nextError) => {
       this.subscribe(({ value, error }) => {
@@ -123,6 +158,15 @@ export default class Subscribable<T>
       const snapshot = this.getSnapshot();
       if (predicate(snapshot)) next(snapshot);
     }, initial);
+  }
+
+  pipe() {
+    return (next: (value: T) => void, nextError: (value: Error) => void) => {
+      this.subscribe(({ value, error }) => {
+        if (error) nextError(error);
+        else next(value);
+      });
+    };
   }
 
   static all<T extends Subscribable<unknown>[]>(
