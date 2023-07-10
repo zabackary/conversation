@@ -12,6 +12,8 @@ export default class Subscribable<T>
 
   private callbacks: SubscribableCallback<T>[];
 
+  static EMPTY = Symbol("empty subscribable state");
+
   constructor(
     generator: (
       next: (value: T) => void,
@@ -22,6 +24,18 @@ export default class Subscribable<T>
     this.value = initialValue;
     this.callbacks = [];
     void generator(this.handleValue.bind(this), this.handleError.bind(this));
+  }
+
+  static fromEmptyGenerator<T>(
+    generator: (
+      next: (value: T) => void,
+      nextError: (value: Error) => void
+    ) => Promise<void> | void
+  ) {
+    return new Subscribable<T | typeof this.EMPTY>(
+      generator,
+      this.EMPTY
+    ) as Subscribable<T>;
   }
 
   [Symbol.asyncIterator](): AsyncIterator<T, never, undefined> {
@@ -58,6 +72,13 @@ export default class Subscribable<T>
   }
 
   getSnapshot(): T {
+    if (this.value === Subscribable.EMPTY)
+      throw new Error("Cannot get snapshot of empty subscribable");
+    return this.value;
+  }
+
+  getMaybeSnapshot(): T | undefined {
+    if (this.value === Subscribable.EMPTY) return undefined;
     return this.value;
   }
 
