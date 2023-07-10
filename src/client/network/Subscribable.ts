@@ -160,13 +160,16 @@ export default class Subscribable<T>
     }, initial);
   }
 
-  pipe() {
-    return (next: (value: T) => void, nextError: (value: Error) => void) => {
-      this.subscribe(({ value, error }) => {
-        if (error) nextError(error);
-        else next(value);
-      });
-    };
+  pipe(
+    next: (value: T) => void,
+    nextError: (value: Error) => void,
+    immediate = false
+  ) {
+    if (this.value !== Subscribable.EMPTY && immediate) next(this.value);
+    this.subscribe(({ value, error }) => {
+      if (error) nextError(error);
+      else next(value);
+    });
   }
 
   static all<T extends Subscribable<unknown>[]>(

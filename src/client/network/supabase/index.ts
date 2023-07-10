@@ -546,7 +546,7 @@ class SupabaseBackendImpl implements NetworkBackend {
           )
         )
           .mapSyncEmpty<User | null>((user) => convertUser(user))
-          .pipe()(next, nextError);
+          .pipe(next, nextError);
       }
     );
   }
@@ -564,7 +564,7 @@ class SupabaseBackendImpl implements NetworkBackend {
               promiseFromSubscribable(this.getUser(userId))
             )
           )
-          .pipe()(next, nextError);
+          .pipe(next, nextError);
       }
     );
   }
@@ -591,7 +591,7 @@ class SupabaseBackendImpl implements NetworkBackend {
               .map((channel) => convertChannel(channel))
               .filter<DmChannel>((channel): channel is DmChannel => channel.dm)
           )
-          .pipe()(next, nextError);
+          .pipe(next, nextError);
       }
     );
   }
@@ -651,7 +651,7 @@ class SupabaseBackendImpl implements NetworkBackend {
                 (channel): channel is GroupChannel => !channel.dm
               )
           )
-          .pipe()(next, nextError);
+          .pipe(next, nextError, true);
       }
     );
   }
@@ -694,7 +694,7 @@ class SupabaseBackendImpl implements NetworkBackend {
           )
         )
           .mapSyncEmpty<Channel | null>((user) => convertChannel(user))
-          .pipe()(next, nextError);
+          .pipe(next, nextError);
       }
     );
   }
