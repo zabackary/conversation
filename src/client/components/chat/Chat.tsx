@@ -183,6 +183,9 @@ export default function Chat({ channelId }: ChatProps) {
         anchor={isMobile ? "bottom" : "right"}
         open={activeSidebar === "info"}
         onClose={() => setActiveSidebar(null)}
+        SlideProps={{
+          unmountOnExit: true,
+        }}
       >
         {channel ? (
           <InfoMenu
@@ -211,6 +214,9 @@ export default function Chat({ channelId }: ChatProps) {
         anchor={isMobile ? "bottom" : "right"}
         open={activeSidebar === "people"}
         onClose={() => setActiveSidebar(null)}
+        SlideProps={{
+          unmountOnExit: true,
+        }}
       >
         {channel ? (
           <PeopleMenu
