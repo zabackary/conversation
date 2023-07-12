@@ -26,6 +26,7 @@ import useUserInfo from "../../../../../hooks/useUserInfo";
 interface BaseChannelCardProps {
   invite: PublicChannelListing;
   icon?: ReactNode;
+  title: ReactNode;
   subheader: ReactNode;
   content?: ReactNode;
   handleAccept(id: number): Promise<void>;
@@ -39,6 +40,7 @@ function BaseChannelCard({
   content,
   subheader,
   icon,
+  title,
 }: BaseChannelCardProps) {
   const { showSnackbar } = useSnackbar();
   const [acceptLoading, setAcceptLoading] = useState(false);
@@ -70,7 +72,7 @@ function BaseChannelCard({
     <Card
       variant="filled"
       sx={{
-        width: "min(100%, 280px)",
+        minWidth: "min(100%, 280px)",
         backgroundColor:
           invite.name === "Main Channel" ? "primaryContainer.main" : undefined,
         color:
@@ -88,15 +90,17 @@ function BaseChannelCard({
               </Avatar>
             )
           }
-          title={invite.name}
+          title={title}
           subheader={subheader}
           titleTypographyProps={{ sx: { wordBreak: "break-word" } }}
           subheaderTypographyProps={{ sx: { wordBreak: "break-word" } }}
         />
-        <CardContent>
-          <Typography variant="body1">{invite.description}</Typography>
-          {content}
-        </CardContent>
+        {invite.description !== "" || content ? (
+          <CardContent>
+            <Typography variant="body1">{invite.description}</Typography>
+            {content}
+          </CardContent>
+        ) : null}
       </CardActionArea>
       <CardActions>
         {handleReject ? (
@@ -143,6 +147,7 @@ function InviteChannelCard({
       handleAccept={handleAccept}
       handleReject={handleReject}
       invite={invite}
+      title={invite.name}
       subheader={
         <>
           {privacyLevel} &middot; {channel?.members.length} members
@@ -208,18 +213,65 @@ function InviteChannelCard({
   );
 }
 
+interface DmChannelCardProps {
+  invite: InvitedChannelListing;
+  actor: NonNullable<InvitedChannelListing["actor"]>;
+  handleAccept(id: number): Promise<void>;
+  handleReject(id: number): Promise<void>;
+}
+
+function DmChannelCard({
+  invite,
+  actor,
+  handleAccept,
+  handleReject,
+}: DmChannelCardProps) {
+  const user = useUserInfo(actor);
+  return (
+    <BaseChannelCard
+      handleAccept={handleAccept}
+      handleReject={handleReject}
+      invite={invite}
+      title={user?.name}
+      subheader={<>aka {user?.nickname}</>}
+      content={null}
+      icon={
+        user ? (
+          <ProfilePicture user={user} sx={{ bgcolor: "secondary.main" }} />
+        ) : (
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
+        )
+      }
+    />
+  );
+}
+
 export interface ChannelCardProps {
   invite?: InvitedChannelListing | PublicChannelListing;
   handleAccept?(id: number): Promise<void>;
   handleReject?(id: number): Promise<void>;
+  disablePulse?: boolean;
 }
 
 export default function ChannelCard({
   invite,
   handleAccept,
   handleReject,
+  disablePulse,
 }: ChannelCardProps) {
   if (invite && handleAccept && handleReject && "inviteMessage" in invite) {
+    if (invite.actor && invite.dm) {
+      return (
+        <DmChannelCard
+          invite={invite}
+          handleAccept={handleAccept}
+          handleReject={handleReject}
+          actor={invite.actor}
+        />
+      );
+    }
     if (invite.actor) {
       return (
         <InviteChannelCard
@@ -233,6 +285,7 @@ export default function ChannelCard({
     return (
       <BaseChannelCard
         invite={invite}
+        title={invite.name}
         handleAccept={handleAccept}
         handleReject={handleReject}
         subheader="Unknown inviter"
@@ -242,6 +295,7 @@ export default function ChannelCard({
   if (invite && handleAccept) {
     return (
       <BaseChannelCard
+        title={invite.name}
         invite={invite}
         handleAccept={handleAccept}
         subheader="Public"
@@ -249,25 +303,33 @@ export default function ChannelCard({
     );
   }
   return (
-    <Card variant="filled" sx={{ width: "min(100%, 280px)" }}>
+    <Card variant="filled" sx={{ minWidth: "min(100%, 280px)" }}>
       <CardHeader
         avatar={
-          <Skeleton variant="circular">
+          <Skeleton
+            variant="circular"
+            animation={disablePulse ? false : undefined}
+          >
             <Avatar />
           </Skeleton>
         }
-        title={<Skeleton />}
-        subheader={<Skeleton />}
+        title={<Skeleton animation={disablePulse ? false : undefined} />}
+        subheader={<Skeleton animation={disablePulse ? false : undefined} />}
         titleTypographyProps={{ sx: { wordBreak: "break-word" } }}
         subheaderTypographyProps={{ sx: { wordBreak: "break-word" } }}
       />
       <CardContent>
         <Typography variant="body1">
-          <Skeleton />
+          <Skeleton animation={disablePulse ? false : undefined} />
         </Typography>
       </CardContent>
       <CardActions>
-        <Skeleton variant="rounded" width={80} sx={{ ml: 1, mb: 1 }} />
+        <Skeleton
+          variant="rounded"
+          width={80}
+          sx={{ ml: 1, mb: 1, borderRadius: 9999, height: "30px" }}
+          animation={disablePulse ? false : undefined}
+        />
       </CardActions>
     </Card>
   );

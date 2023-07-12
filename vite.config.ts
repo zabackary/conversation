@@ -67,14 +67,20 @@ export default defineConfig(async ({ command, mode, ssrBuild: _ssrBuild }) => {
       react({
         include: "**/*.{jsx,tsx}",
       }),
-      checker({
-        typescript: {
-          tsconfigPath: "./tsconfig.json",
-        },
-        eslint: {
-          lintCommand: "eslint",
-        },
-      }),
+      ...(env.CODESPACES
+        ? [
+            // Disable checker plugin in Codespaces to save memory
+          ]
+        : [
+            checker({
+              typescript: {
+                tsconfigPath: "./tsconfig.json",
+              },
+              eslint: {
+                lintCommand: "eslint",
+              },
+            }),
+          ]),
       reactAxe(),
       visualizer({
         template: "treemap",

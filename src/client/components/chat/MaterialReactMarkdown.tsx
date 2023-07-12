@@ -181,7 +181,7 @@ export default function MaterialReactMarkdown({
   components,
   ...reactMarkdownProps
 }: MaterialReactMarkdownProps) {
-  const plugins: PluggableList = [remarkGfm].concat(
+  const plugins: PluggableList = ([remarkGfm] as PluggableList).concat(
     inline ? [remarkBreaks] : []
   );
   const content = useMemo(() => {

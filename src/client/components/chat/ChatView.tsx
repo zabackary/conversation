@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -9,16 +10,20 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Stack,
   SxProps,
   Tooltip,
+  Typography,
 } from "@mui/material";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
+import { useDebouncedCallback } from "use-debounce";
 import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import UserTooltip from "../UserTooltip";
+import useSnackbar from "../useSnackbar";
 import AsyncSyntaxHighlighter from "./AsyncSyntaxHighlighter";
 import ChatInput from "./ChatInput";
 import ChatList, { ChatListProps } from "./ChatList";
@@ -27,10 +32,12 @@ import ChatListSkeleton from "./ChatListSkeleton";
 export interface ChatViewProps {
   messages?: Message[];
   onSend: (event: SentMessageEvent) => void;
+  onLoadMore: () => Promise<boolean>;
   username?: string;
   channelName?: string;
   afterInput?: ReactNode;
   sx?: SxProps;
+  topAlert?: ReactNode;
 }
 
 export default function ChatView({
@@ -40,11 +47,14 @@ export default function ChatView({
   channelName,
   sx,
   afterInput,
+  topAlert,
+  onLoadMore,
 }: ChatViewProps) {
   const [isSticky, setIsSticky] = useState(false);
   const inputRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation("channel");
+  const { showSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!inputRef.current || !containerRef.current) return undefined;
@@ -65,7 +75,40 @@ export default function ChatView({
     };
   }, [inputRef, containerRef]);
 
+  const [isPending, setIsPending] = useState(false);
+  const [exhausted, setExhausted] = useState(false);
+
   const oldMessagesRef = useRef<Message[] | undefined>(undefined);
+
+  const scrollCallback = useDebouncedCallback(() => {
+    if (messages && !isPending && !exhausted && window.scrollY < 200) {
+      const oldHeight = document.body.scrollHeight;
+      setIsPending(true);
+      setTimeout(
+        () =>
+          window.scrollBy({
+            top: document.body.scrollHeight - oldHeight,
+          }),
+        0
+      );
+      onLoadMore()
+        .then((finished) => {
+          if (finished) setExhausted(true);
+          const oldHeight2 = document.body.scrollHeight;
+          setTimeout(() => {
+            window.scrollBy({
+              top: document.body.scrollHeight - oldHeight2,
+            });
+          }, 0);
+        })
+        .catch(() => {
+          showSnackbar("Something went wrong while fetching messages");
+        })
+        .finally(() => {
+          setIsPending(false);
+        });
+    }
+  }, 500);
 
   useEffect(() => {
     const oldMessages = oldMessagesRef.current;
@@ -82,10 +125,14 @@ export default function ChatView({
       });
       oldMessagesRef.current = messages;
     }
-  }, [messages, oldMessagesRef, isSticky]);
+    window.addEventListener("scroll", scrollCallback);
+    return () => {
+      window.removeEventListener("scroll", scrollCallback);
+    };
+  }, [messages, oldMessagesRef, isSticky, scrollCallback]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0 });
+    window.scrollTo({ top: 99999 });
   }, []);
 
   useEffect(() => {
@@ -117,17 +164,20 @@ export default function ChatView({
     message: Message;
   } | null>(null);
 
-  const handleContextMenu = (x: number, y: number, message: Message) => {
-    setContextMenu(
-      contextMenu === null
-        ? {
-            mouseX: x + 2,
-            mouseY: y - 6,
-            message,
-          }
-        : null
-    );
-  };
+  const handleContextMenu = useCallback(
+    (x: number, y: number, message: Message) => {
+      setContextMenu((oldContextMenu) =>
+        oldContextMenu === null
+          ? {
+              mouseX: x + 2,
+              mouseY: y - 6,
+              message,
+            }
+          : null
+      );
+    },
+    [setContextMenu]
+  );
 
   const handleClose = (e?: unknown) => {
     setContextMenu(null);
@@ -274,6 +324,32 @@ export default function ChatView({
           </MenuItem>
         */}
         </Menu>
+        {isPending ? (
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            my={2}
+          >
+            <CircularProgress size={24} />
+            <Typography>Fetching messages</Typography>
+          </Stack>
+        ) : null}
+        {exhausted ? (
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+            my={2}
+          >
+            <Typography>Nothing else here!</Typography>
+          </Stack>
+        ) : null}
+        {topAlert}
         {messages ? (
           <ChatList
             messages={messages}
