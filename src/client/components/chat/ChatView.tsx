@@ -10,12 +10,20 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Slide,
   Stack,
   SxProps,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
 import { useDebouncedCallback } from "use-debounce";
@@ -23,11 +31,15 @@ import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 import UserTooltip from "../UserTooltip";
+import { navigationRailWidth } from "../layout";
+import { drawerWidth } from "../layout/ConversationNavigationDrawer";
 import useSnackbar from "../useSnackbar";
 import AsyncSyntaxHighlighter from "./AsyncSyntaxHighlighter";
 import ChatInput from "./ChatInput";
 import ChatList, { ChatListProps } from "./ChatList";
 import ChatListSkeleton from "./ChatListSkeleton";
+
+const LOAD_MORE_THRESHOLD = 500 as const;
 
 export interface ChatViewProps {
   messages?: Message[];
@@ -80,26 +92,22 @@ export default function ChatView({
 
   const oldMessagesRef = useRef<Message[] | undefined>(undefined);
 
+  const [oldChatHeight, setOldChatHeight] = useState<number | undefined>();
+
   const scrollCallback = useDebouncedCallback(() => {
-    if (messages && !isPending && !exhausted && window.scrollY < 200) {
-      const oldHeight = document.body.scrollHeight;
+    if (
+      messages &&
+      !isPending &&
+      !exhausted &&
+      window.scrollY < LOAD_MORE_THRESHOLD
+    ) {
       setIsPending(true);
-      setTimeout(
-        () =>
-          window.scrollBy({
-            top: document.body.scrollHeight - oldHeight,
-          }),
-        0
-      );
       onLoadMore()
         .then((finished) => {
           if (finished) setExhausted(true);
-          const oldHeight2 = document.body.scrollHeight;
-          setTimeout(() => {
-            window.scrollBy({
-              top: document.body.scrollHeight - oldHeight2,
-            });
-          }, 0);
+          setOldChatHeight(
+            containerRef.current?.getBoundingClientRect().height
+          );
         })
         .catch(() => {
           showSnackbar("Something went wrong while fetching messages");
@@ -109,6 +117,18 @@ export default function ChatView({
         });
     }
   }, 500);
+
+  useLayoutEffect(() => {
+    if (oldChatHeight !== undefined) {
+      const difference =
+        (containerRef.current?.getBoundingClientRect().height ?? 0) -
+        oldChatHeight;
+      window.scrollBy({
+        top: difference,
+      });
+      setOldChatHeight(undefined);
+    }
+  }, [oldChatHeight]);
 
   useEffect(() => {
     const oldMessages = oldMessagesRef.current;
@@ -297,46 +317,61 @@ export default function ChatView({
             </ListItemIcon>
             Message details
           </MenuItem>
-          {/*
-          <MenuItem>
+          <MenuItem disabled>
             <ListItemIcon>
               <MaterialSymbolIcon icon="edit" />
             </ListItemIcon>
             Edit message
           </MenuItem>
-          <MenuItem>
+          <MenuItem disabled>
             <ListItemIcon>
               <MaterialSymbolIcon icon="push_pin" />
             </ListItemIcon>
             Set as pinned message
           </MenuItem>
-          <MenuItem>
+          <MenuItem disabled>
             <ListItemIcon>
               <MaterialSymbolIcon icon="share" />
             </ListItemIcon>
             Copy link to message
           </MenuItem>
-          <MenuItem>
+          <MenuItem disabled>
             <ListItemIcon>
               <MaterialSymbolIcon icon="delete" />
             </ListItemIcon>
             Delete message
           </MenuItem>
-        */}
         </Menu>
-        {isPending ? (
-          <Stack
-            direction="row"
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-            width="100%"
-            my={2}
+        <Slide in={isPending}>
+          <Box
+            sx={{
+              top: 72,
+              left: `calc(${navigationRailWidth + drawerWidth}px + ((100% - ${
+                navigationRailWidth + drawerWidth
+              }px) / 2))`,
+              zIndex: 2,
+              position: "fixed",
+            }}
           >
-            <CircularProgress size={24} />
-            <Typography>Fetching messages</Typography>
-          </Stack>
-        ) : null}
+            <Stack
+              direction="row"
+              spacing={2}
+              alignItems="center"
+              justifyContent="center"
+              py={1}
+              px={2}
+              borderRadius={999}
+              sx={{
+                backgroundColor: "primaryContainer.main",
+                color: "onPrimaryContainer.main",
+                transform: "translate(-50%)",
+              }}
+            >
+              <CircularProgress size={18} color="primary" />
+              <Typography ml="12px !important">Fetching messages</Typography>
+            </Stack>
+          </Box>
+        </Slide>
         {exhausted ? (
           <Stack
             direction="row"
