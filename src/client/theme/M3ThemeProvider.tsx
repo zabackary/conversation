@@ -14,12 +14,12 @@ export interface M3ThemeProps {
 
 export default function M3ThemeProvider({ children }: M3ThemeProps) {
   const { themeMode } = useContext(ThemeModeContext);
-  const { themeScheme } = useContext(TokensContext);
+  const { tokens } = useContext(TokensContext);
 
   const m3Theme = useMemo(() => {
     // Create the theme using tokens and typography from the Material theme
     let newM3Theme = createTheme(
-      getThemeOptions(themeMode, themeScheme[themeMode], {
+      getThemeOptions(themeMode, tokens, {
         body: [
           '"Roboto Flex"',
           "Roboto",
@@ -42,10 +42,10 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
     // Set the document meta-color, if it exists
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", themeScheme[themeMode].surface);
+      ?.setAttribute("content", tokens.surface);
 
     return newM3Theme;
-  }, [themeMode, themeScheme]);
+  }, [themeMode, tokens]);
 
   return (
     <ThemeProvider theme={m3Theme}>

@@ -17,15 +17,18 @@ export default function AppearanceSettingsRoute({
 }: {
   noAppBar?: boolean;
 }) {
-  const { themeMode, setThemeMode } = useContext(ThemeModeContext);
-  const { themeScheme, generateThemeScheme, resetThemeScheme } =
-    useContext(ThemeSchemeContext);
+  const { themeMode, set: setThemeMode } = useContext(ThemeModeContext);
+  const {
+    tokens: themeTokens,
+    generate: generateThemeTokens,
+    reset: resetThemeTokens,
+  } = useContext(ThemeSchemeContext);
 
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
   const handleColorChange = useThrottledCallback((color: string) => {
-    generateThemeScheme(color).catch(() => {
+    generateThemeTokens(color).catch(() => {
       snackbar.showSnackbar(t("appearance.theme.error"));
     });
   }, 500);
@@ -57,7 +60,7 @@ export default function AppearanceSettingsRoute({
           </Stack>
         </SwitchItem>
         <ColorItem
-          initialValue={themeScheme.light.primary}
+          initialValue={themeTokens.primary}
           onChange={handleColorChange}
           label={t("appearance.theme.title")}
           description={t("appearance.theme.description")}
@@ -78,7 +81,7 @@ export default function AppearanceSettingsRoute({
             <Chip
               icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
-              onClick={() => resetThemeScheme()}
+              onClick={() => resetThemeTokens()}
               variant="outlined"
             />
           </Stack>

@@ -3,26 +3,24 @@ import { M3ThemeMode } from "./M3Theme";
 
 export interface ThemeModeContextType {
   themeMode: M3ThemeMode;
-  toggleThemeMode: () => void;
-  setThemeMode: (mode: M3ThemeMode) => void;
-  resetThemeMode: () => void;
+  toggle: () => void;
+  set: (mode: M3ThemeMode) => void;
+  reset: () => void;
 }
 
 export const DEFAULT_THEME_MODE: M3ThemeMode = "dark";
-export const DEFAULT_THEME_SOURCE_COLOR = "#efa0ff";
-export const DEFAULT_THEME_SCHEME = undefined;
-const THEME_MODE_KEY = "ThemeMode";
+const LOCAL_STORAGE_KEY = "m3-theme-mode";
 
 export const ThemeModeContext = createContext<ThemeModeContextType>({
   themeMode: DEFAULT_THEME_MODE,
-  toggleThemeMode: () => {
-    // Noop for default
+  toggle() {
+    throw new Error("A provider for ThemeModeContext is not in context.");
   },
-  setThemeMode(_mode) {
-    // Noop for default
+  set() {
+    throw new Error("A provider for ThemeModeContext is not in context.");
   },
-  resetThemeMode: () => {
-    // Noop for default
+  reset() {
+    throw new Error("A provider for ThemeModeContext is not in context.");
   },
 });
 
@@ -33,10 +31,9 @@ function ThemeModeProvider({ children }: ThemeModeProviderProps) {
   const [themeMode, setThemeMode] = useState<M3ThemeMode>(DEFAULT_THEME_MODE);
 
   useEffect(() => {
-    if (localStorage.getItem(THEME_MODE_KEY)) {
-      const localMode = JSON.parse(
-        localStorage.getItem(THEME_MODE_KEY) || "{}"
-      ) as unknown;
+    const keyContent = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (keyContent) {
+      const localMode = JSON.parse(keyContent) as unknown;
       if (typeof localMode !== "string") return;
       if (["dark", "light"].includes(localMode)) {
         setThemeMode(localMode as "dark" | "light");
@@ -49,19 +46,19 @@ function ThemeModeProvider({ children }: ThemeModeProviderProps) {
   const themeModeValue = useMemo<ThemeModeContextType>(
     () => ({
       themeMode,
-      toggleThemeMode() {
+      toggle() {
         const value = themeMode === "light" ? "dark" : "light";
         setThemeMode(value);
-        localStorage.setItem(THEME_MODE_KEY, JSON.stringify(value));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(value));
       },
-      setThemeMode(mode) {
+      set(mode) {
         setThemeMode(mode);
-        localStorage.setItem(THEME_MODE_KEY, JSON.stringify(mode));
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(mode));
       },
-      resetThemeMode() {
+      reset() {
         setThemeMode("light");
         localStorage.setItem(
-          THEME_MODE_KEY,
+          LOCAL_STORAGE_KEY,
           JSON.stringify(DEFAULT_THEME_MODE)
         );
       },

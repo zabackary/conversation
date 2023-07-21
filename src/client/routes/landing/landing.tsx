@@ -97,7 +97,7 @@ export default function LandingRoute() {
     threshold: 0,
   });
   const theme = useTheme();
-  const { toggleThemeMode } = useContext(ThemeModeContext);
+  const { toggle: toggleThemeMode } = useContext(ThemeModeContext);
   const { showSnackbar } = useSnackbar();
   const handleSendIconClick: MouseEventHandler = (event) => {
     void confetti({
