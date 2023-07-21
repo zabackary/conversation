@@ -1,5 +1,4 @@
 import {
-  alpha,
   Box,
   CircularProgress,
   Drawer,
@@ -37,7 +36,7 @@ export const SideSheet = styled(Drawer)(({ theme }) => ({
     borderRadius: 16,
     margin: 16,
     marginLeft: 0,
-    background: alpha(theme.palette.primary.main, 0.1),
+    background: theme.palette.surfaceContainer.main,
     height: "calc(100% - 32px)",
   },
 }));
