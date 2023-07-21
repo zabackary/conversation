@@ -62,8 +62,6 @@ export default function getThemedComponents(
       MuiAppBar: {
         styleOverrides: {
           root: {
-            background: theme.palette.surface.main,
-            color: theme.palette.onSurface.main,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -73,8 +71,6 @@ export default function getThemedComponents(
             boxShadow: "none",
           },
           colorDefault: {
-            background: theme.palette.surface.main,
-            color: theme.palette.onSurface.main,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -83,11 +79,6 @@ export default function getThemedComponents(
             ),
           },
           colorPrimary: {
-            background:
-              theme.palette.mode === "light"
-                ? lighten(theme.palette.primary.main, 0.85)
-                : darken(theme.palette.primary.main, 0.8),
-            color: theme.palette.surface.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -396,17 +387,56 @@ export default function getThemedComponents(
       },
       MuiPaper: {
         styleOverrides: {
-          root: {
-            background:
-              theme.palette.mode === "dark"
-                ? darken(theme.palette.primary.main, 0.8)
-                : lighten(theme.palette.primary.main, 0.9),
-            color: theme.palette.onSurface.main,
-          },
+          root: {},
           outlined: {
             borderColor: theme.palette.outline.main,
             background: theme.palette.surface.main,
           },
+          ...Object.fromEntries(
+            ["elevation1"].map((elevation) => [
+              elevation,
+              {
+                background: theme.palette.surfaceContainerLowest.main,
+                color: theme.palette.surfaceContainerLowest.contrastText,
+              },
+            ])
+          ),
+          ...Object.fromEntries(
+            ["elevation2", "elevation3"].map((elevation) => [
+              elevation,
+              {
+                background: theme.palette.surfaceContainerLow.main,
+                color: theme.palette.surfaceContainerLow.contrastText,
+              },
+            ])
+          ),
+          ...Object.fromEntries(
+            ["elevation4", "elevation5", "elevation6"].map((elevation) => [
+              elevation,
+              {
+                background: theme.palette.surfaceContainer.main,
+                color: theme.palette.surfaceContainer.contrastText,
+              },
+            ])
+          ),
+          ...Object.fromEntries(
+            ["elevation7", "elevation8", "elevation9"].map((elevation) => [
+              elevation,
+              {
+                background: theme.palette.surfaceContainerHigh.main,
+                color: theme.palette.surfaceContainerHigh.contrastText,
+              },
+            ])
+          ),
+          ...Object.fromEntries(
+            ["elevation10", "elevation11", "elevation12"].map((elevation) => [
+              elevation,
+              {
+                background: theme.palette.surfaceContainerHighest.main,
+                color: theme.palette.surfaceContainerHighest.contrastText,
+              },
+            ])
+          ),
         },
       },
       MuiDrawer: {
@@ -434,10 +464,7 @@ export default function getThemedComponents(
           },
           paper: {
             border: "0px",
-            background:
-              theme.palette.mode === "light"
-                ? lighten(theme.palette.primary.main, 0.85)
-                : darken(theme.palette.primary.main, 0.8),
+            background: theme.palette.surfaceContainerHigh.main,
             color: theme.palette.surface.contrastText,
           },
           docked: {
@@ -603,6 +630,7 @@ export default function getThemedComponents(
         styleOverrides: {
           root: {
             height: "80px",
+            background: theme.palette.surfaceContainerHigh.main,
           },
         },
       },
@@ -626,7 +654,7 @@ export default function getThemedComponents(
                 "background-color",
                 "font-variation-settings",
               ]),
-              boxShadow: `0px 0px 0px 1000px ${theme.palette.background.default}`,
+              boxShadow: `0px 0px 0px 1000px ${theme.palette.surfaceContainerHigh.main}`,
               zIndex: 9,
             },
             "&.Mui-selected": {
