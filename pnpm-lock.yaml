@@ -15,8 +15,8 @@ dependencies:
     specifier: ^1.0.1
     version: 1.0.1(emoji-mart@5.3.3)(react@18.2.0)
   '@material/material-color-utilities':
-    specifier: ^0.2.0
-    version: 0.2.0
+    specifier: ^0.2.7
+    version: 0.2.7
   '@mui/material':
     specifier: ^5.13.6
     version: 5.13.6(@emotion/react@11.10.5)(@emotion/styled@11.11.0)(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0)
@@ -993,8 +993,8 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
-  /@material/material-color-utilities@0.2.0:
-    resolution: {integrity: sha512-Wux17VAe27abfUyA+yPq/xN7+e6xkj1UFKd9g02KD0HhpM+GRqXLfytJ6nJKhFtliZouQfTcBcOg2cGrt/XbKA==}
+  /@material/material-color-utilities@0.2.7:
+    resolution: {integrity: sha512-0FCeqG6WvK4/Cc06F/xXMd/pv4FeisI0c1tUpBbfhA2n9Y8eZEv4Karjbmf2ZqQCPUWMrGp8A571tCjizxoTiQ==}
     dev: false
 
   /@mui/base@5.0.0-beta.5(@types/react@18.0.26)(react-dom@18.2.0)(react@18.2.0):

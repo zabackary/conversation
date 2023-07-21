@@ -65,7 +65,7 @@
     "@axe-core/react": "^4.7.3",
     "@babel/runtime": "^7.20.6",
     "@emoji-mart/react": "^1.0.1",
-    "@material/material-color-utilities": "^0.2.0",
+    "@material/material-color-utilities": "^0.2.7",
     "@mui/material": "^5.13.6",
     "@mui/utils": "^5.10.16",
     "@supabase/supabase-js": "^2.26.0",
