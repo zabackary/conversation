@@ -106,7 +106,7 @@ export default function getTokensFromDynamicScheme(
       MaterialDynamicColors.onErrorContainer.getArgb(dynamicScheme)
     ),
 
-    outline: hexFromArgb(MaterialDynamicColors.error.getArgb(dynamicScheme)),
+    outline: hexFromArgb(MaterialDynamicColors.outline.getArgb(dynamicScheme)),
     outlineVariant: hexFromArgb(
       MaterialDynamicColors.outlineVariant.getArgb(dynamicScheme)
     ),
