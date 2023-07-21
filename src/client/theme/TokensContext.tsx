@@ -70,6 +70,7 @@ export default function TokensProvider({ children }: TokensProviderProps) {
     () => ({
       tokens,
       async generate(base: string | HTMLImageElement) {
+        console.log(base);
         const newTokens = await generateTokens(base);
         setTokens(newTokens);
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTokens));

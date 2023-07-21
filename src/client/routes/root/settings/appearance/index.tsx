@@ -8,8 +8,8 @@ import { ColorItem, SwitchItem } from "../../../../components/settings";
 import useSnackbar from "../../../../components/useSnackbar";
 import {
   DEFAULT_THEME_MODE,
+  M3TokensContext,
   ThemeModeContext,
-  ThemeSchemeContext,
 } from "../../../../theme";
 
 export default function AppearanceSettingsRoute({
@@ -22,7 +22,7 @@ export default function AppearanceSettingsRoute({
     tokens: themeTokens,
     generate: generateThemeTokens,
     reset: resetThemeTokens,
-  } = useContext(ThemeSchemeContext);
+  } = useContext(M3TokensContext);
 
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");

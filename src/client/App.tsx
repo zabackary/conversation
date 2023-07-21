@@ -10,7 +10,7 @@ import routes from "./routes";
 import {
   M3ThemeModeProvider,
   M3ThemeProvider,
-  M3ThemeSchemeProvider,
+  M3TokensProvider,
 } from "./theme";
 
 const router =
@@ -25,13 +25,13 @@ export default function App() {
   return (
     <BackendContextProvider>
       <M3ThemeModeProvider>
-        <M3ThemeSchemeProvider>
+        <M3TokensProvider>
           <M3ThemeProvider>
             <SnackbarProvider>
               <MemoizedAppRouter />
             </SnackbarProvider>
           </M3ThemeProvider>
-        </M3ThemeSchemeProvider>
+        </M3TokensProvider>
       </M3ThemeModeProvider>
     </BackendContextProvider>
   );

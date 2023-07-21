@@ -7,6 +7,6 @@ export {
   ThemeModeContext,
 } from "./ThemeModeContext";
 export {
-  default as M3ThemeSchemeProvider,
-  TokensContext as ThemeSchemeContext,
+  TokensContext as M3TokensContext,
+  default as M3TokensProvider,
 } from "./TokensContext";
