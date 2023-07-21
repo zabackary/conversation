@@ -8,5 +8,5 @@ export {
 } from "./ThemeModeContext";
 export {
   default as M3ThemeSchemeProvider,
-  ThemeSchemeContext,
-} from "./ThemeSchemeContext";
+  TokensContext as ThemeSchemeContext,
+} from "./TokensContext";

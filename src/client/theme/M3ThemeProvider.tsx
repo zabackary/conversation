@@ -4,7 +4,7 @@ import { CssBaseline, responsiveFontSizes } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { deepmerge } from "@mui/utils";
 import { ThemeModeContext } from "./ThemeModeContext";
-import { ThemeSchemeContext } from "./ThemeSchemeContext";
+import { TokensContext } from "./TokensContext";
 import getThemeOptions from "./getThemeOptions";
 import getThemedComponents from "./getThemedComponents";
 
@@ -14,7 +14,7 @@ export interface M3ThemeProps {
 
 export default function M3ThemeProvider({ children }: M3ThemeProps) {
   const { themeMode } = useContext(ThemeModeContext);
-  const { themeScheme } = useContext(ThemeSchemeContext);
+  const { themeScheme } = useContext(TokensContext);
 
   const m3Theme = useMemo(() => {
     // Create the theme using tokens and typography from the Material theme
