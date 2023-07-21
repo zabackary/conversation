@@ -1,11 +1,10 @@
-import { alpha, BottomNavigation, styled } from "@mui/material";
+import { BottomNavigation, styled } from "@mui/material";
 
-const NavigationRail = styled(BottomNavigation)(({ theme }) => ({
+const NavigationRail = styled(BottomNavigation)(() => ({
   flexDirection: "column",
   justifyContent: "start",
   alignItems: "flex-start",
   height: "100%",
-  background: alpha(theme.palette.primary.main, 0.05),
 }));
 
 export default NavigationRail;
