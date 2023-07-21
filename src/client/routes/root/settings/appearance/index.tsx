@@ -28,6 +28,7 @@ export default function AppearanceSettingsRoute({
   const { t } = useTranslation("settings");
 
   const handleColorChange = useThrottledCallback((color: string) => {
+    console.log(color);
     generateThemeTokens(color).catch(() => {
       snackbar.showSnackbar(t("appearance.theme.error"));
     });
@@ -60,7 +61,7 @@ export default function AppearanceSettingsRoute({
           </Stack>
         </SwitchItem>
         <ColorItem
-          initialValue={themeTokens.primary}
+          initialValue="#ff0000"
           onChange={handleColorChange}
           label={t("appearance.theme.title")}
           description={t("appearance.theme.description")}
