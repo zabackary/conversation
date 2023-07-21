@@ -1,16 +1,33 @@
 import {
+  DynamicScheme,
   argbFromHex,
   hexFromArgb,
   themeFromImage,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
-import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
-import {
-  DEFAULT_M3_THEME_SCHEME,
-  M3ColorTokens,
-  M3ThemeScheme,
-  M3ThemeTones,
-} from "../m3/M3Theme";
+import { ReactNode, createContext, useEffect, useMemo, useState } from "react";
+import { M3ColorTokens, M3ThemeScheme, M3ThemeTones } from "./M3Theme";
+import getTokensFromDynamicScheme from "./getTokensFromDynamicScheme";
+
+/**
+ * Reproduced from  https://github.com/material-foundation/material-color-utilities/blob/main/typescript/scheme/variant.ts
+ * Keep up to date.
+ *
+ * Set of themes supported by Dynamic Color.
+ * Instantiate the corresponding subclass, ex. SchemeTonalSpot, to create
+ * colors corresponding to the theme.
+ */
+export enum Variant {
+  MONOCHROME,
+  NEUTRAL,
+  TONAL_SPOT,
+  VIBRANT,
+  EXPRESSIVE,
+  FIDELITY,
+  CONTENT,
+  RAINBOW,
+  FRUIT_SALAD,
+}
 
 export interface ThemeSchemeContextType {
   themeScheme: M3ThemeScheme;
@@ -34,7 +51,7 @@ interface ThemeSchemeProviderProps {
   children: ReactNode;
 }
 const TONES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100] as const;
-type Tone = typeof TONES[number];
+type Tone = (typeof TONES)[number];
 
 function ThemeSchemeProvider({ children }: ThemeSchemeProviderProps) {
   const [themeScheme, setThemeScheme] = useState<M3ThemeScheme>(
@@ -53,13 +70,25 @@ function ThemeSchemeProvider({ children }: ThemeSchemeProviderProps) {
   const themeSchemeValue = useMemo(
     () => ({
       themeScheme,
-      async generateThemeScheme(colorBase: string | HTMLImageElement) {
+      async generateThemeScheme(base: string | HTMLImageElement) {
         let theme;
-        if (typeof colorBase === "string") {
-          theme = themeFromSourceColor(argbFromHex(colorBase));
+        if (typeof base === "string") {
+          theme = themeFromSourceColor(argbFromHex(base));
         } else {
-          theme = await themeFromImage(colorBase);
+          theme = await themeFromImage(base);
         }
+        const dynamicScheme = new DynamicScheme({
+          sourceColorArgb: theme.source,
+          variant: 0,
+          primaryPalette: theme.palettes.primary,
+          contrastLevel: 0,
+          isDark: true,
+          neutralPalette: theme.palettes.neutral,
+          neutralVariantPalette: theme.palettes.neutralVariant,
+          secondaryPalette: theme.palettes.secondary,
+          tertiaryPalette: theme.palettes.tertiary,
+        });
+        const tokens = getTokensFromDynamicScheme(dynamicScheme);
 
         const paletteTones: Record<string, Record<Tone, string>> = {};
 

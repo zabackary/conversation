@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
-import { M3ThemeMode } from "../m3/M3Theme";
+import { M3ThemeMode } from "./M3Theme";
 
 export interface ThemeModeContextType {
   themeMode: M3ThemeMode;
@@ -9,6 +9,8 @@ export interface ThemeModeContextType {
 }
 
 export const DEFAULT_THEME_MODE: M3ThemeMode = "dark";
+export const DEFAULT_THEME_SOURCE_COLOR = "#efa0ff";
+export const DEFAULT_THEME_SCHEME = undefined;
 const THEME_MODE_KEY = "ThemeMode";
 
 export const ThemeModeContext = createContext<ThemeModeContextType>({

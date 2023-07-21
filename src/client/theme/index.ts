@@ -1,12 +1,12 @@
+export * as theme from "./M3Theme";
+export { default as M3ThemeProvider } from "./M3ThemeProvider";
+export type { M3ThemeProps } from "./M3ThemeProvider";
 export {
-  default as M3ThemeModeProvider,
   DEFAULT_THEME_MODE,
+  default as M3ThemeModeProvider,
   ThemeModeContext,
-} from "./context/ThemeModeContext";
+} from "./ThemeModeContext";
 export {
   default as M3ThemeSchemeProvider,
   ThemeSchemeContext,
-} from "./context/ThemeSchemeContext";
-export * as theme from "./m3/M3Theme";
-export { default as M3ThemeProvider } from "./m3/M3ThemeProvider";
-export type { M3ThemeProps } from "./m3/M3ThemeProvider";
+} from "./ThemeSchemeContext";

@@ -3,9 +3,10 @@ import React, { useContext, useMemo } from "react";
 import { CssBaseline, responsiveFontSizes } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { deepmerge } from "@mui/utils";
-import { ThemeModeContext } from "../context/ThemeModeContext";
-import { ThemeSchemeContext } from "../context/ThemeSchemeContext";
-import { getDesignTokens, getThemedComponents } from "./M3Theme";
+import { ThemeModeContext } from "./ThemeModeContext";
+import { ThemeSchemeContext } from "./ThemeSchemeContext";
+import getThemeOptions from "./getThemeOptions";
+import getThemedComponents from "./getThemedComponents";
 
 export interface M3ThemeProps {
   children: React.ReactNode;
@@ -16,11 +17,9 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
   const { themeScheme } = useContext(ThemeSchemeContext);
 
   const m3Theme = useMemo(() => {
-    const designTokens = getDesignTokens(
-      themeMode,
-      themeScheme[themeMode],
-      themeScheme.tones,
-      {
+    // Create the theme using tokens and typography from the Material theme
+    let newM3Theme = createTheme(
+      getThemeOptions(themeMode, themeScheme[themeMode], {
         body: [
           '"Roboto Flex"',
           "Roboto",
@@ -35,12 +34,12 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
           '"Noto Color Emoji"',
           "sans-serif",
         ].join(","),
-      }
+      })
     );
-    let newM3Theme = createTheme(designTokens);
     newM3Theme = deepmerge(newM3Theme, getThemedComponents(newM3Theme));
     newM3Theme = responsiveFontSizes(newM3Theme);
 
+    // Set the document meta-color, if it exists
     document
       .querySelector('meta[name="theme-color"]')
       ?.setAttribute("content", themeScheme[themeMode].surface);
