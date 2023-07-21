@@ -10,27 +10,6 @@ export const DEFAULT_TOKENS = generateTokensFromSourceColor(
 );
 
 const LOCAL_STORAGE_KEY = "m3-tokens";
-
-/**
- * Reproduced from  https://github.com/material-foundation/material-color-utilities/blob/main/typescript/scheme/variant.ts
- * Keep up to date.
- *
- * Set of themes supported by Dynamic Color.
- * Instantiate the corresponding subclass, ex. SchemeTonalSpot, to create
- * colors corresponding to the theme.
- */
-export enum Variant {
-  MONOCHROME,
-  NEUTRAL,
-  TONAL_SPOT,
-  VIBRANT,
-  EXPRESSIVE,
-  FIDELITY,
-  CONTENT,
-  RAINBOW,
-  FRUIT_SALAD,
-}
-
 export interface TokensContextType {
   tokens: M3ColorTokens;
   generate: (base: string | HTMLImageElement) => Promise<void>;
