@@ -5,6 +5,7 @@ import {
   themeFromImage,
   themeFromSourceColor,
 } from "@material/material-color-utilities";
+import { M3ThemeMode } from "./M3Theme";
 import getTokensFromDynamicScheme from "./getTokensFromDynamicScheme";
 
 /**
@@ -27,12 +28,12 @@ export enum Variant {
   FRUIT_SALAD,
 }
 
-function tokensFromTheme(theme: Theme) {
+function tokensFromTheme(theme: Theme, themeMode: M3ThemeMode) {
   const dynamicScheme = new DynamicScheme({
     sourceColorArgb: theme.source,
     variant: Variant.VIBRANT,
     contrastLevel: 0,
-    isDark: true,
+    isDark: themeMode === "dark",
     primaryPalette: theme.palettes.primary,
     neutralPalette: theme.palettes.neutral,
     neutralVariantPalette: theme.palettes.neutralVariant,
@@ -42,17 +43,26 @@ function tokensFromTheme(theme: Theme) {
   return getTokensFromDynamicScheme(dynamicScheme);
 }
 
-export function generateTokensFromSourceColor(base: string) {
-  return tokensFromTheme(themeFromSourceColor(argbFromHex(base)));
+export function generateTokensFromSourceColor(
+  base: string,
+  themeMode: M3ThemeMode
+) {
+  return tokensFromTheme(themeFromSourceColor(argbFromHex(base)), themeMode);
 }
 
-export async function generateTokensFromImage(base: HTMLImageElement) {
-  return tokensFromTheme(await themeFromImage(base));
+export async function generateTokensFromImage(
+  base: HTMLImageElement,
+  themeMode: M3ThemeMode
+) {
+  return tokensFromTheme(await themeFromImage(base), themeMode);
 }
 
-export default async function generateTokens(base: string | HTMLImageElement) {
+export default async function generateTokens(
+  base: string | HTMLImageElement,
+  themeMode: M3ThemeMode
+) {
   if (typeof base === "string") {
-    return generateTokensFromSourceColor(base);
+    return generateTokensFromSourceColor(base, themeMode);
   }
-  return generateTokensFromImage(base);
+  return generateTokensFromImage(base, themeMode);
 }

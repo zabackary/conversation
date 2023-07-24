@@ -17,7 +17,7 @@ import {
   useTheme,
 } from "@mui/material";
 import confetti from "canvas-confetti";
-import { MouseEventHandler, useContext, useMemo, useState } from "react";
+import { MouseEventHandler, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import darkLogo from "../../../assets/logo_large_dark.svg";
@@ -27,7 +27,6 @@ import FeatureListItem from "../../components/landing/FeatureListItem";
 import LanguagePickerDialog from "../../components/layout/LanguagePickerDialog";
 import useSnackbar from "../../components/useSnackbar";
 import useUser from "../../hooks/useUser";
-import { ThemeModeContext } from "../../theme";
 import getFeaturesList from "./features";
 
 function hexToRgb(hex: string) {
@@ -97,7 +96,6 @@ export default function LandingRoute() {
     threshold: 0,
   });
   const theme = useTheme();
-  const { toggle: toggleThemeMode } = useContext(ThemeModeContext);
   const { showSnackbar } = useSnackbar();
   const handleSendIconClick: MouseEventHandler = (event) => {
     void confetti({
@@ -185,7 +183,8 @@ export default function LandingRoute() {
               </Button>
             </Box>
           </Fade>
-          <IconButton onClick={toggleThemeMode}>
+          {/* TODO: Make this work when user is logged in */}
+          <IconButton component={Link} to="/login/appearance">
             {theme.palette.mode === "dark" ? (
               <MaterialSymbolIcon icon="dark_mode" />
             ) : (

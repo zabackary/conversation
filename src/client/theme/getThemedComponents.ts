@@ -62,6 +62,8 @@ export default function getThemedComponents(
       MuiAppBar: {
         styleOverrides: {
           root: {
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -71,6 +73,8 @@ export default function getThemedComponents(
             boxShadow: "none",
           },
           colorDefault: {
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -79,6 +83,8 @@ export default function getThemedComponents(
             ),
           },
           colorPrimary: {
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -392,48 +398,34 @@ export default function getThemedComponents(
             borderColor: theme.palette.outline.main,
             background: theme.palette.surface.main,
           },
+          // Mappings from images in this blog article
+          // https://material.io/blog/tone-based-surface-color-m3
+          elevation0: {
+            background: theme.palette.surfaceContainerLowest.main,
+            color: theme.palette.surfaceContainerLowest.contrastText,
+          },
+          elevation1: {
+            background: theme.palette.surfaceContainerLow.main,
+            color: theme.palette.surfaceContainerLow.contrastText,
+          },
+          elevation2: {
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
+          },
+          elevation3: {
+            background: theme.palette.surfaceContainerHigh.main,
+            color: theme.palette.surfaceContainerHigh.contrastText,
+          },
+          elevation4: {
+            background: theme.palette.surfaceContainerHigh.main,
+            color: theme.palette.surfaceContainerHigh.contrastText,
+          },
           ...Object.fromEntries(
-            ["elevation1"].map((elevation) => [
-              elevation,
-              {
-                background: theme.palette.surfaceContainerLowest.main,
-                color: theme.palette.surfaceContainerLowest.contrastText,
-              },
-            ])
-          ),
-          ...Object.fromEntries(
-            ["elevation2", "elevation3"].map((elevation) => [
-              elevation,
-              {
-                background: theme.palette.surfaceContainerLow.main,
-                color: theme.palette.surfaceContainerLow.contrastText,
-              },
-            ])
-          ),
-          ...Object.fromEntries(
-            ["elevation4", "elevation5", "elevation6"].map((elevation) => [
-              elevation,
-              {
-                background: theme.palette.surfaceContainer.main,
-                color: theme.palette.surfaceContainer.contrastText,
-              },
-            ])
-          ),
-          ...Object.fromEntries(
-            ["elevation7", "elevation8", "elevation9"].map((elevation) => [
-              elevation,
+            [...Array(25 - 5).keys()].map((elevation) => [
+              `elevation${elevation + 5}`,
               {
                 background: theme.palette.surfaceContainerHigh.main,
                 color: theme.palette.surfaceContainerHigh.contrastText,
-              },
-            ])
-          ),
-          ...Object.fromEntries(
-            ["elevation10", "elevation11", "elevation12"].map((elevation) => [
-              elevation,
-              {
-                background: theme.palette.surfaceContainerHighest.main,
-                color: theme.palette.surfaceContainerHighest.contrastText,
               },
             ])
           ),
@@ -540,15 +532,15 @@ export default function getThemedComponents(
             transition: theme.transitions.create([
               "border-radius",
               "margin",
-              "background-color",
+              "box-shadow",
             ]),
-            backgroundColor: alpha(theme.palette.primary.main, 0.05),
+            backgroundColor: theme.palette.surfaceContainerHighest.main,
             "&:hover": {
-              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+              boxShadow: theme.shadows[1],
             },
             "&.Mui-expanded": {
               borderRadius: "16px !important",
-              backgroundColor: alpha(theme.palette.primary.main, 0.1),
+              boxShadow: theme.shadows[2],
             },
           },
         },
@@ -557,10 +549,7 @@ export default function getThemedComponents(
         styleOverrides: {
           root: {
             borderRadius: 32,
-            transition: theme.transitions.create([
-              "border-radius",
-              "background-color",
-            ]),
+            transition: theme.transitions.create("border-radius"),
             "&.Mui-expanded": {
               borderRadius: 16,
             },
@@ -630,7 +619,8 @@ export default function getThemedComponents(
         styleOverrides: {
           root: {
             height: "80px",
-            background: theme.palette.surfaceContainerHigh.main,
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
           },
         },
       },
@@ -654,7 +644,7 @@ export default function getThemedComponents(
                 "background-color",
                 "font-variation-settings",
               ]),
-              boxShadow: `0px 0px 0px 1000px ${theme.palette.surfaceContainerHigh.main}`,
+              boxShadow: `0px 0px 0px 1000px ${theme.palette.surfaceContainer.main}`,
               zIndex: 9,
             },
             "&.Mui-selected": {
@@ -786,6 +776,12 @@ export default function getThemedComponents(
             borderRadius: "24px",
             paddingTop: "8px",
             paddingBottom: "16px",
+            background: theme.palette.surfaceContainerHigh.main,
+            boxShadow: "none",
+          },
+          paperFullScreen: {
+            borderRadius: 0,
+            background: theme.palette.surfaceContainerHigh.main,
           },
         },
       },

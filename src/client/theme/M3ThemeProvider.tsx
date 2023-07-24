@@ -3,8 +3,7 @@ import React, { useContext, useMemo } from "react";
 import { CssBaseline, responsiveFontSizes } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { deepmerge } from "@mui/utils";
-import { ThemeModeContext } from "./ThemeModeContext";
-import { TokensContext } from "./TokensContext";
+import { M3TokensContext } from "./M3TokensContext";
 import getThemeOptions from "./getThemeOptions";
 import getThemedComponents from "./getThemedComponents";
 
@@ -13,13 +12,12 @@ export interface M3ThemeProps {
 }
 
 export default function M3ThemeProvider({ children }: M3ThemeProps) {
-  const { themeMode } = useContext(ThemeModeContext);
-  const { tokens } = useContext(TokensContext);
+  const { generationOptions, colorTokens } = useContext(M3TokensContext);
 
   const m3Theme = useMemo(() => {
     // Create the theme using tokens and typography from the Material theme
     let newM3Theme = createTheme(
-      getThemeOptions(themeMode, tokens, {
+      getThemeOptions(generationOptions.themeMode, colorTokens, {
         body: [
           '"Roboto Flex"',
           "Roboto",
@@ -42,10 +40,10 @@ export default function M3ThemeProvider({ children }: M3ThemeProps) {
     // Set the document meta-color, if it exists
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", tokens.surface);
+      ?.setAttribute("content", colorTokens.surface);
 
     return newM3Theme;
-  }, [themeMode, tokens]);
+  }, [colorTokens, generationOptions.themeMode]);
 
   return (
     <ThemeProvider theme={m3Theme}>
