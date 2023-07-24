@@ -41,7 +41,6 @@ const config = {
     "react-hooks",
   ],
   rules: {
-    "prettier/prettier": 0,
     "import/extensions": [
       2,
       "ignorePackages",
