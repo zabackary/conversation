@@ -94,29 +94,35 @@ export default function ChatView({
 
   const [oldChatHeight, setOldChatHeight] = useState<number | undefined>();
 
-  const scrollCallback = useDebouncedCallback(() => {
-    if (
-      messages &&
-      !isPending &&
-      !exhausted &&
-      window.scrollY < LOAD_MORE_THRESHOLD
-    ) {
-      setIsPending(true);
-      onLoadMore()
-        .then((finished) => {
-          if (finished) setExhausted(true);
-          setOldChatHeight(
-            containerRef.current?.getBoundingClientRect().height
-          );
-        })
-        .catch(() => {
-          showSnackbar("Something went wrong while fetching messages");
-        })
-        .finally(() => {
-          setIsPending(false);
-        });
+  const scrollCallback = useDebouncedCallback(
+    () => {
+      if (
+        messages &&
+        !isPending &&
+        !exhausted &&
+        window.scrollY < LOAD_MORE_THRESHOLD
+      ) {
+        setIsPending(true);
+        onLoadMore()
+          .then((finished) => {
+            if (finished) setExhausted(true);
+            setOldChatHeight(
+              containerRef.current?.getBoundingClientRect().height
+            );
+          })
+          .catch(() => {
+            showSnackbar("Something went wrong while fetching messages");
+          })
+          .finally(() => {
+            setIsPending(false);
+          });
+      }
+    },
+    500,
+    {
+      leading: true,
     }
-  }, 500);
+  );
 
   useLayoutEffect(() => {
     if (oldChatHeight !== undefined) {
