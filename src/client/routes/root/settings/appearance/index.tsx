@@ -6,43 +6,52 @@ import MaterialSymbolIcon from "../../../../components/MaterialSymbolIcon";
 import { ConversationAppBar } from "../../../../components/layout";
 import { ColorItem, SwitchItem } from "../../../../components/settings";
 import useSnackbar from "../../../../components/useSnackbar";
-import {
-  DEFAULT_THEME_MODE,
-  ThemeModeContext,
-  ThemeSchemeContext,
-} from "../../../../theme";
+import { M3TokensContext } from "../../../../theme";
 
 export default function AppearanceSettingsRoute({
   noAppBar,
 }: {
   noAppBar?: boolean;
 }) {
-  const { themeMode, setThemeMode } = useContext(ThemeModeContext);
-  const { themeScheme, generateThemeScheme, resetThemeScheme } =
-    useContext(ThemeSchemeContext);
+  const {
+    generationOptions,
+    generate: generateThemeTokens,
+    reset: resetThemeTokens,
+  } = useContext(M3TokensContext);
 
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
 
   const handleColorChange = useThrottledCallback((color: string) => {
-    generateThemeScheme(color).catch(() => {
+    generateThemeTokens({
+      baseColorHex: color,
+      themeMode: generationOptions.themeMode,
+      type: "color",
+    }).catch(() => {
       snackbar.showSnackbar(t("appearance.theme.error"));
     });
   }, 500);
 
   const handleThemeChange = useCallback(
-    (newTheme: boolean) => {
-      setThemeMode(newTheme ? "dark" : "light");
-      return Promise.resolve(undefined);
+    async (newThemeIsDark: boolean) => {
+      if (generationOptions.type !== "color")
+        throw new Error("Settings doesn't support image seeds yet.");
+      await generateThemeTokens({
+        baseColorHex: generationOptions.baseColorHex,
+        type: "color",
+        themeMode: newThemeIsDark ? "dark" : "light",
+      }).catch(() => {
+        snackbar.showSnackbar(t("appearance.theme.error"));
+      });
     },
-    [setThemeMode]
+    [generateThemeTokens, generationOptions, snackbar, t]
   );
   return (
     <>
       {!noAppBar ? <ConversationAppBar title={t("appearance.title")} /> : null}
       <List>
         <SwitchItem
-          value={themeMode === "dark"}
+          value={generationOptions.themeMode === "dark"}
           onChange={handleThemeChange}
           label={t("appearance.darkmode.title")}
           description={t("appearance.darkmode.description")}
@@ -51,13 +60,17 @@ export default function AppearanceSettingsRoute({
             <Chip
               icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
-              onClick={() => setThemeMode(DEFAULT_THEME_MODE)}
+              onClick={() => {
+                // Already handled in the other code
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                handleThemeChange(true);
+              }}
               variant="outlined"
             />
           </Stack>
         </SwitchItem>
         <ColorItem
-          initialValue={themeScheme.light.primary}
+          initialValue="#ff0000"
           onChange={handleColorChange}
           label={t("appearance.theme.title")}
           description={t("appearance.theme.description")}
@@ -78,7 +91,7 @@ export default function AppearanceSettingsRoute({
             <Chip
               icon={<MaterialSymbolIcon icon="restart_alt" size={18} />}
               label={t("reset")}
-              onClick={() => resetThemeScheme()}
+              onClick={() => resetThemeTokens()}
               variant="outlined"
             />
           </Stack>

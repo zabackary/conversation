@@ -169,7 +169,7 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
               position: "relative",
               zIndex: 1,
             }}
-            elevation={elevate ? 1 : 0}
+            elevation={elevate ? 2 : 0}
             className={elevate ? "" : "flat"}
           >
             {currentReply ? (

@@ -7,11 +7,7 @@ import {
 import { SnackbarProvider } from "./components/useSnackbar";
 import BackendContextProvider from "./context/BackendContextProvider";
 import routes from "./routes";
-import {
-  M3ThemeModeProvider,
-  M3ThemeProvider,
-  M3ThemeSchemeProvider,
-} from "./theme";
+import { M3ThemeProvider, M3TokensProvider } from "./theme";
 
 const router =
   window.location.pathname === "/userCodeAppPanel" ||
@@ -24,15 +20,13 @@ const MemoizedAppRouter = memo(() => <RouterProvider router={router} />);
 export default function App() {
   return (
     <BackendContextProvider>
-      <M3ThemeModeProvider>
-        <M3ThemeSchemeProvider>
-          <M3ThemeProvider>
-            <SnackbarProvider>
-              <MemoizedAppRouter />
-            </SnackbarProvider>
-          </M3ThemeProvider>
-        </M3ThemeSchemeProvider>
-      </M3ThemeModeProvider>
+      <M3TokensProvider>
+        <M3ThemeProvider>
+          <SnackbarProvider>
+            <MemoizedAppRouter />
+          </SnackbarProvider>
+        </M3ThemeProvider>
+      </M3TokensProvider>
     </BackendContextProvider>
   );
 }

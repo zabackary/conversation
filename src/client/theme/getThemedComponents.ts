@@ -1,437 +1,8 @@
 import { alpha, darken, lighten, Theme } from "@mui/material";
-import { ThemeOptions } from "@mui/material/styles";
 
-interface M3Tone {
-  0: string;
-  10: string;
-  20: string;
-  30: string;
-  40: string;
-  50: string;
-  60: string;
-  70: string;
-  80: string;
-  90: string;
-  95: string;
-  99: string;
-  100: string;
-}
-export interface M3ThemeTones {
-  primary: M3Tone;
-  secondary: M3Tone;
-  tertiary: M3Tone;
-  neutral: M3Tone;
-  neutralVariant: M3Tone;
-  error: M3Tone;
-}
-
-export interface M3ThemeFonts {
-  heading: string;
-  body: string;
-}
-
-export interface M3ColorTokens {
-  primary: string;
-  onPrimary: string;
-
-  primaryContainer: string;
-  onPrimaryContainer: string;
-
-  secondary: string;
-  onSecondary: string;
-
-  secondaryContainer: string;
-  onSecondaryContainer: string;
-
-  tertiary: string;
-  onTertiary: string;
-
-  tertiaryContainer: string;
-  onTertiaryContainer: string;
-
-  error: string;
-  onError: string;
-
-  errorContainer: string;
-  onErrorContainer: string;
-
-  background: string;
-  onBackground: string;
-
-  surface: string;
-  onSurface: string;
-
-  surfaceVariant: string;
-  onSurfaceVariant: string;
-
-  inverseSurface: string;
-  inverseOnSurface: string;
-
-  inversePrimary: string;
-  surfaceTint?: string;
-
-  outline: string;
-  shadow: string;
-}
-
-export type M3ThemeMode = "dark" | "light";
-
-export interface M3ThemeScheme {
-  light: M3ColorTokens;
-  dark: M3ColorTokens;
-  tones?: M3ThemeTones;
-}
-
-export const DEFAULT_M3_THEME_SCHEME: M3ThemeScheme = {
-  light: {
-    primary: "#6750A4",
-    onPrimary: "#FFFFFF",
-
-    primaryContainer: "#EADDFF",
-    onPrimaryContainer: "#21005E",
-
-    secondary: "#9c27b0",
-    onSecondary: "#FFFFFF",
-
-    secondaryContainer: "#E8DEF8",
-    onSecondaryContainer: "#1E192B",
-
-    tertiary: "#7D5260",
-    onTertiary: "#FFFFFF",
-
-    tertiaryContainer: "#FFD8E4",
-    onTertiaryContainer: "#370B1E",
-
-    error: "#B3261E",
-    onError: "#ffffff",
-
-    errorContainer: "#F9DEDC",
-    onErrorContainer: "#370B1E",
-
-    background: "#FFFBFE",
-    onBackground: "#1C1B1F",
-
-    surface: "#FFFBFE",
-    onSurface: "#1C1B1F",
-
-    surfaceVariant: "#E7E0EC",
-    onSurfaceVariant: "#49454E",
-
-    inverseSurface: "#313033",
-    inverseOnSurface: "#F4EFF4",
-
-    inversePrimary: "#D0BCFF",
-
-    outline: "#79747E",
-    shadow: "#000000",
-  },
-  dark: {
-    primary: "#D0BCFF",
-    onPrimary: "#371E73",
-
-    primaryContainer: "#4F378B",
-    onPrimaryContainer: "#EADDFF",
-
-    secondary: "#CCC2DC",
-    onSecondary: "#332D41",
-
-    secondaryContainer: "#4A4458",
-    onSecondaryContainer: "#E8DEF8",
-
-    tertiary: "#EFB8C8",
-    onTertiary: "#492532",
-
-    tertiaryContainer: "#633B48",
-    onTertiaryContainer: "#FFD8E4",
-
-    error: "#F2B8B5",
-    onError: "#601410",
-
-    errorContainer: "#8C1D18",
-    onErrorContainer: "#F9DEDC",
-
-    background: "#1C1B1F",
-    onBackground: "#E6E1E5",
-
-    surface: "#1C1B1F",
-    onSurface: "#E6E1E5",
-
-    surfaceVariant: "#49454F",
-    onSurfaceVariant: "#CAC4D0",
-
-    inverseSurface: "#E6E1E5",
-    inverseOnSurface: "#313033",
-
-    inversePrimary: "#6750A4",
-
-    outline: "#938F99",
-    shadow: "#000000",
-  },
-};
-
-declare module "@mui/material/styles/createPalette" {
-  interface Palette {
-    // primary: string,
-    onPrimary: PaletteColor;
-
-    primaryContainer: PaletteColor;
-    onPrimaryContainer: PaletteColor;
-
-    // secondary: string,
-    onSecondary: PaletteColor;
-
-    secondaryContainer: PaletteColor;
-    onSecondaryContainer: PaletteColor;
-
-    tertiary: PaletteColor;
-    onTertiary: PaletteColor;
-
-    tertiaryContainer: PaletteColor;
-    onTertiaryContainer: PaletteColor;
-
-    // error: string,
-    onError: PaletteColor;
-
-    errorContainer: PaletteColor;
-    onErrorContainer: PaletteColor;
-
-    background2: PaletteColor;
-    onBackground: PaletteColor;
-
-    surface: PaletteColor;
-    onSurface: PaletteColor;
-
-    surfaceVariant: PaletteColor;
-    onSurfaceVariant: PaletteColor;
-
-    inverseSurface: PaletteColor;
-    inverseOnSurface: PaletteColor;
-    inversePrimary: PaletteColor;
-
-    surfaceTint: string;
-
-    outline: string;
-    shadow: string;
-  }
-}
-declare module "@mui/material/styles/createTheme" {
-  interface ThemeOptions {
-    tones?: M3ThemeTones;
-  }
-  interface Theme {
-    tones?: M3ThemeTones;
-  }
-}
-
-declare module "@mui/material/Button" {
-  interface ButtonPropsVariantOverrides {
-    elevated: true;
-    filled: true;
-    tonal: true;
-  }
-  interface ButtonPropsColorOverrides {
-    tertiary: true;
-    surface: true;
-  }
-}
-
-declare module "@mui/material/ButtonGroup" {
-  interface ButtonGroupPropsVariantOverrides {
-    elevated: true;
-    filled: true;
-    tonal: true;
-  }
-  interface ButtonGroupColorOverrides {
-    tertiary: true;
-    surface: true;
-  }
-}
-
-declare module "@mui/material/Paper" {
-  interface PaperPropsVariantOverrides {
-    filled: true;
-  }
-}
-
-declare module "@mui/material/Fab" {
-  interface FabPropsVariantOverrides {
-    primary: true;
-    secondary: true;
-    tertiary: true;
-    surface: true;
-  }
-  interface FabPropsColorOverrides {
-    tertiary: true;
-    surface: true;
-  }
-}
-
-declare module "@mui/material/Chip" {
-  interface ChipPropsVariantOverrides {
-    outlined: true;
-    elevated: true;
-    tonal: true;
-  }
-  interface ChipPropsColorOverrides {
-    tertiary: true;
-  }
-}
-
-export const getDesignTokens = (
-  mode: M3ThemeMode,
-  scheme: M3ColorTokens,
-  tones?: M3ThemeTones,
-  typography?: M3ThemeFonts
-) => {
-  return {
-    typography: {
-      fontFamily: typography?.body,
-      body1: { fontFamily: typography?.body },
-      body2: { fontFamily: typography?.body },
-      h1: { fontFamily: typography?.heading },
-      h2: { fontFamily: typography?.heading },
-      h3: { fontFamily: typography?.heading },
-      h4: { fontFamily: typography?.heading },
-      h5: { fontFamily: typography?.heading },
-    },
-    palette: {
-      mode,
-      primary: {
-        main: scheme.primary,
-        contrastText: scheme.onPrimary,
-      },
-      onPrimary: {
-        main: scheme.onPrimary,
-        contrastText: scheme.primary,
-      },
-      primaryContainer: {
-        main: scheme.primaryContainer,
-        contrastText: scheme.onPrimaryContainer,
-      },
-      onPrimaryContainer: {
-        main: scheme.onPrimaryContainer,
-        contrastText: scheme.primaryContainer,
-      },
-      secondary: {
-        main: scheme.secondary,
-        contrastText: scheme.onSecondary,
-      },
-      onSecondary: {
-        main: scheme.onSecondary,
-        contrastText: scheme.secondary,
-      },
-      secondaryContainer: {
-        main: scheme.secondaryContainer,
-        contrastText: scheme.onSecondaryContainer,
-      },
-      onSecondaryContainer: {
-        main: scheme.onSecondaryContainer,
-        contrastText: scheme.secondaryContainer,
-      },
-      tertiary: {
-        main: scheme.tertiary,
-        contrastText: scheme.onTertiary,
-      },
-      onTertiary: {
-        main: scheme.onTertiary,
-        contrastText: scheme.tertiary,
-      },
-      tertiaryContainer: {
-        main: scheme.tertiaryContainer,
-        contrastText: scheme.onTertiaryContainer,
-      },
-      onTertiaryContainer: {
-        main: scheme.onTertiaryContainer,
-        contrastText: scheme.tertiary,
-      },
-      error: {
-        main: scheme.error,
-        contrastText: scheme.onError,
-      },
-      onError: {
-        main: scheme.onError,
-        contrastText: scheme.error,
-      },
-      errorContainer: {
-        main: scheme.errorContainer,
-        contrastText: scheme.onErrorContainer,
-      },
-      onErrorContainer: {
-        main: scheme.onErrorContainer,
-        contrastText: scheme.errorContainer,
-      },
-      background2: {
-        main: scheme.background,
-        contrastText: scheme.onBackground,
-      },
-      onBackground: {
-        main: scheme.onBackground,
-        contrastText: scheme.background,
-      },
-      surface: {
-        main: scheme.surface,
-        contrastText: scheme.onSurface,
-      },
-      onSurface: {
-        main: scheme.onSurface,
-        contrastText: scheme.surface,
-      },
-      surfaceVariant: {
-        main: scheme.surfaceVariant,
-        contrastText: scheme.onSurfaceVariant,
-      },
-      onSurfaceVariant: {
-        main: scheme.onSurfaceVariant,
-        contrastText: scheme.surfaceVariant,
-      },
-      inverseSurface: {
-        main:
-          scheme.inverseSurface ||
-          (mode === "light" ? tones?.neutral[20] : tones?.neutral[90]),
-        contrastText:
-          scheme.inverseOnSurface ||
-          (mode === "light" ? tones?.neutral[95] : tones?.neutral[20]),
-      },
-      inverseOnSurface: {
-        main:
-          scheme.inverseOnSurface ||
-          (mode === "light" ? tones?.neutral[95] : tones?.neutral[20]),
-        contrastText:
-          scheme.inverseSurface ||
-          (mode === "light" ? tones?.neutral[20] : tones?.neutral[90]),
-      },
-      inversePrimary: {
-        main:
-          scheme.inversePrimary ||
-          (mode === "light" ? tones?.neutral[80] : tones?.neutral[40]),
-        contrastText: scheme.primary,
-      },
-
-      surfaceTint: scheme.primary,
-      outline: scheme.outline,
-      shadow: scheme.shadow,
-
-      background: {
-        default: scheme.background,
-        paper: scheme.surface,
-      },
-      common: {
-        white: scheme.background,
-        black: scheme.onBackground,
-      },
-      text: {
-        primary: scheme.onSurface,
-        secondary: scheme.onSecondaryContainer,
-      },
-      divider: scheme.outline,
-    },
-    tones,
-  } as ThemeOptions;
-};
-
-export const getThemedComponents = (
+export default function getThemedComponents(
   theme: Theme
-): { components: Theme["components"] } => {
+): Pick<Theme, "components"> {
   return {
     components: {
       MuiCssBaseline: {
@@ -447,8 +18,8 @@ export const getThemedComponents = (
       MuiDivider: {
         styleOverrides: {
           root: {
-            borderColor: theme.palette.outline,
-            backgroundColor: theme.palette.outline,
+            borderColor: theme.palette.outline.main,
+            backgroundColor: theme.palette.outline.main,
           },
         },
       },
@@ -491,8 +62,8 @@ export const getThemedComponents = (
       MuiAppBar: {
         styleOverrides: {
           root: {
-            background: theme.palette.surface.main,
-            color: theme.palette.onSurface.main,
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -502,8 +73,8 @@ export const getThemedComponents = (
             boxShadow: "none",
           },
           colorDefault: {
-            background: theme.palette.surface.main,
-            color: theme.palette.onSurface.main,
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -512,11 +83,8 @@ export const getThemedComponents = (
             ),
           },
           colorPrimary: {
-            background:
-              theme.palette.mode === "light"
-                ? lighten(theme.palette.primary.main, 0.85)
-                : darken(theme.palette.primary.main, 0.8),
-            color: theme.palette.surface.contrastText,
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
             transition: theme.transitions.create(
               ["background-color", "box-shadow", "color"],
               {
@@ -531,7 +99,7 @@ export const getThemedComponents = (
           root: {
             borderRadius: "40px",
             textTransform: "none",
-            borderColor: theme.palette.outline,
+            borderColor: theme.palette.outline.main,
             color: theme.palette.onSurface.main,
             paddingX: "12px",
             "&.MuiToggleButtonGroup-grouped:not(:first-of-type)": {
@@ -570,8 +138,7 @@ export const getThemedComponents = (
             textTransform: "none",
           },
           outlined: {
-            borderColor: theme.palette.outline,
-            // background: theme.palette.surface.main,
+            borderColor: theme.palette.outline.main,
           },
         },
         variants: [
@@ -627,19 +194,20 @@ export const getThemedComponents = (
           root: {
             borderRadius: "18px",
             textTransform: "unset",
-            fontWeight: "unset",
-            height: "58px",
+            boxShadow: theme.shadows[3],
+            height: "56px",
+            "&:hover": {
+              boxShadow: theme.shadows[4],
+            },
           },
         },
         variants: [
           {
-            props: { variant: "primary" },
+            props: { color: "primary" },
             style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.primaryContainer.main,
               color: theme.palette.onPrimaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.primaryContainer.main, 0.08)
@@ -648,29 +216,11 @@ export const getThemedComponents = (
             },
           },
           {
-            props: { variant: "extended", color: "primary" },
+            props: { color: "secondary" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.primaryContainer.main,
-              color: theme.palette.onPrimaryContainer.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background:
-                  theme.palette.mode === "dark"
-                    ? lighten(theme.palette.primaryContainer.main, 0.08)
-                    : darken(theme.palette.primaryContainer.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "secondary" },
-            style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.secondaryContainer.main,
               color: theme.palette.onSecondaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.secondaryContainer.main, 0.08)
@@ -679,29 +229,11 @@ export const getThemedComponents = (
             },
           },
           {
-            props: { variant: "extended", color: "secondary" },
+            props: { color: "tertiary" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.secondaryContainer.main,
-              color: theme.palette.onSecondaryContainer.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background:
-                  theme.palette.mode === "dark"
-                    ? lighten(theme.palette.secondaryContainer.main, 0.08)
-                    : darken(theme.palette.secondaryContainer.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "tertiary" },
-            style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.tertiaryContainer.main,
               color: theme.palette.onTertiaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.tertiaryContainer.main, 0.08)
@@ -710,45 +242,29 @@ export const getThemedComponents = (
             },
           },
           {
-            props: { variant: "extended", color: "tertiary" },
+            props: { color: "surface" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.tertiaryContainer.main,
-              color: theme.palette.onTertiaryContainer.main,
-              fontWeight: "bold",
+              background: theme.palette.surfaceContainerHigh.main,
+              color: theme.palette.primary.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
-                    ? lighten(theme.palette.tertiaryContainer.main, 0.08)
-                    : darken(theme.palette.tertiaryContainer.main, 0.08),
+                    ? lighten(theme.palette.surfaceContainerHigh.main, 0.08)
+                    : darken(theme.palette.surfaceContainerHigh.main, 0.08),
               },
             },
           },
           {
-            props: { variant: "surface" },
+            props: { color: "surfaceLowered" },
             style: {
-              boxShadow: theme.shadows[3],
-              // background: theme.palette.surface.main,
-              background: alpha(theme.palette.primary.main, 0.05),
+              background: theme.palette.surfaceContainerLow.main,
               color: theme.palette.primary.main,
+              boxShadow: theme.shadows[1],
               "&:hover": {
-                boxShadow: theme.shadows[4],
-                background: alpha(theme.palette.primary.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "extended", color: "surface" },
-            style: {
-              boxShadow: theme.shadows[3],
-              // background: theme.palette.surface.main,
-              background: alpha(theme.palette.primary.main, 0.05),
-              color: theme.palette.primary.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background: alpha(theme.palette.primary.main, 0.08),
+                background:
+                  theme.palette.mode === "dark"
+                    ? lighten(theme.palette.surfaceContainerLow.main, 0.08)
+                    : darken(theme.palette.surfaceContainerLow.main, 0.08),
               },
             },
           },
@@ -799,7 +315,7 @@ export const getThemedComponents = (
             props: { variant: "outlined" },
             style: {
               backgroundColor: theme.palette.surface.main,
-              borderColor: theme.palette.outline,
+              borderColor: theme.palette.outline.main,
               /* transition: theme.transitions.create(
                 ["background-color", "box-shadow", "border-color", "color"],
                 {
@@ -826,17 +342,42 @@ export const getThemedComponents = (
       },
       MuiPaper: {
         styleOverrides: {
-          root: {
-            background:
-              theme.palette.mode === "dark"
-                ? darken(theme.palette.primary.main, 0.8)
-                : lighten(theme.palette.primary.main, 0.9),
-            color: theme.palette.onSurface.main,
-          },
+          root: {},
           outlined: {
-            borderColor: theme.palette.outline,
+            borderColor: theme.palette.outline.main,
             background: theme.palette.surface.main,
           },
+          // Mappings from images in this blog article
+          // https://material.io/blog/tone-based-surface-color-m3
+          elevation0: {
+            background: theme.palette.surfaceContainerLowest.main,
+            color: theme.palette.surfaceContainerLowest.contrastText,
+          },
+          elevation1: {
+            background: theme.palette.surfaceContainerLow.main,
+            color: theme.palette.surfaceContainerLow.contrastText,
+          },
+          elevation2: {
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
+          },
+          elevation3: {
+            background: theme.palette.surfaceContainerHigh.main,
+            color: theme.palette.surfaceContainerHigh.contrastText,
+          },
+          elevation4: {
+            background: theme.palette.surfaceContainerHigh.main,
+            color: theme.palette.surfaceContainerHigh.contrastText,
+          },
+          ...Object.fromEntries(
+            [...Array(25 - 5).keys()].map((elevation) => [
+              `elevation${elevation + 5}`,
+              {
+                background: theme.palette.surfaceContainerHigh.main,
+                color: theme.palette.surfaceContainerHigh.contrastText,
+              },
+            ])
+          ),
         },
       },
       MuiDrawer: {
@@ -864,10 +405,7 @@ export const getThemedComponents = (
           },
           paper: {
             border: "0px",
-            background:
-              theme.palette.mode === "light"
-                ? lighten(theme.palette.primary.main, 0.85)
-                : darken(theme.palette.primary.main, 0.8),
+            background: theme.palette.surfaceContainerHigh.main,
             color: theme.palette.surface.contrastText,
           },
           docked: {
@@ -943,15 +481,15 @@ export const getThemedComponents = (
             transition: theme.transitions.create([
               "border-radius",
               "margin",
-              "background-color",
+              "box-shadow",
             ]),
-            backgroundColor: alpha(theme.palette.primary.main, 0.05),
+            backgroundColor: theme.palette.surfaceContainerHighest.main,
             "&:hover": {
-              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+              boxShadow: theme.shadows[1],
             },
             "&.Mui-expanded": {
               borderRadius: "16px !important",
-              backgroundColor: alpha(theme.palette.primary.main, 0.1),
+              boxShadow: theme.shadows[2],
             },
           },
         },
@@ -960,10 +498,7 @@ export const getThemedComponents = (
         styleOverrides: {
           root: {
             borderRadius: 32,
-            transition: theme.transitions.create([
-              "border-radius",
-              "background-color",
-            ]),
+            transition: theme.transitions.create("border-radius"),
             "&.Mui-expanded": {
               borderRadius: 16,
             },
@@ -994,7 +529,7 @@ export const getThemedComponents = (
           {
             props: { variant: "outlined" },
             style: {
-              border: `1px solid ${theme.palette.outline}`,
+              border: `1px solid ${theme.palette.outline.main}`,
             },
           },
           {
@@ -1033,14 +568,16 @@ export const getThemedComponents = (
         styleOverrides: {
           root: {
             height: "80px",
+            background: theme.palette.surfaceContainer.main,
+            color: theme.palette.surfaceContainer.contrastText,
           },
         },
       },
       MuiBottomNavigationAction: {
         styleOverrides: {
           root: {
-            paddingTop: "38px", // 12 + 52/2
-            paddingBottom: "42px", // 16 + 52/2
+            paddingTop: "38px",
+            paddingBottom: "42px",
             marginLeft: "8px",
             marginRight: "8px",
             overflow: "hidden",
@@ -1056,7 +593,7 @@ export const getThemedComponents = (
                 "background-color",
                 "font-variation-settings",
               ]),
-              boxShadow: `0px 0px 0px 1000px ${theme.palette.background.default}`,
+              boxShadow: `0px 0px 0px 1000px ${theme.palette.surfaceContainer.main}`,
               zIndex: 9,
             },
             "&.Mui-selected": {
@@ -1172,7 +709,7 @@ export const getThemedComponents = (
             },
             "& .MuiSwitch-track": {
               borderRadius: 26 / 2,
-              border: `1px solid ${theme.palette.outline}`,
+              border: `1px solid ${theme.palette.outline.main}`,
               backgroundColor: theme.palette.surfaceVariant.main,
               opacity: 1,
               transition: theme.transitions.create(["background-color"], {
@@ -1188,6 +725,12 @@ export const getThemedComponents = (
             borderRadius: "24px",
             paddingTop: "8px",
             paddingBottom: "16px",
+            background: theme.palette.surfaceContainerHigh.main,
+            boxShadow: "none",
+          },
+          paperFullScreen: {
+            borderRadius: 0,
+            background: theme.palette.surfaceContainerHigh.main,
           },
         },
       },
@@ -1205,4 +748,4 @@ export const getThemedComponents = (
       },
     },
   };
-};
+}

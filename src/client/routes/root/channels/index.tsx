@@ -22,8 +22,8 @@ export default function ChannelListRoute() {
         <>
           <Fab
             variant="extended"
-            color="surface"
-            sx={{ m: 2, mr: "auto" }}
+            color="primary"
+            sx={{ m: 2, mr: "auto", boxShadow: "none" }}
             component={Link}
             to="join/"
           >
