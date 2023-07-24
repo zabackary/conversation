@@ -169,14 +169,15 @@ declare module "@mui/material/Paper" {
 
 declare module "@mui/material/Fab" {
   interface FabPropsVariantOverrides {
+    circular: false;
+    standard: true;
+  }
+  interface FabPropsColorOverrides {
     primary: true;
     secondary: true;
     tertiary: true;
     surface: true;
-  }
-  interface FabPropsColorOverrides {
-    tertiary: true;
-    surface: true;
+    surfaceLowered: true;
   }
 }
 

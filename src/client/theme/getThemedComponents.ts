@@ -194,19 +194,20 @@ export default function getThemedComponents(
           root: {
             borderRadius: "18px",
             textTransform: "unset",
-            fontWeight: "unset",
-            height: "58px",
+            boxShadow: theme.shadows[3],
+            height: "56px",
+            "&:hover": {
+              boxShadow: theme.shadows[4],
+            },
           },
         },
         variants: [
           {
-            props: { variant: "primary" },
+            props: { color: "primary" },
             style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.primaryContainer.main,
               color: theme.palette.onPrimaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.primaryContainer.main, 0.08)
@@ -215,29 +216,11 @@ export default function getThemedComponents(
             },
           },
           {
-            props: { variant: "extended", color: "primary" },
+            props: { color: "secondary" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.primaryContainer.main,
-              color: theme.palette.onPrimaryContainer.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background:
-                  theme.palette.mode === "dark"
-                    ? lighten(theme.palette.primaryContainer.main, 0.08)
-                    : darken(theme.palette.primaryContainer.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "secondary" },
-            style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.secondaryContainer.main,
               color: theme.palette.onSecondaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.secondaryContainer.main, 0.08)
@@ -246,29 +229,11 @@ export default function getThemedComponents(
             },
           },
           {
-            props: { variant: "extended", color: "secondary" },
+            props: { color: "tertiary" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.secondaryContainer.main,
-              color: theme.palette.onSecondaryContainer.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background:
-                  theme.palette.mode === "dark"
-                    ? lighten(theme.palette.secondaryContainer.main, 0.08)
-                    : darken(theme.palette.secondaryContainer.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "tertiary" },
-            style: {
-              boxShadow: theme.shadows[3],
               background: theme.palette.tertiaryContainer.main,
               color: theme.palette.onTertiaryContainer.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
                     ? lighten(theme.palette.tertiaryContainer.main, 0.08)
@@ -277,45 +242,29 @@ export default function getThemedComponents(
             },
           },
           {
-            props: { variant: "extended", color: "tertiary" },
+            props: { color: "surface" },
             style: {
-              boxShadow: theme.shadows[3],
-              background: theme.palette.tertiaryContainer.main,
-              color: theme.palette.onTertiaryContainer.main,
-              fontWeight: "bold",
+              background: theme.palette.surfaceContainerHigh.main,
+              color: theme.palette.primary.main,
               "&:hover": {
-                boxShadow: theme.shadows[4],
                 background:
                   theme.palette.mode === "dark"
-                    ? lighten(theme.palette.tertiaryContainer.main, 0.08)
-                    : darken(theme.palette.tertiaryContainer.main, 0.08),
+                    ? lighten(theme.palette.surfaceContainerHigh.main, 0.08)
+                    : darken(theme.palette.surfaceContainerHigh.main, 0.08),
               },
             },
           },
           {
-            props: { variant: "surface" },
+            props: { color: "surfaceLowered" },
             style: {
-              boxShadow: theme.shadows[3],
-              // background: theme.palette.surface.main,
-              background: alpha(theme.palette.primary.main, 0.05),
+              background: theme.palette.surfaceContainerLow.main,
               color: theme.palette.primary.main,
+              boxShadow: theme.shadows[1],
               "&:hover": {
-                boxShadow: theme.shadows[4],
-                background: alpha(theme.palette.primary.main, 0.08),
-              },
-            },
-          },
-          {
-            props: { variant: "extended", color: "surface" },
-            style: {
-              boxShadow: theme.shadows[3],
-              // background: theme.palette.surface.main,
-              background: alpha(theme.palette.primary.main, 0.05),
-              color: theme.palette.primary.main,
-              fontWeight: "bold",
-              "&:hover": {
-                boxShadow: theme.shadows[4],
-                background: alpha(theme.palette.primary.main, 0.08),
+                background:
+                  theme.palette.mode === "dark"
+                    ? lighten(theme.palette.surfaceContainerLow.main, 0.08)
+                    : darken(theme.palette.surfaceContainerLow.main, 0.08),
               },
             },
           },
