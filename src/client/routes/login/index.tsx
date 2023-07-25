@@ -1,12 +1,12 @@
 import {
   Avatar,
   Box,
+  Container,
   Fade,
   IconButton,
   Link as MuiLink,
   Paper,
 } from "@mui/material";
-import Container from "@mui/material/Container";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
