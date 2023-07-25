@@ -62,7 +62,10 @@ export default function NoDmSelectedRoute() {
           Select a user to get started.
         </Typography>
       )}
-      <Card sx={{ mx: 2 }} variant={isMobile ? "outlined" : undefined}>
+      <Card
+        sx={{ mx: 2, mb: isMobile ? 12 : 2 }}
+        variant={isMobile ? "outlined" : undefined}
+      >
         <CardHeader
           title="New requests"
           action={

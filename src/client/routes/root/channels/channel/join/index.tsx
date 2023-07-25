@@ -99,7 +99,7 @@ export default function ChannelJoinScreen() {
         variant="extended"
         sx={{
           position: "fixed",
-          bottom: { xs: 96, sm: 16 },
+          bottom: 16,
           right: 16,
           display: { sm: "none" },
         }}

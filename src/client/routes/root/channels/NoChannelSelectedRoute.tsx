@@ -24,7 +24,7 @@ export default function NoChannelSelectedRoute() {
     return (
       <>
         <ConversationAppBar title={t("channels", { ns: "general" })} />
-        <List>
+        <List sx={{ mb: 19 }}>
           <ChannelList channels={channels} />
         </List>
         <Fab

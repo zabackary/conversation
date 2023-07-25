@@ -418,10 +418,7 @@ export default function ChatView({
         }}
         sx={{
           position: "sticky",
-          bottom: {
-            xs: "80px",
-            sm: 0,
-          },
+          bottom: 0,
         }}
         placeholder={
           channelName && username
@@ -438,10 +435,7 @@ export default function ChatView({
       />
       <Box
         sx={{
-          marginBottom: {
-            xs: 12,
-            sm: afterInput ? 2 : 0,
-          },
+          marginBottom: afterInput ? 2 : 0,
           mx: 1,
         }}
       >
