@@ -650,83 +650,86 @@ export default function getThemedComponents(
       MuiSwitch: {
         styleOverrides: {
           root: {
-            width: 42,
-            height: 26,
+            width: 52,
+            height: 32,
             padding: 0,
             marginLeft: 12,
             marginRight: 8,
             "& .MuiSwitch-switchBase": {
               padding: 0,
-              margin: 7,
+              margin: 8,
               transitionDuration: "100ms",
               "& .MuiSwitch-input": {
-                height: 42,
+                height: 36,
                 width: 60,
-                marginLeft: -8,
-                marginTop: -12,
+                marginLeft: 0,
+                marginTop: -8,
+              },
+              "& .MuiSwitch-thumb": {
+                boxSizing: "border-box",
+                width: 16,
+                height: 16,
+                backgroundColor: theme.palette.outline.main,
+                boxShadow: "none",
+                "&:before": {
+                  content: "''",
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  left: 0,
+                  top: 0,
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
+                },
+              },
+              "& + .MuiSwitch-track": {
+                borderRadius: 32 / 2,
+                border: `2px solid ${theme.palette.outline.main}`,
+                backgroundColor: theme.palette.surfaceContainerHighest.main,
+                opacity: 1,
+                transition: theme.transitions.create(["background-color"], {
+                  duration: 500,
+                }),
               },
               "&.Mui-checked": {
-                transform: "translateX(16px)",
+                transform: "translateX(20px)",
                 margin: 4,
                 "& + .MuiSwitch-track": {
                   backgroundColor: theme.palette.primary.main,
-                  opacity: 1,
                   border: 0,
+                  opacity: 1,
                 },
                 "& .MuiSwitch-thumb": {
-                  color: theme.palette.onPrimary.main,
-                  width: 18,
-                  height: 18,
+                  backgroundColor: theme.palette.onPrimary.main,
+                  width: 24,
+                  height: 24,
+                  "&:before": {
+                    backgroundColor: theme.palette.onPrimaryContainer.main,
+                    mask: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>') center no-repeat`,
+                  },
                 },
-                "& .MuiSwitch-thumb:before": {
-                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                    theme.palette.primary.main
-                  )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                },
-                "&.Mui-disabled .MuiSwitch-thumb:before": {
-                  backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="12" width="12" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
-                    alpha(theme.palette.onSurfaceVariant.main, 0.28)
-                  )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
-                },
-                "&.Mui-disabled + .MuiSwitch-track": {
-                  backgroundColor: alpha(theme.palette.onSurface.main, 0.1),
-                },
-                "&.Mui-disabled .MuiSwitch-thumb": {
-                  color: alpha(theme.palette.surface.main, 0.8),
+                "&.Mui-disabled": {
+                  "& .MuiSwitch-thumb": {
+                    opacity: 1,
+                    backgroundColor: theme.palette.surface.main,
+                    "&:before": {
+                      opacity: 0.38,
+                      backgroundColor: theme.palette.onSurface.main,
+                    },
+                  },
+                  "& + .MuiSwitch-track": {
+                    backgroundColor: theme.palette.onSurface.main,
+                  },
                 },
               },
-              "&.Mui-focusVisible .MuiSwitch-thumb": {
-                color: theme.palette.primary.main,
-                border: `6px solid ${theme.palette.primary.contrastText}`,
+              "&.Mui-disabled": {
+                "& .MuiSwitch-thumb": {
+                  opacity: 0.38,
+                },
+                "& + .MuiSwitch-track": {
+                  opacity: 0.12,
+                },
               },
-              "&.Mui-disabled .MuiSwitch-thumb": {
-                color: alpha(theme.palette.onSurface.main, 0.3),
-              },
-            },
-            "& .MuiSwitch-thumb": {
-              boxSizing: "border-box",
-              color: theme.palette.outline,
-              width: 12,
-              height: 12,
-              "&:before": {
-                content: "''",
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                left: 0,
-                top: 0,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-              },
-            },
-            "& .MuiSwitch-track": {
-              borderRadius: 26 / 2,
-              border: `1px solid ${theme.palette.outline.main}`,
-              backgroundColor: theme.palette.surfaceVariant.main,
-              opacity: 1,
-              transition: theme.transitions.create(["background-color"], {
-                duration: 500,
-              }),
             },
           },
         },
