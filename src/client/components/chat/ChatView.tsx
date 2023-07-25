@@ -26,7 +26,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import syntaxHighlightingTheme from "react-syntax-highlighter/dist/esm/styles/prism/a11y-dark";
-import { useDebouncedCallback } from "use-debounce";
+import { useThrottledCallback } from "use-debounce";
 import Message from "../../../model/message";
 import { SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
@@ -94,7 +94,7 @@ export default function ChatView({
 
   const [oldChatHeight, setOldChatHeight] = useState<number | undefined>();
 
-  const scrollCallback = useDebouncedCallback(
+  const scrollCallback = useThrottledCallback(
     () => {
       if (
         messages &&
@@ -352,9 +352,12 @@ export default function ChatView({
           <Box
             sx={{
               top: 72,
-              left: `calc(${navigationRailWidth + drawerWidth}px + ((100% - ${
-                navigationRailWidth + drawerWidth
-              }px) / 2))`,
+              left: {
+                xs: "50%",
+                sm: `calc(${navigationRailWidth + drawerWidth}px + ((100% - ${
+                  navigationRailWidth + drawerWidth
+                }px) / 2))`,
+              },
               zIndex: 2,
               position: "fixed",
             }}

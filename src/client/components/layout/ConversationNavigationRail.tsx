@@ -4,8 +4,10 @@ import {
   BottomNavigationActionProps,
   IconButton,
   Paper,
+  Slide,
   Tooltip,
   styled,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { useState } from "react";
@@ -36,6 +38,7 @@ interface Route {
   icon: MaterialSymbolIconProps["icon"];
   id: number;
   admin?: boolean;
+  hideOnMobile?: boolean;
 }
 
 const routes = [
@@ -69,6 +72,7 @@ const routes = [
     icon: "admin_panel_settings",
     id: 4,
     admin: true,
+    hideOnMobile: true,
   },
 ] satisfies Route[];
 
@@ -91,6 +95,9 @@ function ConversationNavigationRailAction({
   const handleClick = useLinkClickHandler(route.href);
   const { t } = useTranslation();
   const user = useUser(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  if (isMobile && route.hideOnMobile) return null;
   if (route.admin && user?.privilegeLevel !== PrivilegeLevel.ADMIN) return null;
   return (
     <Tooltip title={t(route.label)} placement={rail ? "right" : "top"}>
@@ -142,20 +149,34 @@ export default function ConversationNavigationRail({
     if (value) void i18n.changeLanguage(value);
   };
   const theme = useTheme();
+  const isTopLevelDestination =
+    matches.length <= 2 ||
+    routes.some((route) => `${route.href}/` === matches.at(-1)?.pathname);
 
   return (
     <>
       {mobile ? (
-        <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1100 }}
-          elevation={3}
-        >
-          <BottomNavigation value={selected?.id}>
-            {routes.map((route) => (
-              <ConversationNavigationRailAction key={route.id} route={route} />
-            ))}
-          </BottomNavigation>
-        </Paper>
+        <Slide in={isTopLevelDestination} direction="up">
+          <Paper
+            sx={{
+              position: "fixed",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 1100,
+            }}
+            elevation={3}
+          >
+            <BottomNavigation value={selected?.id}>
+              {routes.map((route) => (
+                <ConversationNavigationRailAction
+                  key={route.id}
+                  route={route}
+                />
+              ))}
+            </BottomNavigation>
+          </Paper>
+        </Slide>
       ) : (
         <NavigationRail
           value={selected?.id}
