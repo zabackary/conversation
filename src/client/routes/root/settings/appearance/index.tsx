@@ -18,6 +18,8 @@ export default function AppearanceSettingsRoute({
     generate: generateThemeTokens,
     reset: resetThemeTokens,
   } = useContext(M3TokensContext);
+  if (generationOptions.type !== "color")
+    throw new Error("Settings does not support image-generated schemes.");
 
   const snackbar = useSnackbar();
   const { t } = useTranslation("settings");
@@ -34,8 +36,6 @@ export default function AppearanceSettingsRoute({
 
   const handleThemeChange = useCallback(
     async (newThemeIsDark: boolean) => {
-      if (generationOptions.type !== "color")
-        throw new Error("Settings doesn't support image seeds yet.");
       await generateThemeTokens({
         baseColorHex: generationOptions.baseColorHex,
         type: "color",
@@ -70,7 +70,7 @@ export default function AppearanceSettingsRoute({
           </Stack>
         </SwitchItem>
         <ColorItem
-          initialValue="#ff0000"
+          initialValue={generationOptions.baseColorHex}
           onChange={handleColorChange}
           label={t("appearance.theme.title")}
           description={t("appearance.theme.description")}
