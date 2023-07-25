@@ -1,4 +1,4 @@
-import { alpha, darken, lighten, Theme } from "@mui/material";
+import { alpha, darken, keyframes, lighten, Theme } from "@mui/material";
 
 export default function getThemedComponents(
   theme: Theme
@@ -449,6 +449,8 @@ export default function getThemedComponents(
               },
             },
             "--mui-button-base-focus-ring-offset": "0px",
+            "--mui-button-base-focus-ring-radius": "4px",
+            "--mui-button-base-focus-ring-outer": 0,
           },
         },
       },
@@ -767,6 +769,9 @@ export default function getThemedComponents(
             // - *`--mui-button-base-focus-ring-enable`*
             //   If set to `0`, focus ring is disabled.
             //   Default: 1
+            // - *`--mui-button-base-focus-ring-outer`*
+            //   If set to `0`, focus ring outer is hidden.
+            //   Default: 1
             "&:focus-visible::after": {
               content: '""',
               position: "absolute",
@@ -778,9 +783,25 @@ export default function getThemedComponents(
               borderColor: theme.palette.primary.main,
               borderStyle: "solid",
               outlineOffset: "1px",
-              outlineWidth: "2px",
+              outlineWidth:
+                "calc(var(--mui-button-base-focus-ring-outer, 1) * 2px)",
               outlineColor: theme.palette.primaryContainer.main,
               outlineStyle: "solid",
+              animation: `${keyframes`
+              0% {
+                border-width: 0px;
+                outline-width: 0px;
+              }
+              50% {
+                border-width: 4px;
+              }
+              100% {
+                border-width: 2px;
+                outline-width: 2px;
+              }
+              `} ${theme.transitions.duration.standard}ms ${
+                theme.transitions.easing.easeIn
+              }`,
               zIndex: 99999,
             },
             "& .MuiTouchRipple-root": {
