@@ -559,6 +559,7 @@ export default function getThemedComponents(
         styleOverrides: {
           root: {
             borderRadius: "8px",
+            "--mui-button-base-focus-ring-radius": "8px",
           },
           icon: {
             marginLeft: "8px",
@@ -781,7 +782,8 @@ export default function getThemedComponents(
               inset: "calc(var(--mui-button-base-focus-ring-offset, 4px) * -1)",
               pointerEvents: "none",
               opacity: "var(--mui-button-base-focus-ring-enable, 1)",
-              borderRadius: "var(--mui-button-base-focus-ring-radius, 8px)",
+              borderRadius:
+                "calc(var(--mui-button-base-focus-ring-radius, 8px) + var(--mui-button-base-focus-ring-offset, 4px) / 2)",
               borderWidth: "2px",
               borderColor: theme.palette.primary.main,
               borderStyle: "solid",
