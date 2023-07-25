@@ -14,8 +14,6 @@ import {
   Stack,
   Tooltip,
   Typography,
-  darken,
-  lighten,
   useTheme,
 } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
@@ -127,16 +125,23 @@ export default function DmListRoute() {
                   height: 56,
                   paddingLeft: 2,
                   paddingRight: "0 !important",
-                  background:
-                    theme.palette.mode === "dark"
-                      ? darken(theme.palette.primary.main, 0.8)
-                      : lighten(theme.palette.primary.main, 0.9),
+                  background: theme.palette.surfaceContainerHigh.main,
+                  transition: theme.transitions.create([
+                    "box-shadow",
+                    "border-radius",
+                  ]),
+                  "&:hover, &:focus-within": {
+                    boxShadow: theme.shadows[1],
+                  },
                 }}
                 startAdornment={
                   <MaterialSymbolIcon
                     icon="search"
                     size={24}
-                    sx={{ color: theme.palette.onSurfaceVariant.main, mr: 2 }}
+                    sx={{
+                      color: theme.palette.surfaceContainerHigh.contrastText,
+                      mr: 2,
+                    }}
                   />
                 }
                 endAdornment={
@@ -170,7 +175,8 @@ export default function DmListRoute() {
                             icon="contacts"
                             size={18}
                             sx={{
-                              color: theme.palette.onSurfaceVariant.main,
+                              color:
+                                theme.palette.primaryContainer.contrastText,
                             }}
                           />
                         </IconButton>
@@ -186,26 +192,32 @@ export default function DmListRoute() {
             onClose={() => setAutoCompleteOpen(false)}
             noOptionsText={
               // eslint-disable-next-line no-nested-ternary
-              autocompleteInputValue === "" ? (
-                <Stack alignItems="center">
+              autocompleteInputValue === "" ||
+              options[0] !== autocompleteInputValue ? (
+                <Stack
+                  alignItems="center"
+                  sx={{
+                    opacity: options[0] !== autocompleteInputValue ? 0.6 : 1,
+                  }}
+                >
                   <Avatar
                     sx={{
                       backgroundColor: theme.palette.tertiaryContainer.main,
-                      color: theme.palette.onTertiaryContainer.main,
+                      color: theme.palette.tertiaryContainer.contrastText,
                       width: 54,
                       height: 54,
                     }}
                   >
-                    <MaterialSymbolIcon icon="diversity_3" size={36} />
+                    <MaterialSymbolIcon
+                      icon="diversity_3"
+                      size={36}
+                      color="inherit"
+                    />
                   </Avatar>
                   <Typography my={1}>
                     {t("people.searchUsers", { namespace: "channel" })}
                   </Typography>
                 </Stack>
-              ) : options[0] !== autocompleteInputValue ? (
-                <Box display="flex" justifyContent="center">
-                  <CircularProgress />
-                </Box>
               ) : (
                 t("people.noUsersFound", { namespace: "channel" })
               )
@@ -215,6 +227,7 @@ export default function DmListRoute() {
                 sx: {
                   borderTop: `1px solid ${theme.palette.divider}`,
                   borderRadius: "0 0 28px 28px",
+                  background: theme.palette.surfaceContainerHigh.main,
                 },
               },
             }}

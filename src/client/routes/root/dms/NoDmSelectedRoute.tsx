@@ -8,8 +8,6 @@ import {
   List,
   Stack,
   Typography,
-  darken,
-  lighten,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -48,10 +46,7 @@ export default function NoDmSelectedRoute() {
     await backend.deleteInvite(id);
     handleRefresh();
   };
-  const surfaceColor =
-    theme.palette.mode === "dark"
-      ? darken(theme.palette.primary.main, 0.8)
-      : lighten(theme.palette.primary.main, 0.9);
+  const surfaceColor = theme.palette.surfaceContainerLow.main;
   const isEmptyState = invitedChannels?.length === 0;
   return (
     <Stack justifyContent="center">
