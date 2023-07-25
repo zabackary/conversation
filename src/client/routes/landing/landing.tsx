@@ -183,8 +183,10 @@ export default function LandingRoute() {
               </Button>
             </Box>
           </Fade>
-          {/* TODO: Make this work when user is logged in */}
-          <IconButton component={Link} to="/login/appearance">
+          <IconButton
+            component={Link}
+            to={user ? "/app/settings/appearance" : "/login/settings"}
+          >
             {theme.palette.mode === "dark" ? (
               <MaterialSymbolIcon icon="dark_mode" />
             ) : (
@@ -210,6 +212,7 @@ export default function LandingRoute() {
           pb={2}
           borderRadius={8}
           bgcolor="primaryContainer.main"
+          color="primaryContainer.contrastText"
           mb={4}
         >
           <Grid container rowSpacing={2}>
@@ -223,6 +226,7 @@ export default function LandingRoute() {
                 onClick={handleSendIconClick}
                 sx={{
                   margin: "auto",
+                  cursor: "help",
                 }}
               >
                 <MaterialSymbolIcon size={256} icon="send" color="secondary" />
