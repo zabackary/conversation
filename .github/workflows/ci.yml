@@ -24,3 +24,5 @@ jobs:
       run: pnpm install
     - name: Run ESLint
       run: pnpm exec eslint . --ext .js,.jsx,.ts,.tsx
+    - name: Check types
+      run: pnpm exec tsc --noemit
