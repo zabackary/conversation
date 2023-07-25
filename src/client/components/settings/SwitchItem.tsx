@@ -9,6 +9,7 @@ interface Props {
   label: string;
   description: string;
   children?: ReactNode;
+  disabled?: boolean;
 }
 
 export default function SwitchItem({
@@ -17,17 +18,18 @@ export default function SwitchItem({
   label,
   description,
   children,
+  disabled,
 }: Props) {
-  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const snackbar = useSnackbar();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDisabled(true);
+    setLoading(true);
     onChange(e.currentTarget.checked)
       .then(() => {
-        setDisabled(false);
+        setLoading(false);
       })
       .catch(() => {
-        setDisabled(false);
+        setLoading(false);
         snackbar.showSnackbar("Failed to save preferences.");
       });
   };
@@ -36,7 +38,11 @@ export default function SwitchItem({
       label={label}
       description={description}
       control={
-        <Switch checked={value} onChange={handleChange} disabled={disabled} />
+        <Switch
+          checked={value}
+          onChange={handleChange}
+          disabled={loading || disabled}
+        />
       }
     >
       {children}
