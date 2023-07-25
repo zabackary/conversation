@@ -195,7 +195,7 @@ export default function getThemedComponents(
             borderRadius: "18px",
             textTransform: "unset",
             boxShadow: theme.shadows[3],
-            height: "56px",
+            minHeight: "56px",
             "&:hover": {
               boxShadow: theme.shadows[4],
             },
