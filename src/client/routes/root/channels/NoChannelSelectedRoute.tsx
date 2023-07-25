@@ -23,7 +23,7 @@ export default function NoChannelSelectedRoute() {
   if (isMobile) {
     return (
       <>
-        <ConversationAppBar title={t("channels", { namespace: "general" })} />
+        <ConversationAppBar title={t("channels", { ns: "general" })} />
         <List>
           <ChannelList channels={channels} />
         </List>
