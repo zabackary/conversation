@@ -1,3 +1,4 @@
+import { Box, Button, DialogActions } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -9,6 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import translations from "../../../translations.json";
+import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
 const LANGUAGE_COUNTRY_MAPPING: Record<string, string> = {
   "en-US": "US",
@@ -70,28 +72,63 @@ export default function LanguagePickerDialog({
       <List sx={{ pt: 0 }}>
         {languageInfos.map((language) => (
           <ListItem disableGutters key={language.code}>
-            <ListItemButton onClick={() => handleListItemClick(language.code)}>
-              <ListItemAvatar>
-                <Avatar
-                  sx={{ bgcolor: "primary.main" }}
-                  src={
-                    language.code in LANGUAGE_COUNTRY_MAPPING
-                      ? `//esm.sh/country-flag-icons@1/1x1/${
-                          LANGUAGE_COUNTRY_MAPPING[language.code] ?? ""
-                        }.${"svg"}` // Weird string interpolation to work around
-                      : // VSCode syntax/parsing bug with file extensions?!
-                        undefined
-                  }
+            <ListItemButton
+              onClick={() => handleListItemClick(language.code)}
+              disableGutters
+              sx={{ padding: "4px 8px 4px 8px !important" }}
+            >
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                borderRadius={4}
+                flexGrow={1}
+                padding="4px 8px 4px 8px"
+                bgcolor={
+                  i18n.language === language.code
+                    ? "primaryContainer.main"
+                    : undefined
+                }
+                color={
+                  i18n.language === language.code
+                    ? "primaryContainer.contrastText"
+                    : undefined
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{ bgcolor: "primary.main" }}
+                    src={
+                      language.code in LANGUAGE_COUNTRY_MAPPING &&
+                      i18n.language !== language.code
+                        ? `//esm.sh/country-flag-icons@1/1x1/${
+                            LANGUAGE_COUNTRY_MAPPING[language.code] ?? ""
+                          }.${"svg"}` // Weird string interpolation to work around
+                        : // VSCode syntax/parsing bug with file extensions?!
+                          undefined
+                    }
+                  >
+                    {i18n.language === language.code ? (
+                      <MaterialSymbolIcon icon="check" />
+                    ) : (
+                      <MaterialSymbolIcon icon="language" />
+                    )}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={language.localizedName}
+                  secondary={language.currentLocaleName}
                 />
-              </ListItemAvatar>
-              <ListItemText
-                primary={language.localizedName}
-                secondary={language.currentLocaleName}
-              />
+              </Box>
             </ListItemButton>
           </ListItem>
         ))}
       </List>
+      <DialogActions>
+        <Button onClick={handleClose}>
+          {t("notices.cancel", { ns: "login" })}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }
