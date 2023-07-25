@@ -802,7 +802,7 @@ export default function getThemedComponents(
               }
               100% {
                 border-width: 2px;
-                outline-width: 2px;
+                outline-width: calc(var(--mui-button-base-focus-ring-outer, 1) * 2px);
               }
               `} ${theme.transitions.duration.standard}ms ${
                 theme.transitions.easing.easeIn
