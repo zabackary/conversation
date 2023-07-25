@@ -51,11 +51,10 @@ export default function ColorItem({
           <Tooltip title="Open color palette">
             <IconButton
               onClick={handleClick}
-              color="primary"
               sx={{
-                bgcolor: "primary.main",
-                color: "primary.contrastText",
-                "&:hover": { bgcolor: "primary.main" },
+                bgcolor: "secondaryContainer.main",
+                color: "secondaryContainer.contrastText",
+                "&:hover": { bgcolor: "secondaryContainer.main" },
               }}
             >
               <MaterialSymbolIcon icon="palette" fill={open} />
@@ -78,56 +77,59 @@ export default function ColorItem({
           vertical: "top",
           horizontal: "right",
         }}
-        PaperProps={{
-          sx: {
-            padding: 2,
-            "& .react-colorful": {
-              height: "auto",
-              cursor: "pointer",
-              "& .react-colorful__saturation": {
-                display: "none",
-              },
-              "& .react-colorful__hue": {
-                height: "36px",
-                borderRadius: "18px",
-                overflow: "hidden",
-                "&::before": {
-                  content: '""',
-                  width: "18px",
-                  height: "100%",
-                  display: "block",
-                  background: "#f00",
+        slotProps={{
+          paper: {
+            sx: {
+              padding: 2,
+              "& .react-colorful": {
+                height: "auto",
+                cursor: "pointer",
+                "& .react-colorful__saturation": {
+                  display: "none",
                 },
-                "& .react-colorful__interactive": {
-                  left: "18px",
-                  borderRadius: 0,
-                  background:
-                    "linear-gradient(90deg,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red)",
-                },
-                ".react-colorful__interactive:focus .react-colorful__pointer": {
-                  transform: "translate(-50%, -50%)",
-                },
-                "& .react-colorful__hue-pointer": {
+                "& .react-colorful__hue": {
                   height: "36px",
-                  width: "36px",
-                  background: "none",
-                  boxShadow: "none",
-                  border: 0,
-                  "& .react-colorful__pointer-fill": {
-                    display: "none",
-                  },
-                  "&::after": {
+                  borderRadius: "18px",
+                  overflow: "hidden",
+                  "&::before": {
                     content: '""',
-                    top: "-1px",
-                    position: "absolute",
-                    width: "9999px",
-                    height: "calc(100% + 1px)",
-                    background: `radial-gradient(
+                    width: "18px",
+                    height: "100%",
+                    display: "block",
+                    background: "#f00",
+                  },
+                  "& .react-colorful__interactive": {
+                    left: "18px",
+                    borderRadius: 0,
+                    background:
+                      "linear-gradient(90deg,red 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,red)",
+                  },
+                  ".react-colorful__interactive:focus .react-colorful__pointer":
+                    {
+                      transform: "translate(-50%, -50%)",
+                    },
+                  "& .react-colorful__hue-pointer": {
+                    height: "36px",
+                    width: "36px",
+                    background: "none",
+                    boxShadow: "none",
+                    border: 0,
+                    "& .react-colorful__pointer-fill": {
+                      display: "none",
+                    },
+                    "&::after": {
+                      content: '""',
+                      top: "-1px",
+                      position: "absolute",
+                      width: "9999px",
+                      height: "calc(100% + 1px)",
+                      background: `radial-gradient(
                       circle at 0% 50%,
                       transparent 18px,
                       rgba(0, 0, 0, 50%) 18px
                     )`,
-                    zIndex: "0",
+                      zIndex: "0",
+                    },
                   },
                 },
               },
