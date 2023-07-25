@@ -188,6 +188,10 @@ export default function getThemedComponents(
             },
           },
         ],
+        defaultProps: {
+          // Already shown from outline in ButtonBase.
+          focusRipple: false,
+        },
       },
       MuiFab: {
         styleOverrides: {
@@ -269,6 +273,10 @@ export default function getThemedComponents(
             },
           },
         ],
+        defaultProps: {
+          // Already shown from outline in ButtonBase.
+          focusRipple: false,
+        },
       },
       MuiCard: {
         styleOverrides: {
@@ -440,6 +448,7 @@ export default function getThemedComponents(
                 fontWeight: "bold",
               },
             },
+            "--mui-button-base-focus-ring-offset": "0px",
           },
         },
       },
@@ -576,6 +585,7 @@ export default function getThemedComponents(
       MuiBottomNavigationAction: {
         styleOverrides: {
           root: {
+            "--mui-button-base-focus-ring-offset": "-4px",
             paddingTop: "38px",
             paddingBottom: "42px",
             marginLeft: "8px",
@@ -734,9 +744,45 @@ export default function getThemedComponents(
           },
         },
       },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            "--mui-button-base-focus-ring-enable": 0,
+          },
+        },
+      },
       MuiButtonBase: {
         styleOverrides: {
           root: {
+            // # Focus ring styling
+            //
+            // ## CSS API:
+            //
+            // - *`--mui-button-base-focus-ring-offset`*
+            //   Controls the offset of the ring from the element, e.g. the gap.
+            //   Default: 4px
+            // - *`--mui-button-base-focus-ring-radius`*
+            //   Controls the corner radius of the ring.
+            //   Default: 8px
+            // - *`--mui-button-base-focus-ring-enable`*
+            //   If set to `0`, focus ring is disabled.
+            //   Default: 1
+            "&:focus-visible::after": {
+              content: '""',
+              position: "absolute",
+              inset: "calc(var(--mui-button-base-focus-ring-offset, 4px) * -1)",
+              pointerEvents: "none",
+              opacity: "var(--mui-button-base-focus-ring-enable, 1)",
+              borderRadius: "var(--mui-button-base-focus-ring-radius, 8px)",
+              borderWidth: "2px",
+              borderColor: theme.palette.primary.main,
+              borderStyle: "solid",
+              outlineOffset: "1px",
+              outlineWidth: "2px",
+              outlineColor: theme.palette.primaryContainer.main,
+              outlineStyle: "solid",
+              zIndex: 99999,
+            },
             "& .MuiTouchRipple-root": {
               opacity: 0.5,
             },
@@ -744,6 +790,9 @@ export default function getThemedComponents(
               animationDuration: "180ms",
             },
           },
+        },
+        defaultProps: {
+          focusRipple: false,
         },
       },
     },
