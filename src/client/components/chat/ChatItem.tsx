@@ -79,8 +79,11 @@ const ChatItem = memo(
       >
         <ListItemButton
           sx={{
-            p: "0 24px !important",
-            pl: decoration ? "21px !important" : undefined,
+            mx: "8px",
+            borderRadius: "8px",
+            "--mui-button-base-focus-ring-radius": "8px",
+            p: "0 16px !important",
+            pl: decoration ? "13px !important" : undefined,
             bgcolor: decoration ? `${decoration}Container.main` : undefined,
             borderLeft: decoration ? "3px solid transparent" : undefined,
             borderLeftColor: decoration ? `${decoration}.main` : undefined,
