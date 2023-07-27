@@ -1,11 +1,14 @@
 import { Emoji, PickerI18n } from "@emoji-mart/react";
 import {
+  Avatar,
   Box,
+  Chip,
   IconButton,
   InputBase,
   Menu,
   Paper,
   Popover,
+  Stack,
   SxProps,
   Tooltip,
   alpha,
@@ -19,6 +22,7 @@ import {
   PointerEvent,
   forwardRef,
   useCallback,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -26,9 +30,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { SentMessage, SentMessageEvent } from "../../network/NetworkBackend";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
-import ChatInputActions from "./ChatInputActions";
+import ChatInputActions, { ChatInputActionType } from "./ChatInputActions";
 import DelayedEmojiPicker from "./DelayedEmojiPicker";
 import ReplyPreview from "./ReplyPreview";
+import mimeToIcon from "./mimeToIcon";
 
 const StyledPaper = styled(Paper)`
   ${({ theme }) => `
@@ -133,6 +138,59 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
     const handleEmojiPickerClose = useCallback(() => {
       setEmojiPickerAnchor(null);
     }, [setEmojiPickerAnchor]);
+    const handleDeleteItem = (item: File, isImage: boolean) => {
+      if (isImage) {
+        setMessage((oldMessage) => ({
+          ...oldMessage,
+          images: oldMessage.images?.filter((image) => image !== item),
+        }));
+      } else {
+        setMessage((oldMessage) => ({
+          ...oldMessage,
+          attachments: oldMessage.attachments?.filter(
+            (attachment) => attachment !== item
+          ),
+        }));
+      }
+    };
+    const handleActionSelect = (actionType: ChatInputActionType) => {
+      switch (actionType) {
+        case ChatInputActionType.FILE: {
+          const element = document.createElement("input");
+          element.type = "file";
+          element.multiple = true;
+          element.addEventListener("change", () => {
+            setMessage((oldMessage) => ({
+              ...oldMessage,
+              attachments: [
+                ...(oldMessage.attachments ?? []),
+                ...(element.files ?? []),
+              ],
+            }));
+          });
+          element.click();
+          break;
+        }
+        case ChatInputActionType.IMAGE: {
+          const element = document.createElement("input");
+          element.type = "file";
+          element.multiple = true;
+          element.accept = "image/*";
+          element.addEventListener("change", () => {
+            setMessage((oldMessage) => ({
+              ...oldMessage,
+              images: [...(oldMessage.images ?? []), ...(element.files ?? [])],
+            }));
+          });
+          element.click();
+          break;
+        }
+        case ChatInputActionType.ACTION: {
+          break;
+        }
+      }
+      handleOptionsMenuClose();
+    };
     const emojiPickerPopoverId = useId();
     const optionsMenuId = useId();
     const isEmojiPickerOpen = !!emojiPickerAnchor;
@@ -143,6 +201,21 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
     const handleFocusInput = () => {
       inputRef.current?.focus();
     };
+    const [imagePreviews, setImagePreviews] = useState<Record<string, string>>(
+      {}
+    );
+    useEffect(() => {
+      const previews: Record<string, string> = {};
+      message.images?.forEach((image) => {
+        previews[image.name] = URL.createObjectURL(image);
+      });
+      setImagePreviews(previews);
+      return () => {
+        Object.values(previews).forEach((previewURL) =>
+          URL.revokeObjectURL(previewURL)
+        );
+      };
+    }, [message.images, message.images?.length]);
     return (
       <>
         <Box
@@ -245,6 +318,45 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
                   </IconButton>
                 </Tooltip>
               )}
+              <Stack
+                direction="row"
+                flexBasis="100%"
+                spacing={1}
+                useFlexGap
+                flexWrap="wrap"
+              >
+                {message.images?.map((image) => (
+                  <Chip
+                    label={image.name}
+                    avatar={
+                      <Avatar
+                        src={imagePreviews[image.name]}
+                        sx={{ borderRadius: "8px" }}
+                      />
+                    }
+                    icon={<MaterialSymbolIcon icon="image" size={18} />}
+                    deleteIcon={<MaterialSymbolIcon icon="delete" />}
+                    onDelete={() => handleDeleteItem(image, true)}
+                    variant="tonal"
+                    key={image.name}
+                  />
+                ))}
+                {message.attachments?.map((attachment) => (
+                  <Chip
+                    label={attachment.name}
+                    icon={
+                      <MaterialSymbolIcon
+                        icon={mimeToIcon(attachment.type)}
+                        size={18}
+                      />
+                    }
+                    deleteIcon={<MaterialSymbolIcon icon="delete" />}
+                    onDelete={() => handleDeleteItem(attachment, false)}
+                    variant="tonal"
+                    key={attachment.name}
+                  />
+                ))}
+              </Stack>
             </Box>
           </StyledPaper>
         </Box>
@@ -290,7 +402,7 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
             horizontal: "left",
           }}
         >
-          <ChatInputActions />
+          <ChatInputActions onSelect={handleActionSelect} />
         </Menu>
       </>
     );

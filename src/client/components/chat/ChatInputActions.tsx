@@ -5,11 +5,21 @@ import MenuItem from "@mui/material/MenuItem";
 import { useTranslation } from "react-i18next";
 import MaterialSymbolIcon from "../MaterialSymbolIcon";
 
-export default function ChatInputActions() {
+export enum ChatInputActionType {
+  FILE,
+  IMAGE,
+  ACTION,
+}
+
+export interface ChatInputActionsProps {
+  onSelect(action: ChatInputActionType): void;
+}
+
+export default function ChatInputActions({ onSelect }: ChatInputActionsProps) {
   const { t } = useTranslation("channel");
   return (
     <>
-      <MenuItem>
+      <MenuItem onClick={() => onSelect(ChatInputActionType.FILE)}>
         <ListItemIcon>
           <MaterialSymbolIcon icon="upload" />
         </ListItemIcon>
@@ -18,7 +28,7 @@ export default function ChatInputActions() {
           secondary={t("upload.hint")}
         />
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={() => onSelect(ChatInputActionType.IMAGE)}>
         <ListItemIcon>
           <MaterialSymbolIcon icon="add_a_photo" />
         </ListItemIcon>
@@ -28,7 +38,7 @@ export default function ChatInputActions() {
         />
       </MenuItem>
       <Divider />
-      <MenuItem>
+      <MenuItem onClick={() => onSelect(ChatInputActionType.ACTION)}>
         <ListItemIcon>
           <MaterialSymbolIcon icon="flag" />
         </ListItemIcon>
