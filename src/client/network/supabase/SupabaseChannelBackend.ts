@@ -119,7 +119,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     const attachmentId = data[0]!.id;
     this.backend.client.storage
       .from(UPLOAD_BUCKET)
-      .upload(attachmentId, file)
+      .upload(`${attachmentId}/${file.name}`, file)
       .then(async ({ data: storageData, error: storageError }) => {
         // storage returns a PromiseLike without `catch`
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
