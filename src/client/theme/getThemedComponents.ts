@@ -546,13 +546,13 @@ export default function getThemedComponents(
           {
             props: { variant: "tonal" },
             style: {
-              backgroundColor: alpha(theme.palette.primary.main, 0.08),
+              backgroundColor: theme.palette.secondaryContainer.main,
             },
           },
           {
             props: { color: "tertiary" },
             style: {
-              backgroundColor: alpha(theme.palette.tertiary.main, 0.08),
+              backgroundColor: theme.palette.tertiaryContainer.main,
             },
           },
         ],
