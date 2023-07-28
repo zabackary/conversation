@@ -101,7 +101,12 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     };
   }
 
-  private async processUpload(messageId: number, file: File, asImage: boolean) {
+  private async processUpload(
+    cache: SupabaseCache,
+    messageId: number,
+    file: File,
+    asImage: boolean
+  ) {
     // TODO: Add `attachments` table to cache
     const { error, data } = await this.backend.client
       .from("attachments")
@@ -113,10 +118,12 @@ export default class SupabaseChannelBackend implements ChannelBackend {
         as_image: asImage,
         upload_url: null,
       })
-      .select("id");
+      .select("*");
     if (error) throw error;
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const attachmentId = data[0]!.id;
+    const attachment = data[0]!;
+    cache.putAttachment(attachment);
+    const attachmentId = attachment.id;
     this.backend.client.storage
       .from(UPLOAD_BUCKET)
       .upload(`${attachmentId}/${file.name}`, file)
@@ -162,13 +169,13 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     if (message.attachments)
       await Promise.all(
         message.attachments.map((attachment) => {
-          return this.processUpload(messageId, attachment, false);
+          return this.processUpload(this.cache, messageId, attachment, false);
         })
       );
     if (message.images)
       await Promise.all(
         message.images.map((image) => {
-          return this.processUpload(messageId, image, true);
+          return this.processUpload(this.cache, messageId, image, true);
         })
       );
   }

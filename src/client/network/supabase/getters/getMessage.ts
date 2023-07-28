@@ -12,6 +12,7 @@ export default async function getMessage(
     .eq("id", messageId)
     .single();
   if (error) throw error;
+  cache.putAttachment(...message.attachments);
   const { attachments: _, ...normalizedMessage } = message;
   return normalizedMessage;
 }

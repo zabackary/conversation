@@ -7,7 +7,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import Message from "../../../model/message";
+import Message, { Attachment } from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -26,12 +26,14 @@ import { DispatchableSubscribable } from "../Subscribable";
 import GasBackend from "../gas/GasBackend";
 import SupabaseChannelBackend from "./SupabaseChannelBackend";
 import SupabaseCache, { SupabaseMessage } from "./cache";
+import convertAttachment from "./converters/convertAttachment";
 import convertChannel from "./converters/convertChannel";
 import convertMessage from "./converters/convertMessage";
 import convertUser from "./converters/convertUser";
 import getLoggedInUserSubscribable, {
   UserAuthStatus,
 } from "./getLoggedInUserSubscribable";
+import getAttachment from "./getters/getAttachment";
 import getChannel from "./getters/getChannel";
 import getChannels from "./getters/getChannels";
 import getMessage from "./getters/getMessage";
@@ -545,6 +547,24 @@ class SupabaseBackendImpl implements NetworkBackend {
         )
       )
         .map<User | null>((user) => Promise.resolve(convertUser(user)), null)
+        .subscribe(({ value, error }) => {
+          if (error) nextError(error);
+          else next(value);
+        });
+    }, null);
+  }
+
+  getAttachment(id: string): Subscribable<Attachment | null> {
+    return new Subscribable<Attachment | null>(async (next, nextError) => {
+      (
+        await this.cache.getAttachmentOrFallback(id, () =>
+          getAttachment(this.client, this.cache, id)
+        )
+      )
+        .map<Attachment | null>(
+          (user) => Promise.resolve(convertAttachment(user)),
+          null
+        )
         .subscribe(({ value, error }) => {
           if (error) nextError(error);
           else next(value);

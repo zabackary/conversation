@@ -1,16 +1,19 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable no-return-assign */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+import { DispatchableSubscribable } from "../Subscribable";
+import getAttachment from "./getters/getAttachment";
 import getChannel from "./getters/getChannel";
 import getMessage from "./getters/getMessage";
 import getUser from "./getters/getUser";
-import { DispatchableSubscribable } from "../Subscribable";
 
 export type SupabaseUser = Awaited<ReturnType<typeof getUser>>;
 
 export type SupabaseChannel = Awaited<ReturnType<typeof getChannel>>;
 
 export type SupabaseMessage = Awaited<ReturnType<typeof getMessage>>;
+
+export type SupabaseAttachment = Awaited<ReturnType<typeof getAttachment>>;
 
 export default class SupabaseCache {
   private users: Record<
@@ -100,6 +103,39 @@ export default class SupabaseCache {
       (this.messages[id] = fallback().then((value) => {
         const subscribable = new DispatchableSubscribable<typeof value>(value);
         this.messages[id] = subscribable;
+        return subscribable;
+      }))
+    );
+  }
+
+  private attachments: Record<
+    string,
+    | DispatchableSubscribable<SupabaseAttachment>
+    | Promise<DispatchableSubscribable<SupabaseAttachment>>
+  > = {};
+
+  putAttachment(...attachments: SupabaseAttachment[]) {
+    for (const attchment of attachments) {
+      const oldValue = this.attachments[attchment.id];
+      if (oldValue && !("then" in oldValue)) {
+        oldValue.dispatch(attchment);
+      } else if (!oldValue) {
+        this.attachments[attchment.id] = new DispatchableSubscribable(
+          attchment
+        );
+      }
+    }
+  }
+
+  async getAttachmentOrFallback(
+    id: string,
+    fallback: () => Promise<SupabaseAttachment>
+  ) {
+    return (
+      this.attachments[id] ??
+      (this.attachments[id] = fallback().then((value) => {
+        const subscribable = new DispatchableSubscribable<typeof value>(value);
+        this.attachments[id] = subscribable;
         return subscribable;
       }))
     );

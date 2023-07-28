@@ -8,7 +8,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import Message from "../../../model/message";
+import Message, { Attachment } from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -38,6 +38,10 @@ import {
 } from "./mock_data";
 
 export default class MockBackend implements NetworkBackend {
+  getAttachment(attachmentId: string): Subscribable<Attachment | null> {
+    throw new Error("Method not implemented.");
+  }
+
   openDM(user: UserId): Promise<number> {
     throw new Error("Method not implemented.");
   }

@@ -4,7 +4,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
-import Message from "../../model/message";
+import Message, { Attachment } from "../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -87,6 +87,11 @@ export default interface NetworkBackend {
    * Gets a legal document as Markdown.
    */
   getDocument(documentType: DocumentType): Promise<string>;
+
+  /**
+   * Gets an attachment, which will update as the upload progresses.
+   */
+  getAttachment(attachmentId: string): Subscribable<Attachment | null>;
 
   /**
    * Gets the current user session. Replaces `getUser(undefined)`.

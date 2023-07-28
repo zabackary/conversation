@@ -27,7 +27,11 @@ export interface Attachment {
   /**
    * The download URL of the attachment. Images, PDFs, etc. must not have their
    * `Content-Disposition` set to `attachment` so they can be previewed. May be
-   *
+   * undefined if image is still uploading or an error occurred.
    */
   url?: string;
+  /** The name of the file/image. */
+  name: string;
+  /** Whether the file has an error on the uploading side. */
+  hasError: boolean;
 }

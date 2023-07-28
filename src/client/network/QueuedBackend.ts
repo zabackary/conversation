@@ -6,7 +6,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
-import Message from "../../model/message";
+import Message, { Attachment } from "../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,
@@ -172,6 +172,10 @@ export default class QueuedBackend implements NetworkBackend {
 
   getUser(id: UserId): Subscribable<User | null> {
     return this.deferredSubscribable((backend) => backend.getUser(id));
+  }
+
+  getAttachment(id: string): Subscribable<Attachment | null> {
+    return this.deferredSubscribable((backend) => backend.getAttachment(id));
   }
 
   getUserActivity(user: UserId): Subscribable<boolean | null> {

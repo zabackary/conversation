@@ -18,6 +18,7 @@ export default async function getMessages(
     .lt("sent_at", lastDate.toISOString())
     .range(0, limit - 1);
   if (error) throw error;
+  messages.forEach((message) => cache.putAttachment(...message.attachments));
   const normalizedMessages = messages.map(
     ({ attachments: _, ...message }) => message
   );
