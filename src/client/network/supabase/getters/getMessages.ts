@@ -19,9 +19,10 @@ export default async function getMessages(
     .range(0, limit - 1);
   if (error) throw error;
   messages.forEach((message) => cache.putAttachment(...message.attachments));
-  const normalizedMessages = messages.map(
-    ({ attachments: _, ...message }) => message
-  );
+  const normalizedMessages = messages.map((message) => ({
+    ...message,
+    attachments: message.attachments.map((attachment) => attachment.id),
+  }));
   cache.putMessage(...normalizedMessages);
   return normalizedMessages.reverse();
 }

@@ -10,27 +10,24 @@ export default async function convertMessage(
   const user = dbMessage.user_id
     ? await userById(dbMessage.user_id)
     : deletedUser;
-  if (user.isBot) {
-    return {
-      user,
-      parent: dbMessage.channel_id,
-      sent: new Date(dbMessage.sent_at),
-      isService: true,
-      id: dbMessage.id,
-      markdown: dbMessage.markdown,
-      attachments: [],
-      replied: dbMessage.replying_to ?? undefined,
-    };
-  }
-  return {
+  const common = {
     user,
     parent: dbMessage.channel_id,
     sent: new Date(dbMessage.sent_at),
-    isService: false,
     id: dbMessage.id,
     markdown: dbMessage.markdown,
-    attachments: [],
+    attachments: dbMessage.attachments,
     replied: dbMessage.replying_to ?? undefined,
+  };
+  if (user.isBot) {
+    return {
+      ...common,
+      isService: true,
+    };
+  }
+  return {
+    ...common,
+    isService: false,
   };
 }
 
