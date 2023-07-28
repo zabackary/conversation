@@ -19,7 +19,6 @@ export default async function convertMessage(
       id: dbMessage.id,
       markdown: dbMessage.markdown,
       attachments: [],
-      images: [],
       replied: dbMessage.replying_to ?? undefined,
     };
   }
@@ -31,7 +30,6 @@ export default async function convertMessage(
     id: dbMessage.id,
     markdown: dbMessage.markdown,
     attachments: [],
-    images: [],
     replied: dbMessage.replying_to ?? undefined,
   };
 }
@@ -45,6 +43,5 @@ export function convertMessageSync(
     id: dbMessage.id,
     markdown: dbMessage.markdown,
     attachments: [],
-    images: [],
   };
 }

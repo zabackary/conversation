@@ -268,8 +268,7 @@ export default function ChatView({
                   {currentMessageDetail.user.name}
                 </Box>
               </Tooltip>{" "}
-              with {currentMessageDetail.attachments.length} attachments and{" "}
-              {currentMessageDetail.images.length} images.
+              with {currentMessageDetail.attachments.length} attachments.
             </DialogContentText>
             <DialogContentText>Message source:</DialogContentText>
             <AsyncSyntaxHighlighter

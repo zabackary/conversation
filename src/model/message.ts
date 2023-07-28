@@ -8,7 +8,6 @@ export default interface Message {
   isService: boolean;
   markdown: string;
   attachments: string[];
-  images: string[];
 
   /**
    * The message this message is replying to, if any.

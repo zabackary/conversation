@@ -75,7 +75,6 @@ export const messages = {
       sent: new Date("December 25, 2019 5:05"),
       isService: true,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -85,7 +84,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: services.conversation,
@@ -97,7 +95,6 @@ export const messages = {
       sent: new Date("December 25, 2019 5:06"),
       isService: true,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -107,7 +104,6 @@ export const messages = {
       parent: 3,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -117,7 +113,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -127,7 +122,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: services.conversation,
@@ -139,7 +133,6 @@ export const messages = {
       sent: new Date("January 1, 2020 5:09"),
       isService: true,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -149,7 +142,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -159,7 +151,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -169,7 +160,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -180,7 +170,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -190,7 +179,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -201,7 +189,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -211,7 +198,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -221,7 +207,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -231,7 +216,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -241,7 +225,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -252,7 +235,6 @@ export const messages = {
       parent: 5,
       isService: false,
       attachments: [],
-      images: [],
     },
   ],
   3: [
@@ -264,7 +246,6 @@ export const messages = {
       sent: new Date("December 25, 2019 5:05"),
       isService: true,
       attachments: [],
-      images: [],
     },
   ],
   19: [
@@ -276,7 +257,6 @@ export const messages = {
       sent: new Date("December 6, 2022 13:47"),
       isService: true,
       attachments: [],
-      images: [],
     },
     {
       user: users.alice.getSnapshot(),
@@ -288,7 +268,6 @@ export const messages = {
       parent: 19,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -298,7 +277,6 @@ export const messages = {
       parent: 19,
       isService: false,
       attachments: [],
-      images: [],
     },
   ],
   20: [
@@ -310,7 +288,6 @@ export const messages = {
       sent: new Date("December 6, 2022 13:47"),
       isService: true,
       attachments: [],
-      images: [],
     },
     {
       user: users.eve.getSnapshot(),
@@ -320,7 +297,6 @@ export const messages = {
       parent: 20,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.bob.getSnapshot(),
@@ -330,7 +306,6 @@ export const messages = {
       parent: 20,
       isService: false,
       attachments: [],
-      images: [],
     },
     {
       user: users.eve.getSnapshot(),
@@ -340,7 +315,6 @@ export const messages = {
       parent: 20,
       isService: false,
       attachments: [],
-      images: [],
     },
   ],
 } satisfies Record<number, Message[]>;

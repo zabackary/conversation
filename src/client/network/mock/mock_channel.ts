@@ -34,7 +34,6 @@ export default class MockChannelBackend implements ChannelBackend {
       isService: false,
       markdown: message.markdown,
       attachments: [],
-      images: [],
     };
     // @ts-ignore Shut up TypeScript, it's null thingy
     (messages[this.id] as Message[] | undefined)?.push(newMessage);
