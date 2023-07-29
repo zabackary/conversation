@@ -332,9 +332,10 @@ const ChatInput = forwardRef<HTMLDivElement, ChatInputProps>(
                       <Avatar
                         src={imagePreviews[image.name]}
                         sx={{ borderRadius: "8px" }}
-                      />
+                      >
+                        <MaterialSymbolIcon icon="image" />
+                      </Avatar>
                     }
-                    icon={<MaterialSymbolIcon icon="image" size={18} />}
                     deleteIcon={<MaterialSymbolIcon icon="delete" />}
                     onDelete={() => handleDeleteItem(image, true)}
                     variant="tonal"
