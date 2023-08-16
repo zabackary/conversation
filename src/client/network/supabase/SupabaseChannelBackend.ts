@@ -146,6 +146,7 @@ export default class SupabaseChannelBackend implements ChannelBackend {
           .eq("id", attachmentId)
           .single();
         if (updateError) console.error(updateError);
+        // TODO: Update internal cached attachment
       })
       .catch(() => {
         // No-op: Supabase never throws. Errors are passed via `error` in `then`

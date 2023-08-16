@@ -133,9 +133,14 @@ class SupabaseBackendImpl implements NetworkBackend {
       },
       (payload) => {
         void (async () => {
-          const message = payload.new as SupabaseMessage;
-          this.cache.putMessage(message);
-          const convertedMessage = await convertMessage(message, (id) =>
+          const message = payload.new as Omit<SupabaseMessage, "attachments">;
+          const patchedMessage = {
+            ...message,
+            // TODO: I know this doesn't show new attachments. See #51
+            attachments: [],
+          };
+          this.cache.putMessage(patchedMessage);
+          const convertedMessage = await convertMessage(patchedMessage, (id) =>
             promiseFromSubscribable(this.getUser(id))
           );
           dispatchableMessageSubscribable.dispatch(convertedMessage);
