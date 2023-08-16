@@ -20,6 +20,7 @@ import useUserActivity from "../../hooks/useUserActivity";
 import { ContrastBadge } from "../main/DrawerHeader";
 import ProfilePicture from "../ProfilePicture";
 import UserTooltip from "../UserTooltip";
+import ChatAttachmentPreview from "./ChatAttachmentPreview";
 import MaterialReactMarkdown from "./MaterialReactMarkdown";
 import ReplyPreview from "./ReplyPreview";
 
@@ -159,9 +160,14 @@ const ChatItem = memo(
                 ) : null
               }
               secondary={
-                <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
-                  {translatedMarkdown as string}
-                </MaterialReactMarkdown>
+                <>
+                  <MaterialReactMarkdown sx={{ overflow: "hidden" }} inline>
+                    {translatedMarkdown as string}
+                  </MaterialReactMarkdown>
+                  {message.attachments.map((attachment) => (
+                    <ChatAttachmentPreview id={attachment} key={attachment} />
+                  ))}
+                </>
               }
               secondaryTypographyProps={{
                 component: "div",
