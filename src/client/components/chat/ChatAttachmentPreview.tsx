@@ -118,7 +118,13 @@ export default function ChatAttachmentPreview({
   }
   if (attachment.isImage) {
     return (
-      <Box component="img" src={attachment.url} sx={{ borderRadius: "8px" }} />
+      <Box
+        component="img"
+        width={attachment.imageWidth}
+        height={attachment.imageHeight}
+        src={attachment.url}
+        sx={{ borderRadius: "8px" }}
+      />
     );
   }
   return (
