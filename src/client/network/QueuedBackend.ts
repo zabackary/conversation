@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 /* eslint-disable no-return-assign */
+import Attachment from "../../model/attachment";
 import Channel, {
   DmChannel,
   InvitedChannelListing,
   PrivacyLevel,
   PublicChannelListing,
 } from "../../model/channel";
-import Message, { Attachment } from "../../model/message";
+import Message from "../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,

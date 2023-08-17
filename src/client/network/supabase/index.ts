@@ -1,5 +1,6 @@
 import { RealtimeChannel, createClient } from "@supabase/supabase-js";
 import { Database } from "../../../@types/supabase";
+import Attachment from "../../../model/attachment";
 import Channel, {
   DmChannel,
   GroupChannel,
@@ -7,7 +8,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import Message, { Attachment } from "../../../model/message";
+import Message from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,

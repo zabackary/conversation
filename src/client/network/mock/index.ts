@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-cond-assign */
 /* eslint-disable class-methods-use-this */
+import Attachment from "../../../model/attachment";
 import Channel, {
   DmChannel,
   GroupChannel,
@@ -8,7 +9,7 @@ import Channel, {
   PrivacyLevel,
   PublicChannelListing,
 } from "../../../model/channel";
-import Message, { Attachment } from "../../../model/message";
+import Message from "../../../model/message";
 import User, {
   NewUserMetadata,
   RegisteredUser,

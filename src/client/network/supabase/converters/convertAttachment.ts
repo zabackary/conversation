@@ -1,4 +1,4 @@
-import { Attachment } from "../../../../model/message";
+import Attachment from "../../../../model/attachment";
 import { SupabaseAttachment } from "../cache";
 
 export default function convertAttachment(
