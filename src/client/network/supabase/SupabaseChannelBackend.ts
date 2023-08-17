@@ -107,7 +107,24 @@ export default class SupabaseChannelBackend implements ChannelBackend {
     file: File,
     asImage: boolean
   ) {
-    // TODO: Add `attachments` table to cache
+    let imageWidth;
+    let imageHeight;
+    if (asImage) {
+      const objectURL = URL.createObjectURL(file);
+      const image = new Image();
+      image.src = objectURL;
+      try {
+        await new Promise((resolve, reject) => {
+          image.onload = resolve;
+          image.onerror = reject;
+        });
+      } catch (e) {
+        console.warn("Failed to load image to retrieve dimensions:", e);
+      }
+      imageWidth = image.naturalWidth;
+      imageHeight = image.naturalHeight;
+      URL.revokeObjectURL(objectURL);
+    }
     const { error, data } = await this.backend.client
       .from("attachments")
       .insert({
@@ -117,6 +134,8 @@ export default class SupabaseChannelBackend implements ChannelBackend {
         name: file.name,
         as_image: asImage,
         upload_url: null,
+        image_width: imageWidth,
+        image_height: imageHeight,
       })
       .select("*");
     if (error) throw error;
