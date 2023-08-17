@@ -16,4 +16,8 @@ export default interface Attachment {
   name: string;
   /** Whether the file has an error on the uploading side. */
   hasError: boolean;
+  /** The width of the image, if known. */
+  imageWidth?: number;
+  /** The height of the image, if known. */
+  imageHeight?: number;
 }
