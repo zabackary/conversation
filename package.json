@@ -12,7 +12,7 @@
     "deploy": "pnpm run build && pnpm run upload",
     "serve": "cross-env NODE_ENV=local vite serve --host",
     "lint": "eslint",
-    "pull-types": "supabase gen types typescript --local > src/@types/supabase.d.ts"
+    "pull-types": "supabase gen types typescript --local > src/@types/supabase.d.ts && prettier src/@types/supabase.d.ts --write"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
