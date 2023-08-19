@@ -1,5 +1,9 @@
 # Conversation 4
 
+![Served by Google Apps Script](https://img.shields.io/badge/server-Google%20Apps%20Script-%234285F4?logo=googleappsscript&logoColor=%23fff)
+![CI status](https://github.com/zabackary/conversation/actions/workflows/ci.yml/badge.svg)
+
+
 Conversation is a chat app built from the ground up to be safe for students to
 use for communicating with peers about projects, life, and more.
 
