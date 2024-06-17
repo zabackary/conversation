@@ -62,7 +62,7 @@
     "which": "^3.0.1"
   },
   "dependencies": {
-    "@axe-core/react": "^4.7.3",
+    "@axe-core/react": "^4.9.1",
     "@babel/runtime": "^7.22.10",
     "@emoji-mart/react": "^1.1.1",
     "@material/material-color-utilities": "^0.2.7",
