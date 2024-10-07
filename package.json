@@ -59,7 +59,7 @@
     "typescript": "^5.4.5",
     "vite": "^4.5.3",
     "vite-plugin-checker": "^0.6.4",
-    "which": "^3.0.1"
+    "which": "^5.0.0"
   },
   "dependencies": {
     "@axe-core/react": "^4.7.3",
