@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@axe-core/react':
-        specifier: ^4.7.3
-        version: 4.7.3
+        specifier: ^4.10.1
+        version: 4.10.1
       '@babel/runtime':
         specifier: ^7.22.10
         version: 7.22.10
@@ -245,8 +245,8 @@ packages:
     resolution: {integrity: sha512-lFMjJTrFL3j7L9yBxwYfCq2k6qqwHyzuUl/XBnif78PWTJYyL/dfowQHWE3sp6U6ZzqWiiIZnpTMO96zhkjwtg==}
     engines: {node: '>=6.0.0'}
 
-  '@axe-core/react@4.7.3':
-    resolution: {integrity: sha512-dN2ZqUdaWJNmxEuedJKkAZBBQWs1qj/Aeby2x8ZKMhhcDBGkcT42MRlaOMWTvPG/YosP6RaGi160eFFZ3TiUMg==}
+  '@axe-core/react@4.10.1':
+    resolution: {integrity: sha512-GRGx/3Gbce9WQYXgY0iZzqOaHIRXBNGyV+zoUhJzBuDeoTL+XoeY3u/9PzdIVyH0pbNs1n1RChfsmWBy6hzKPg==}
 
   '@babel/code-frame@7.22.10':
     resolution: {integrity: sha512-/KKIMG4UEL35WmI9OlvMhurwtytjvXoFcGNrOvyG9zIzA8YmPjVtIZUf7b05+TPO7G7/GEmLHDaoCgACHl9hhA==}
@@ -1124,6 +1124,10 @@ packages:
     resolution: {integrity: sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==}
     engines: {node: '>= 0.4'}
 
+  axe-core@4.10.2:
+    resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
+    engines: {node: '>=4'}
+
   axe-core@4.7.2:
     resolution: {integrity: sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==}
     engines: {node: '>=4'}
@@ -1653,6 +1657,7 @@ packages:
   eslint@8.47.0:
     resolution: {integrity: sha512-spUQWrdPt+pRVP1TTJLmfRNJJHHZryFmptzcafwSvHsceV81djHOdnEeDmkdotZyLNjDhrOasNK8nikkoG1O8Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -3498,9 +3503,9 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
 
-  '@axe-core/react@4.7.3':
+  '@axe-core/react@4.10.1':
     dependencies:
-      axe-core: 4.7.2
+      axe-core: 4.10.2
       requestidlecallback: 0.3.0
 
   '@babel/code-frame@7.22.10':
@@ -4516,6 +4521,8 @@ snapshots:
       has-symbols: 1.0.3
 
   available-typed-arrays@1.0.5: {}
+
+  axe-core@4.10.2: {}
 
   axe-core@4.7.2: {}
 
