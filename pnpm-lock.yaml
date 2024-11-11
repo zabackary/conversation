@@ -42,8 +42,8 @@ importers:
         specifier: ^5.5.2
         version: 5.5.2
       i18next:
-        specifier: ^22.5.1
-        version: 22.5.1
+        specifier: ^23.16.5
+        version: 23.16.5
       i18next-browser-languagedetector:
         specifier: ^7.1.0
         version: 7.1.0
@@ -64,7 +64,7 @@ importers:
         version: 18.2.0(react@18.2.0)
       react-i18next:
         specifier: ^12.3.1
-        version: 12.3.1(i18next@22.5.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+        version: 12.3.1(i18next@23.16.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-markdown:
         specifier: ^8.0.7
         version: 8.0.7(@types/react@18.2.20)(react@18.2.0)
@@ -416,6 +416,10 @@ packages:
 
   '@babel/runtime@7.22.10':
     resolution: {integrity: sha512-21t/fkKLMZI4pqP2wlmsQAWnYW1PDyKyyUV4vCi+B25ydmdaYTKXPwCj0BzSUnZf4seIiYvSA3jcZ3gdsMFkLQ==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.26.0':
+    resolution: {integrity: sha512-FDSOghenHTiToteC/QRlv2q3DhPZ/oOXTBoirfWNx1Cx3TMVcGWQtMMmQcSvb/JjpNeGzx8Pq/b4fKEJuWm1sw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.22.5':
@@ -1653,6 +1657,7 @@ packages:
   eslint@8.47.0:
     resolution: {integrity: sha512-spUQWrdPt+pRVP1TTJLmfRNJJHHZryFmptzcafwSvHsceV81djHOdnEeDmkdotZyLNjDhrOasNK8nikkoG1O8Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esniff@2.0.1:
@@ -1957,8 +1962,8 @@ packages:
   i18next-emoji-postprocessor@1.0.2:
     resolution: {integrity: sha512-4RoMeRJs2v6JM6SSo/DdR77fdQ1gVDS9Ahmf6LEJmbXagYogLCrcnX2xOHiWfmFJAX9Id5DaS9V9Le3LLdmN3A==}
 
-  i18next@22.5.1:
-    resolution: {integrity: sha512-8TGPgM3pAD+VRsMtUMNknRz3kzqwp/gPALrWMsDnmC1mKqJwpWyooQRLMcbTwq8z8YwSmuj+ZYvc+xCuEpkssA==}
+  i18next@23.16.5:
+    resolution: {integrity: sha512-KTlhE3EP9x6pPTAW7dy0WKIhoCpfOGhRQlO+jttQLgzVaoOjWwBWramu7Pp0i+8wDNduuzXfe3kkVbzrKyrbTA==}
 
   iconv-lite@0.4.24:
     resolution: {integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==}
@@ -3715,6 +3720,10 @@ snapshots:
       '@babel/helper-plugin-utils': 7.24.7
 
   '@babel/runtime@7.22.10':
+    dependencies:
+      regenerator-runtime: 0.14.0
+
+  '@babel/runtime@7.26.0':
     dependencies:
       regenerator-runtime: 0.14.0
 
@@ -5560,9 +5569,9 @@ snapshots:
     dependencies:
       emoji-from-word: 1.2.11
 
-  i18next@22.5.1:
+  i18next@23.16.5:
     dependencies:
-      '@babel/runtime': 7.22.10
+      '@babel/runtime': 7.26.0
 
   iconv-lite@0.4.24:
     dependencies:
@@ -6524,11 +6533,11 @@ snapshots:
       react: 18.2.0
       scheduler: 0.23.0
 
-  react-i18next@12.3.1(i18next@22.5.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
+  react-i18next@12.3.1(i18next@23.16.5)(react-dom@18.2.0(react@18.2.0))(react@18.2.0):
     dependencies:
       '@babel/runtime': 7.22.10
       html-parse-stringify: 3.0.1
-      i18next: 22.5.1
+      i18next: 23.16.5
       react: 18.2.0
     optionalDependencies:
       react-dom: 18.2.0(react@18.2.0)
