@@ -7,6 +7,8 @@
 Conversation is a chat app built from the ground up to be safe for students to
 use for communicating with peers about projects, life, and more.
 
+This project is in a mostly unfinished state, but most of the UI is in place. This was created in 2023 as a continuation of a project I had been working on for all of middle school.
+
 ## Bugs
 
 If you're an end user and you're having a problem, don't hesitate to report a bug. Either send it to my email (using the "Send feedback" option in the overflow menu) or create a new GitHub issue.
